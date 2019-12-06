@@ -4,7 +4,6 @@ library(dplyr)
 platemap <- read.csv(file.path("data","platemap.csv"), stringsAsFactors = FALSE)
 
 test_df <- platemap[1:2,]
-test_df$Environment[1:2] <- c(4,5)
 
 test_df <- rbind(test_df, c("A1","A",2))
 test_df <- rbind(test_df, c("A2", "blank", 0))
