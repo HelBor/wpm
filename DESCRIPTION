@@ -1,0 +1,11 @@
+Package: wpm
+Type: Package
+Title: Well Plate Maker
+Version: 0.1.0
+Author: Hélène BORGES
+Maintainer: helene.sophie.borges@gmail.com
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
