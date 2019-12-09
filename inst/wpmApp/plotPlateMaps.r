@@ -1,9 +1,7 @@
-library(ggplot2)
-library(dplyr)
-
-
 #*******************************************************************************
 # theme functions for ggplot plate map
+# code from https://github.com/briandconnelly/ggplot2bdc/blob/master/R/theme_bdc_grey.R
+# and https://github.com/briandconnelly/ggplot2bdc/blob/master/R/theme_bdc_microtiter.R
 #*******************************************************************************
 theme_bdc_grey <- function(base_size = 12, base_family = "",
                            base_grey = "grey70",
@@ -180,46 +178,151 @@ theme_bdc_microtiter <- function(base_size = 12, base_family = "") {
   t
 }
 
+
+
+
+# function to place the blanks on the plate according to the selected mode
+placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
+
+  if(mod %in% c("none", "by_row", "by_column", "checkerboard")){
+    if(mod != "none"){
+      switch (mod,
+              "by_row" = {
+                nb_rows <- p_lines * ceiling(p_cols/2)
+                df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
+                               c("Well", "Sample.name", "Group", "Status", "Row", "Column"))
+                k=1
+                for(j in seq(from = 1, to = p_cols, by = 2)){
+                  for(i in 1:p_lines){
+                    df$Row[k] <- i
+                    df$Column[k] <- j
+                    k = k + 1
+                  }
+                }
+
+              },
+              "by_column" = {
+                nb_rows <- p_cols * ceiling(p_lines/2)
+                df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
+                               c("Well", "Sample.name", "Group", "Status", "Row", "Column"))
+                k=1
+                for(i in seq(from = 1, to = p_lines, by = 2)){
+                  for(j in 1:p_cols){
+                    df$Row[k] <- i
+                    df$Column[k] <- j
+                    k = k + 1
+                  }
+                }
+              },
+              "checkerboard" = {
+                nb_rows <- p_cols * ceiling(p_lines/2)
+                df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
+                               c("Well", "Sample.name", "Group", "Status", "Row", "Column"))
+                k=1
+                for(j in seq(from = 1, to = p_cols)){
+                  if(j%%2 == 0){ # j is peer
+                    for(i in seq(from = 2, to = p_lines, by = 2)){
+                      df$Row[k] <- i
+                      df$Column[k] <- j
+                      k = k + 1
+                    }
+                  }else{ # j is odd
+                    for(i in seq(from = 1, to = p_lines, by = 2)){
+                      df$Row[k] <- i
+                      df$Column[k] <- j
+                      k = k + 1
+                    }
+                  }
+                }
+              }
+      )
+
+      df$Sample.name <- as.integer(NA)
+      df$Group <- as.factor("blank")
+      df$Status <- as.factor("blank")
+      df$Row <- as.numeric(df$Row)
+      df$Column <- as.numeric(df$Column)
+      df$Letters <- LETTERS[df$Row]
+      df$Well <- apply( df[ , c("Letters", "Column") ] , 1 , paste0 , collapse = "" )
+      df$Letters <- NULL
+    }
+    duplicated_erased <- df %>%
+      distinct(Row, Column, .keep_all = TRUE)
+    return(duplicated_erased)
+  }
+
+}
+
+
+
+
+
+
+#*******************************************************************************
+# Function to determine the coordinates of the forbidden wells for the plot
+#*******************************************************************************
+# input : df is a dataframe containing the coordinates for the blanks
+combineForbiddenWellsWithBlanks <- function(df_blanks, forbidden_wells){
+
+  # part of code to check if the provided forbidden wells are possible according
+  # to plate dimensions
+  if(length(forbidden_wells)>0){
+    check_rows <- as.numeric(match(toupper(substr(forbidden_wells, 1, 1)), LETTERS))
+    check_columns <- as.numeric(substr(forbidden_wells, 2, 5))
+    print(paste("check_rows", max(check_rows)))
+    print(paste("check_columns", max(check_columns)))
+    if((max(check_rows) > max(df_blanks$Row)) | (max(check_columns) > max(df_blanks$Column)) ){
+      error_msg <- "Error - One or more of the prohibited wells do not exist
+    depending on the plate sizes that have been provided"
+      return(error_msg)
+    }
+
+  }
+  # put the forbidden wells into the df
+  forbidden <- setnames(setDF(lapply(c(NA, NA, "forbidden", "forbidden", NA, NA), function(...) character(length(forbid_wells)))),
+                        c("Well", "Sample.name", "Group", "Status", "Row", "Column"))
+  forbidden$Well <- as.character(forbid_wells)
+  forbidden$Sample.name <- as.integer(NA)
+  forbidden$Group <- as.factor("forbidden")
+  forbidden$Status <- as.factor("forbidden")
+  forbidden$Row <- as.numeric(NA)
+  forbidden$Column <- as.numeric(NA)
+
+  # convert the Well names into Row/column coordinates
+  forbidden <- mutate(forbidden,
+                     Row=as.numeric(match(toupper(substr(Well, 1, 1)), LETTERS)),
+                     Column=as.numeric(substr(Well, 2, 5)))
+
+  forbidden <- rbind(forbidden, df_blanks)
+  duplicated_erased <- forbidden %>%
+    distinct(Row, Column, .keep_all = TRUE)
+  return(duplicated_erased)
+}
+
+
+
 #*******************************************************************************
 # Function to plot the input dataframe containing the Sample names, the Row,
 # Column coordinates, the group and the status
 #*******************************************************************************
 
 
-test_df <- data.frame("Well"=c("A1","A2","B1","C4"),"Sample.name" = c(117, 231, NA, NA), "Groups"= c("1","2","blank", "forbidden"),"Status" = c("allowed","allowed","blank","forbidden"))
-
-# convert the Well names into Row/column coordinates
-test_df <- mutate(test_df,
-                   Row=as.numeric(match(toupper(substr(Well, 1, 1)), LETTERS)),
-                   Column=as.numeric(substr(Well, 2, 5)))
-
-
-test_df$Status <- as.factor(test_df$Status)
-test_df$Well <- as.factor(test_df$Well)
-test_df$Groups <- as.factor(test_df$Groups)
-
-plate_lines <- 8
-plate_cols <- 12
-
-
-# palette que j'ai prédéfini. On prend un subset en fonction du nombre de
-# groupes distincts existant dans le jeu de données
-library(RColorBrewer)
-palette_complete <- c(brewer.pal(7, "Set2"), brewer.pal(7, "Accent"))
 
 
 draw_Plate_Map <- function(df, nb_gps, plate_lines, plate_cols){
+
   # cette palette permet de colorier selon que c'est un blank, une case interdite, ou un groupe
   palette_strains <- c("blank"="grey", "forbidden"="red")
-  palette_choisie <- palette[1:nb_gps]
-  names(palette_choisie) <- levels(df$Groups)
+  palette_complete <- c(brewer.pal(7, "Set2"), brewer.pal(7, "Accent"))
+  palette_choisie <- palette_complete[1:nb_gps]
+  names(palette_choisie) <- levels(df$Group)
   palette_strains <- c(palette_strains, palette_choisie)
   colScale <- scale_colour_manual(name = "group", values = palette_strains)
 
-  ggplot(data = df, aes(x = Column, y = Row)) +
+  g <- ggplot(data = df, aes(x = Column, y = Row)) +
     geom_point(data = expand.grid(seq(1, plate_cols), seq(1, plate_lines)), aes(x = Var1, y = Var2),
                color = "grey90", fill = "white", shape = 21, size = 6) +
-    geom_point(aes(shape = Status, colour = Groups), size = 7.5) +
+    geom_point(aes(shape = Status, colour = Group), size = 7.5) +
     geom_text(aes(label = Sample.name), size = 2) +
     colScale +
     scale_shape_manual(values = c("forbidden" = 4, "blank" = 15, "allowed" = 19)) +
@@ -229,7 +332,22 @@ draw_Plate_Map <- function(df, nb_gps, plate_lines, plate_cols){
     labs(title="Plate Layout for My Experiment") +
     theme_bdc_microtiter()
 
+  return(g)
+}
 
+
+#*******************************************************************************
+# How to use the functions
+#*******************************************************************************
+nb_l <- 2
+nb_c <- 8
+test_df <- placeBlanksOnPlate(nb_l,nb_c,"checkerboard")
+forbid_wells <- c("A1", "A2", "C3")
+test2_df <- combineForbiddenWellsWithBlanks(test_df, forbid_wells)
+if(class(test2_df) == "data.frame"){
+  draw_Plate_Map(df = test2_df, 2, plate_lines = nb_l, plate_cols = nb_c)
+}else{
+  print(test2_df)
 }
 
 

@@ -1,6 +1,9 @@
 # This R script contains the UI and Server side of the app to manage the plates
 # specifications.
 
+
+
+
 # Module UI function
 plateSpecUI <- function(id, label = "Plate specifications") {
   # Create a namespace function using the provided id
