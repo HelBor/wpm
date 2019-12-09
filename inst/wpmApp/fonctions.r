@@ -198,46 +198,4 @@ platePreparation <- function(d, r, c, forbid_wells){
 
 
 
-drawPlaque <- function(l, c){
-  p1 <- matrix(data=NA, nrow=l, ncol=c)
-  addresses.p1 <- expand.grid(x = 1:l, y = 1:c)
-  addresses.p1$x <- factor(addresses.p1$x)
-  addresses.p1$y <- as.factor(addresses.p1$y)
-  addresses.p1$individu <- as.vector(p1)
-
-  simple_version <- ggplot(addresses.p1, aes(x=as.factor(y),y=as.factor(x)))+
-    geom_tile(color="white", size=0.1, fill="grey") +
-    coord_equal()+
-    labs(x=NULL, y=NULL) +
-    theme(axis.ticks=element_blank()) +
-    geom_text(aes(label = round(individu, 1)))
-  return(simple_version)
-}
-
-# fonction permettant de générer un ggplot représentant la plaque à remplir avec les cases interdites colorées en rouge
-drawPlaqueInterdits <- function(l,c,interdits){
-  interdits <- unlist(strsplit(as.character(interdits), split=","))
-  m <- matrix(data=" ", nrow=l, ncol=c)
-  for(element in interdits){
-    xy = unlist(strsplit(element, split = "-"))
-    x = as.numeric(xy[1])
-    y = as.numeric(xy[2])
-    m[x,y] <- "X"
-  }
-  addresses.m <- expand.grid(x = 1:l, y = 1:c)
-  addresses.m$x <- factor(addresses.m$x)
-  addresses.m$y <- as.factor(addresses.m$y)
-  addresses.m$individu <- as.vector(m)
-
-  simple_version <- ggplot(addresses.m, aes(x=as.factor(y),y=as.factor(x), fill=individu))+
-    geom_tile(color="white", size=0.1) +
-    coord_equal()+
-    labs(x=NULL, y=NULL) +
-    theme(axis.ticks=element_blank()) +
-    geom_text(aes(label = individu)) +
-    scale_fill_manual(values=c(" "="grey","X"="red"))
-
-  return(simple_version)
-}
-
 

@@ -1,48 +1,10 @@
 library(ggplot2)
 library(dplyr)
 
-platemap <- read.csv(file.path("data","platemap.csv"), stringsAsFactors = FALSE)
 
-test_df <- platemap[1:2,]
-
-test_df <- rbind(test_df, c("A1","A",2))
-test_df <- rbind(test_df, c("A2", "blank", 0))
-test_df <- rbind(test_df, c("B1", "forbidden", 1))
-
-test_df <- mutate(test_df,
-                   Row=as.numeric(match(toupper(substr(Well, 1, 1)), LETTERS)),
-                   Column=as.numeric(substr(Well, 2, 5)))
-test_df$Environment <- as.factor(test_df$Environment)
-test_df$Well <- as.factor(test_df$Well)
-test_df$Strain <- as.factor(test_df$Strain)
-test_df$individu <- c("117","211", "314", NA, NA)
-plate_lines <- 8
-plate_cols <- 12
-
-# cette palette permet de colorier selon que c'est un blank, une case interdite, ou un groupe
-palette_strains <- c("blank"="grey", "forbidden"="red")
-cbbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-
-names(cbbPalette) <- levels(test_df$Strain)
-palette_strains <- c(palette_strains, cbbPalette)
-colScale <- scale_colour_manual(name = "grp",values = palette_strains)
-
-ggplot(data=test_df, aes(x=Column, y=Row)) +
-  geom_point(data=expand.grid(seq(1, plate_cols), seq(1, plate_lines)), aes(x=Var1, y=Var2),
-             color="grey90", fill="white", shape=21, size=6) +
-  geom_point(aes(shape=Environment, colour=Strain), size=7.5) +
-  geom_text(aes(label = individu), size=2) +
-  colScale +
-  coord_fixed(ratio=(13/plate_cols)/(9/plate_lines), xlim = c(0.9, plate_cols+0.1), ylim=c(0, plate_lines+1)) +
-  scale_y_reverse(breaks=seq(1, plate_lines), labels=LETTERS[1:plate_lines]) +
-  scale_x_continuous(breaks=seq(1, plate_cols)) +
-  labs(title="Plate Layout for My Experiment") +
-  theme_bdc_microtiter()
-
-
-
-
-
+#*******************************************************************************
+# theme functions for ggplot plate map
+#*******************************************************************************
 theme_bdc_grey <- function(base_size = 12, base_family = "",
                            base_grey = "grey70",
                            grid.x = FALSE, grid.y = FALSE,
@@ -217,3 +179,59 @@ theme_bdc_microtiter <- function(base_size = 12, base_family = "") {
 
   t
 }
+
+#*******************************************************************************
+# Function to plot the input dataframe containing the Sample names, the Row,
+# Column coordinates, the group and the status
+#*******************************************************************************
+
+
+test_df <- data.frame("Well"=c("A1","A2","B1","C4"),"Sample.name" = c(117, 231, NA, NA), "Groups"= c("1","2","blank", "forbidden"),"Status" = c("allowed","allowed","blank","forbidden"))
+
+# convert the Well names into Row/column coordinates
+test_df <- mutate(test_df,
+                   Row=as.numeric(match(toupper(substr(Well, 1, 1)), LETTERS)),
+                   Column=as.numeric(substr(Well, 2, 5)))
+
+
+test_df$Status <- as.factor(test_df$Status)
+test_df$Well <- as.factor(test_df$Well)
+test_df$Groups <- as.factor(test_df$Groups)
+
+plate_lines <- 8
+plate_cols <- 12
+
+
+# palette que j'ai prédéfini. On prend un subset en fonction du nombre de
+# groupes distincts existant dans le jeu de données
+library(RColorBrewer)
+palette_complete <- c(brewer.pal(7, "Set2"), brewer.pal(7, "Accent"))
+
+
+draw_Plate_Map <- function(df, nb_gps, plate_lines, plate_cols){
+  # cette palette permet de colorier selon que c'est un blank, une case interdite, ou un groupe
+  palette_strains <- c("blank"="grey", "forbidden"="red")
+  palette_choisie <- palette[1:nb_gps]
+  names(palette_choisie) <- levels(df$Groups)
+  palette_strains <- c(palette_strains, palette_choisie)
+  colScale <- scale_colour_manual(name = "group", values = palette_strains)
+
+  ggplot(data = df, aes(x = Column, y = Row)) +
+    geom_point(data = expand.grid(seq(1, plate_cols), seq(1, plate_lines)), aes(x = Var1, y = Var2),
+               color = "grey90", fill = "white", shape = 21, size = 6) +
+    geom_point(aes(shape = Status, colour = Groups), size = 7.5) +
+    geom_text(aes(label = Sample.name), size = 2) +
+    colScale +
+    scale_shape_manual(values = c("forbidden" = 4, "blank" = 15, "allowed" = 19)) +
+    coord_fixed(ratio = (13/plate_cols)/(9/plate_lines), xlim = c(0.9, plate_cols+0.1), ylim = c(0, plate_lines+1)) +
+    scale_y_reverse(breaks = seq(1, plate_lines), labels = LETTERS[1:plate_lines]) +
+    scale_x_continuous(breaks = seq(1, plate_cols)) +
+    labs(title="Plate Layout for My Experiment") +
+    theme_bdc_microtiter()
+
+
+}
+
+
+
+
