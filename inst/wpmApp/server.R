@@ -35,7 +35,7 @@ server <- function(input, output, session) {
   # Includes the dimensions of the plate, the layout of the blanks,
   # the prohibited wells, the spatial constraints of the surrounding area
   #*****************************************************************************
-  plateSpecifications <- callModule(plateSpec, "plate")
+  callModule(plateSpec, "plate")
 
 
 

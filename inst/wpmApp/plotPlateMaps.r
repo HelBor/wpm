@@ -267,14 +267,15 @@ combineForbiddenWellsWithBlanks <- function(df_blanks, forbidden_wells){
     print(paste("check_rows", max(check_rows)))
     print(paste("check_columns", max(check_columns)))
     if((max(check_rows) > max(df_blanks$Row)) | (max(check_columns) > max(df_blanks$Column)) ){
-      error_msg <- "Error - One or more of the prohibited wells do not exist
-    depending on the plate sizes that have been provided"
-      return(error_msg)
+      #error_msg <- "Error - One or more of the prohibited wells do not exist
+    #depending on the plate sizes that have been provided"
+      return(NULL)
     }
 
   }
   # put the forbidden wells into the df
-  forbidden <- setnames(setDF(lapply(c(NA, NA, "forbidden", "forbidden", NA, NA), function(...) character(length(forbid_wells)))),
+  forbidden <- setnames(setDF(lapply(c(NA, NA, "forbidden", "forbidden", NA, NA),
+                                     function(...) character(length(forbid_wells)))),
                         c("Well", "Sample.name", "Group", "Status", "Row", "Column"))
   forbidden$Well <- as.character(forbid_wells)
   forbidden$Sample.name <- as.integer(NA)

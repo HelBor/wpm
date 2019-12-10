@@ -63,13 +63,10 @@ body <- dashboardBody(
 
             fluidRow(
 
-            ), # end of fluiRow 4: forbidden wells
+            ), # end of fluiRow 4: Max iterations for WPM
             fluidRow(
 
-            ), # end of fluiRow 5: neighborhood contraints
-            fluidRow(
-
-            ) # end of fluidRow 6: start the plate maker
+            ) # end of fluidRow 5: start the plate maker
     ),# end of tabItem 2
     tabItem(tabName = "results",
             h2("Your results")
