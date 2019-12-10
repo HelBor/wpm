@@ -32,12 +32,11 @@ server <- function(input, output, session) {
 
   #*****************************************************************************
   # Plate specification part
+  # Includes the dimensions of the plate, the layout of the blanks,
+  # the prohibited wells, the spatial constraints of the surrounding area
   #*****************************************************************************
   plateSpecifications <- callModule(plateSpec, "plate")
 
 
-  #*****************************************************************************
-  # Blank mode part
-  #*****************************************************************************
-  #blankModeSrv <- callModule(blankDistribution, "blankMode", plateSpecifications)
+
 }

@@ -179,8 +179,6 @@ theme_bdc_microtiter <- function(base_size = 12, base_family = "") {
 }
 
 
-
-
 # function to place the blanks on the plate according to the selected mode
 placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
 
@@ -255,9 +253,6 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
 
 
 
-
-
-
 #*******************************************************************************
 # Function to determine the coordinates of the forbidden wells for the plot
 #*******************************************************************************
@@ -288,7 +283,8 @@ combineForbiddenWellsWithBlanks <- function(df_blanks, forbidden_wells){
   forbidden$Row <- as.numeric(NA)
   forbidden$Column <- as.numeric(NA)
 
-  # convert the Well names into Row/column coordinates
+  # convert the Well names into Row/column coordinates it will be used to
+  # compute the backtracking step
   forbidden <- mutate(forbidden,
                      Row=as.numeric(match(toupper(substr(Well, 1, 1)), LETTERS)),
                      Column=as.numeric(substr(Well, 2, 5)))
@@ -306,10 +302,7 @@ combineForbiddenWellsWithBlanks <- function(df_blanks, forbidden_wells){
 # Column coordinates, the group and the status
 #*******************************************************************************
 
-
-
-
-draw_Plate_Map <- function(df, nb_gps, plate_lines, plate_cols){
+drawPlateMap <- function(df, nb_gps, plate_lines, plate_cols){
 
   # cette palette permet de colorier selon que c'est un blank, une case interdite, ou un groupe
   palette_strains <- c("blank"="grey", "forbidden"="red")
@@ -339,16 +332,16 @@ draw_Plate_Map <- function(df, nb_gps, plate_lines, plate_cols){
 #*******************************************************************************
 # How to use the functions
 #*******************************************************************************
-nb_l <- 2
-nb_c <- 8
-test_df <- placeBlanksOnPlate(nb_l,nb_c,"checkerboard")
-forbid_wells <- c("A1", "A2", "C3")
-test2_df <- combineForbiddenWellsWithBlanks(test_df, forbid_wells)
-if(class(test2_df) == "data.frame"){
-  draw_Plate_Map(df = test2_df, 2, plate_lines = nb_l, plate_cols = nb_c)
-}else{
-  print(test2_df)
-}
+#nb_l <- 2
+#nb_c <- 8
+#test_df <- placeBlanksOnPlate(nb_l,nb_c,"checkerboard")
+#forbid_wells <- c("A1", "A2", "C3")
+#test2_df <- combineForbiddenWellsWithBlanks(test_df, forbid_wells)
+#if(class(test2_df) == "data.frame"){
+#  draw_Plate_Map(df = test2_df, 2, plate_lines = nb_l, plate_cols = nb_c)
+#}else{
+#  print(test2_df)
+#}
 
 
 

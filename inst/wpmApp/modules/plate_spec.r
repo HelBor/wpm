@@ -22,13 +22,21 @@ plateSpecUI <- function(id, label = "Plate specifications") {
           width = 12,
           title=h3("3 - How to place Blanks on the plate"),
           #blank parameter input
-          radioButtons(ns("blank_input"), "Please choose a mode",
+          radioButtons(ns("blank_mode"), "Please choose a mode",
                        choices = c("No blanks" = "none",
                                    "Per line" = "by_row",
-                                   "Per column" = "by_column"),
+                                   "Per column" = "by_column",
+                                   "Checkerboard" = "checkerboard"),
                        selected = "none")
+      ),
+      box(status="primary",
+          width = 12,
+          title=h3("4 - Forbidden Wells"),
+          uiOutput("forbidden_wells_input")
+
       )
     ),
+    # Plate specification outputs
     column(width = 6,
            fluidRow(infoBoxOutput(ns("warning_plate"), width = 12)),
            fluidRow(valueBoxOutput(ns("total_nb_wells"), width = 6),
@@ -66,8 +74,38 @@ plateSpec <- function(input, output, session) {
     valueBox(value=nbPlatesToFill(), subtitle = "Number of plates to fill")
   })
 
+  blanks_wells <- reactive({
+    placeBlanksOnPlate(input$plate_lines,input$plate_cols,input$blank_mode)
+  })
 
-  # plot the plate
-  #output$blankPlotOut <- renderPlot({})
-  return()
+  # For the forbidden wells
+  output$interdit <- renderUI({
+    textInput("forbid_select", h4("Enter Line Letter & Column number, each box separated by commas"),
+              value = "Ex: A1,B2")
+  })
+
+
+  forbid_wells <- reactive({
+    as.vector(unlist(strsplit(as.character(input$forbid_select), split=",")))
+  })
+
+  blanks_df <- reactive({
+    combineForbiddenWellsWithBlanks(blanks_wells, forbid_wells)
+  })
+
+  if(class(blanks_df) == "data.frame"){
+    # plot the plate
+    output$PlotOut <- renderPlot({
+      drawPlateMap(df = blanks_df, 2, plate_lines = input$plate_lines, plate_cols = input$plate_cols)
+    })
+
+  }else{
+    output$PlotOutput <- renderInfoBox({
+      infoBox(title=blanks_df,
+              icon = icon("exclamation-triangle"),
+              color = "red",
+              fill=TRUE)
+  }
+
+
 }

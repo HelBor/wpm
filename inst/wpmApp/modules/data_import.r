@@ -36,6 +36,7 @@ csvFile <- function(input, output, session, stringsAsFactors) {
              header = input$heading,
              quote = input$quote,
              sep = input$sep_input,
+             col.names = c("Sample.name", "Group"),
              stringsAsFactors = stringsAsFactors)
 
   })
