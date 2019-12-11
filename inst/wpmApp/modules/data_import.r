@@ -32,12 +32,17 @@ csvFile <- function(input, output, session, stringsAsFactors) {
 
   # The user's data, parsed into a data frame
   dataframe <- reactive({
-    read.csv2(userFile()$datapath,
+    df <- read.csv2(userFile()$datapath,
              header = input$heading,
              quote = input$quote,
              sep = input$sep_input,
              col.names = c("Sample.name", "Group"),
              stringsAsFactors = stringsAsFactors)
+
+    df$Well <- NULL
+    df$Row <- NULL
+    df$Column <- NULL
+    df
 
   })
 

@@ -249,13 +249,18 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
       duplicated_erased <- df %>%
         distinct(Row, Column, .keep_all = TRUE)
       # supprimer les lignes créées en trop (Row et Column contiennent des NAs)
-      duplicated_erased <- na.omit(duplicated_erased, cols = c("Row", "Column"))
-      print(duplicated_erased)
-      return(duplicated_erased)
+      result <- na.omit(duplicated_erased, cols = c("Row", "Column"))
+
+
+    }else if(mod == "none"){
+      result <- NULL
     }
 
   }
-
+  print("On est dans placeBlanksOnPlate")
+  cat("\n")
+  print(result)
+  return(result)
 }
 
 
@@ -263,22 +268,13 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
 #*******************************************************************************
 # Function to determine the coordinates of the forbidden wells for the plot
 #*******************************************************************************
-# input : df_blanks is a dataframe containing the coordinates for the blanks
-# forbidden_wells is a vector
-combineForbiddenWellsWithBlanks <- function(df_blanks, forbidden_wells){
-  #print(paste0("forbidden wells:",forbidden_wells))
-  # part of code to check if the provided forbidden wells are possible according
-  # to plate dimensions
-  print(paste("max(df_blanks$Row) = ", max(df_blanks$Row)))
-  cat("\n")
-  print(paste("max(df_blanks$Column) = ", max(df_blanks$Column)))
-
-  if(length(forbidden_wells)>0){
+convertVector2Df <- function(forbidden_wells, max_Row, max_Col){
+  if(is.null(forbidden_wells)){
     check_rows <- as.numeric(match(toupper(substr(forbidden_wells, 1, 1)), LETTERS))
     check_columns <- as.numeric(substr(forbidden_wells, 2, 5))
-    if((max(check_rows) > max(df_blanks$Row)) | (max(check_columns) > max(df_blanks$Column)) ){
+    if((max(check_rows) > max_Row) | (max(check_columns) > max_Col) ){
       #error_msg <- "Error - One or more of the prohibited wells do not exist
-    #depending on the plate sizes that have been provided"
+      #depending on the plate sizes that have been provided"
       result <- NULL
     }else{
       # put the forbidden wells into the df
@@ -298,19 +294,23 @@ combineForbiddenWellsWithBlanks <- function(df_blanks, forbidden_wells){
                           Row=as.numeric(match(toupper(substr(Well, 1, 1)), LETTERS)),
                           Column=as.numeric(substr(Well, 2, 5)))
 
-      forbidden <- rbind(forbidden, df_blanks)
+      forbidden <- rbind(forbidden, df)
       #erase all duplicated rows
       result <- forbidden %>%
         distinct(Row, Column, .keep_all = TRUE)
+      result <- na.omit(result, cols = c("Row", "Column"))
 
     }
 
   }else{
-    result <- df_blanks
+    # forbidden_wells is NULL
+    result <- NULL
   }
-  #cat(paste("this is the result returned by the combineForbiddenWellsWithBlanks function:\n",class(result)), "\n")
   return(result)
 }
+
+
+
 
 
 

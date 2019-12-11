@@ -94,11 +94,30 @@ plateSpec <- function(input, output, session) {
   })
 
   forbid_wells <- reactive({
-    as.vector(unlist(strsplit(as.character(input$forbid_select), split=",")))
+    # si des cases interdites on été saisies, alors on transforme en un df compatible
+    if(!is.null(input$forbid_select)){
+      fw <- as.vector(unlist(strsplit(as.character(input$forbid_select), split=",")))
+      convertVector2Df(fw, input$plate_lines, input$plate_cols)
+    }
+
   })
 
   wells <- reactive({
-    combineForbiddenWellsWithBlanks(blank_wells(), forbid_wells())
+    # s'il y a des blancs et des cases interdites alors il faut les rassembler
+    if(!is.null(blank_wells()) & !is.null(forbid_wells()) ){
+      result <- base::rbind(blank_wells(), forbid_wells())
+      result <- result %>%
+        distinct(Row, Column, .keep_all = TRUE)
+      result <- na.omit(result, cols = c("Row", "Column"))
+      result
+    # s'il n'y a pas de blancs, qu'il y a des interdits et des données,
+      # alors on fusionne les interdits et les données
+    }else if(input$blank_mode == "none" & !is.null(forbid_wells()) ){
+      forbid_wells()
+    }else if(!is.null(blank_wells) & is.null(forbid_wells)){
+      blank_wells()
+    }
+
   })
 
   output$plotOut <- renderUI({
