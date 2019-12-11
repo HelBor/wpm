@@ -182,6 +182,9 @@ theme_bdc_microtiter <- function(base_size = 12, base_family = "") {
 # function to place the blanks on the plate according to the selected mode
 placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
 
+  p_lines <- as.numeric(p_lines)
+  p_cols <- as.numeric(p_cols)
+
   if(mod %in% c("none", "by_row", "by_column", "checkerboard")){
     if(mod != "none"){
       switch (mod,
@@ -190,7 +193,7 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
                 df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
                                c("Well", "Sample.name", "Group", "Status", "Row", "Column"))
                 k=1
-                for(j in seq(from = 1, to = p_cols, by = 2)){
+                for(j in seq(from = 1, to = p_cols, by=2)){
                   for(i in 1:p_lines){
                     df$Row[k] <- i
                     df$Column[k] <- j
@@ -204,7 +207,7 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
                 df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
                                c("Well", "Sample.name", "Group", "Status", "Row", "Column"))
                 k=1
-                for(i in seq(from = 1, to = p_lines, by = 2)){
+                for(i in seq(from = 1, to = p_lines, by=2)){
                   for(j in 1:p_cols){
                     df$Row[k] <- i
                     df$Column[k] <- j
@@ -219,13 +222,13 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
                 k=1
                 for(j in seq(from = 1, to = p_cols)){
                   if(j%%2 == 0){ # j is peer
-                    for(i in seq(from = 2, to = p_lines, by = 2)){
+                    for(i in seq(from = 2, to = p_lines, by=2)){
                       df$Row[k] <- i
                       df$Column[k] <- j
                       k = k + 1
                     }
                   }else{ # j is odd
-                    for(i in seq(from = 1, to = p_lines, by = 2)){
+                    for(i in seq(from = 1, to = p_lines, by=2)){
                       df$Row[k] <- i
                       df$Column[k] <- j
                       k = k + 1
@@ -243,10 +246,14 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
       df$Letters <- LETTERS[df$Row]
       df$Well <- apply( df[ , c("Letters", "Column") ] , 1 , paste0 , collapse = "" )
       df$Letters <- NULL
+      duplicated_erased <- df %>%
+        distinct(Row, Column, .keep_all = TRUE)
+      # supprimer les lignes créées en trop (Row et Column contiennent des NAs)
+      duplicated_erased <- na.omit(duplicated_erased, cols = c("Row", "Column"))
+      print(duplicated_erased)
+      return(duplicated_erased)
     }
-    duplicated_erased <- df %>%
-      distinct(Row, Column, .keep_all = TRUE)
-    return(duplicated_erased)
+
   }
 
 }
@@ -256,44 +263,53 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
 #*******************************************************************************
 # Function to determine the coordinates of the forbidden wells for the plot
 #*******************************************************************************
-# input : df is a dataframe containing the coordinates for the blanks
+# input : df_blanks is a dataframe containing the coordinates for the blanks
+# forbidden_wells is a vector
 combineForbiddenWellsWithBlanks <- function(df_blanks, forbidden_wells){
-
+  #print(paste0("forbidden wells:",forbidden_wells))
   # part of code to check if the provided forbidden wells are possible according
   # to plate dimensions
+  print(paste("max(df_blanks$Row) = ", max(df_blanks$Row)))
+  cat("\n")
+  print(paste("max(df_blanks$Column) = ", max(df_blanks$Column)))
+
   if(length(forbidden_wells)>0){
     check_rows <- as.numeric(match(toupper(substr(forbidden_wells, 1, 1)), LETTERS))
     check_columns <- as.numeric(substr(forbidden_wells, 2, 5))
-    print(paste("check_rows", max(check_rows)))
-    print(paste("check_columns", max(check_columns)))
     if((max(check_rows) > max(df_blanks$Row)) | (max(check_columns) > max(df_blanks$Column)) ){
       #error_msg <- "Error - One or more of the prohibited wells do not exist
     #depending on the plate sizes that have been provided"
-      return(NULL)
+      result <- NULL
+    }else{
+      # put the forbidden wells into the df
+      forbidden <- setnames(setDF(lapply(c(NA, NA, "forbidden", "forbidden", NA, NA),
+                                         function(...) character(length(forbidden_wells)))),
+                            c("Well", "Sample.name", "Group", "Status", "Row", "Column"))
+      forbidden$Well <- as.character(forbidden_wells)
+      forbidden$Sample.name <- as.integer(NA)
+      forbidden$Group <- as.factor("forbidden")
+      forbidden$Status <- as.factor("forbidden")
+      forbidden$Row <- as.numeric(NA)
+      forbidden$Column <- as.numeric(NA)
+
+      # convert the Well names into Row/column coordinates it will be used to
+      # compute the backtracking step
+      forbidden <- mutate(forbidden,
+                          Row=as.numeric(match(toupper(substr(Well, 1, 1)), LETTERS)),
+                          Column=as.numeric(substr(Well, 2, 5)))
+
+      forbidden <- rbind(forbidden, df_blanks)
+      #erase all duplicated rows
+      result <- forbidden %>%
+        distinct(Row, Column, .keep_all = TRUE)
+
     }
 
+  }else{
+    result <- df_blanks
   }
-  # put the forbidden wells into the df
-  forbidden <- setnames(setDF(lapply(c(NA, NA, "forbidden", "forbidden", NA, NA),
-                                     function(...) character(length(forbid_wells)))),
-                        c("Well", "Sample.name", "Group", "Status", "Row", "Column"))
-  forbidden$Well <- as.character(forbid_wells)
-  forbidden$Sample.name <- as.integer(NA)
-  forbidden$Group <- as.factor("forbidden")
-  forbidden$Status <- as.factor("forbidden")
-  forbidden$Row <- as.numeric(NA)
-  forbidden$Column <- as.numeric(NA)
-
-  # convert the Well names into Row/column coordinates it will be used to
-  # compute the backtracking step
-  forbidden <- mutate(forbidden,
-                     Row=as.numeric(match(toupper(substr(Well, 1, 1)), LETTERS)),
-                     Column=as.numeric(substr(Well, 2, 5)))
-
-  forbidden <- rbind(forbidden, df_blanks)
-  duplicated_erased <- forbidden %>%
-    distinct(Row, Column, .keep_all = TRUE)
-  return(duplicated_erased)
+  #cat(paste("this is the result returned by the combineForbiddenWellsWithBlanks function:\n",class(result)), "\n")
+  return(result)
 }
 
 
