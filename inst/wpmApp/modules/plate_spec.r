@@ -16,7 +16,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
           title=h3("2 - Plate dimensions"),
           numericInput(ns("plate_lines"), label = "lines", value=0, min=0),
           numericInput(ns("plate_cols"), label="columns", value=0, min=0),
-          numericInput(ns("no_plates"), label="How many plates?", value=0, min=1)
+          numericInput(ns("no_plates"), label="How many plates?", value=1, min=1)
       ),
       box(status="primary",
           width = 12,
@@ -34,7 +34,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
           title=h3("4 - Forbidden Wells"),
           textInput(ns("forbid_select"), h4("Enter Line Letter & Column number,
                                          each box separated by commas."),
-                    value = "",
+                    value = NULL,
                     placeholder = "Ex: A1,B2,C3")
       )
     ),
@@ -45,7 +45,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                     valueBoxOutput(ns("nb_plates_to_fill"), width = 6)
                     ),
            fluidRow(verbatimTextOutput(ns("chosen_blank_mode")),
-                    dataTableOutput(ns("forbidden_wells")),
+                    textOutput(ns("forbidden_wells")),
                     uiOutput(ns("plotOut"))
                     )
 
@@ -56,18 +56,12 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 # Module server function
 plateSpec <- function(input, output, session) {
 
-  output$warning_plate <- renderInfoBox({
-    infoBox(title="We assume that all the plates to be filled have the same dimensions.",
-            icon = icon("exclamation-triangle"),
-            color = "red",
-            fill=TRUE)
-  })
   totalNbWells <- reactive({
     as.numeric(input$plate_lines)*as.numeric(input$plate_cols)
     })
 
   output$total_nb_wells <- renderValueBox({
-    valueBox(value=totalNbWells(), subtitle = "Number of Wells to fill", icon = icon("vials"))
+    valueBox(value=totalNbWells(), subtitle = "Number of fillable wells", icon = icon("vials"))
   })
 
   nbPlatesToFill <- reactive({
@@ -75,13 +69,19 @@ plateSpec <- function(input, output, session) {
   })
 
   output$nb_plates_to_fill <- renderValueBox({
-
     valueBox(value=nbPlatesToFill(), subtitle = "Number of plates to fill")
   })
 
-  output$chosen_blank_mode <- renderPrint({
-    input$blank_mode
+  output$warning_plate <- renderInfoBox({
+    infoBox(title="We assume that all the plates to be filled have the same dimensions.",
+            icon = icon("exclamation-triangle"),
+            color = "red",
+            fill=TRUE)
   })
+
+  #output$chosen_blank_mode <- renderPrint({
+  #  input$blank_mode
+  #})
 
   output$forbidden_wells <- renderPrint({
     as.character(unlist(strsplit(as.character(input$forbid_select), split=",")))
@@ -122,22 +122,25 @@ plateSpec <- function(input, output, session) {
 
   output$plotOut <- renderUI({
 
-  print(class(wells()))
+  print(paste0("class de wells: ", class(wells())))
+    if(is.null(wells())){
+      return()
+    }
     if(!is.null(wells()) ){
       print("on est dans le if pour ploter")
-      #renderPlot({
-      drawPlateMap(df = wells(), 1, plate_lines = input$plate_lines, plate_cols = input$plate_cols)
-      #})
+
+      plotOutput(drawPlateMap(df = wells(), 1, plate_lines = input$plate_lines, plate_cols = input$plate_cols))
+
     }else if(!is.null(forbid_wells()) & !is.null(blank_wells()) & is.null(wells())){
       print("on est censé afficher le message d'erreur")
-      #renderInfoBox({
-        infoBox(title="Error - One or more of the prohibited wells do not exist
+
+        infoBoxOutput(title="Error - One or more of the prohibited wells do not exist
     #depending on the plate sizes that have been provided",
                 icon = icon("exclamation-triangle"),
                 color = "red",
                 width = 12,
                 fill=TRUE)
-      #})
+
     }
   })
 

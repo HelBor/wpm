@@ -181,7 +181,7 @@ theme_bdc_microtiter <- function(base_size = 12, base_family = "") {
 
 # function to place the blanks on the plate according to the selected mode
 placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
-
+  print("On est dans placeBlanksOnPlate")
   p_lines <- as.numeric(p_lines)
   p_cols <- as.numeric(p_cols)
 
@@ -191,7 +191,7 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
               "by_row" = {
                 nb_rows <- p_lines * ceiling(p_cols/2)
                 df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
-                               c("Well", "Sample.name", "Group", "Status", "Row", "Column"))
+                               c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
                 k=1
                 for(j in seq(from = 1, to = p_cols, by=2)){
                   for(i in 1:p_lines){
@@ -205,7 +205,7 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
               "by_column" = {
                 nb_rows <- p_cols * ceiling(p_lines/2)
                 df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
-                               c("Well", "Sample.name", "Group", "Status", "Row", "Column"))
+                               c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
                 k=1
                 for(i in seq(from = 1, to = p_lines, by=2)){
                   for(j in 1:p_cols){
@@ -218,7 +218,7 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
               "checkerboard" = {
                 nb_rows <- p_cols * ceiling(p_lines/2)
                 df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
-                               c("Well", "Sample.name", "Group", "Status", "Row", "Column"))
+                               c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
                 k=1
                 for(j in seq(from = 1, to = p_cols)){
                   if(j%%2 == 0){ # j is peer
@@ -257,8 +257,7 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
     }
 
   }
-  print("On est dans placeBlanksOnPlate")
-  cat("\n")
+
   print(result)
   return(result)
 }
@@ -269,7 +268,7 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
 # Function to determine the coordinates of the forbidden wells for the plot
 #*******************************************************************************
 convertVector2Df <- function(forbidden_wells, max_Row, max_Col){
-  if(is.null(forbidden_wells)){
+  if(lenght(forbidden_wells)){
     check_rows <- as.numeric(match(toupper(substr(forbidden_wells, 1, 1)), LETTERS))
     check_columns <- as.numeric(substr(forbidden_wells, 2, 5))
     if((max(check_rows) > max_Row) | (max(check_columns) > max_Col) ){
@@ -278,9 +277,12 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col){
       result <- NULL
     }else{
       # put the forbidden wells into the df
-      forbidden <- setnames(setDF(lapply(c(NA, NA, "forbidden", "forbidden", NA, NA),
+      #forbidden <- setnames(setDF(lapply(c(NA, NA, "forbidden", "forbidden", NA, NA),
+      #                                   function(...) character(length(forbidden_wells)))),
+      #                      c("Well", "Sample.name", "Group", "Status", "Row", "Column"))
+      forbidden <- setnames(setDF(lapply(c(NA, "forbidden", NA, "forbidden", NA, NA),
                                          function(...) character(length(forbidden_wells)))),
-                            c("Well", "Sample.name", "Group", "Status", "Row", "Column"))
+                            c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
       forbidden$Well <- as.character(forbidden_wells)
       forbidden$Sample.name <- as.integer(NA)
       forbidden$Group <- as.factor("forbidden")
@@ -293,8 +295,6 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col){
       forbidden <- mutate(forbidden,
                           Row=as.numeric(match(toupper(substr(Well, 1, 1)), LETTERS)),
                           Column=as.numeric(substr(Well, 2, 5)))
-
-      forbidden <- rbind(forbidden, df)
       #erase all duplicated rows
       result <- forbidden %>%
         distinct(Row, Column, .keep_all = TRUE)

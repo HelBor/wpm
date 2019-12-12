@@ -30,6 +30,17 @@ server <- function(input, output, session) {
     }
   })
 
+  user_data <- reactive({
+    datafile()$Sample.name <- as.integer(datafile()$Sample.name)
+    datafile()$Group <- as.factor(datafile()$Group)
+    datafile()$Well <- as.character(NA)
+    datafile()$Status <- as.factor("allowed")
+    datafile()$Row <- NA
+    datafile()$Column <- NA
+    datafile()
+  })
+
+
   #*****************************************************************************
   # Plate specification part
   # Includes the dimensions of the plate, the layout of the blanks,
