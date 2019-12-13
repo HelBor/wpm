@@ -10,6 +10,6 @@ library(ggplot2)
 # import modules and functions from another R files
 source(file.path("modules", "data_import.r"), local = TRUE)
 source(file.path("modules","plate_spec.r"), local = TRUE)
-source("fonctions.r")
-source("plotPlateMaps.r")
+source(file.path("functions", "fonctions.r"), local = TRUE)
+source(file.path("functions", "plotPlateMaps.r"), local = TRUE)
 
