@@ -38,7 +38,25 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                                             will not appear crossed out."),
                     value = NULL,
                     placeholder = "Ex: A1,B2,C3")
-      )
+      ),
+      box(status = "primary",
+          width = 12,
+          title = h3("5 - Neighborhood contraints"),
+          conditionalPanel("input.blank_mode == 'by_row'",
+                           textOutput("row_constraint")
+                          ),
+          conditionalPanel("input.blank_mode == 'by_column'",
+                           textOutput("column_constraint")
+                           ),
+          conditionalPanel("input.blank_mode == 'none'",
+                           radioButtons(ns("constraint_select"),label = NULL,
+                                        choices = c("North-South" = "NS",
+                                                    "West-East" = "WE",
+                                                    "North-South-West-East" = "NSWE")
+                                        )
+                           )
+
+          )
     ),
     # Plate specification outputs
     column(width = 6,
@@ -87,6 +105,7 @@ plateSpec <- function(input, output, session) {
 
   forbid_wells <- reactive({
     # si des cases interdites on été saisies, alors on transforme en un df compatible
+    # avec la suite du code
     if(input$forbid_select != ""){
       fw <- as.vector(unlist(strsplit(as.character(input$forbid_select),
                                       split=",")))
@@ -131,5 +150,15 @@ plateSpec <- function(input, output, session) {
                      plate_cols = input$plate_cols)
       }
     }
+  })
+
+  output$row_constraint <- renderText({
+    print("You have selected the Per Row mode, therefore the only available
+    neighborhood constraint is 'West-East'.")
+  })
+
+  output$column_constraint <- renderText({
+    print("You have selected the 'Per Column' mode, so the only neighbor constraint
+    available is 'North-South'.")
   })
 }
