@@ -63,7 +63,6 @@ theme_bdc_grey <- function(base_size = 12, base_family = "",
     legend.title = element_text(size = rel(0.6), face = "bold",
                                 vjust = 0.5),
     legend.title.align = 1,
-    legend.position = "top",
     legend.direction = "horizontal",
     legend.justification = "center",
     legend.box = "vertical",
@@ -112,7 +111,7 @@ theme_bdc_grey <- function(base_size = 12, base_family = "",
     plot.background = element_rect(color = "transparent"),
     plot.title = element_text(
       size = rel(1.2),
-      face = "bold",
+      #face = "bold",
       hjust = 0,
       margin = margin(b = half_line * 1.2)
     ),
@@ -135,7 +134,7 @@ theme_bdc_grey <- function(base_size = 12, base_family = "",
     complete = TRUE
   )
 
-  t
+  return(t)
 }
 
 
@@ -157,13 +156,11 @@ theme_bdc_microtiter <- function(base_size = 12, base_family = "") {
         margin = margin(t = 0.4 * base_size, b = 0.4 * base_size)
       ),
       axis.ticks.length = unit(0, "pt"),
-      legend.position = "bottom",
       legend.direction = "horizontal",
       legend.box = "vertical",
       legend.spacing = unit(6, "pt"),
       plot.title = element_text(
         size = rel(1.2),
-        face = "bold",
         hjust = 0.5,
         margin = margin(b = (base_size / 2) * 1.2)
       ),
@@ -175,20 +172,22 @@ theme_bdc_microtiter <- function(base_size = 12, base_family = "") {
       )
     )
 
-  t
+  return(t)
 }
 
 
 # function to place the blanks on the plate according to the selected mode
 placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
-  print("On est dans placeBlanksOnPlate")
   p_lines <- as.numeric(p_lines)
   p_cols <- as.numeric(p_cols)
-
-  if(mod %in% c("none", "by_row", "by_column", "checkerboard")){
-    if(mod != "none"){
+  if(mod == "none"){
+    result <- NULL
+  }else{
+    if(p_lines == 0 | p_cols == 0){
+      result <- NULL
+    }else{
       switch (mod,
-              "by_row" = {
+              "by_column" = {
                 nb_rows <- p_lines * ceiling(p_cols/2)
                 df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
                                c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
@@ -198,20 +197,23 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
                     df$Row[k] <- i
                     df$Column[k] <- j
                     k = k + 1
+
                   }
                 }
 
               },
-              "by_column" = {
+              "by_row" = {
                 nb_rows <- p_cols * ceiling(p_lines/2)
                 df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
                                c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
+
                 k=1
                 for(i in seq(from = 1, to = p_lines, by=2)){
                   for(j in 1:p_cols){
                     df$Row[k] <- i
                     df$Column[k] <- j
                     k = k + 1
+
                   }
                 }
               },
@@ -246,19 +248,19 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
       df$Letters <- LETTERS[df$Row]
       df$Well <- apply( df[ , c("Letters", "Column") ] , 1 , paste0 , collapse = "" )
       df$Letters <- NULL
-      duplicated_erased <- df %>%
+
+      result <- df %>%
         distinct(Row, Column, .keep_all = TRUE)
+
       # supprimer les lignes créées en trop (Row et Column contiennent des NAs)
-      result <- na.omit(duplicated_erased, cols = c("Row", "Column"))
+      if(anyNA(result$Row) | anyNA(result$Column)){
+        result <- na.omit(result, cols = c("Row", "Column"))
+      }
 
-
-    }else if(mod == "none"){
-      result <- NULL
     }
-
   }
 
-  print(result)
+
   return(result)
 }
 
@@ -268,9 +270,11 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
 # Function to determine the coordinates of the forbidden wells for the plot
 #*******************************************************************************
 convertVector2Df <- function(forbidden_wells, max_Row, max_Col){
-  if(lenght(forbidden_wells)){
+
+  if(length(forbidden_wells)>0){
     check_rows <- as.numeric(match(toupper(substr(forbidden_wells, 1, 1)), LETTERS))
     check_columns <- as.numeric(substr(forbidden_wells, 2, 5))
+
     if((max(check_rows) > max_Row) | (max(check_columns) > max_Col) ){
       #error_msg <- "Error - One or more of the prohibited wells do not exist
       #depending on the plate sizes that have been provided"
@@ -298,7 +302,6 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col){
       #erase all duplicated rows
       result <- forbidden %>%
         distinct(Row, Column, .keep_all = TRUE)
-      result <- na.omit(result, cols = c("Row", "Column"))
 
     }
 
@@ -340,7 +343,7 @@ drawPlateMap <- function(df, nb_gps, plate_lines, plate_cols){
     scale_y_reverse(breaks = seq(1, plate_lines), labels = LETTERS[1:plate_lines]) +
     scale_x_continuous(breaks = seq(1, plate_cols)) +
     labs(title="Plate Layout for My Experiment") +
-    theme_bdc_microtiter()
+    theme_bdc_microtiter(base_family = "Times")
 
   return(g)
 }
@@ -349,17 +352,19 @@ drawPlateMap <- function(df, nb_gps, plate_lines, plate_cols){
 #*******************************************************************************
 # How to use the functions
 #*******************************************************************************
-#nb_l <- 2
-#nb_c <- 8
-#test_df <- placeBlanksOnPlate(nb_l,nb_c,"checkerboard")
-#forbid_wells <- c("A1", "A2", "C3")
-#test2_df <- combineForbiddenWellsWithBlanks(test_df, forbid_wells)
+# nb_l <- 8
+# nb_c <- 12
+# test_df <- placeBlanksOnPlate(nb_l,nb_c,"by_column")
+#forbid_wells <- c("A1")
+#forbid_wells_df <- convertVector2Df(forbid_wells, nb_l, nb_c)
+#test2_df <- rbind(test_df,forbid_wells_df)
+#test2_df <- forbid_wells_df
 #if(class(test2_df) == "data.frame"){
-#  draw_Plate_Map(df = test2_df, 2, plate_lines = nb_l, plate_cols = nb_c)
+#  drawPlateMap(df = test2_df, 1, plate_lines = nb_l, plate_cols = nb_c)
 #}else{
 #  print(test2_df)
 #}
+#df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(0))),
+#               c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
 
-
-
-
+#drawPlateMap(df = df, 1, plate_lines = nb_l, plate_cols = nb_c)

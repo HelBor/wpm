@@ -33,7 +33,9 @@ plateSpecUI <- function(id, label = "Plate specifications") {
           width = 12,
           title=h3("4 - Forbidden Wells"),
           textInput(ns("forbid_select"), h4("Enter Line Letter & Column number,
-                                         each box separated by commas."),
+                                         each box separated by commas without spaces.\n
+                                            The wells already filled with a blank
+                                            will not appear crossed out."),
                     value = NULL,
                     placeholder = "Ex: A1,B2,C3")
       )
@@ -44,11 +46,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
            fluidRow(valueBoxOutput(ns("total_nb_wells"), width = 6),
                     valueBoxOutput(ns("nb_plates_to_fill"), width = 6)
                     ),
-           fluidRow(verbatimTextOutput(ns("chosen_blank_mode")),
-                    textOutput(ns("forbidden_wells")),
-                    uiOutput(ns("plotOut"))
-                    )
-
+           plotOutput(ns("plotOut"), height = 500)
     )
   )
 }
@@ -61,15 +59,15 @@ plateSpec <- function(input, output, session) {
     })
 
   output$total_nb_wells <- renderValueBox({
-    valueBox(value=totalNbWells(), subtitle = "Number of fillable wells", icon = icon("vials"))
-  })
-
-  nbPlatesToFill <- reactive({
-    as.numeric(input$no_plates)
+    valueBox(value=totalNbWells(),
+             subtitle = "Number of fillable wells",
+             icon = icon("vials"))
   })
 
   output$nb_plates_to_fill <- renderValueBox({
-    valueBox(value=nbPlatesToFill(), subtitle = "Number of plates to fill")
+    valueBox(value=as.numeric(input$no_plates),
+             subtitle = "Number of plates to fill",
+             icon = icon("dice-four"))
   })
 
   output$warning_plate <- renderInfoBox({
@@ -79,13 +77,7 @@ plateSpec <- function(input, output, session) {
             fill=TRUE)
   })
 
-  #output$chosen_blank_mode <- renderPrint({
-  #  input$blank_mode
-  #})
 
-  output$forbidden_wells <- renderPrint({
-    as.character(unlist(strsplit(as.character(input$forbid_select), split=",")))
-  })
 
   blank_wells <- reactive({
     placeBlanksOnPlate(as.numeric(input$plate_lines),
@@ -95,53 +87,49 @@ plateSpec <- function(input, output, session) {
 
   forbid_wells <- reactive({
     # si des cases interdites on été saisies, alors on transforme en un df compatible
-    if(!is.null(input$forbid_select)){
-      fw <- as.vector(unlist(strsplit(as.character(input$forbid_select), split=",")))
+    if(input$forbid_select != ""){
+      fw <- as.vector(unlist(strsplit(as.character(input$forbid_select),
+                                      split=",")))
       convertVector2Df(fw, input$plate_lines, input$plate_cols)
+    }else{
+      return(NULL)
     }
-
   })
 
-  wells <- reactive({
+  wells_to_plot <- reactive({
     # s'il y a des blancs et des cases interdites alors il faut les rassembler
     if(!is.null(blank_wells()) & !is.null(forbid_wells()) ){
       result <- base::rbind(blank_wells(), forbid_wells())
-      result <- result %>%
-        distinct(Row, Column, .keep_all = TRUE)
-      result <- na.omit(result, cols = c("Row", "Column"))
+      result <- distinct(result, Row, Column, .keep_all = TRUE)
       result
-    # s'il n'y a pas de blancs, qu'il y a des interdits et des données,
-      # alors on fusionne les interdits et les données
+    # s'il n'y a pas de blancs, qu'il y a des interdits, on ne renvoie que les
+    # interdits
     }else if(input$blank_mode == "none" & !is.null(forbid_wells()) ){
       forbid_wells()
-    }else if(!is.null(blank_wells) & is.null(forbid_wells)){
+    # s'il n'y a que des blancs, on ne renvoie que ça
+    }else if(!is.null(blank_wells()) & is.null(forbid_wells())){
       blank_wells()
     }
-
   })
 
-  output$plotOut <- renderUI({
-
-  print(paste0("class de wells: ", class(wells())))
-    if(is.null(wells())){
-      return()
-    }
-    if(!is.null(wells()) ){
-      print("on est dans le if pour ploter")
-
-      plotOutput(drawPlateMap(df = wells(), 1, plate_lines = input$plate_lines, plate_cols = input$plate_cols))
-
-    }else if(!is.null(forbid_wells()) & !is.null(blank_wells()) & is.null(wells())){
-      print("on est censé afficher le message d'erreur")
-
-        infoBoxOutput(title="Error - One or more of the prohibited wells do not exist
-    #depending on the plate sizes that have been provided",
-                icon = icon("exclamation-triangle"),
-                color = "red",
-                width = 12,
-                fill=TRUE)
-
+  output$plotOut <- renderPlot({
+    # pour que la fonction drawPlateMap fonctionne, il faut donner un nombre de
+    # lignes et de colonnes > 0 et au minimum un dataframe vide avec les bons
+    # noms de colonne
+    if(input$plate_lines != 0 & input$plate_cols != 0){
+      if(is.null(wells_to_plot())){
+        df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(0))),
+                       c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
+        drawPlateMap(df = df,
+                     1,
+                     plate_lines = input$plate_lines,
+                     plate_cols = input$plate_cols)
+      }else{
+        drawPlateMap(df = wells_to_plot(),
+                     2,
+                     plate_lines = input$plate_lines,
+                     plate_cols = input$plate_cols)
+      }
     }
   })
-
 }
