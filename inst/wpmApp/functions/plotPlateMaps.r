@@ -343,7 +343,7 @@ drawPlateMap <- function(df, nb_gps, plate_lines, plate_cols){
     scale_y_reverse(breaks = seq(1, plate_lines), labels = LETTERS[1:plate_lines]) +
     scale_x_continuous(breaks = seq(1, plate_cols)) +
     labs(title="Plate Layout for My Experiment") +
-    theme_bdc_microtiter(base_family = "Amatic-Bold")
+    theme_bdc_microtiter()
 
   return(g)
 }

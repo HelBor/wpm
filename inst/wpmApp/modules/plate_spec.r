@@ -42,13 +42,13 @@ plateSpecUI <- function(id, label = "Plate specifications") {
       box(status = "primary",
           width = 12,
           title = h3("5 - Neighborhood contraints"),
-          conditionalPanel("input.blank_mode == 'by_row'",
+          conditionalPanel(ns("input.blank_mode == 'by_row'"),
                            textOutput("row_constraint")
                           ),
-          conditionalPanel("input.blank_mode == 'by_column'",
+          conditionalPanel(ns("input.blank_mode == 'by_column'"),
                            textOutput("column_constraint")
                            ),
-          conditionalPanel("input.blank_mode == 'none'",
+          conditionalPanel(ns("input.blank_mode == 'none'"),
                            radioButtons(ns("constraint_select"),label = NULL,
                                         choices = c("North-South" = "NS",
                                                     "West-East" = "WE",
