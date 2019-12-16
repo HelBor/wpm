@@ -14,9 +14,15 @@ plateSpecUI <- function(id, label = "Plate specifications") {
       box(status="primary",
           width = 12,
           title=h3("2 - Plate dimensions"),
-          numericInput(ns("plate_lines"), label = "lines", value=0, min=0),
-          numericInput(ns("plate_cols"), label="columns", value=0, min=0),
-          numericInput(ns("no_plates"), label="How many plates?", value=1, min=1)
+          numericInput(ns("plate_lines"), label = "lines",
+                       value=0, min=0,
+                       width = "80px"),
+          numericInput(ns("plate_cols"), label="columns",
+                       value=0, min=0,
+                       width = "80px"),
+          numericInput(ns("no_plates"), label="How many plates?",
+                       value=1, min=1,
+                       width = "80px")
       ),
       box(status="primary",
           width = 12,

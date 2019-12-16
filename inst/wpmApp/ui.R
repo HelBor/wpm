@@ -63,17 +63,31 @@ body <- dashboardBody(
 
             fluidRow(
               column(width=6,
-                     box(tatus="primary",
+                     box(status="primary",
                          width = 12,
                          title=h3("5 - Number of iterations"),
+                         div("Please specify the maximum number of iterations
+                             that WPM can perform. Default value is 10."),
                          numericInput(inputId="nb_iter",
-                                      label = "Please specify the maximum number
-                                      of iterations that WPM can perform. Default value is 10."
+                                      label = NULL,
+                                      value = 10,
+                                      min = 1,
+                                      width = "80px"
                                       )
 
-                     )
                      ),
-              column(width=6)
+                     div(
+                       actionButton(inputId="start_WPM",
+                                    label = "Start WPM",
+                                    icon = icon("play"),
+                                    width = "100%"
+                       ),
+                       tags$style(type='text/css', "#start_WPM { vertical-align: middle}")
+                     )
+
+
+
+                     )# end of column
             ), # end of fluiRow 3: Max iterations for WPM
             fluidRow(
               column(width=6)
