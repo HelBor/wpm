@@ -20,14 +20,18 @@ plateSpecUI <- function(id, label = "Plate specifications") {
       ),
       box(status="primary",
           width = 12,
-          title=h3("3 - How to place Blanks on the plate"),
+          title=h3("3 - Plate constraints"),
+          h4("How to place Blanks on the plate"),
           #blank parameter input
           radioButtons(ns("blank_mode"), "Please choose a mode",
                        choices = c("No blanks" = "none",
                                    "Per line" = "by_row",
                                    "Per column" = "by_column",
                                    "Checkerboard" = "checkerboard"),
-                       selected = "none")
+                       selected = "none"),
+          hr(),
+          h4("Neighborhood contraints"),
+          uiOutput(ns("neighborhood"))
       ),
       box(status="primary",
           width = 12,
@@ -38,25 +42,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                                             will not appear crossed out."),
                     value = NULL,
                     placeholder = "Ex: A1,B2,C3")
-      ),
-      box(status = "primary",
-          width = 12,
-          title = h3("5 - Neighborhood contraints"),
-          conditionalPanel(ns("input.blank_mode == 'by_row'"),
-                           textOutput("row_constraint")
-                          ),
-          conditionalPanel(ns("input.blank_mode == 'by_column'"),
-                           textOutput("column_constraint")
-                           ),
-          conditionalPanel(ns("input.blank_mode == 'none'"),
-                           radioButtons(ns("constraint_select"),label = NULL,
-                                        choices = c("North-South" = "NS",
-                                                    "West-East" = "WE",
-                                                    "North-South-West-East" = "NSWE")
-                                        )
-                           )
-
-          )
+      )
     ),
     # Plate specification outputs
     column(width = 6,
@@ -152,13 +138,41 @@ plateSpec <- function(input, output, session) {
     }
   })
 
-  output$row_constraint <- renderText({
-    print("You have selected the Per Row mode, therefore the only available
-    neighborhood constraint is 'West-East'.")
+  output$neighborhood <- renderUI({
+
+    if(input$blank_mode == "by_row"){
+      tags$div(
+        HTML(paste("You have selected the ",
+        tags$span(style="color:red", "Per Row"),
+        "mode, therefore the only available neighborhood constraint is 'West-East'.",
+        sep = " ")
+        )
+      )
+
+    }else if(input$blank_mode == "by_column"){
+      tags$div(
+        HTML(paste("You have selected the ",
+                   tags$span(style="color:red", "Per Column"),
+                   "mode, therefore the only available neighborhood constraint is 'North-South'.",
+                   sep = " ")
+        )
+      )
+
+    }else if(input$blank_mode == "none"){
+      radioButtons("constraint_select", label = "Please choose the neighborhood constraint",
+                   choices = c("North-South" = "NS",
+                               "West-East" = "WE",
+                               "North-South-West-East" = "NSWE")
+      )
+    }else if(input$blank_mode == "checkerboard"){
+      tags$div(
+        HTML(paste("You have selected the ",
+                   tags$span(style="color:red", "Checkerboard"),
+                   "mode, therefore there are no available neighborhood constraints.",
+                   sep = " ")
+        )
+      )
+    }
   })
 
-  output$column_constraint <- renderText({
-    print("You have selected the 'Per Column' mode, so the only neighbor constraint
-    available is 'North-South'.")
-  })
 }

@@ -14,10 +14,10 @@ csvFileInput <- function(id, label = "CSV file") {
     )),
     # Input: Select separator
     radioButtons(ns("sep_input"), "Separator",
-                 choices = c(Comma = ",",
-                             Semicolon = ";",
+                 choices = c(Semicolon = ";",
+                             Comma = ",",
                              Tab = "\t"),
-                 selected = ",")
+                 selected = ";")
   )
 }
 

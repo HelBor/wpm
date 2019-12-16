@@ -62,11 +62,22 @@ body <- dashboardBody(
             plateSpecUI("plate"),
 
             fluidRow(
+              column(width=6,
+                     box(tatus="primary",
+                         width = 12,
+                         title=h3("5 - Number of iterations"),
+                         numericInput(inputId="nb_iter",
+                                      label = "Please specify the maximum number
+                                      of iterations that WPM can perform. Default value is 10."
+                                      )
 
-            ), # end of fluiRow 4: Max iterations for WPM
+                     )
+                     ),
+              column(width=6)
+            ), # end of fluiRow 3: Max iterations for WPM
             fluidRow(
-
-            ) # end of fluidRow 5: start the plate maker
+              column(width=6)
+            ) # end of fluidRow 4: start the plate maker
     ),# end of tabItem 2
     tabItem(tabName = "results",
             h2("Your results")

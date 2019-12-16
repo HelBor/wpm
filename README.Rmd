@@ -1,12 +1,3 @@
----
-title: "README"
-author: "Hélène Borges"
-date: "02/12/2019"
-output: html_document
----
+# Well Plate Maker
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-# Well Plate Maker README
+WPM is an R package 
