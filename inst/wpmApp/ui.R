@@ -73,28 +73,28 @@ body <- dashboardBody(
                                       value = 10,
                                       min = 1,
                                       width = "80px"
-                                      )
+                                      ),
+                         div(
+                                actionBttn(inputId="start_WPM_Btn",
+                                           label = "Start WPM",
+                                           icon = icon("play"),
+                                           color = "success",
+                                           style = "simple"
+                                ),
+                                tags$style(type='text/css', "#start_WPM_Btn { vertical-align: middle}")
+                                ),
 
-                     ),
-                     div(
-                       actionButton(inputId="start_WPM",
-                                    label = "Start WPM",
-                                    icon = icon("play"),
-                                    width = "100%"
-                       ),
-                       tags$style(type='text/css', "#start_WPM { vertical-align: middle}")
+
+
                      )
 
-
-
                      )# end of column
-            ), # end of fluiRow 3: Max iterations for WPM
-            fluidRow(
-              column(width=6)
-            ) # end of fluidRow 4: start the plate maker
+            ) # end of fluiRow 3: Max iterations for WPM and start WPM button
+
     ),# end of tabItem 2
     tabItem(tabName = "results",
             h2("Your results")
+            backtrackUI("backtrack")
     ),# end of tabItem 3
     tabItem(tabName = "export",
             h2("Export your results")

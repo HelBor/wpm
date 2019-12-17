@@ -30,15 +30,7 @@ server <- function(input, output, session) {
     }
   })
 
-  user_data <- reactive({
-    datafile()$Sample.name <- as.integer(datafile()$Sample.name)
-    datafile()$Group <- as.factor(datafile()$Group)
-    datafile()$Well <- as.character(NA)
-    datafile()$Status <- as.factor("allowed")
-    datafile()$Row <- NA
-    datafile()$Column <- NA
-    datafile()
-  })
+
 
 
   #*****************************************************************************
@@ -46,8 +38,11 @@ server <- function(input, output, session) {
   # Includes the dimensions of the plate, the layout of the blanks,
   # the prohibited wells, the spatial constraints of the surrounding area
   #*****************************************************************************
-  callModule(plateSpec, "plate")
+  plateSpecifications <- callModule(plateSpec, "plate")
 
+  observeEvent(input$start_WPM_Btn,{
+    callModule(module = backtrack, id = "backtrack", df=datafile(), df_forbidden=, )
+  })
 
 
 }
