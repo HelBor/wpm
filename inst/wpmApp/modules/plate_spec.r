@@ -64,6 +64,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 # Module server function
 plateSpec <- function(input, output, session) {
 
+
   totalNbWells <- reactive({
     as.numeric(input$plate_lines)*as.numeric(input$plate_cols)
     })
@@ -180,5 +181,24 @@ plateSpec <- function(input, output, session) {
       )
     }
   })
+
+  nbh_mod <- reactive({
+    if(input$blank_mode == "by_row"){
+      return("WE")
+    }else if(input$blank_mode == "by_column"){
+      return("NS")
+    }else if(input$blank_mode == "none"){
+      return("NEWS")
+    }else if(input$blank_mode == "checkerboard"){
+      return(NULL)
+    }
+  })
+
+  toReturn <- reactiveValues(
+    nb_lines = input$plate_lines,
+    nb_cols = input$plate_cols,
+    forbidden_wells = wells_to_plot,
+    neighborhood_mod = nbh_mod
+  )
 
 }
