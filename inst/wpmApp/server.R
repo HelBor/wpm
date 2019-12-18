@@ -38,10 +38,13 @@ server <- function(input, output, session) {
   # Includes the dimensions of the plate, the layout of the blanks,
   # the prohibited wells, the spatial constraints of the surrounding area
   #*****************************************************************************
-  plateSpecifications <- callModule(plateSpec, "plate")
+  plate_specs <- callModule(plateSpec, "plate")
 
   observeEvent(input$start_WPM_Btn,{
-    callModule(module = backtrack, id = "backtrack", df=datafile(), df_forbidden=, )
+    # validate(
+    #   need(plate_specs$nb_lines > 0)
+    #   need(plate_specs$nb_cols > 0)
+    # )
   })
 
 
