@@ -83,7 +83,7 @@ solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
     return(1)
   }else{
     # only take in individuals belonging to the possible groups
-    # and who are not in dejaTire
+    # and who are not in already_drawn
     possible_ind <- d$ind[which(d$group %in% possible_groups)]
     available_ind <- d$ind[which(d$ind %in% possible_ind & !(d$ind %in% already_drawn))]
 
@@ -94,6 +94,7 @@ solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
       chosen_ind <- resample(available_ind,size=1)
       m[i,j] <- chosen_ind
       already_drawn <- c(already_drawn,chosen_ind)
+
     }
   }
 
@@ -102,12 +103,18 @@ solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
 
 
 # parcours aléatoire de la matrice à remplir
+# m est une matrice
+# forbidden_cells est un vecteur contenant les coordonnées sous forme xy des cases
+# interdites
+# d est le dataframe fournit par l'utilisateur
+# groups est le nombre de groupes distincts existant dans les données utilisateur
+# constraint est le mode de contrainte de voisinnage choisi par l'utilisateur
 randomWalk <- function(m, forbidden_cells, d, groups, constraint){
-  visited <- c() # cases visitées
+  visited <- c() # cases visitées - que ce soit interdites ou autorisées aux échantillons
   nb_lig <- dim(m)[1]
   nb_col <- dim(m)[2]
   ret = m
-  placed = c()
+  placed = c() # échnatillons déjà tirés et placés
   # tant que toutes les cases n'ont pas été visitées
   while (length(visited)!=nrow(d) ) {
     i = sample(1:nb_lig, size = 1)
@@ -129,18 +136,31 @@ randomWalk <- function(m, forbidden_cells, d, groups, constraint){
 
         ret <- test$m
         placed <- test$already_drawn
+        # we look after the last placed element
+        d[which(d$ind == placed[length(placed)]),]$Row <- i
+        d[which(d$ind == placed[length(placed)]),]$Column <- j
       }
     }
   }
   return(ret)
 }
 
-
-generatePlate <- function(...){
+# user_df est un dataframe contenant les colonnes [Sample.name,Group,Row,Column]
+generatePlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod){
   nb_attempts = 1
   ret=1
+
+  forbidden_wells <- as.vector(as.numeric(paste0(df_forbidden$Rows,df_forbidden$Columns, sep="")))
+
   while (ret==1) {
-    ret <- randomWalk(...)
+    mat = matrix(NA,nrow=r, ncol=c)
+    ret <- randomWalk(m = mat,
+                      forbidden_cells = forbidden_wells,
+                      d = user_df,
+                      groups = length(unique(user_df$group)),
+                      constraint = mod
+                      )
+
     if(class(ret)=="matrix"){
       return(list("result" = ret, "attempts" = nb_attempts))
     }
@@ -169,32 +189,32 @@ selectBioSamples  <- function(dataset, effectifs){
   return(res)
 }
 
-convertForbiddenStringIntoNumber <- function(forbidden_wells){
-  forbidden_wells <- unlist(strsplit(as.character(forbidden_wells), split=","))
-  forbidden <- c()
-  for(element in forbidden_wells){
-    xy = unlist(strsplit(element, split = "-"))
-    forbidden = c(forbidden,as.numeric(paste0(xy[1],xy[2])))
-  }
-  return(forbidden)
-}
+# convertForbiddenStringIntoNumber <- function(forbidden_wells){
+#   forbidden_wells <- unlist(strsplit(as.character(forbidden_wells), split=","))
+#   forbidden <- c()
+#   for(element in forbidden_wells){
+#     xy = unlist(strsplit(element, split = "-"))
+#     forbidden = c(forbidden,as.numeric(paste0(xy[1],xy[2])))
+#   }
+#   return(forbidden)
+# }
 
 # function that generates the plate according to its dimensions, the chosen
 # spatial constraints, the number of different groups and the numbers for each
 # group.
-platePreparation <- function(d, r, c, forbid_wells){
-  colnames(d) = c("ind","group")
-  mat = matrix(NA,nrow=r, ncol=c)
-  forbidden <- convertForbiddenStringIntoNumber(forbid_wells)
-
-  nb.groups = length(unique(d$group))
-  # number of samples per group
-  workforce = d %>%
-    group_by(group) %>%
-    summarise(n_distinct(ind))
-  data = selectBioSamples(d, workforce$`n_distinct(ind)` %/% 2)
-  plate <- generatePlate(m=mat, interdit=forbidden, d=data, groupes=nb.groups)
-}
+# platePreparation <- function(d, r, c, forbid_wells){
+#   colnames(d) = c("ind","group")
+#   mat = matrix(NA,nrow=r, ncol=c)
+#   forbidden <- convertForbiddenStringIntoNumber(forbid_wells)
+#
+#   nb.groups = length(unique(d$group))
+#   # number of samples per group
+#   workforce = d %>%
+#     group_by(group) %>%
+#     summarise(n_distinct(ind))
+#   data = selectBioSamples(d, workforce$`n_distinct(ind)` %/% 2)
+#   plate <- generatePlate(m=mat, interdit=forbidden, d=data, groupes=nb.groups)
+# }
 
 
 
