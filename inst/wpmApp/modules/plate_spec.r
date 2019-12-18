@@ -34,10 +34,45 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                                    "Per line" = "by_row",
                                    "Per column" = "by_column",
                                    "Checkerboard" = "checkerboard"),
-                       selected = "none"),
+                       selected = NULL),
           hr(),
           h4("Neighborhood contraints"),
-          uiOutput(ns("neighborhood"))
+          #uiOutput(ns("neighborhood")),
+          conditionalPanel(condition = "input.blank_mode == 'by_row'",
+                           div(
+                             HTML(paste("You have selected the ",
+                                        tags$span(style="color:red", "Per Row"),
+                                        "mode, therefore the only available neighborhood constraint is 'West-East'.",
+                                        sep = " ")
+                             )
+                           ),
+                           ns = ns),
+          conditionalPanel(condition = "input.blank_mode == 'by_column'",
+                           div(
+                             HTML(paste("You have selected the ",
+                                        tags$span(style="color:red", "Per Column"),
+                                        "mode, therefore the only available neighborhood constraint is 'North-South'.",
+                                        sep = " ")
+                             )
+                           ),
+                           ns = ns),
+          conditionalPanel(condition = "input.blank_mode == 'none'",
+                           radioButtons(ns("constraint_select"), label = "Please choose the neighborhood constraint",
+                                        choices = c("North-South" = "NS",
+                                                    "West-East" = "WE",
+                                                    "North-South-West-East" = "NSWE",
+                                                    "None" = "none")
+                           ),
+                           ns = ns),
+          conditionalPanel(condition = "input.blank_mode == 'checkerboard'",
+                           div(
+                             HTML(paste("You have selected the ",
+                                        tags$span(style="color:red", "Checkerboard"),
+                                        "mode, therefore there are no available neighborhood constraints.",
+                                        sep = " ")
+                             )
+                           ),
+                           ns = ns)
       ),
       box(status="primary",
           width = 12,
@@ -64,6 +99,12 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 # Module server function
 plateSpec <- function(input, output, session) {
 
+  toReturn <- reactiveValues(
+    nb_lines = NULL,
+    nb_cols = NULL,
+    forbidden_wells = NULL,
+    neighborhood_mod = NULL
+  )
 
   totalNbWells <- reactive({
     as.numeric(input$plate_lines)*as.numeric(input$plate_cols)
@@ -145,60 +186,24 @@ plateSpec <- function(input, output, session) {
     }
   })
 
-  output$neighborhood <- renderUI({
-
-    if(input$blank_mode == "by_row"){
-      tags$div(
-        HTML(paste("You have selected the ",
-        tags$span(style="color:red", "Per Row"),
-        "mode, therefore the only available neighborhood constraint is 'West-East'.",
-        sep = " ")
-        )
-      )
-
-    }else if(input$blank_mode == "by_column"){
-      tags$div(
-        HTML(paste("You have selected the ",
-                   tags$span(style="color:red", "Per Column"),
-                   "mode, therefore the only available neighborhood constraint is 'North-South'.",
-                   sep = " ")
-        )
-      )
-
-    }else if(input$blank_mode == "none"){
-      radioButtons("constraint_select", label = "Please choose the neighborhood constraint",
-                   choices = c("North-South" = "NS",
-                               "West-East" = "WE",
-                               "North-South-West-East" = "NSWE")
-      )
-    }else if(input$blank_mode == "checkerboard"){
-      tags$div(
-        HTML(paste("You have selected the ",
-                   tags$span(style="color:red", "Checkerboard"),
-                   "mode, therefore there are no available neighborhood constraints.",
-                   sep = " ")
-        )
-      )
-    }
-  })
-
   nbh_mod <- reactive({
     if(input$blank_mode == "by_row"){
       return("WE")
     }else if(input$blank_mode == "by_column"){
       return("NS")
     }else if(input$blank_mode == "none"){
-      return("NEWS")
+      return(input$constraint_select)
     }else if(input$blank_mode == "checkerboard"){
-      return(NULL)
+      return("none")
     }
   })
 
-  toReturn <- reactiveValues(
-    nb_lines = input$plate_lines,
-    nb_cols = input$plate_cols,
-    forbidden_wells = wells_to_plot,
-    neighborhood_mod = nbh_mod
-  )
+  observe({
+    toReturn$nb_lines <- input$plate_lines
+    toReturn$nb_cols <- input$plate_cols
+    toReturn$forbidden_wells <- wells_to_plot()
+    toReturn$neighborhood_mod <- nbh_mod()
+  })
 
+  return(toReturn)
 }
