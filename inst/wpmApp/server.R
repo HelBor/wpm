@@ -43,9 +43,18 @@ server <- function(input, output, session) {
   observeEvent(input$start_WPM_Btn,{
     # requires that the dimensions of the plate be greater than 0
     validate(
+      need(!is.null(datafile()), "requires a user data file"),
       need(plate_specs$nb_lines > 0, "requires a number of rows greater than 0"),
       need(plate_specs$nb_cols > 0, "requires a number of columns greater than 0")
     )
+    callModule(module = backtrack,
+               id = "backtrack",
+               df = datafile(),
+               max_iter = input$nb_iter,
+               forbidden_wells = reactive(plate_specs$forbidden_wells),
+               rows = reactive(plate_specs$nb_lines),
+               columns = reactive(plate_specs$nb_cols)
+               )
   })
 
 
