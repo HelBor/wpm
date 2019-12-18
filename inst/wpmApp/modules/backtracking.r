@@ -4,15 +4,15 @@ backtrackUI <- function(id, label = NULL) {
 }
 
 
-plateSpec <- function(input, output, session, df, df_forbidden, nbh_mode) {
+plateSpec <- function(input, output, session) {
 
   user_data <- reactive({
-    datafile()$Sample.name <- as.integer(datafile()$Sample.name)
-    datafile()$Group <- as.factor(datafile()$Group)
-    datafile()$Well <- as.character(NA)
-    datafile()$Status <- as.factor("allowed")
-    datafile()$Row <- NA
-    datafile()$Column <- NA
-    datafile()
+    df$Sample.name <- as.integer(df$Sample.name)
+    df$Group <- as.factor(df$Group)
+    df$Well <- as.character(NA)
+    df$Status <- as.factor("allowed")
+    df$Row <- NA
+    df$Column <- NA
+    df
   })
 }
