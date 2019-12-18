@@ -93,8 +93,8 @@ body <- dashboardBody(
 
     ),# end of tabItem 2
     tabItem(tabName = "results",
-            h2("Your results")
-            backtrackUI("backtrack")
+            h2("Your results"),
+            # backtrackUI("backtrack")
     ),# end of tabItem 3
     tabItem(tabName = "export",
             h2("Export your results")
