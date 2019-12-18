@@ -36,15 +36,16 @@ server <- function(input, output, session) {
   #*****************************************************************************
   # Plate specification part
   # Includes the dimensions of the plate, the layout of the blanks,
-  # the prohibited wells, the spatial constraints of the surrounding area
+  # the prohibited wells, the spatial constraints of the plate
   #*****************************************************************************
   plate_specs <- callModule(plateSpec, "plate")
 
   observeEvent(input$start_WPM_Btn,{
-    # validate(
-    #   need(plate_specs$nb_lines > 0)
-    #   need(plate_specs$nb_cols > 0)
-    # )
+    # requires that the dimensions of the plate be greater than 0
+    validate(
+      need(plate_specs$nb_lines > 0, "requires a number of rows greater than 0"),
+      need(plate_specs$nb_cols > 0, "requires a number of columns greater than 0")
+    )
   })
 
 
