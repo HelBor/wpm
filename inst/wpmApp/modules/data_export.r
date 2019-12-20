@@ -29,7 +29,7 @@ export <- function(input, output, session, df, plot){
 
   output$downloadPlot <- downloadHandler(
     filename = function() {
-      paste0("plotMap", ".png", sep = "")
+      paste0(input$filename, ".png", sep = "")
     },
     content = function(file) {
       ggsave(file,
