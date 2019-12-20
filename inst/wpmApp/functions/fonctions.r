@@ -116,6 +116,8 @@ randomWalk <- function(m, forbidden_cells, d, groups, constraint){
   # tant que toutes les cases n'ont pas été visitées
 
   while (length(visited)!=nrow(d) ) {
+
+    # améliorer le code ici (cf tâche dans To Do github)
     i = sample(1:nb_lig, size = 1)
     j = sample(1:nb_col, size = 1)
     cell = as.numeric(paste(i,j,sep=""))

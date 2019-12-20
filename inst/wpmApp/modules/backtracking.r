@@ -8,12 +8,11 @@ backtrackUI <- function(id, label = NULL) {
         status = "success",
         dataTableOutput(ns("df_modif"))
     ),
-    box(title = h3(),
+    box(title = h3("Plate Layout Experiment"),
         solidHeader = TRUE,
-        collapsible = TRUE,
         width = 8,
         status = "warning",
-        plotOutput(ns("mapPlot"))
+        plotOutput(ns("mapPlot"), height = 500)
 
 
     )
@@ -40,11 +39,6 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
     df$Column <- NA
     return(df)
   })
-
-  output$forbiddenWells <- renderDataTable(datatable({
-    forbidden_wells()
-  }, rownames = FALSE)
-  )
 
   # map is a list containing:
   #     a map plate : dataframe (containing user data + blanks + forbidden wells, ready to

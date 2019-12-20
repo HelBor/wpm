@@ -344,7 +344,6 @@ drawPlateMap <- function(df, nb_gps, plate_lines, plate_cols){
     coord_fixed(ratio = (13/plate_cols)/(9/plate_lines), xlim = c(0.9, plate_cols+0.1), ylim = c(0, plate_lines+1)) +
     scale_y_reverse(breaks = seq(1, plate_lines), labels = LETTERS[1:plate_lines]) +
     scale_x_continuous(breaks = seq(1, plate_cols)) +
-    labs(title="Plate Layout for My Experiment") +
     theme_bdc_microtiter()
 
   return(g)
