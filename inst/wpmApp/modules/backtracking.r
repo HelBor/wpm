@@ -1,13 +1,13 @@
 backtrackUI <- function(id, label = NULL) {
   ns <- NS(id)
   fluidRow(
-    # box(title = h3("Your dataset"),
-    #     solidHeader = TRUE,
-    #     collapsible = TRUE,
-    #     width = 4,
-    #     status = "success",
-    #     dataTableOutput(ns("df_modif"))
-    # ),
+    box(title = h3("Your dataset"),
+        solidHeader = TRUE,
+        collapsible = TRUE,
+        width = 4,
+        status = "success",
+        dataTableOutput(ns("df_modif"))
+    ),
     box(title = h3(),
         solidHeader = TRUE,
         collapsible = TRUE,
@@ -67,7 +67,12 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
   )
 
   output$mapPlot <- renderPlot({
-    drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns())
+
+    if("forbidden" %in% map()$Status){
+      nb_g = nb_g + 1
+      drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns())
+    }
+
   })
 
 }

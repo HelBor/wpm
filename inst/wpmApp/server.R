@@ -22,12 +22,17 @@ server <- function(input, output, session) {
     }
   })
 
-  output$nb_gp <- renderValueBox({
+
+  distinct_gps <- reactive({
     if(is.null(datafile())){
-      valueBox(value = 0 , subtitle = "Total number of groups", color="navy")
+      return(0)
     }else{
-      valueBox(value = length(unique(datafile()[,2])) , subtitle = "Total number of distinct groups", icon=icon("layer-group"))
+      return(length(unique(datafile()[,2])))
     }
+  })
+
+  output$nb_gp <- renderValueBox({
+    valueBox(value = distinct_gps() , subtitle = "Total number of distinct groups", icon=icon("layer-group"))
   })
 
 
@@ -55,7 +60,7 @@ server <- function(input, output, session) {
     callModule(module = backtrack,
                id = "backtrack",
                df = datafile(),
-               nb_g = output$nb_gp,
+               nb_g = distinct_gps(),
                max_iter = input$nb_iter,
                forbidden_wells = reactive(plate_specs$forbidden_wells),
                rows = reactive(plate_specs$nb_lines),
