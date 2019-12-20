@@ -17,12 +17,8 @@ export <- function(input, output, session, df, plot){
       paste(input$filename, ".csv", sep = "")
     },
     content = function(file) {
-      write.csv(df(),
-                file,
-                row.names = FALSE,
-                quote = FALSE,
-                sep = ";",
-                fileEncoding = "UTF-8")
+      write_excel_csv2(df(),
+                file)
     }
   )
 
