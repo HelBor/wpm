@@ -40,6 +40,11 @@ server <- function(input, output, session) {
   #*****************************************************************************
   plate_specs <- callModule(plateSpec, "plate")
 
+
+  #*****************************************************************************
+  # backtracking module part
+  # launched only if start button is clicked and required parameters are validated
+  #*****************************************************************************
   observeEvent(input$start_WPM_Btn,{
     # requires that the dimensions of the plate be greater than 0
     validate(
@@ -50,10 +55,12 @@ server <- function(input, output, session) {
     callModule(module = backtrack,
                id = "backtrack",
                df = datafile(),
+               nb_g = output$nb_gp,
                max_iter = input$nb_iter,
                forbidden_wells = reactive(plate_specs$forbidden_wells),
                rows = reactive(plate_specs$nb_lines),
-               columns = reactive(plate_specs$nb_cols)
+               columns = reactive(plate_specs$nb_cols),
+               constraint = reactive(plate_specs$neighborhood_mod)
                )
   })
 
