@@ -72,9 +72,10 @@ server <- function(input, output, session) {
       need(!is.null(datafile()), "requires a user data file"),
       need(plate_specs$nb_lines > 0, "requires a number of rows greater than 0"),
       need(plate_specs$nb_cols > 0, "requires a number of columns greater than 0")
+      # add the check of nb samples <= total wells - blanks - forbidden
     )
 
-    callModule(module = backtrack,
+    data_export <- callModule(module = backtrack,
                id = "backtrack",
                df = datafile(),
                nb_g = distinct_gps(),
@@ -84,6 +85,11 @@ server <- function(input, output, session) {
                columns = reactive(plate_specs$nb_cols),
                constraint = reactive(plate_specs$neighborhood_mod)
                )
+    callModule(module = export,
+               id = "export",
+               df = reactive(data_export$final_df),
+               plot = reactive(data_export$final_map)
+    )
   })
 
 
