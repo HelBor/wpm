@@ -31,6 +31,11 @@ backtrackUI <- function(id, label = NULL) {
 # constraint : character - neighborhood spatial constraint mode
 backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_wells, rows, columns, constraint) {
 
+  toReturn <- reactiveValues(
+    final_df = NULL,
+    final_map = NULL
+  )
+
   user_data <- reactive({
     df$Group <- as.factor(df$Group)
     df$Well <- as.character(NA)
@@ -60,13 +65,25 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
   }, rownames=FALSE)
   )
 
-  output$mapPlot <- renderPlot({
-
-    if("forbidden" %in% map()$Status){
+  map_plot <- reactive({
+    if("forbidden" %in% map()$Status | "blank" %in% map()$Status){
       nb_g = nb_g + 1
       drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns())
+    }else if("forbidden" %in% map()$Status & "blank" %in% map()$Status){
+      nb_g = nb_g + 2
+      drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns())
     }
-
   })
+
+  output$mapPlot <- renderPlot({
+    map_plot()
+  })
+
+  observe({
+    toReturn$final_df <- map()
+    toReturn$final_map <- map_plot()
+  })
+
+  return(toReturn)
 
 }

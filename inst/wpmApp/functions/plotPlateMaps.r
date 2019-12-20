@@ -338,7 +338,7 @@ drawPlateMap <- function(df, nb_gps, plate_lines, plate_cols){
     geom_point(data = expand.grid(seq(1, plate_cols), seq(1, plate_lines)), aes(x = Var1, y = Var2),
                color = "grey90", fill = "white", shape = 21, size = 6) +
     geom_point(aes(shape = Status, colour = Group), size = 12) +
-    geom_text(aes(label = Sample.name), size = 2) +
+    geom_text(aes(label = Sample.name), size = 4) +
     colScale +
     scale_shape_manual(values = c("forbidden" = 4, "blank" = 15, "allowed" = 19)) +
     coord_fixed(ratio = (13/plate_cols)/(9/plate_lines), xlim = c(0.9, plate_cols+0.1), ylim = c(0, plate_lines+1)) +
