@@ -2,6 +2,7 @@
 ## Functions for contraints
 # Contrainte spatiale pour les voisins Nord, Est, Ouest et Sud pour la case visitée
 neighborhoodNEWS <- function(m, i, j){
+
   #Pour le Nord
   N <- tryCatch({
     m[i-1,j]
@@ -24,7 +25,6 @@ neighborhoodNEWS <- function(m, i, j){
 
   ret <- c(N,E,W,S)
   return(ret)
-
 }
 
 neighborhoodNS <- function(m, i, j){
@@ -66,38 +66,36 @@ checkConstraints <- function(m, row, col, mode){
   return(neighbors)
 }
 
-## Functions to solve the choosen cell in the plate
-resample <- function(x, ...) x[sample.int(length(x), ...)]
-
-
 solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
+
   # we look at which individuals are neighbors of the current box
   neighbors <- checkConstraints(m, row=i, col=j, mode=constraint)
 
   # identify which group the neighbors belong to in order to obtain a reduced
   # list of possibilities of groups for the current cell to fill
-  forbidden_groups <- unique(d$group[which(d$ind %in% neighbors)])
+  forbidden_groups <- unique(d$Group[which(d$Sample.name %in% neighbors)])
   possible_groups <- which(!1:nb_gps %in% forbidden_groups)
+
   if(length(possible_groups)==0){
     #there are no more possibilities
     return(1)
   }else{
     # only take in individuals belonging to the possible groups
     # and who are not in already_drawn
-    possible_ind <- d$ind[which(d$group %in% possible_groups)]
-    available_ind <- d$ind[which(d$ind %in% possible_ind & !(d$ind %in% already_drawn))]
+    possible_ind <- d$Sample.name[which(d$Group %in% possible_groups)]
+    available_ind <- d$Sample.name[which(d$Sample.name %in% possible_ind & !(d$Sample.name %in% already_drawn))]
 
     if(length(available_ind)==0){
       #there are no more possibilities
       return(1)
     }else{
-      chosen_ind <- resample(available_ind,size=1)
+      # use resample because this function also works as expected when there is
+      # only one element in the set to be sampled.
+      chosen_ind <- R.utils::resample(available_ind,size=1)
       m[i,j] <- chosen_ind
       already_drawn <- c(already_drawn,chosen_ind)
-
     }
   }
-
   return(list("m" = m, "already_drawn" = already_drawn))
 }
 
@@ -114,8 +112,9 @@ randomWalk <- function(m, forbidden_cells, d, groups, constraint){
   nb_lig <- dim(m)[1]
   nb_col <- dim(m)[2]
   ret = m
-  placed = c() # échnatillons déjà tirés et placés
+  placed = c() # échantillons déjà tirés et placés
   # tant que toutes les cases n'ont pas été visitées
+
   while (length(visited)!=nrow(d) ) {
     i = sample(1:nb_lig, size = 1)
     j = sample(1:nb_col, size = 1)
@@ -128,46 +127,63 @@ randomWalk <- function(m, forbidden_cells, d, groups, constraint){
       # mise à jour des cases visitées
       visited <- c(visited,cell)
       # uniformisation de plaque
-      test <- solveCell(m=ret, d=d, nb_gps=groups, i=i, j=j, already_drawn = placed, constraint = constraint)
-
+      test <- solveCell(m=ret,
+                        d=d,
+                        nb_gps=groups,
+                        i=i,
+                        j=j,
+                        already_drawn = placed,
+                        constraint = constraint)
       if(class(test)=="numeric"){
         return(1)
       }else{
-
         ret <- test$m
         placed <- test$already_drawn
         # we look after the last placed element
-        d[which(d$ind == placed[length(placed)]),]$Row <- i
-        d[which(d$ind == placed[length(placed)]),]$Column <- j
+        d[which(d$Sample.name == placed[length(placed)]),]$Row <- i
+        d[which(d$Sample.name == placed[length(placed)]),]$Column <- j
       }
     }
   }
-  return(ret)
+  return(d)
 }
 
-# user_df est un dataframe contenant les colonnes [Sample.name,Group,Row,Column]
-generatePlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod){
+# Function generating a plate map according to the input parameters
+# user_df      : dataframe [Sample.name, Group, Well, Status, Row, Column]
+# nb_rows      : integer (number of lines on the plate)
+# nb_cols      : integer (number of columns on the plate)
+# df_forbidden : dataframe [Sample.name, Group, Well, Status, Row, Column]
+# mod          : character (neighborhood spatial constraint)
+# max_it       : integer (maximum number of attempts to generate a plate plan before
+#                returning a failure.)
+generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_it){
   nb_attempts = 1
   ret=1
 
-  forbidden_wells <- as.vector(as.numeric(paste0(df_forbidden$Rows,df_forbidden$Columns, sep="")))
+  forbidden_wells <- as.vector(as.numeric(paste0(df_forbidden$Row,
+                                                 df_forbidden$Column,
+                                                 sep="")))
+  while (ret==1 & nb_attempts <= max_it) {
 
-  while (ret==1) {
-    mat = matrix(NA,nrow=r, ncol=c)
+    mat = matrix(NA,nrow=nb_rows, ncol=nb_cols)
     ret <- randomWalk(m = mat,
                       forbidden_cells = forbidden_wells,
                       d = user_df,
-                      groups = length(unique(user_df$group)),
+                      groups = length(unique(user_df$Group)),
                       constraint = mod
                       )
 
-    if(class(ret)=="matrix"){
-      return(list("result" = ret, "attempts" = nb_attempts))
+    if(class(ret)=="data.frame"){
+      ret$Well <- paste0(LETTERS[ret$Row], ret$Column, sep = "")
+      ret <- rbind(ret, df_forbidden)
+      #return(list("map_df" = ret, "attempts" = nb_attempts))
+      print(paste0("nombre de tentatives:", nb_attempts))
+      return(ret)
     }
-    print("we try again")
     nb_attempts = nb_attempts + 1
   }
-
+  print("we reeched the maximal number of iterations with no success")
+  return(NULL)
 }
 
 
@@ -178,16 +194,16 @@ generatePlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod){
 # effectifs: vecteur contenant les effectifs pour chaque groupe existant dans le jeu de données
 # En sortie
 # res:
-selectBioSamples  <- function(dataset, effectifs){
-  group = 1
-  res = c()
-  for (effectif in effectifs) {
-    g <- dataset[dataset$groupe==group,][sample(nrow(dataset[dataset$groupe==group,]),effectif),]
-    res <- rbind(res,g)
-    group <- group + 1
-  }
-  return(res)
-}
+# selectBioSamples  <- function(dataset, effectifs){
+#   group = 1
+#   res = c()
+#   for (effectif in effectifs) {
+#     g <- dataset[dataset$groupe==group,][sample(nrow(dataset[dataset$groupe==group,]),effectif),]
+#     res <- rbind(res,g)
+#     group <- group + 1
+#   }
+#   return(res)
+# }
 
 # convertForbiddenStringIntoNumber <- function(forbidden_wells){
 #   forbidden_wells <- unlist(strsplit(as.character(forbidden_wells), split=","))
@@ -216,6 +232,38 @@ selectBioSamples  <- function(dataset, effectifs){
 #   plate <- generatePlate(m=mat, interdit=forbidden, d=data, groupes=nb.groups)
 # }
 
+
+#*******************************************************************************
+#
+#                                   TEST ZONE
+#
+#*******************************************************************************
+
+# preparation des inputs comme ceux qu'on obtient dans l'appli shiny
+# df <- read.csv2("../data/ind_groupes_NASH-80.csv",
+#                 header = TRUE,
+#                 sep = ";",
+#                 col.names = c("Sample.name", "Group"),
+#                 stringsAsFactors = FALSE)
+#
+# df$Group <- as.factor(df$Group)
+# df$Well <- as.character(NA)
+# df$Status <- as.factor("allowed")
+# df$Row <- NA
+# df$Column <- NA
+#
+# nb_l <- 8
+# nb_c <- 12
+#
+# forbidden_wells <- "A1,A2,A3,A10,A11,A12,B1,B12,G1,G12,H1,H2,H3,H10,H11,H12"
+# fw <- as.vector(unlist(strsplit(as.character(forbidden_wells),
+#                                 split=",")))
+# fw <- convertVector2Df(fw, nb_l, nb_c)
+# mod <- "NEWS"
+# max_it <- 20
+# lancement de l'algo
+plate <- generateMapPlate(user_df = df, nb_rows = nb_l, nb_cols = nb_c, df_forbidden = fw, mod = mod, max_it = max_it)
+drawPlateMap(df = plate, nb_gps = 11, plate_lines = nb_l, plate_cols = nb_c)
 
 
 
