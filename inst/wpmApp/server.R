@@ -50,6 +50,22 @@ server <- function(input, output, session) {
   # backtracking module part
   # launched only if start button is clicked and required parameters are validated
   #*****************************************************************************
+
+  startBtn <- eventReactive(input$start_WPM_Btn, {
+    validate(
+      need(!is.null(datafile()), "requires a user data file"),
+      need(plate_specs$nb_lines > 0, "requires a number of rows greater than 0"),
+      need(plate_specs$nb_cols > 0, "requires a number of columns greater than 0")
+    )
+    "You can go to the Results Panel"
+  })
+
+  output$pressedBtn <- renderText({
+    startBtn()
+  })
+
+
+
   observeEvent(input$start_WPM_Btn,{
     # requires that the dimensions of the plate be greater than 0
     validate(
@@ -57,6 +73,7 @@ server <- function(input, output, session) {
       need(plate_specs$nb_lines > 0, "requires a number of rows greater than 0"),
       need(plate_specs$nb_cols > 0, "requires a number of columns greater than 0")
     )
+
     callModule(module = backtrack,
                id = "backtrack",
                df = datafile(),

@@ -38,9 +38,10 @@ body <- dashboardBody(
                 box(status="primary",
                     width = 12,
                     title=h3("1 - Upload dataset"),
-                    csvFileInput("datafile", "Please use .csv format. \n File must
+                    h4("Please use .csv format. \n File must
                                  contain 2 columns: samples in the first one,
-                                 and group number in the second one."
+                                 and group number in the second one."),
+                    csvFileInput("datafile"
                                  )
                 )
               ),
@@ -80,10 +81,9 @@ body <- dashboardBody(
                                            icon = icon("play"),
                                            color = "success",
                                            style = "simple"
-                                ),
-                                tags$style(type='text/css', "#start_WPM_Btn { vertical-align: middle}")
-                                ),
-
+                                )
+                            ),
+                         textOutput("pressedBtn")
 
 
                      )
