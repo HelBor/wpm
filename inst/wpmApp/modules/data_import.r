@@ -5,7 +5,14 @@ csvFileInput <- function(id, label = "CSV file") {
 
   tagList(
     fileInput(ns("file"), label),
-    checkboxInput(ns("heading"), "Header"),
+    materialSwitch(
+      inputId = ns("heading"),
+      label = "Header",
+      value = FALSE,
+      status = "warning",
+      right = TRUE
+    ),
+    # checkboxInput(ns("heading"), "Header"),
     # Input: Select quotes
     selectInput(ns("quote"), "Quote", c(
       "None" = "",
