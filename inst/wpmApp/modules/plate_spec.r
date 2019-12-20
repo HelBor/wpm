@@ -60,7 +60,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                            radioButtons(ns("constraint_select"), label = "Please choose the neighborhood constraint",
                                         choices = c("North-South" = "NS",
                                                     "West-East" = "WE",
-                                                    "North-South-West-East" = "NSWE",
+                                                    "North-South-West-East" = "NEWS",
                                                     "None" = "none")
                            ),
                            ns = ns),
