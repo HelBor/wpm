@@ -1,4 +1,5 @@
 # Libraries import
+library(shiny)
 library(shinydashboard)
 library(shinyWidgets)
 library(DT)
@@ -6,8 +7,12 @@ library(RColorBrewer)
 library(dplyr)
 library(data.table)
 library(ggplot2)
-library(extrafont)
+# library(extrafont)
 
+
+library(reactlog)
+# tell shiny to log all reactivity
+options(shiny.reactlog = TRUE)
 # import modules and functions from another R files
 source(file.path("modules", "data_import.r"), local = TRUE)
 source(file.path("modules","plate_spec.r"), local = TRUE)
