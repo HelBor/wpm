@@ -12,7 +12,7 @@ backtrackUI <- function(id, label = NULL) {
         solidHeader = TRUE,
         width = 8,
         status = "warning",
-        plotOutput(ns("mapPlot"), height = 500)
+        plotOutput(ns("mapPlot"), height = 600)
 
 
     )
