@@ -240,7 +240,7 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
               }
       )
 
-      df$Sample.name <- as.integer(NA)
+      df$Sample.name <- NA
       df$Group <- as.factor("blank")
       df$Status <- as.factor("blank")
       df$Row <- as.numeric(df$Row)
@@ -274,8 +274,10 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col){
   if(length(forbidden_wells)>0){
     check_rows <- as.numeric(match(toupper(substr(forbidden_wells, 1, 1)), LETTERS))
     check_columns <- as.numeric(substr(forbidden_wells, 2, 5))
-
-    if((max(check_rows) > max_Row) | (max(check_columns) > max_Col) ){
+    # simule en fait si user n'a pas fini de saisir tout
+    if(any(is.na(check_rows)) | any(is.na(check_columns))){
+      return("ya un pb")
+    }else if((max(check_rows) > max_Row) | (max(check_columns) > max_Col) ){
       #error_msg <- "Error - One or more of the prohibited wells do not exist
       #depending on the plate sizes that have been provided"
       result <- NULL
@@ -335,7 +337,7 @@ drawPlateMap <- function(df, nb_gps, plate_lines, plate_cols){
   g <- ggplot(data = df, aes(x = Column, y = Row)) +
     geom_point(data = expand.grid(seq(1, plate_cols), seq(1, plate_lines)), aes(x = Var1, y = Var2),
                color = "grey90", fill = "white", shape = 21, size = 6) +
-    geom_point(aes(shape = Status, colour = Group), size = 7.5) +
+    geom_point(aes(shape = Status, colour = Group), size = 12) +
     geom_text(aes(label = Sample.name), size = 2) +
     colScale +
     scale_shape_manual(values = c("forbidden" = 4, "blank" = 15, "allowed" = 19)) +
