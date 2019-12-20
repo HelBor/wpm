@@ -1,19 +1,19 @@
 backtrackUI <- function(id, label = NULL) {
   ns <- NS(id)
   fluidRow(
-    box(title = h3("Your dataset"),
-        solidHeader = TRUE,
-        collapsible = TRUE,
-        width = 4,
-        status = "success",
-        dataTableOutput(ns("df_modif"))
-    ),
+    # box(title = h3("Your dataset"),
+    #     solidHeader = TRUE,
+    #     collapsible = TRUE,
+    #     width = 4,
+    #     status = "success",
+    #     dataTableOutput(ns("df_modif"))
+    # ),
     box(title = h3(),
         solidHeader = TRUE,
         collapsible = TRUE,
         width = 8,
         status = "warning",
-        dataTableOutput(ns("forbiddenWells"))
+        plotOutput(ns("mapPlot"))
 
 
     )
@@ -22,10 +22,17 @@ backtrackUI <- function(id, label = NULL) {
 }
 
 
-backtrack <- function(input, output, session, df, max_iter, forbidden_wells, rows, columns) {
+# Server function for backtracking module
+# df : dataframe - user data
+# nb_g : total number of distinct groups
+# max_iter : integer - maximal number of iterations
+# forbidden_wells : dataframe  - containing all the blanks and forbidden wells
+# rows : integer - plate's number of rows
+# columns : integer - plate's number of columns
+# constraint : character - neighborhood spatial constraint mode
+backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_wells, rows, columns, constraint) {
 
   user_data <- reactive({
-    df$Sample.name <- as.integer(df$Sample.name)
     df$Group <- as.factor(df$Group)
     df$Well <- as.character(NA)
     df$Status <- as.factor("allowed")
@@ -34,14 +41,33 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, row
     return(df)
   })
 
-  output$df_modif <- renderDataTable(datatable({
-    user_data()
-  }, rownames=FALSE)
-  )
-
   output$forbiddenWells <- renderDataTable(datatable({
     forbidden_wells()
   }, rownames = FALSE)
   )
+
+  # map is a list containing:
+  #     a map plate : dataframe (containing user data + blanks + forbidden wells, ready to
+  #                   be plotted or/and downloaded)
+  #     the number of attempts to success
+  map <- reactive({
+    generateMapPlate(user_df = user_data(),
+                  nb_rows = rows(),
+                  nb_cols = columns(),
+                  df_forbidden = forbidden_wells(),
+                  mod = constraint(),
+                  max_it = max_iter
+
+    )
+  })
+
+  output$df_modif <- renderDataTable(datatable({
+    map()
+  }, rownames=FALSE)
+  )
+
+  output$mapPlot <- renderPlot({
+    drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns())
+  })
 
 }
