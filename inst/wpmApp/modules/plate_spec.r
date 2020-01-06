@@ -148,7 +148,7 @@ plateSpec <- function(input, output, session) {
     if(input$forbid_select != ""){
       fw <- as.vector(unlist(strsplit(as.character(input$forbid_select),
                                       split=",")))
-      convertVector2Df(fw, input$plate_lines, input$plate_cols)
+      return(convertVector2Df(fw, input$plate_lines, input$plate_cols))
     }else{
       return(NULL)
     }
@@ -204,6 +204,10 @@ plateSpec <- function(input, output, session) {
   })
 
   observe({
+    loginfo("nb of plate lines : %d", input$plate_lines, logger = "plate_spec")
+    loginfo("nb of plate cols : %d", input$plate_cols, logger = "plate_spec")
+    loginfo("selected mode : %s", nbh_mod(), logger = "plate_spec")
+
     toReturn$nb_lines <- input$plate_lines
     toReturn$nb_cols <- input$plate_cols
     toReturn$forbidden_wells <- wells_to_plot()
