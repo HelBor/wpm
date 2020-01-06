@@ -9,6 +9,10 @@ library(data.table)
 library(ggplot2)
 library(readr)
 # library(extrafont)
+library(logging)
+basicConfig()
+addHandler(writeToFile, file = "./testing.log", level = "DEBUG")
+loginfo('Initiating the log file...')
 
 
 library(reactlog)

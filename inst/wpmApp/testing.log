@@ -1,0 +1,33 @@
+2020-01-06 09:51:13 INFO::Initiating the log file...
+2020-01-06 09:51:13 INFO::userFile - input$file =
+2020-01-06 09:51:52 INFO::userFile - input$file =
+2020-01-06 09:52:06 INFO::userFile - input$file = ind_groupes_NASH.csv,1103,application/vnd.ms-excel,C:\Users\hb254815\AppData\Local\Temp\RtmpYpwsHu/ddf222af4000a5f5ddc14011/0.csv
+2020-01-06 09:53:04 INFO::userFile - input$file =
+2020-01-06 09:53:09 INFO::userFile - input$file =
+2020-01-06 09:53:14 INFO::userFile - input$file = ind_groupes_NASH.csv,1103,application/vnd.ms-excel,C:\Users\hb254815\AppData\Local\Temp\RtmpYpwsHu/7b6403afe828f628f727b762/0.csv
+2020-01-06 09:55:17 INFO::Initiating the log file...
+2020-01-06 09:55:18 INFO:data_import:userFile - input$file =
+2020-01-06 09:55:23 INFO:data_import:userFile - input$file =
+2020-01-06 09:55:29 INFO:data_import:userFile - input$file = ind_groupes_NASH.csv,1103,application/vnd.ms-excel,C:\Users\hb254815\AppData\Local\Temp\RtmpYpwsHu/4969546e66de323452d810c4/0.csv
+2020-01-06 09:55:29 INFO:data_import:
+2020-01-06 09:56:34 INFO::Initiating the log file...
+2020-01-06 09:56:34 INFO:data_import:userFile - input$file =
+2020-01-06 09:56:38 INFO:data_import:userFile - input$file =
+2020-01-06 09:56:43 INFO:data_import:userFile - input$file = ind_groupes_NASH.csv,1103,application/vnd.ms-excel,C:\Users\hb254815\AppData\Local\Temp\RtmpYpwsHu/3834feadf031ecb1a8338ab2/0.csv
+2020-01-06 09:56:43 INFO:data_import:File ind_groupes_NASH.csv was uploaded
+2020-01-06 09:59:06 INFO::Initiating the log file...
+2020-01-06 09:59:06 INFO:data_import:userFile - input$file =
+2020-01-06 09:59:09 INFO:data_import:userFile - input$file =
+2020-01-06 09:59:15 INFO:data_import:userFile - input$file = ind_groupes_NASH.csv,1103,application/vnd.ms-excel,C:\Users\hb254815\AppData\Local\Temp\RtmpYpwsHu/ca8429982fb9c68990af39b4/0.csv
+2020-01-06 09:59:15 INFO:data_import:File ind_groupes_NASH.csv was uploaded
+2020-01-06 09:59:15 INFO::dataframe successfully created
+2020-01-06 10:00:46 INFO::Initiating the log file...
+2020-01-06 10:00:46 INFO:data_import:userFile - input$file =
+2020-01-06 10:00:46 INFO::dataframe successfully generated
+2020-01-06 10:02:51 INFO::Initiating the log file...
+2020-01-06 10:02:52 INFO:data_import:userFile - input$file =
+2020-01-06 10:02:56 INFO:data_import:userFile - input$file =
+2020-01-06 10:03:08 INFO:data_import:userFile - input$file = ind_groupes_NASH.csv,1103,application/vnd.ms-excel,C:\Users\hb254815\AppData\Local\Temp\RtmpYpwsHu/c5140f021e7404e100cfeb72/0.csv
+2020-01-06 10:03:08 INFO:data_import:File ind_groupes_NASH.csv was uploaded
+2020-01-06 10:03:08 INFO::dataframe successfully created
+2020-01-06 10:03:18 INFO::dataframe successfully created

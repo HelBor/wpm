@@ -32,28 +32,33 @@ csvFileInput <- function(id, label = "CSV file") {
 csvFile <- function(input, output, session, stringsAsFactors) {
   # The selected file, if any
   userFile <- reactive({
+    loginfo("userFile - input$file = %s", input$file, logger = "data_import")
     # If no file is selected, don't do anything
     validate(need(input$file, message = FALSE))
     input$file
   })
+  observe({
+    loginfo("File %s was uploaded", userFile()$name, logger = "data_import")
+
+  })
 
   # The user's data, parsed into a data frame
   dataframe <- reactive({
-    read.csv2(userFile()$datapath,
+    df <- read.csv2(userFile()$datapath,
              header = input$heading,
              quote = input$quote,
              sep = input$sep_input,
              col.names = c("Sample.name", "Group"),
              stringsAsFactors = stringsAsFactors)
-
+    if(class(df) == "data.frame" | class(df) == "matrix"){
+      loginfo("dataframe/matrix successfully created", logger = "data_import")
+    }
+    return(df)
   })
 
 
   # We can run observers in here if we want to
-  observe({
-    msg <- sprintf("File %s was uploaded", userFile()$name)
-    cat(msg, "\n")
-  })
+
 
   # Return the reactive that yields the data frame
   return(dataframe)
