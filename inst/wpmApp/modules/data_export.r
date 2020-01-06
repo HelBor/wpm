@@ -1,9 +1,21 @@
 exportUI <- function(id, label = NULL){
   ns <- NS(id)
   fluidRow(
-    textInput(ns("filename"), label = "Please choose a file name"),
-    downloadButton(ns("downloadData"), "Download dataframe"),
-    downloadButton(ns("downloadPlot"), "Download Plot as png")
+    box(status="primary",
+        width = 6,
+        height = 400,
+        title = h3("Please choose a file name"),
+        textInput(ns("filename"), label = NULL),
+        downloadBttn(ns("downloadData"),
+                     label = "Download dataframe",
+                     style = "unite",
+                     color = "warning"),
+        downloadBttn(ns("downloadPlot"),
+                     label = "Download Plot as png",
+                     style = "unite",
+                     color = "warning")
+    )
+
   )
 }
 
