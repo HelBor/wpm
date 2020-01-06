@@ -68,10 +68,10 @@ body <- dashboardBody(
                          width = 12,
                          title=h3("5 - Number of iterations"),
                          div("Please specify the maximum number of iterations
-                             that WPM can perform. Default value is 10."),
+                             that WPM can perform. Default value is 20."),
                          numericInput(inputId="nb_iter",
                                       label = NULL,
-                                      value = 10,
+                                      value = 20,
                                       min = 1,
                                       width = "80px"
                                       ),

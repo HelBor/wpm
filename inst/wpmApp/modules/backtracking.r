@@ -84,6 +84,8 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
     toReturn$final_map <- map_plot()
   })
 
+
+
   return(toReturn)
 
 }
