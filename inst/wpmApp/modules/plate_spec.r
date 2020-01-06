@@ -107,7 +107,12 @@ plateSpec <- function(input, output, session) {
   )
 
   totalNbWells <- reactive({
-    as.numeric(input$plate_lines)*as.numeric(input$plate_cols)
+    loginfo("totalNbWells reactive object", logger = "plate_spec")
+    tNbW <- as.numeric(input$plate_lines)*as.numeric(input$plate_cols)
+    loginfo("plate_lines: %d (%s)", input$plate_lines, class(input$plate_lines), logger = "plate_spec")
+    loginfo("plate_cols: %d (%s)", input$plate_cols, class(input$plate_cols), logger = "plate_spec")
+    loginfo("totalNbWells = %d", tNbW, logger = "plate_spec")
+    return(tNbW)
     })
 
   output$total_nb_wells <- renderValueBox({

@@ -11,6 +11,9 @@ server <- function(input, output, session) {
                          stringsAsFactors = FALSE)
 
   output$table <- renderDataTable(datatable({
+    if(class(datafile()) == "data.frame" | class(datafile()) == "matrix"){
+      loginfo("dataframe/matrix successfully created", logger = "server")
+    }
     datafile() }, rownames=FALSE)
   )
 

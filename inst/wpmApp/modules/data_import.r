@@ -32,7 +32,6 @@ csvFileInput <- function(id, label = "CSV file") {
 csvFile <- function(input, output, session, stringsAsFactors) {
   # The selected file, if any
   userFile <- reactive({
-    loginfo("userFile - input$file = %s", input$file, logger = "data_import")
     # If no file is selected, don't do anything
     validate(need(input$file, message = FALSE))
     input$file
@@ -50,9 +49,7 @@ csvFile <- function(input, output, session, stringsAsFactors) {
              sep = input$sep_input,
              col.names = c("Sample.name", "Group"),
              stringsAsFactors = stringsAsFactors)
-    if(class(df) == "data.frame" | class(df) == "matrix"){
-      loginfo("dataframe/matrix successfully created", logger = "data_import")
-    }
+
     return(df)
   })
 

@@ -31,3 +31,36 @@
 2020-01-06 10:03:08 INFO:data_import:File ind_groupes_NASH.csv was uploaded
 2020-01-06 10:03:08 INFO::dataframe successfully created
 2020-01-06 10:03:18 INFO::dataframe successfully created
+2020-01-06 10:56:12 INFO::Initiating the log file...
+2020-01-06 10:56:12 INFO:data_import:userFile - input$file =
+2020-01-06 10:56:15 INFO:data_import:userFile - input$file =
+2020-01-06 10:56:17 INFO:plate_spec:totalNbWells reactive object
+2020-01-06 10:56:17 INFO:plate_spec:plate_lines: 0 (integer)
+2020-01-06 10:56:17 INFO:plate_spec:plate_cols: 0 (integer)
+2020-01-06 10:56:17 INFO:plate_spec:totalNbWells = 0
+2020-01-06 10:56:33 INFO:data_import:userFile - input$file = ind_groupes_NASH.csv,1103,application/vnd.ms-excel,C:\Users\hb254815\AppData\Local\Temp\RtmpYpwsHu/6743de88fcaaf7760bc4f02f/0.csv
+2020-01-06 10:56:33 INFO:data_import:File ind_groupes_NASH.csv was uploaded
+2020-01-06 10:56:33 INFO:data_import:dataframe/matrix successfully created
+2020-01-06 10:56:36 INFO:data_import:dataframe/matrix successfully created
+2020-01-06 10:58:28 INFO::Initiating the log file...
+2020-01-06 10:58:28 INFO:data_import:userFile - input$file =
+2020-01-06 10:58:31 INFO:data_import:userFile - input$file =
+2020-01-06 10:58:32 INFO:plate_spec:totalNbWells reactive object
+2020-01-06 10:58:32 INFO:plate_spec:plate_lines: 0 (integer)
+2020-01-06 10:58:32 INFO:plate_spec:plate_cols: 0 (integer)
+2020-01-06 10:58:32 INFO:plate_spec:totalNbWells = 0
+2020-01-06 10:58:35 INFO:data_import:userFile - input$file = ind_groupes_NASH.csv,1103,application/vnd.ms-excel,C:\Users\hb254815\AppData\Local\Temp\RtmpYpwsHu/37f89f68b7c6b5b74f97734f/0.csv
+2020-01-06 10:58:35 INFO:data_import:File ind_groupes_NASH.csv was uploaded
+2020-01-06 10:58:35 INFO:server:dataframe/matrix successfully created
+2020-01-06 10:58:40 INFO:server:dataframe/matrix successfully created
+2020-01-06 10:58:52 INFO:plate_spec:totalNbWells reactive object
+2020-01-06 10:58:52 INFO:plate_spec:plate_lines: 8 (integer)
+2020-01-06 10:58:52 INFO:plate_spec:plate_cols: 0 (integer)
+2020-01-06 10:58:52 INFO:plate_spec:totalNbWells = 0
+2020-01-06 10:58:55 INFO:plate_spec:totalNbWells reactive object
+2020-01-06 10:58:55 INFO:plate_spec:plate_lines: 8 (integer)
+2020-01-06 10:58:55 INFO:plate_spec:plate_cols: 12 (integer)
+2020-01-06 10:58:55 INFO:plate_spec:totalNbWells = 96
+2020-01-06 10:59:45 INFO::Initiating the log file...
+2020-01-06 11:41:47 INFO::Initiating the log file...
+2020-01-06 11:42:11 INFO::possible_groups : 1,3,4,7

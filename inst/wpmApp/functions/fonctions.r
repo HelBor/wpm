@@ -2,7 +2,7 @@
 ## Functions for contraints
 # Contrainte spatiale pour les voisins Nord, Est, Ouest et Sud pour la case visitée
 neighborhoodNEWS <- function(m, i, j){
-
+  loginfo("---- start function neighborhoodNEWS ----")
   #Pour le Nord
   N <- tryCatch({
     m[i-1,j]
@@ -22,12 +22,14 @@ neighborhoodNEWS <- function(m, i, j){
   S <- tryCatch({
     m[i+1,j]
   }, error = function(err4){return(NA)})
-
+  logerror("error : %s",error, logger = "fonctions.neighborhoodNEWS")
   ret <- c(N,E,W,S)
+  loginfo("ret = %s", ret)
   return(ret)
 }
 
 neighborhoodNS <- function(m, i, j){
+  loginfo("---- start function neighborhoodNS ----")
   N <- tryCatch({
     m[i-1,j]
   }, error = function(err1){return(NA)})
@@ -35,12 +37,13 @@ neighborhoodNS <- function(m, i, j){
   S <- tryCatch({
     m[i+1,j]
   }, error = function(err4){return(NA)})
-
+  logerror("error : %s",error, logger = "fonctions.neighborhoodNS")
   ret <- c(N,S)
   return(ret)
 }
 
 neighborhoodWE <- function(m, i, j){
+  loginfo("---- start function neighborhoodWE ----")
   # for right neighboor
   E <- tryCatch({
     m[i,j+1]
@@ -50,23 +53,40 @@ neighborhoodWE <- function(m, i, j){
   W <- tryCatch({
     m[i,j-1]
   }, error = function(err3){return(NA)})
-
+  logerror("error : %s",error, logger = "fonctions.neighborhoodWE")
   ret <- c(W,E)
   return(ret)
 }
 
 checkConstraints <- function(m, row, col, mode){
+  loginfo("---- start function checkConstraints ----", logger = "fonctions.checkConstraints")
   if(mode == "NS"){
     neighbors <- neighborhoodNS(m,row,col)
   }else if(mode=="WE"){
     neighbors <- neighborhoodWE(m, row, col)
   }else if(mode=="NEWS"){
     neighbors <- neighborhoodNEWS(m, row, col)
+  }else{
+    logerror()
   }
+  loginfo("neighbors are %s", neighbors, logger = "fonctions.checkConstraints")
   return(neighbors)
 }
 
 solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
+  loginfo("---- start function solveCell ----", logger = "fonctions.solveCell")
+  if(class(m) != "matrix"){
+    logerror("m is not a matrix, m: %s", class(m))
+    warning("Need m to be a matrix")
+  }
+  if(class(d) != "dataframe"){
+    logerror("d is not a dataframe, d: %s", class(d))
+    warning("Need d to be a dataframe")
+  }
+  if(class(nb_gps) != "numeric"){
+    logerror("d is not a dataframe, d: %s", class(nb_gps))
+    warning("Need nb_gps to be numeric")
+  }
 
   # we look at which individuals are neighbors of the current box
   neighbors <- checkConstraints(m, row=i, col=j, mode=constraint)
@@ -80,11 +100,13 @@ solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
     #there are no more possibilities
     return(1)
   }else{
+    loginfo("possible_groups : %s", possible_groups)
     # only take in individuals belonging to the possible groups
     # and who are not in already_drawn
     possible_ind <- d$Sample.name[which(d$Group %in% possible_groups)]
+    loginfo("possible_ind : %s", possible_ind)
     available_ind <- d$Sample.name[which(d$Sample.name %in% possible_ind & !(d$Sample.name %in% already_drawn))]
-
+    loginfo("available_ind: %s", available_ind)
     if(length(available_ind)==0){
       #there are no more possibilities
       return(1)
@@ -92,10 +114,13 @@ solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
       # use resample because this function also works as expected when there is
       # only one element in the set to be sampled.
       chosen_ind <- R.utils::resample(available_ind,size=1)
+      loginfo("chosen_ind : %s", chosen_ind)
       m[i,j] <- chosen_ind
       already_drawn <- c(already_drawn,chosen_ind)
+      loginfo("already_drawn: %s", already_drawn)
     }
   }
+  loginfo("---- end function solveCell ----", logger = "fonctions.solveCell")
   return(list("m" = m, "already_drawn" = already_drawn))
 }
 
@@ -108,6 +133,14 @@ solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
 # groups est le nombre de groupes distincts existant dans les données utilisateur
 # constraint est le mode de contrainte de voisinnage choisi par l'utilisateur
 randomWalk <- function(m, forbidden_cells, d, groups, constraint){
+  loginfo("---- start function randomWalk ----", logger = "fonctions.randomWalk")
+  if(class(m) != "matrix"){
+    logerror("m is not a matrix, m: %s", class(m))
+    warning("Need m to be a matrix")
+  }
+  if(class(forbidden_cells) != "numeric"){
+    logerror("forbidden_cells is not a vector")
+  }
   visited <- c() # cases visitées - que ce soit interdites ou autorisées aux échantillons
   nb_lig <- dim(m)[1]
   nb_col <- dim(m)[2]
@@ -136,6 +169,7 @@ randomWalk <- function(m, forbidden_cells, d, groups, constraint){
                         j=j,
                         already_drawn = placed,
                         constraint = constraint)
+      loginfo("test is %s", class(test), logger = "fonctions.randomWalk")
       if(class(test)=="numeric"){
         return(1)
       }else{
@@ -147,6 +181,8 @@ randomWalk <- function(m, forbidden_cells, d, groups, constraint){
       }
     }
   }
+  loginfo("---- end function randomWalk ----", logger = "fonctions.randomWalk")
+  loginfo(summary(d))
   return(d)
 }
 
@@ -159,6 +195,7 @@ randomWalk <- function(m, forbidden_cells, d, groups, constraint){
 # max_it       : integer (maximum number of attempts to generate a plate plan before
 #                returning a failure.)
 generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_it){
+  loginfo("---- start function generateMapPlate ----", logger = "fonctions.generateMapPlate")
   nb_attempts = 1
   ret=1
 
@@ -179,12 +216,12 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
       ret$Well <- paste0(LETTERS[ret$Row], ret$Column, sep = "")
       ret <- rbind(ret, df_forbidden)
       #return(list("map_df" = ret, "attempts" = nb_attempts))
-      print(paste0("nombre de tentatives:", nb_attempts))
+      logwarn("number of attempts: %d", nb_attempts, logger = "fonctions.generateMapPlate")
       return(ret)
     }
     nb_attempts = nb_attempts + 1
   }
-  print("we reeched the maximal number of iterations with no success")
+  logwarn("we reeched the maximal number of iterations with no success", logger = "fonctions.generateMapPlate")
   return(NULL)
 }
 
