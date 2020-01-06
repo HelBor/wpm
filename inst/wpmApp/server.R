@@ -56,11 +56,10 @@ server <- function(input, output, session) {
 
   startBtn <- eventReactive(input$start_WPM_Btn, {
     validate(
-      need(!is.null(datafile()), "requires a user data file"),
+      need(datafile(), "requires a user data file"),
       need(plate_specs$nb_lines > 0, "requires a number of rows greater than 0"),
       need(plate_specs$nb_cols > 0, "requires a number of columns greater than 0")
     )
-    "You can go to the Results Panel"
   })
 
   output$pressedBtn <- renderText({
@@ -88,6 +87,15 @@ server <- function(input, output, session) {
                columns = reactive(plate_specs$nb_cols),
                constraint = reactive(plate_specs$neighborhood_mod)
                )
+
+    observeEvent(!is.null(data_export), {
+      sendSweetAlert(
+        session = session,
+        title = "Success !!",
+        text = "All in order, you can check your results in the Results Panel",
+        type = "success"
+      )
+    })
     callModule(module = export,
                id = "export",
                df = reactive(data_export$final_df),
