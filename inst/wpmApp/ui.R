@@ -76,11 +76,12 @@ body <- dashboardBody(
                                       width = "80px"
                                       ),
                          div(
-                                actionBttn(inputId="start_WPM_Btn",
-                                           label = "Start WPM",
-                                           icon = icon("play"),
-                                           color = "success",
-                                           style = "simple"
+                           useSweetAlert(),
+                           actionBttn(inputId="start_WPM_Btn",
+                                      label = "Start WPM",
+                                      icon = icon("play"),
+                                      color = "warning",
+                                      style = "unite"
                                 )
                             ),
                          div(

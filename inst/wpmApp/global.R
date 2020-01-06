@@ -10,6 +10,9 @@ library(ggplot2)
 library(readr)
 # library(extrafont)
 library(logging)
+
+file.remove("./testing.log")
+
 basicConfig()
 addHandler(writeToFile, file = "./testing.log")
 loginfo('Initiating the log file...')
