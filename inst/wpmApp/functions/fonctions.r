@@ -4,40 +4,75 @@
 neighborhoodNEWS <- function(m, i, j){
   loginfo("---- start function neighborhoodNEWS ----")
   #Pour le Nord
-  N <- tryCatch({
-    m[i-1,j]
-  }, error = function(err1){return(NA)})
+  N <- tryCatch(
+    {
+      m[i-1,j]
+    },
+    error = function(err1){
+      logerror("error, NA returned", logger = "fonctions.neighborhoodNEWS")
+      return(NA)
+    }
+  )
 
   #Pour l'Est
-  E <- tryCatch({
-    m[i,j+1]
-  }, error = function(err2){return(NA)})
+  E <- tryCatch(
+    {
+      m[i,j+1]
+    },
+    error = function(err2){
+      logerror("error, NA returned", logger = "fonctions.neighborhoodNEWS")
+      return(NA)
+    }
+  )
 
   # Pour l'Ouest
-  W <- tryCatch({
-    m[i,j-1]
-  }, error = function(err3){return(NA)})
+  W <- tryCatch(
+    {
+      m[i,j-1]
+    },
+    error = function(err3){
+      logerror("error, NA returned", logger = "fonctions.neighborhoodNEWS")
+      return(NA)
+    }
+  )
 
   # Pour le Sud
-  S <- tryCatch({
-    m[i+1,j]
-  }, error = function(err4){return(NA)})
-  logerror("error : %s",error, logger = "fonctions.neighborhoodNEWS")
+  S <- tryCatch(
+    {
+      m[i+1,j]
+    },
+    error = function(err4){
+      logerror("error, NA returned", logger = "fonctions.neighborhoodNEWS")
+      return(NA)
+    }
+  )
+
   ret <- c(N,E,W,S)
-  loginfo("ret = %s", ret)
   return(ret)
 }
 
 neighborhoodNS <- function(m, i, j){
   loginfo("---- start function neighborhoodNS ----")
-  N <- tryCatch({
-    m[i-1,j]
-  }, error = function(err1){return(NA)})
+  N <- tryCatch(
+    {
+      m[i-1,j]
+    },
+    error = function(err1){
+        logerror("error, NA returned", logger = "fonctions.neighborhoodNS")
+        return(NA)
+    }
+  )
 
-  S <- tryCatch({
-    m[i+1,j]
-  }, error = function(err4){return(NA)})
-  logerror("error : %s",error, logger = "fonctions.neighborhoodNS")
+  S <- tryCatch(
+    {
+      m[i+1,j]
+    },
+    error = function(err4){
+      logerror("error, NA returned", logger = "fonctions.neighborhoodNS")
+      return(NA)
+    }
+  )
+
   ret <- c(N,S)
   return(ret)
 }
@@ -45,15 +80,27 @@ neighborhoodNS <- function(m, i, j){
 neighborhoodWE <- function(m, i, j){
   loginfo("---- start function neighborhoodWE ----")
   # for right neighboor
-  E <- tryCatch({
-    m[i,j+1]
-  }, error = function(err2){return(NA)})
+  E <- tryCatch(
+    {
+      m[i,j+1]
+    },
+    error = function(err2){
+      logerror("error, NA returned", logger = "fonctions.neighborhoodWE")
+      return(NA)
+    }
+  )
 
   # For left neighboor
-  W <- tryCatch({
-    m[i,j-1]
-  }, error = function(err3){return(NA)})
-  logerror("error : %s",error, logger = "fonctions.neighborhoodWE")
+  W <- tryCatch(
+    {
+      m[i,j-1]
+    },
+    error = function(err3){
+      logerror("error, NA returned", logger = "fonctions.neighborhoodWE")
+      return(NA)
+    }
+  )
+
   ret <- c(W,E)
   return(ret)
 }
@@ -67,11 +114,15 @@ checkConstraints <- function(m, row, col, mode){
   }else if(mode=="NEWS"){
     neighbors <- neighborhoodNEWS(m, row, col)
   }else{
-    logerror()
+    logerror("The mode provided is not correct")
   }
   loginfo("neighbors are %s", neighbors, logger = "fonctions.checkConstraints")
   return(neighbors)
 }
+
+
+resample <- function(x, ...) x[sample.int(length(x), ...)]
+
 
 solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
   loginfo("---- start function solveCell ----", logger = "fonctions.solveCell")
@@ -79,12 +130,13 @@ solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
     logerror("m is not a matrix, m: %s", class(m))
     warning("Need m to be a matrix")
   }
-  if(class(d) != "dataframe"){
+  if(class(d) != "data.frame"){
     logerror("d is not a dataframe, d: %s", class(d))
     warning("Need d to be a dataframe")
   }
-  if(class(nb_gps) != "numeric"){
-    logerror("d is not a dataframe, d: %s", class(nb_gps))
+  print(paste0("class of nb_gps", class(nb_gps)))
+  if(class(nb_gps) != "integer"){
+    logerror("nb_gps is not an integer, nb_gps: %s", class(nb_gps))
     warning("Need nb_gps to be numeric")
   }
 
@@ -100,21 +152,21 @@ solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
     #there are no more possibilities
     return(1)
   }else{
-    loginfo("possible_groups : %s", possible_groups)
+    # loginfo("possible_groups : %s", possible_groups)
     # only take in individuals belonging to the possible groups
     # and who are not in already_drawn
     possible_ind <- d$Sample.name[which(d$Group %in% possible_groups)]
-    loginfo("possible_ind : %s", possible_ind)
+    # loginfo("possible_ind : %s", possible_ind)
     available_ind <- d$Sample.name[which(d$Sample.name %in% possible_ind & !(d$Sample.name %in% already_drawn))]
-    loginfo("available_ind: %s", available_ind)
+    # loginfo("available_ind: %s", available_ind)
     if(length(available_ind)==0){
       #there are no more possibilities
       return(1)
     }else{
       # use resample because this function also works as expected when there is
       # only one element in the set to be sampled.
-      chosen_ind <- R.utils::resample(available_ind,size=1)
-      loginfo("chosen_ind : %s", chosen_ind)
+      chosen_ind <- resample(available_ind,size=1)
+      # loginfo("chosen_ind : %s", chosen_ind)
       m[i,j] <- chosen_ind
       already_drawn <- c(already_drawn,chosen_ind)
       loginfo("already_drawn: %s", already_drawn)
@@ -129,18 +181,20 @@ solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
 # m est une matrice
 # forbidden_cells est un vecteur contenant les coordonnées sous forme xy des cases
 # interdites
+# toVisit contient les cases sous forme A1, et ne contient que les cases à remplir
 # d est le dataframe fournit par l'utilisateur
 # groups est le nombre de groupes distincts existant dans les données utilisateur
 # constraint est le mode de contrainte de voisinnage choisi par l'utilisateur
-randomWalk <- function(m, forbidden_cells, d, groups, constraint){
+randomWalk <- function(m, forbidden_cells, toVisit, d, groups, constraint){
   loginfo("---- start function randomWalk ----", logger = "fonctions.randomWalk")
   if(class(m) != "matrix"){
     logerror("m is not a matrix, m: %s", class(m))
     warning("Need m to be a matrix")
   }
   if(class(forbidden_cells) != "numeric"){
-    logerror("forbidden_cells is not a vector")
+    logerror("forbidden_cells is not a vector", logger = "fonctions.randomWalk")
   }
+
   visited <- c() # cases visitées - que ce soit interdites ou autorisées aux échantillons
   nb_lig <- dim(m)[1]
   nb_col <- dim(m)[2]
@@ -148,41 +202,42 @@ randomWalk <- function(m, forbidden_cells, d, groups, constraint){
   placed = c() # échantillons déjà tirés et placés
   # tant que toutes les cases n'ont pas été visitées
 
-  while (length(visited)!=nrow(d) ) {
+  while (length(toVisit) != 0) {
+    loginfo("length of toVisit: %d", length(toVisit), logger = "fonctions.randomWalk")
 
-    # améliorer le code ici (cf tâche dans To Do github)
-    i = sample(1:nb_lig, size = 1)
-    j = sample(1:nb_col, size = 1)
-    cell = as.numeric(paste(i,j,sep=""))
-    # si la cellule choisie est dans visited OU si c'est une case interdite
-    if(cell %in% visited || cell %in% forbidden_cells){
-      next
-      #sinon update visited et faire les tâches à faire avec la cell choisie
+    cell <- resample(toVisit, size = 1)
+    loginfo("chosen cell: %s", cell, logger = "fonctions.randomWalk")
+    loginfo("visited: %s", visited, logger = "fonctions.randomWalk")
+    # mise à jour des cases visitées
+    visited <- c(visited,cell)
+
+    i <- as.numeric(match(toupper(substr(cell, 1, 1)), LETTERS))
+    j <- as.numeric(substr(cell, 2, 5))
+    # uniformisation de plaque
+    test <- solveCell(m=ret,
+                      d=d,
+                      nb_gps=groups,
+                      i=i,
+                      j=j,
+                      already_drawn = placed,
+                      constraint = constraint)
+    loginfo("test is %s", class(test), logger = "fonctions.randomWalk")
+    if(class(test)=="numeric"){
+      return(1)
     }else{
-      # mise à jour des cases visitées
-      visited <- c(visited,cell)
-      # uniformisation de plaque
-      test <- solveCell(m=ret,
-                        d=d,
-                        nb_gps=groups,
-                        i=i,
-                        j=j,
-                        already_drawn = placed,
-                        constraint = constraint)
-      loginfo("test is %s", class(test), logger = "fonctions.randomWalk")
-      if(class(test)=="numeric"){
-        return(1)
-      }else{
-        ret <- test$m
-        placed <- test$already_drawn
-        # we look after the last placed element
-        d[which(d$Sample.name == placed[length(placed)]),]$Row <- i
-        d[which(d$Sample.name == placed[length(placed)]),]$Column <- j
-      }
+      ret <- test$m
+      placed <- test$already_drawn
+      # we look after the last placed element
+      d[which(d$Sample.name == placed[length(placed)]),]$Row <- i
+      d[which(d$Sample.name == placed[length(placed)]),]$Column <- j
+      toVisit <- toVisit[!toVisit == cell]
     }
+
   }
   loginfo("---- end function randomWalk ----", logger = "fonctions.randomWalk")
-  loginfo(summary(d))
+  loginfo("names de df: %s", names(df))
+  loginfo("df 1srt line: %s", df[1,])
+  loginfo("df 2nd line: %s", df[2,])
   return(d)
 }
 
@@ -203,10 +258,20 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
                                                  df_forbidden$Column,
                                                  sep="")))
   while (ret==1 & nb_attempts <= max_it) {
-
+    loginfo("attempt n° %d", nb_attempts)
     mat = matrix(NA,nrow=nb_rows, ncol=nb_cols)
+    # Generate all the cells that are allowed to be filled
+    toVisit <- NULL
+    for(i in LETTERS[1:nb_l]){
+      for (j in 1:nb_c){
+        toVisit <- c(toVisit, paste0(i,j))
+      }
+    }
+    toVisit <- toVisit[!toVisit %in% df_forbidden$Well]
+
     ret <- randomWalk(m = mat,
                       forbidden_cells = forbidden_wells,
+                      toVisit = toVisit,
                       d = user_df,
                       groups = length(unique(user_df$Group)),
                       constraint = mod
@@ -219,6 +284,7 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
       logwarn("number of attempts: %d", nb_attempts, logger = "fonctions.generateMapPlate")
       return(ret)
     }
+
     nb_attempts = nb_attempts + 1
   }
   logwarn("we reeched the maximal number of iterations with no success", logger = "fonctions.generateMapPlate")

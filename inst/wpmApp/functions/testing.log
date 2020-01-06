@@ -1,0 +1,15 @@
+2020-01-06 15:05:26 INFO::head(df, n = 2): c(8, 10)
+ 2020-01-06 15:05:26 INFO::head(df, n = 2): c(1, 1)
+ 2020-01-06 15:05:26 INFO::head(df, n = 2): c(NA, NA)
+ 2020-01-06 15:05:26 INFO::head(df, n = 2): c(1, 1)
+ 2020-01-06 15:05:26 INFO::head(df, n = 2): c(NA, NA)
+ 2020-01-06 15:05:26 INFO::head(df, n = 2): c(NA, NA)
+2020-01-06 15:05:52 INFO::Sample.name
+ 2020-01-06 15:05:52 INFO::Group
+ 2020-01-06 15:05:52 INFO::Well
+ 2020-01-06 15:05:52 INFO::Status
+ 2020-01-06 15:05:52 INFO::Row
+ 2020-01-06 15:05:52 INFO::Column
+2020-01-06 15:06:18 INFO::names de df: Sample.name,Group,Well,Status,Row,Column
+2020-01-06 15:06:55 INFO::df 1srt line: 8,1,NA,1,NA,NA
+2020-01-06 15:07:06 INFO::df 2nd line: 10,1,NA,1,NA,NA

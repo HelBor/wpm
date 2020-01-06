@@ -11,7 +11,7 @@ library(readr)
 # library(extrafont)
 library(logging)
 basicConfig()
-addHandler(writeToFile, file = "./testing.log", level = "DEBUG")
+addHandler(writeToFile, file = "./testing.log")
 loginfo('Initiating the log file...')
 
 

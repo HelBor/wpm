@@ -83,7 +83,10 @@ body <- dashboardBody(
                                            style = "simple"
                                 )
                             ),
-                         textOutput("pressedBtn")
+                         div(
+                           textOutput("pressedBtn")
+                         )
+
 
 
                      )
