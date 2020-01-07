@@ -9,7 +9,7 @@ neighborhoodNEWS <- function(m, i, j){
       m[i-1,j]
     },
     error = function(err1){
-      logerror("error, NA returned", logger = "fonctions.neighborhoodNEWS")
+      # logerror("error, NA returned", logger = "fonctions.neighborhoodNEWS")
       return(NA)
     }
   )
@@ -20,7 +20,7 @@ neighborhoodNEWS <- function(m, i, j){
       m[i,j+1]
     },
     error = function(err2){
-      logerror("error, NA returned", logger = "fonctions.neighborhoodNEWS")
+      # logerror("error, NA returned", logger = "fonctions.neighborhoodNEWS")
       return(NA)
     }
   )
@@ -31,7 +31,7 @@ neighborhoodNEWS <- function(m, i, j){
       m[i,j-1]
     },
     error = function(err3){
-      logerror("error, NA returned", logger = "fonctions.neighborhoodNEWS")
+      # logerror("error, NA returned", logger = "fonctions.neighborhoodNEWS")
       return(NA)
     }
   )
@@ -42,7 +42,7 @@ neighborhoodNEWS <- function(m, i, j){
       m[i+1,j]
     },
     error = function(err4){
-      logerror("error, NA returned", logger = "fonctions.neighborhoodNEWS")
+      # logerror("error, NA returned", logger = "fonctions.neighborhoodNEWS")
       return(NA)
     }
   )
@@ -58,7 +58,7 @@ neighborhoodNS <- function(m, i, j){
       m[i-1,j]
     },
     error = function(err1){
-        logerror("error, NA returned", logger = "fonctions.neighborhoodNS")
+        # logerror("error, NA returned", logger = "fonctions.neighborhoodNS")
         return(NA)
     }
   )
@@ -68,7 +68,7 @@ neighborhoodNS <- function(m, i, j){
       m[i+1,j]
     },
     error = function(err4){
-      logerror("error, NA returned", logger = "fonctions.neighborhoodNS")
+      # logerror("error, NA returned", logger = "fonctions.neighborhoodNS")
       return(NA)
     }
   )
@@ -84,7 +84,7 @@ neighborhoodWE <- function(m, i, j){
       m[i,j+1]
     },
     error = function(err2){
-      logerror("error, NA returned", logger = "fonctions.neighborhoodWE")
+      #logerror("error, NA returned", logger = "fonctions.neighborhoodWE")
       return(NA)
     }
   )
@@ -95,7 +95,7 @@ neighborhoodWE <- function(m, i, j){
       m[i,j-1]
     },
     error = function(err3){
-      logerror("error, NA returned", logger = "fonctions.neighborhoodWE")
+      # logerror("error, NA returned", logger = "fonctions.neighborhoodWE")
       return(NA)
     }
   )

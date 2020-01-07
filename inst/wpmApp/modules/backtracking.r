@@ -2,14 +2,12 @@ backtrackUI <- function(id, label = NULL) {
   ns <- NS(id)
   fluidRow(
     box(title = h3("Your dataset"),
-        solidHeader = TRUE,
         collapsible = TRUE,
         width = 4,
-        status = "success",
+        status = "warning",
         dataTableOutput(ns("df_modif"))
     ),
     box(title = h3("Plate Layout Experiment"),
-        solidHeader = TRUE,
         width = 8,
         status = "warning",
         plotOutput(ns("mapPlot"), height = 600)

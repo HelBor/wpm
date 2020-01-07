@@ -35,7 +35,7 @@ body <- dashboardBody(
             # Input File section
             fluidRow(
               column(width=6,
-                box(status="primary",
+                box(status="warning",
                     width = 12,
                     title=h3("1 - Upload dataset"),
                     h4("Please use .csv format. \n File must
@@ -50,7 +50,7 @@ body <- dashboardBody(
                     solidHeader = TRUE,
                     collapsible = TRUE,
                     width = 6,
-                    status = "primary",
+                    status = "warning",
                     dataTableOutput("table")
                     ),
                 fluidRow(valueBoxOutput("nb_ech", width=3),
@@ -64,17 +64,23 @@ body <- dashboardBody(
 
             fluidRow(
               column(width=6,
-                     box(status="primary",
+                     box(status="warning",
                          width = 12,
                          title=h3("5 - Number of iterations"),
                          div("Please specify the maximum number of iterations
                              that WPM can perform. Default value is 20."),
-                         numericInput(inputId="nb_iter",
-                                      label = NULL,
-                                      value = 20,
-                                      min = 1,
-                                      width = "80px"
-                                      ),
+                         knobInput(
+                           inputId = "nb_iter",
+                           label = NULL,
+                           value = 20,
+                           min = 0,
+                           width = 80,
+                           height = 80,
+                           displayPrevious = TRUE,
+                           lineCap = "round",
+                           fgColor = "#f0ad4e",
+                           inputColor = "#f0ad4e"
+                         ),
                          div(
                            useSweetAlert(),
                            actionBttn(inputId="start_WPM_Btn",

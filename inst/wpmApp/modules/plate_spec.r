@@ -11,7 +11,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 
   fluidRow(
     column(width=6,
-      box(status="primary",
+      box(status="warning",
           width = 12,
           title=h3("2 - Plate dimensions"),
           numericInput(ns("plate_lines"), label = "lines",
@@ -24,20 +24,24 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                        value=1, min=1,
                        width = "80px")
       ),
-      box(status="primary",
+      box(status="warning",
           width = 12,
           title=h3("3 - Plate constraints"),
           h4("How to place Blanks on the plate"),
-          #blank parameter input
-          radioButtons(ns("blank_mode"), "Please choose a mode",
+
+          awesomeRadio(inputId = ns("blank_mode"),
+                       label = NULL,
                        choices = c("No blanks" = "none",
                                    "Per line" = "by_row",
                                    "Per column" = "by_column",
                                    "Checkerboard" = "checkerboard"),
-                       selected = NULL),
+                       selected = NULL,
+                       status = "warning"
+
+          ),
           hr(),
           h4("Neighborhood contraints"),
-          #uiOutput(ns("neighborhood")),
+
           conditionalPanel(condition = "input.blank_mode == 'by_row'",
                            div(
                              HTML(paste("You have selected the ",
@@ -57,11 +61,15 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                            ),
                            ns = ns),
           conditionalPanel(condition = "input.blank_mode == 'none'",
-                           radioButtons(ns("constraint_select"), label = "Please choose the neighborhood constraint",
+                           awesomeRadio(inputId = ns("constraint_select"),
+                                        label = NULL,
                                         choices = c("North-South" = "NS",
-                                                    "West-East" = "WE",
-                                                    "North-South-West-East" = "NEWS",
-                                                    "None" = "none")
+                                                   "West-East" = "WE",
+                                                   "North-South-West-East" = "NEWS",
+                                                   "None" = "none"),
+                                        selected = NULL,
+                                        status = "warning"
+
                            ),
                            ns = ns),
           conditionalPanel(condition = "input.blank_mode == 'checkerboard'",
@@ -74,7 +82,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                            ),
                            ns = ns)
       ),
-      box(status="primary",
+      box(status="warning",
           width = 12,
           title=h3("4 - Forbidden Wells"),
           textInput(ns("forbid_select"), h4("Enter Line Letter & Column number,

@@ -20,11 +20,15 @@ csvFileInput <- function(id, label = "CSV file") {
       "Double quote" = "\""
     )),
     # Input: Select separator
-    radioButtons(ns("sep_input"), "Separator",
-                 choices = c(Semicolon = ";",
-                             Comma = ",",
-                             Tab = "\t"),
-                 selected = ";")
+    awesomeRadio(inputId = ns("sep_input"),
+                 label = "Choose a separator",
+                 choices = c("Semicolon" = ";",
+                             "Comma" = ",",
+                             "Tab" = "\t"),
+                 selected = ";",
+                 status = "warning"
+
+    )
   )
 }
 
@@ -52,11 +56,6 @@ csvFile <- function(input, output, session, stringsAsFactors) {
 
     return(df)
   })
-
-
-  # We can run observers in here if we want to
-
-
   # Return the reactive that yields the data frame
   return(dataframe)
 }
