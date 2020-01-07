@@ -182,15 +182,13 @@ solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
 # d est le dataframe fournit par l'utilisateur
 # groups est le nombre de groupes distincts existant dans les données utilisateur
 # constraint est le mode de contrainte de voisinnage choisi par l'utilisateur
-randomWalk <- function(m, forbidden_cells, toVisit, d, groups, constraint){
+randomWalk <- function(m, toVisit, d, groups, constraint){
 
   if(class(m) != "matrix"){
     logerror("m is not a matrix, m: %s", class(m))
     warning("Need m to be a matrix")
   }
-  if(class(forbidden_cells) != "numeric"){
-    logerror("forbidden_cells is not a vector", logger = "fonctions.randomWalk")
-  }
+
 
   visited <- c() # cases visitées - que ce soit interdites ou autorisées aux échantillons
   nb_lig <- dim(m)[1]
@@ -263,10 +261,15 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
         toVisit <- c(toVisit, paste0(i,j))
       }
     }
-    toVisit <- toVisit[!toVisit %in% df_forbidden$Well]
+
+    if(anyNA(forbidden_wells)){
+      toVisit <- toVisit[1:length(user_df$Sample.name)]
+    }else{
+      toVisit <- toVisit[!toVisit %in% df_forbidden$Well]
+    }
+
 
     ret <- randomWalk(m = mat,
-                      forbidden_cells = forbidden_wells,
                       toVisit = toVisit,
                       d = user_df,
                       groups = length(unique(user_df$Group)),

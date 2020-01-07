@@ -77,6 +77,28 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
     map_plot()
   })
 
+  observeEvent(map(), {
+    sendSweetAlert(
+      session = session,
+      title = "Success !!",
+      text = "All in order, you can check your results in the Results Panel",
+      type = "success"
+    )
+  },
+  ignoreNULL = TRUE,
+  ignoreInit = TRUE)
+  # observeEvent(is.null(map_plot()), {
+  #   sendSweetAlert(
+  #     session = session,
+  #     title = "WPM failed...",
+  #     text = "Seems that we reeched the maximal number of iterations without any result... Try again by increasing the number of iterations. ",
+  #     type = "error"
+  #   )
+  # })
+
+
+
+
   observe({
     toReturn$final_df <- map()
     toReturn$final_map <- map_plot()

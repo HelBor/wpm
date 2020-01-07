@@ -88,22 +88,7 @@ server <- function(input, output, session) {
                constraint = reactive(plate_specs$neighborhood_mod)
                )
 
-    # observeEvent(!is.null(data_export), {
-    #   sendSweetAlert(
-    #     session = session,
-    #     title = "Success !!",
-    #     text = "All in order, you can check your results in the Results Panel",
-    #     type = "success"
-    #   )
-    # })
-    # observeEvent(is.null(map_plot()), {
-    #   sendSweetAlert(
-    #     session = session,
-    #     title = "WPM failed...",
-    #     text = "Seems that we reeched the maximal number of iterations without any result... Try again by increasing the number of iterations. ",
-    #     type = "error"
-    #   )
-    # })
+
     callModule(module = export,
                id = "export",
                df = reactive(data_export$final_df),
