@@ -138,7 +138,12 @@ solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
   }
 
   # we look at which individuals are neighbors of the current box
-  neighbors <- checkConstraints(m, row=i, col=j, mode=constraint)
+  if(constraint != "none"){
+    neighbors <- checkConstraints(m, row=i, col=j, mode=constraint)
+  }else{
+    neighbors <- c(NA,NA,NA,NA)
+  }
+
 
   # identify which group the neighbors belong to in order to obtain a reduced
   # list of possibilities of groups for the current cell to fill

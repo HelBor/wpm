@@ -1,11 +1,33 @@
-2020-01-07 11:36:33 INFO::Initiating the log file...
-2020-01-07 11:36:34 INFO:plate_spec:nb of plate lines : 0
-2020-01-07 11:36:34 INFO:plate_spec:nb of plate cols : 0
-2020-01-07 11:36:34 INFO:plate_spec:selected mode : NS
-2020-01-07 11:36:35 INFO:plate_spec:nb of plate lines : 0
-2020-01-07 11:36:35 INFO:plate_spec:nb of plate cols : 0
-2020-01-07 11:36:35 INFO:plate_spec:selected mode : NS
-2020-01-07 11:36:42 INFO:plate_spec:totalNbWells reactive object
-2020-01-07 11:36:42 INFO:plate_spec:plate_lines: 0 (integer)
-2020-01-07 11:36:42 INFO:plate_spec:plate_cols: 0 (integer)
-2020-01-07 11:36:42 INFO:plate_spec:totalNbWells = 0
+2020-01-07 18:43:06 INFO::Initiating the log file...
+2020-01-07 18:43:07 INFO:plate_spec:nb of plate lines : 0
+2020-01-07 18:43:07 INFO:plate_spec:nb of plate cols : 0
+2020-01-07 18:43:07 INFO:plate_spec:selected mode : NS
+2020-01-07 18:43:08 INFO:plate_spec:nb of plate lines : 0
+2020-01-07 18:43:08 INFO:plate_spec:nb of plate cols : 0
+2020-01-07 18:43:09 INFO:plate_spec:selected mode : NS
+2020-01-07 18:43:09 INFO:plate_spec:totalNbWells reactive object
+2020-01-07 18:43:09 INFO:plate_spec:plate_lines: 0 (integer)
+2020-01-07 18:43:09 INFO:plate_spec:plate_cols: 0 (integer)
+2020-01-07 18:43:09 INFO:plate_spec:totalNbWells = 0
+2020-01-07 18:43:12 INFO:data_import:File ind_groupes_NASH-80.csv was uploaded
+2020-01-07 18:43:12 INFO:server:dataframe/matrix successfully created
+2020-01-07 18:43:13 INFO:server:dataframe/matrix successfully created
+2020-01-07 18:43:15 INFO:plate_spec:nb of plate lines : 8
+2020-01-07 18:43:15 INFO:plate_spec:nb of plate cols : 0
+2020-01-07 18:43:15 INFO:plate_spec:selected mode : NS
+2020-01-07 18:43:15 INFO:plate_spec:totalNbWells reactive object
+2020-01-07 18:43:15 INFO:plate_spec:plate_lines: 8 (integer)
+2020-01-07 18:43:15 INFO:plate_spec:plate_cols: 0 (integer)
+2020-01-07 18:43:15 INFO:plate_spec:totalNbWells = 0
+2020-01-07 18:43:16 INFO:plate_spec:nb of plate lines : 8
+2020-01-07 18:43:16 INFO:plate_spec:nb of plate cols : 12
+2020-01-07 18:43:16 INFO:plate_spec:selected mode : NS
+2020-01-07 18:43:16 INFO:plate_spec:totalNbWells reactive object
+2020-01-07 18:43:16 INFO:plate_spec:plate_lines: 8 (integer)
+2020-01-07 18:43:16 INFO:plate_spec:plate_cols: 12 (integer)
+2020-01-07 18:43:16 INFO:plate_spec:totalNbWells = 96
+2020-01-07 18:43:18 INFO:plate_spec:nb of plate lines : 8
+2020-01-07 18:43:18 INFO:plate_spec:nb of plate cols : 12
+2020-01-07 18:43:18 INFO:plate_spec:selected mode : none
+2020-01-07 18:43:21 INFO::attempt n° 1
+2020-01-07 18:43:21 ERROR::The mode provided is not correct
