@@ -66,12 +66,12 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
   map_plot <- reactive({
     if("forbidden" %in% map()$Status | "blank" %in% map()$Status){
       nb_g = nb_g + 1
-      drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns(), project_title = project_name)
+      drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns(), project_title = project_name())
     }else if("forbidden" %in% map()$Status & "blank" %in% map()$Status){
       nb_g = nb_g + 2
-      drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns(), project_title = project_name)
+      drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns(), project_title = project_name())
     }else{
-      drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns(), project_title = project_name)
+      drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns(), project_title = project_name())
     }
   })
 
