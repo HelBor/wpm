@@ -27,7 +27,7 @@ backtrackUI <- function(id, label = NULL) {
 # rows : integer - plate's number of rows
 # columns : integer - plate's number of columns
 # constraint : character - neighborhood spatial constraint mode
-backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_wells, rows, columns, constraint) {
+backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_wells, rows, columns, constraint, project_name) {
 
   toReturn <- reactiveValues(
     final_df = NULL,
@@ -66,18 +66,19 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
   map_plot <- reactive({
     if("forbidden" %in% map()$Status | "blank" %in% map()$Status){
       nb_g = nb_g + 1
-      drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns())
+      drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns(), project_title = project_name)
     }else if("forbidden" %in% map()$Status & "blank" %in% map()$Status){
       nb_g = nb_g + 2
-      drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns())
+      drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns(), project_title = project_name)
     }else{
-      drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns())
+      drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns(), project_title = project_name)
     }
   })
 
   output$mapPlot <- renderPlot({
     map_plot()
   })
+
   loginfo(class(map()))
   observeEvent(map(), {
     sendSweetAlert(

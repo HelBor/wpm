@@ -46,7 +46,7 @@ server <- function(input, output, session) {
   # Includes the dimensions of the plate, the layout of the blanks,
   # the prohibited wells, the spatial constraints of the plate
   #*****************************************************************************
-  plate_specs <- callModule(plateSpec, "plate")
+  plate_specs <- callModule(plateSpec, "plate", project_name = input$project_title)
 
 
   #*****************************************************************************
@@ -85,7 +85,8 @@ server <- function(input, output, session) {
                forbidden_wells = reactive(plate_specs$forbidden_wells),
                rows = reactive(plate_specs$nb_lines),
                columns = reactive(plate_specs$nb_cols),
-               constraint = reactive(plate_specs$neighborhood_mod)
+               constraint = reactive(plate_specs$neighborhood_mod),
+               project_name = reactive(input$project_title)
                )
 
 

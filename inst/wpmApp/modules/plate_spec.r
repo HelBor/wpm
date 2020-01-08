@@ -14,13 +14,16 @@ plateSpecUI <- function(id, label = "Plate specifications") {
       box(status="warning",
           width = 12,
           title=h3("2 - Plate dimensions"),
-          numericInput(ns("plate_lines"), label = "lines",
+          h4("How many lines on your plate?"),
+          numericInput(ns("plate_lines"), label = NULL,
                        value=0, min=0,
                        width = "80px"),
-          numericInput(ns("plate_cols"), label="columns",
+          h4("how many columns on your plate?"),
+          numericInput(ns("plate_cols"), label = NULL,
                        value=0, min=0,
                        width = "80px"),
-          numericInput(ns("no_plates"), label="How many plates?",
+          h4("How many plates?"),
+          numericInput(ns("no_plates"), label = NULL,
                        value=1, min=1,
                        width = "80px")
       ),
@@ -105,7 +108,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 }
 
 # Module server function
-plateSpec <- function(input, output, session) {
+plateSpec <- function(input, output, session, project_name) {
 
   toReturn <- reactiveValues(
     nb_lines = NULL,
@@ -189,12 +192,14 @@ plateSpec <- function(input, output, session) {
         drawPlateMap(df = df,
                      1,
                      plate_lines = input$plate_lines,
-                     plate_cols = input$plate_cols)
+                     plate_cols = input$plate_cols,
+                     project_title = project_name)
       }else{
         drawPlateMap(df = wells_to_plot(),
                      2,
                      plate_lines = input$plate_lines,
-                     plate_cols = input$plate_cols)
+                     plate_cols = input$plate_cols,
+                     project_title = project_name)
       }
     }
   })
