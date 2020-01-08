@@ -53,8 +53,6 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
   })
 
 
-  # loginfo("length(user_data()$Sample.name: %d", length(user_data()$Sample.name), logger = "backtracking")
-
   # map is a list containing:
   #     a map plate : dataframe (containing user data + blanks + forbidden wells, ready to
   #                   be plotted or/and downloaded)
@@ -91,7 +89,7 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
     map_plot()
   })
 
-  loginfo(class(map()))
+  loginfo("class(map()): %s",class(map()), logger = "backtracking")
   observeEvent(map(), {
     sendSweetAlert(
       session = session,

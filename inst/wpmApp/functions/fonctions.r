@@ -252,10 +252,11 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
 
   nb_attempts = 1
   ret=1
-
+  # loginfo("mode: %s", mod, logger = "fonctions.generateMapPlate")
   while (ret==1 & nb_attempts <= max_it) {
-    loginfo("attempt n° %d", nb_attempts)
+    loginfo("attempt n° %d", nb_attempts, logger = "fonctions.generateMapPlate")
     mat = matrix(NA,nrow=nb_rows, ncol=nb_cols)
+
     # Generate all the cells that are allowed to be filled
     toVisit <- NULL
     for(i in LETTERS[1:nb_rows]){
@@ -263,26 +264,24 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
         toVisit <- c(toVisit, paste0(i,j))
       }
     }
-    pouet <- toVisit[toVisit %in% df_forbidden$Well]
-    # loginfo("df_forbidden$Well: %s", df_forbidden$Well, logger = "fonctions.generateMapPlate")
-    # loginfo("toVisit in df_forbidden$Well : %s", pouet, logger = "fonctions.generateMapPlate")
-    if(anyNA(df_forbidden$Well)){
+    print(df_forbidden$Well)
+    # print(anyNA(df_forbidden$Well))
+    if(is.null(df_forbidden$Well)){
       toVisit <- toVisit[1:nrow(user_df)]
     }else{
       toVisit <- toVisit[!toVisit %in% df_forbidden$Well]
     }
-
+    # loginfo("toVisit: %s", toVisit)
     ret <- randomWalk(m = mat,
                       toVisit = toVisit,
                       d = user_df,
                       groups = length(unique(user_df$Group)),
                       constraint = mod
                       )
-
+    loginfo("class(ret): %s", class(ret), logger = "fonctions.generateMapPlate")
     if(class(ret)=="data.frame"){
       ret$Well <- paste0(LETTERS[ret$Row], ret$Column, sep = "")
       ret <- rbind(ret, df_forbidden)
-      #return(list("map_df" = ret, "attempts" = nb_attempts))
       logwarn("number of attempts: %d", nb_attempts, logger = "fonctions.generateMapPlate")
       return(ret)
     }
