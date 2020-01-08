@@ -4,7 +4,7 @@ csvFileInput <- function(id, label = "CSV file") {
   ns <- NS(id)
 
   tagList(
-    fileInput(ns("file"), label),
+    fileInput(ns("file"), label = NULL),
     materialSwitch(
       inputId = ns("heading"),
       label = "Header",
@@ -12,16 +12,21 @@ csvFileInput <- function(id, label = "CSV file") {
       status = "warning",
       right = TRUE
     ),
-    # checkboxInput(ns("heading"), "Header"),
+    hr(),
     # Input: Select quotes
-    selectInput(ns("quote"), "Quote", c(
-      "None" = "",
-      "Single quote" = "'",
-      "Double quote" = "\""
-    )),
+    h4("Please select the appropriate quote"),
+    selectInput(ns("quote"),
+                label = NULL,
+                c("None" = "",
+                  "Single quote" = "'",
+                  "Double quote" = "\""
+                  ),
+                selected = NULL),
+    hr(),
     # Input: Select separator
+    h4("Please select the appropriate separator"),
     awesomeRadio(inputId = ns("sep_input"),
-                 label = "Choose a separator",
+                 label = NULL,
                  choices = c("Semicolon" = ";",
                              "Comma" = ",",
                              "Tab" = "\t"),

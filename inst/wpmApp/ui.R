@@ -42,7 +42,13 @@ body <- dashboardBody(
                                  contain 2 columns: samples in the first one,
                                  and group number in the second one."),
                     csvFileInput("datafile"
-                                 )
+                                 ),
+                    hr(),
+                    h4("Please choose a Project name for the plot title"),
+                    textInput(inputId = "project_title",
+                              label = NULL,
+                              value = "",
+                              placeholder = "my project title")
                 )
               ),
               column(width=6,
@@ -91,7 +97,11 @@ body <- dashboardBody(
                                 )
                             ),
                          div(
-                           textOutput("pressedBtn")
+                           withLoader(
+                            textOutput("pressedBtn"),
+                            type = "html",
+                            loader = "loader3"
+                           )
                          )
 
 
