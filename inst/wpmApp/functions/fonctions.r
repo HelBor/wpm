@@ -253,9 +253,6 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
   nb_attempts = 1
   ret=1
 
-  forbidden_wells <- as.vector(as.numeric(paste0(df_forbidden$Row,
-                                                 df_forbidden$Column,
-                                                 sep="")))
   while (ret==1 & nb_attempts <= max_it) {
     loginfo("attempt n° %d", nb_attempts)
     mat = matrix(NA,nrow=nb_rows, ncol=nb_cols)
@@ -266,13 +263,14 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
         toVisit <- c(toVisit, paste0(i,j))
       }
     }
-
-    if(anyNA(forbidden_wells)){
-      toVisit <- toVisit[1:length(user_df$Sample.name)]
+    pouet <- toVisit[toVisit %in% df_forbidden$Well]
+    # loginfo("df_forbidden$Well: %s", df_forbidden$Well, logger = "fonctions.generateMapPlate")
+    # loginfo("toVisit in df_forbidden$Well : %s", pouet, logger = "fonctions.generateMapPlate")
+    if(anyNA(df_forbidden$Well)){
+      toVisit <- toVisit[1:nrow(user_df)]
     }else{
       toVisit <- toVisit[!toVisit %in% df_forbidden$Well]
     }
-
 
     ret <- randomWalk(m = mat,
                       toVisit = toVisit,

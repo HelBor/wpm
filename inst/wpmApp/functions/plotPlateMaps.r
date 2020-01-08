@@ -248,6 +248,8 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
       df$Letters <- LETTERS[df$Row]
       df$Well <- apply( df[ , c("Letters", "Column") ] , 1 , paste0 , collapse = "" )
       df$Letters <- NULL
+      # remove space between letters and numbers
+      df$Well <- str_remove(df$Well, " ")
 
       result <- df %>%
         distinct(Row, Column, .keep_all = TRUE)

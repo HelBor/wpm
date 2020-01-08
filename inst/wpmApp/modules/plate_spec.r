@@ -117,10 +117,25 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
     neighborhood_mod = NULL
   )
 
+
+  p_lines <- reactive({
+    if(is.na(input$plate_lines)){
+      return(0)
+    }else{
+      return(input$plate_lines)
+    }
+  })
+
+  p_cols <- reactive({
+    if(is.na(input$plate_cols)){
+      return(0)
+    }else{
+      return(input$plate_cols)
+    }
+  })
+
   totalNbWells <- reactive({
-    tNbW <- as.numeric(input$plate_lines)*as.numeric(input$plate_cols)
-    loginfo("plate_lines: %d (%s)", input$plate_lines, class(input$plate_lines), logger = "plate_spec")
-    loginfo("plate_cols: %d (%s)", input$plate_cols, class(input$plate_cols), logger = "plate_spec")
+    tNbW <- p_lines()*p_cols()
     loginfo("totalNbWells = %d", tNbW, logger = "plate_spec")
     return(tNbW)
     })
@@ -147,9 +162,12 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
 
 
   blank_wells <- reactive({
-    placeBlanksOnPlate(as.numeric(input$plate_lines),
-                                    as.numeric(input$plate_cols),
-                                    as.character(input$blank_mode))
+    validate(
+      need((p_lines() > 0 & p_cols() > 0), "requires a plate with positive dimensions.")
+    )
+    placeBlanksOnPlate(p_lines(),
+                       p_cols(),
+                       as.character(input$blank_mode))
   })
 
   forbid_wells <- reactive({
@@ -166,43 +184,74 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
 
   wells_to_plot <- reactive({
     loginfo("nb samples : %d, totalNbWells : %d", nb_samples(), totalNbWells(), logger = "plate_spec")
+
+    if(is.null(blank_wells())){
+      nb_b <- length(blank_wells())
+      loginfo("nb_b: %s", nb_b, logger = "plate_spec")
+    }else{
+      nb_b <- nrow(blank_wells())
+      loginfo("nb_b: %s", nb_b, logger = "plate_spec")
+    }
+    if(is.null(forbid_wells())){
+      nb_f <- length(forbid_wells())
+      loginfo("nb_f: %s", nb_f, logger = "plate_spec")
+    }else{
+      nb_f <- nrow(forbid_wells())
+      loginfo("nb_f: %s", nb_f, logger = "plate_spec")
+    }
     validate(
-      need(nb_samples() <= totalNbWells(),
+      need(nb_samples() <= (totalNbWells()),
            "the dimensions of the plate are not compatible with the number of samples to be placed")
     )
     # s'il y a des blancs et des cases interdites alors il faut les rassembler
     if(!is.null(blank_wells()) & !is.null(forbid_wells()) ){
+      validate(
+        need(nb_samples() <= (totalNbWells() - nb_b - nb_f),
+             "the blank mode and/or forbidden wells selected are not compatible
+             with the plate's dimensions and the number of samples to be placed")
+      )
       result <- base::rbind(blank_wells(), forbid_wells())
       result <- distinct(result, Row, Column, .keep_all = TRUE)
       result
       # s'il n'y a pas de blancs, qu'il y a des interdits, on ne renvoie que les
       # interdits
     }else if(input$blank_mode == "none" & !is.null(forbid_wells()) ){
+      validate(
+        need(nb_samples() <= (totalNbWells() - nb_f),
+             "the forbidden wells selected are not compatible
+             with the plate's dimensions and the number of samples to be placed")
+      )
       forbid_wells()
       # s'il n'y a que des blancs, on ne renvoie que ça
     }else if(!is.null(blank_wells()) & is.null(forbid_wells())){
+      validate(
+        need(nb_samples() <= (totalNbWells() - nb_b),
+             "the blank mode selected is not compatible
+             with the plate's dimensions and the number of samples to be placed")
+      )
       blank_wells()
     }
   })
+
 
   output$plotOut <- renderPlot({
     # pour que la fonction drawPlateMap fonctionne, il faut donner un nombre de
     # lignes et de colonnes > 0 et au minimum un dataframe vide avec les bons
     # noms de colonne
-    if(input$plate_lines != 0 & input$plate_cols != 0){
+    if(p_lines() != 0 & p_cols() != 0){
       if(is.null(wells_to_plot())){
         df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(0))),
                        c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
         drawPlateMap(df = df,
                      1,
-                     plate_lines = input$plate_lines,
-                     plate_cols = input$plate_cols,
+                     plate_lines = p_lines(),
+                     plate_cols = p_cols(),
                      project_title = project_name)
       }else{
         drawPlateMap(df = wells_to_plot(),
                      2,
-                     plate_lines = input$plate_lines,
-                     plate_cols = input$plate_cols,
+                     plate_lines = p_lines(),
+                     plate_cols = p_cols(),
                      project_title = project_name)
       }
     }
@@ -221,12 +270,12 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
   })
 
   observe({
-    loginfo("nb of plate lines : %d", input$plate_lines, logger = "plate_spec")
-    loginfo("nb of plate cols : %d", input$plate_cols, logger = "plate_spec")
+    loginfo("nb of plate lines : %d", p_lines(), logger = "plate_spec")
+    loginfo("nb of plate cols : %d", p_cols(), logger = "plate_spec")
     loginfo("selected mode : %s", nbh_mod(), logger = "plate_spec")
 
-    toReturn$nb_lines <- input$plate_lines
-    toReturn$nb_cols <- input$plate_cols
+    toReturn$nb_lines <- p_lines()
+    toReturn$nb_cols <- p_cols()
     # contains the blanks and forbidden wells
     toReturn$forbidden_wells <- wells_to_plot()
     toReturn$neighborhood_mod <- nbh_mod()

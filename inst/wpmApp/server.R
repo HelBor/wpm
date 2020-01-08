@@ -80,11 +80,6 @@ server <- function(input, output, session) {
       need(!is.null(datafile()), "requires a user data file"),
       need(plate_specs$nb_lines > 0, "requires a number of rows greater than 0"),
       need(plate_specs$nb_cols > 0, "requires a number of columns greater than 0")
-      # add the check of nb samples <= total wells - blanks - forbidden
-      # need(length(datafile()$Sample.name) <= (plate_specs$nb_lines * plate_specs$nb_cols),
-      #      "the dimensions of the plate are not compatible with the number of samples to be placed"),
-      # need(length(datafile()$Sample.name) <= ((plate_specs$nb_lines * plate_specs$nb_cols) - plate_specs$forbidden_wells),
-      #      "")
     )
 
     data_export <- callModule(module = backtrack,
@@ -99,9 +94,6 @@ server <- function(input, output, session) {
                project_name = reactive(input$project_title)
                )
 
-    # output$pressedBtn <- renderText({
-    #   "Done"
-    # })
 
     callModule(module = export,
                id = "export",
