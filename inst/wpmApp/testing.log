@@ -1,43 +1,58 @@
-2020-01-08 11:54:18 INFO::Initiating the log file...
-2020-01-08 11:54:19 INFO:plate_spec:nb of plate lines : 0
-2020-01-08 11:54:19 INFO:plate_spec:nb of plate cols : 0
-2020-01-08 11:54:19 INFO:plate_spec:selected mode : NS
-2020-01-08 11:54:20 INFO:plate_spec:nb of plate lines : 0
-2020-01-08 11:54:20 INFO:plate_spec:nb of plate cols : 0
-2020-01-08 11:54:20 INFO:plate_spec:selected mode : NS
-2020-01-08 11:54:21 INFO:plate_spec:totalNbWells reactive object
-2020-01-08 11:54:21 INFO:plate_spec:plate_lines: 0 (integer)
-2020-01-08 11:54:21 INFO:plate_spec:plate_cols: 0 (integer)
-2020-01-08 11:54:21 INFO:plate_spec:totalNbWells = 0
-2020-01-08 11:54:24 INFO:data_import:File ind_groupes_NASH-80.csv was uploaded
-2020-01-08 11:54:24 INFO:server:dataframe/matrix successfully created
-2020-01-08 11:54:26 INFO:server:dataframe/matrix successfully created
-2020-01-08 11:54:39 INFO:plate_spec:nb of plate lines : 8
-2020-01-08 11:54:39 INFO:plate_spec:nb of plate cols : 0
-2020-01-08 11:54:39 INFO:plate_spec:selected mode : NS
-2020-01-08 11:54:39 INFO:plate_spec:totalNbWells reactive object
-2020-01-08 11:54:39 INFO:plate_spec:plate_lines: 8 (integer)
-2020-01-08 11:54:39 INFO:plate_spec:plate_cols: 0 (integer)
-2020-01-08 11:54:39 INFO:plate_spec:totalNbWells = 0
-2020-01-08 11:54:39 INFO:plate_spec:nb of plate lines : 8
-2020-01-08 11:54:39 INFO:plate_spec:nb of plate cols : 12
-2020-01-08 11:54:39 INFO:plate_spec:selected mode : NS
-2020-01-08 11:54:39 INFO:plate_spec:totalNbWells reactive object
-2020-01-08 11:54:39 INFO:plate_spec:plate_lines: 8 (integer)
-2020-01-08 11:54:39 INFO:plate_spec:plate_cols: 12 (integer)
-2020-01-08 11:54:39 INFO:plate_spec:totalNbWells = 96
-2020-01-08 11:54:42 INFO:plate_spec:nb of plate lines : 8
-2020-01-08 11:54:42 INFO:plate_spec:nb of plate cols : 12
-2020-01-08 11:54:42 INFO:plate_spec:selected mode : NEWS
-2020-01-08 11:54:48 INFO:plate_spec:nb of plate lines : 8
-2020-01-08 11:54:48 INFO:plate_spec:nb of plate cols : 12
-2020-01-08 11:54:48 INFO:plate_spec:selected mode : NEWS
-2020-01-08 11:54:49 INFO::attempt n° 1
-2020-01-08 11:54:49 INFO::attempt n° 2
-2020-01-08 11:54:49 INFO::attempt n° 3
-2020-01-08 11:54:49 INFO::attempt n° 4
-2020-01-08 11:54:49 INFO:fonctions.randomWalk:names de df: Sample.name,Group,Well,Status,Row,Column
-2020-01-08 11:54:49 INFO:fonctions.randomWalk:df 1srt line: 8,1,NA,1,8,6
-2020-01-08 11:54:49 INFO:fonctions.randomWalk:df 2nd line: 10,1,NA,1,1,5
-2020-01-08 11:54:49 WARNING:fonctions.generateMapPlate:number of attempts: 4
-2020-01-08 11:54:49 INFO::data.frame
+2020-01-08 14:30:55 INFO::Initiating the log file...
+2020-01-08 14:30:56 INFO:plate_spec:nb of plate lines : 0
+2020-01-08 14:30:56 INFO:plate_spec:nb of plate cols : 0
+2020-01-08 14:30:56 INFO:plate_spec:selected mode : NS
+2020-01-08 14:30:58 INFO:plate_spec:nb of plate lines : 0
+2020-01-08 14:30:58 INFO:plate_spec:nb of plate cols : 0
+2020-01-08 14:30:58 INFO:plate_spec:selected mode : NS
+2020-01-08 14:30:59 INFO:plate_spec:totalNbWells reactive object
+2020-01-08 14:30:59 INFO:plate_spec:plate_lines: 0 (integer)
+2020-01-08 14:30:59 INFO:plate_spec:plate_cols: 0 (integer)
+2020-01-08 14:30:59 INFO:plate_spec:totalNbWells = 0
+2020-01-08 14:31:02 INFO:data_import:File ind_groupes_NASH-80.csv was uploaded
+2020-01-08 14:31:02 INFO:server:dataframe/matrix successfully created
+2020-01-08 14:31:03 INFO:server:dataframe/matrix successfully created
+2020-01-08 14:31:06 INFO:plate_spec:nb of plate lines : 8
+2020-01-08 14:31:06 INFO:plate_spec:nb of plate cols : 0
+2020-01-08 14:31:06 INFO:plate_spec:selected mode : NS
+2020-01-08 14:31:06 INFO:plate_spec:totalNbWells reactive object
+2020-01-08 14:31:06 INFO:plate_spec:plate_lines: 8 (integer)
+2020-01-08 14:31:06 INFO:plate_spec:plate_cols: 0 (integer)
+2020-01-08 14:31:06 INFO:plate_spec:totalNbWells = 0
+2020-01-08 14:31:06 INFO:plate_spec:nb of plate lines : 8
+2020-01-08 14:31:06 INFO:plate_spec:nb of plate cols : 12
+2020-01-08 14:31:07 INFO:plate_spec:selected mode : NS
+2020-01-08 14:31:07 INFO:plate_spec:totalNbWells reactive object
+2020-01-08 14:31:07 INFO:plate_spec:plate_lines: 8 (integer)
+2020-01-08 14:31:07 INFO:plate_spec:plate_cols: 12 (integer)
+2020-01-08 14:31:07 INFO:plate_spec:totalNbWells = 96
+2020-01-08 14:31:08 INFO:plate_spec:nb of plate lines : 8
+2020-01-08 14:31:08 INFO:plate_spec:nb of plate cols : 12
+2020-01-08 14:31:08 INFO:plate_spec:selected mode : NS
+2020-01-08 14:31:10 INFO:plate_spec:nb of plate lines : 8
+2020-01-08 14:31:10 INFO:plate_spec:nb of plate cols : 12
+2020-01-08 14:31:10 INFO:plate_spec:selected mode : NEWS
+2020-01-08 14:31:18 INFO::attempt n° 1
+2020-01-08 14:31:18 WARNING:fonctions.generateMapPlate:we reeched the maximal number of iterations with no success
+2020-01-08 14:31:18 INFO::NULL
+2020-01-08 14:31:41 INFO::attempt n° 1
+2020-01-08 14:31:41 INFO:fonctions.randomWalk:names de df: Sample.name,Group,Well,Status,Row,Column
+2020-01-08 14:31:41 INFO:fonctions.randomWalk:df 1srt line: 8,1,NA,1,4,6
+2020-01-08 14:31:41 INFO:fonctions.randomWalk:df 2nd line: 10,1,NA,1,1,6
+2020-01-08 14:31:41 WARNING:fonctions.generateMapPlate:number of attempts: 1
+2020-01-08 14:31:41 INFO::data.frame
+2020-01-08 14:33:05 INFO::attempt n° 1
+2020-01-08 14:33:05 WARNING:fonctions.generateMapPlate:we reeched the maximal number of iterations with no success
+2020-01-08 14:33:05 INFO::NULL
+2020-01-08 14:33:12 INFO::attempt n° 1
+2020-01-08 14:33:12 WARNING:fonctions.generateMapPlate:we reeched the maximal number of iterations with no success
+2020-01-08 14:33:12 INFO::NULL
+2020-01-08 14:33:14 INFO::attempt n° 1
+2020-01-08 14:33:14 WARNING:fonctions.generateMapPlate:we reeched the maximal number of iterations with no success
+2020-01-08 14:33:14 INFO::NULL
+2020-01-08 14:33:15 INFO::attempt n° 1
+2020-01-08 14:33:15 INFO:fonctions.randomWalk:names de df: Sample.name,Group,Well,Status,Row,Column
+2020-01-08 14:33:15 INFO:fonctions.randomWalk:df 1srt line: 8,1,NA,1,2,2
+2020-01-08 14:33:15 INFO:fonctions.randomWalk:df 2nd line: 10,1,NA,1,4,9
+2020-01-08 14:33:15 WARNING:fonctions.generateMapPlate:number of attempts: 1
+2020-01-08 14:33:15 INFO::data.frame

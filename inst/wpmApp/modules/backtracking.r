@@ -5,12 +5,21 @@ backtrackUI <- function(id, label = NULL) {
         collapsible = TRUE,
         width = 4,
         status = "warning",
-        dataTableOutput(ns("df_modif"))
+        withLoader(
+          dataTableOutput(ns("df_modif")),
+          type = "html",
+          loader = "loader3"
+        )
+
     ),
     box(title = h3("Plate Layout Experiment"),
         width = 8,
         status = "warning",
-        plotOutput(ns("mapPlot"), height = 600)
+        withLoader(
+          plotOutput(ns("mapPlot"), height = 600),
+          type = "html",
+          loader = "loader3"
+        )
 
 
     )
@@ -87,16 +96,21 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
       text = "All in order, you can check your results in the Results Panel",
       type = "success"
     )
-  },
-  ignoreNULL = TRUE)
-  # observeEvent(is.null(map_plot()), {
+    },
+    ignoreNULL = TRUE
+  )
+
+  # observeEvent(map(), {
   #   sendSweetAlert(
   #     session = session,
   #     title = "WPM failed...",
   #     text = "Seems that we reeched the maximal number of iterations without any result... Try again by increasing the number of iterations. ",
   #     type = "error"
   #   )
-  # })
+  #   },
+  #   ignoreNULL = FALSE,
+  #   ignoreInit = TRUE
+  # )
 
 
 

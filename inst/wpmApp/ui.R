@@ -95,17 +95,12 @@ body <- dashboardBody(
                                       color = "warning",
                                       style = "unite"
                                 )
-                            ),
-                         div(
-                           withLoader(
-                            textOutput("pressedBtn"),
-                            type = "html",
-                            loader = "loader3"
-                           )
-                         )
-
-
-
+                             )#,
+                         # withLoader(
+                         #  textOutput("pressedBtn"),
+                         #  type = "html",
+                         #  loader = "loader3"
+                         # )
                      )
 
                      )# end of column
