@@ -108,7 +108,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 }
 
 # Module server function
-plateSpec <- function(input, output, session, project_name) {
+plateSpec <- function(input, output, session, project_name, nb_samples) {
 
   toReturn <- reactiveValues(
     nb_lines = NULL,
@@ -118,7 +118,6 @@ plateSpec <- function(input, output, session, project_name) {
   )
 
   totalNbWells <- reactive({
-    loginfo("totalNbWells reactive object", logger = "plate_spec")
     tNbW <- as.numeric(input$plate_lines)*as.numeric(input$plate_cols)
     loginfo("plate_lines: %d (%s)", input$plate_lines, class(input$plate_lines), logger = "plate_spec")
     loginfo("plate_cols: %d (%s)", input$plate_cols, class(input$plate_cols), logger = "plate_spec")
@@ -166,16 +165,21 @@ plateSpec <- function(input, output, session, project_name) {
   })
 
   wells_to_plot <- reactive({
+    loginfo("nb samples : %d, totalNbWells : %d", nb_samples(), totalNbWells(), logger = "plate_spec")
+    validate(
+      need(nb_samples() <= totalNbWells(),
+           "the dimensions of the plate are not compatible with the number of samples to be placed")
+    )
     # s'il y a des blancs et des cases interdites alors il faut les rassembler
     if(!is.null(blank_wells()) & !is.null(forbid_wells()) ){
       result <- base::rbind(blank_wells(), forbid_wells())
       result <- distinct(result, Row, Column, .keep_all = TRUE)
       result
-    # s'il n'y a pas de blancs, qu'il y a des interdits, on ne renvoie que les
-    # interdits
+      # s'il n'y a pas de blancs, qu'il y a des interdits, on ne renvoie que les
+      # interdits
     }else if(input$blank_mode == "none" & !is.null(forbid_wells()) ){
       forbid_wells()
-    # s'il n'y a que des blancs, on ne renvoie que ça
+      # s'il n'y a que des blancs, on ne renvoie que ça
     }else if(!is.null(blank_wells()) & is.null(forbid_wells())){
       blank_wells()
     }
@@ -223,6 +227,7 @@ plateSpec <- function(input, output, session, project_name) {
 
     toReturn$nb_lines <- input$plate_lines
     toReturn$nb_cols <- input$plate_cols
+    # contains the blanks and forbidden wells
     toReturn$forbidden_wells <- wells_to_plot()
     toReturn$neighborhood_mod <- nbh_mod()
   })

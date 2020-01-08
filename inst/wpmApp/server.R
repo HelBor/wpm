@@ -46,7 +46,12 @@ server <- function(input, output, session) {
   # Includes the dimensions of the plate, the layout of the blanks,
   # the prohibited wells, the spatial constraints of the plate
   #*****************************************************************************
-  plate_specs <- callModule(plateSpec, "plate", project_name = input$project_title)
+
+  plate_specs <- callModule(plateSpec,
+                            "plate",
+                            project_name = input$project_title,
+                            nb_samples = reactive(nrow(datafile()))
+                            )
 
 
   #*****************************************************************************
@@ -76,6 +81,10 @@ server <- function(input, output, session) {
       need(plate_specs$nb_lines > 0, "requires a number of rows greater than 0"),
       need(plate_specs$nb_cols > 0, "requires a number of columns greater than 0")
       # add the check of nb samples <= total wells - blanks - forbidden
+      # need(length(datafile()$Sample.name) <= (plate_specs$nb_lines * plate_specs$nb_cols),
+      #      "the dimensions of the plate are not compatible with the number of samples to be placed"),
+      # need(length(datafile()$Sample.name) <= ((plate_specs$nb_lines * plate_specs$nb_cols) - plate_specs$forbidden_wells),
+      #      "")
     )
 
     data_export <- callModule(module = backtrack,
