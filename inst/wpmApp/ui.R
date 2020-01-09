@@ -25,9 +25,13 @@ body <- dashboardBody(
             h2("Welcome to Well Plate Maker!"),
             div(""),
             br(),
-            h3("1 - Fill the Parameters section"),
-            h3("2 - Check the Results section"),
-            h3("3 - Export your results if everything is ok")
+            box(width = 12,
+                status = "warning",
+                h3("1 - Fill the Parameters section"),
+                h3("2 - Check the Results section"),
+                h3("3 - Export your results if everything is ok")
+            )
+
     ),
     tabItem(tabName = "parameters",
             h2("Parameters"),

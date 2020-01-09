@@ -331,9 +331,9 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
 #
 #   nb.groups = length(unique(d$group))
 #   # number of samples per group
-#   workforce = d %>%
-#     group_by(group) %>%
-#     summarise(n_distinct(ind))
+  # workforce = d %>%
+  #   group_by(group) %>%
+  #   summarise(n_distinct(ind))
 #   data = selectBioSamples(d, workforce$`n_distinct(ind)` %/% 2)
 #   plate <- generatePlate(m=mat, interdit=forbidden, d=data, groupes=nb.groups)
 # }
@@ -345,31 +345,74 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
 #
 #*******************************************************************************
 
-# preparation des inputs comme ceux qu'on obtient dans l'appli shiny
-# df <- read.csv2("../data/ind_groupes_NASH-80.csv",
+# # preparation des inputs comme ceux qu'on obtient dans l'appli shiny
+# d <- read.csv2("../data/ind_groupes_NASH-80.csv",
 #                 header = TRUE,
 #                 sep = ";",
 #                 col.names = c("Sample.name", "Group"),
 #                 stringsAsFactors = FALSE)
 #
-# df$Group <- as.factor(df$Group)
-# df$Well <- as.character(NA)
-# df$Status <- as.factor("allowed")
-# df$Row <- NA
-# df$Column <- NA
+# d$Group <- as.factor(d$Group)
+# d$Well <- as.character(NA)
+# d$Status <- as.factor("allowed")
+# d$Row <- NA
+# d$Column <- NA
+#
 #
 # nb_l <- 8
 # nb_c <- 12
-#
+# nb_p <- 3
 # forbidden_wells <- "A1,A2,A3,A10,A11,A12,B1,B12,G1,G12,H1,H2,H3,H10,H11,H12"
 # fw <- as.vector(unlist(strsplit(as.character(forbidden_wells),
 #                                 split=",")))
 # fw <- convertVector2Df(fw, nb_l, nb_c)
 # mod <- "NEWS"
 # max_it <- 20
-# lancement de l'algo
-# plate <- generateMapPlate(user_df = df, nb_rows = nb_l, nb_cols = nb_c, df_forbidden = fw, mod = mod, max_it = max_it)
-# drawPlateMap(df = plate, nb_gps = 11, plate_lines = nb_l, plate_cols = nb_c)
+# # lancement de l'algo
+# # plate <- generateMapPlate(user_df = df, nb_rows = nb_l, nb_cols = nb_c, df_forbidden = fw, mod = mod, max_it = max_it)
+# # drawPlateMap(df = plate, nb_gps = 11, plate_lines = nb_l, plate_cols = nb_c)
+# #
+# #
+# workforce <- d_input %>%
+#   group_by(Group) %>%
+#   summarise(n_distinct(Sample.name))
+# names(workforce) <- c("Group", "nb_samples")
 #
 #
+#
+#
+# d_input <- d
+# toReturn <- list()
+# rm(p,w,group,g,df, toTake)
+#
+# # pour chaque plaque
+# for(p in 1:nb_p){
+#
+#   # si on est au dernier tour
+#   if(p == nb_p){
+#     loginfo("p = %s, du coup on est dans le if p == nb_p", p)
+#     # prendre ce qui reste dans le df de départ
+#     df <- d_input
+#   }else{
+#     loginfo("p = %s, du coup on est dans le else", p)
+#     # pour chaque group existant, prendre au hasard des échantillons dans df avec worforce %/% nb_p
+#     group = 1
+#     df = data.frame(matrix(ncol = length(d_input)))
+#     names(df) <- names(d_input)
+#     for (w in workforce$nb_samples) {
+#       toTake <- (w %/% nb_p)
+#       loginfo("toTake: %s", toTake)
+#       g <- d_input[d_input$Group==group,][sample(nrow(d_input[d_input$Group==group,]), toTake),]
+#       df <- rbind(df,g)
+#       group <- group + 1
+#     }
+#     loginfo("df dimensions: %d", nrow(df))
+#     # enlever les échantillons choisis du df de départ
+#     d_input <- d_input[!d_input$Sample.name %in% df$Sample.name,]
+#     loginfo("d_input dimensions: %d", nrow(d_input))
+#
+#   }
+#   # rajouter ce nouveau dataframe dans la liste des df à renvoyer
+#   toReturn[[paste0("p",p, collapse = "")]] <- df
+# }
 

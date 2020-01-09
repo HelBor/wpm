@@ -134,8 +134,16 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
     }
   })
 
+  nb_p <- reactive({
+    if(is.na(input$no_plates)){
+      return(0)
+    }else{
+      return(input$no_plates)
+    }
+  })
+
   totalNbWells <- reactive({
-    tNbW <- p_lines()*p_cols()
+    tNbW <- p_lines()*p_cols()*nb_p()
     loginfo("totalNbWells = %d", tNbW, logger = "plate_spec")
     return(tNbW)
     })
@@ -153,7 +161,12 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
   })
 
   output$warning_plate <- renderInfoBox({
-    infoBox(title="We assume that all the plates to be filled have the same dimensions.",
+    infoBox(title=HTML(paste("We assume that all the plates to be filled have the same dimensions.",
+                       br(),
+                       "Also, when you want to generate more than 1 plate,",
+                       br(),
+                       "WPM uses balanced group workforces to distribute the samples within the plates."
+                         )),
             icon = icon("exclamation-triangle"),
             color = "red",
             fill=TRUE)
@@ -176,7 +189,7 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
     if(input$forbid_select != ""){
       fw <- as.vector(unlist(strsplit(as.character(input$forbid_select),
                                       split=",")))
-      return(convertVector2Df(fw, input$plate_lines, input$plate_cols))
+      return(convertVector2Df(fw, p_lines(), p_cols()))
     }else{
       return(NULL)
     }
@@ -207,7 +220,7 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
     # s'il y a des blancs et des cases interdites alors il faut les rassembler
     if(!is.null(blank_wells()) & !is.null(forbid_wells()) ){
       validate(
-        need(nb_samples() <= (totalNbWells() - nb_b - nb_f),
+        need(nb_samples() <= (totalNbWells() - (nb_b*nb_p()) - (nb_f*nb_p())),
              "the blank mode and/or forbidden wells selected are not compatible with the plate's dimensions and the number of samples to be placed.
              Please increase the number of plates to fill or provide a dataset with fewer samples.")
       )
@@ -218,7 +231,7 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
       # interdits
     }else if(input$blank_mode == "none" & !is.null(forbid_wells()) ){
       validate(
-        need(nb_samples() <= (totalNbWells() - nb_f),
+        need(nb_samples() <= (totalNbWells() - (nb_f*nb_p())),
              "the forbidden wells selected are not compatible with the plate's dimensions and the number of samples to be placed.
              Please increase the number of plates to fill or provide a dataset with fewer samples.")
       )
@@ -226,7 +239,7 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
       # s'il n'y a que des blancs, on ne renvoie que ça
     }else if(!is.null(blank_wells()) & is.null(forbid_wells())){
       validate(
-        need(nb_samples() <= (totalNbWells() - nb_b),
+        need(nb_samples() <= (totalNbWells() - (nb_b*nb_p())),
              "the blank mode selected is not compatible with the plate's dimensions and the number of samples to be placed.
              Please increase the number of plates to fill or provide a dataset with fewer samples.")
       )
