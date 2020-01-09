@@ -201,14 +201,15 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
     }
     validate(
       need(nb_samples() <= (totalNbWells()),
-           "the dimensions of the plate are not compatible with the number of samples to be placed")
+           "the dimensions of the plate are not compatible with the number of samples to be placed.
+           Please increase the number of plates to fill or provide a dataset with fewer samples.")
     )
     # s'il y a des blancs et des cases interdites alors il faut les rassembler
     if(!is.null(blank_wells()) & !is.null(forbid_wells()) ){
       validate(
         need(nb_samples() <= (totalNbWells() - nb_b - nb_f),
-             "the blank mode and/or forbidden wells selected are not compatible
-             with the plate's dimensions and the number of samples to be placed")
+             "the blank mode and/or forbidden wells selected are not compatible with the plate's dimensions and the number of samples to be placed.
+             Please increase the number of plates to fill or provide a dataset with fewer samples.")
       )
       result <- base::rbind(blank_wells(), forbid_wells())
       result <- distinct(result, Row, Column, .keep_all = TRUE)
@@ -218,16 +219,16 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
     }else if(input$blank_mode == "none" & !is.null(forbid_wells()) ){
       validate(
         need(nb_samples() <= (totalNbWells() - nb_f),
-             "the forbidden wells selected are not compatible
-             with the plate's dimensions and the number of samples to be placed")
+             "the forbidden wells selected are not compatible with the plate's dimensions and the number of samples to be placed.
+             Please increase the number of plates to fill or provide a dataset with fewer samples.")
       )
       forbid_wells()
       # s'il n'y a que des blancs, on ne renvoie que ça
     }else if(!is.null(blank_wells()) & is.null(forbid_wells())){
       validate(
         need(nb_samples() <= (totalNbWells() - nb_b),
-             "the blank mode selected is not compatible
-             with the plate's dimensions and the number of samples to be placed")
+             "the blank mode selected is not compatible with the plate's dimensions and the number of samples to be placed.
+             Please increase the number of plates to fill or provide a dataset with fewer samples.")
       )
       blank_wells()
     }

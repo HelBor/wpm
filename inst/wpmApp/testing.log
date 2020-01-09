@@ -1,41 +1,69 @@
-2020-01-08 19:25:08 INFO::Initiating the log file...
-2020-01-08 19:25:09 INFO:plate_spec:nb of plate lines : 0
-2020-01-08 19:25:09 INFO:plate_spec:nb of plate cols : 0
-2020-01-08 19:25:09 INFO:plate_spec:selected mode : NS
-2020-01-08 19:25:12 INFO:plate_spec:nb of plate lines : 0
-2020-01-08 19:25:12 INFO:plate_spec:nb of plate cols : 0
-2020-01-08 19:25:12 INFO:plate_spec:selected mode : NS
-2020-01-08 19:25:13 INFO:plate_spec:totalNbWells = 0
-2020-01-08 19:25:16 INFO:data_import:File ind_groupes_NASH-80.csv was uploaded
-2020-01-08 19:25:16 INFO:plate_spec:nb of plate lines : 0
-2020-01-08 19:25:16 INFO:plate_spec:nb of plate cols : 0
-2020-01-08 19:25:16 INFO:plate_spec:selected mode : NS
-2020-01-08 19:25:16 INFO:plate_spec:nb samples : 81, totalNbWells : 0
-2020-01-08 19:25:16 INFO:server:dataframe/matrix successfully created
-2020-01-08 19:25:17 INFO:plate_spec:nb of plate lines : 0
-2020-01-08 19:25:17 INFO:plate_spec:nb of plate cols : 0
-2020-01-08 19:25:17 INFO:plate_spec:selected mode : NS
-2020-01-08 19:25:17 INFO:plate_spec:nb samples : 80, totalNbWells : 0
-2020-01-08 19:25:17 INFO:server:dataframe/matrix successfully created
-2020-01-08 19:25:22 INFO:plate_spec:totalNbWells = 0
-2020-01-08 19:25:22 INFO:plate_spec:nb of plate lines : 8
-2020-01-08 19:25:22 INFO:plate_spec:nb of plate cols : 0
-2020-01-08 19:25:22 INFO:plate_spec:selected mode : NS
-2020-01-08 19:25:22 INFO:plate_spec:nb samples : 80, totalNbWells : 0
-2020-01-08 19:25:24 INFO:plate_spec:totalNbWells = 96
-2020-01-08 19:25:24 INFO:plate_spec:nb of plate lines : 8
-2020-01-08 19:25:24 INFO:plate_spec:nb of plate cols : 12
-2020-01-08 19:25:24 INFO:plate_spec:selected mode : NS
-2020-01-08 19:25:24 INFO:plate_spec:nb samples : 80, totalNbWells : 96
-2020-01-08 19:25:24 INFO:plate_spec:nb_b: 0
-2020-01-08 19:25:24 INFO:plate_spec:nb_f: 0
-2020-01-08 19:25:26 INFO:plate_spec:nb of plate lines : 8
-2020-01-08 19:25:26 INFO:plate_spec:nb of plate cols : 12
-2020-01-08 19:25:26 INFO:plate_spec:selected mode : none
-2020-01-08 19:25:30 INFO:fonctions.generateMapPlate:attempt n° 1
-2020-01-08 19:25:30 INFO:fonctions.randomWalk:names de df: Sample.name,Group,Well,Status,Row,Column
-2020-01-08 19:25:30 INFO:fonctions.randomWalk:df 1srt line: 8,1,NA,1,5,10
-2020-01-08 19:25:30 INFO:fonctions.randomWalk:df 2nd line: 10,1,NA,1,7,6
-2020-01-08 19:25:30 INFO:fonctions.generateMapPlate:class(ret): data.frame
-2020-01-08 19:25:30 WARNING:fonctions.generateMapPlate:number of attempts: 1
-2020-01-08 19:25:30 INFO:backtracking:class(map()): data.frame
+2020-01-09 11:11:20 INFO::Initiating the log file...
+2020-01-09 11:11:23 INFO:plate_spec:nb of plate lines : 0
+2020-01-09 11:11:23 INFO:plate_spec:nb of plate cols : 0
+2020-01-09 11:11:23 INFO:plate_spec:selected mode : NS
+2020-01-09 11:11:45 INFO:plate_spec:nb of plate lines : 0
+2020-01-09 11:11:45 INFO:plate_spec:nb of plate cols : 0
+2020-01-09 11:11:45 INFO:plate_spec:selected mode : NS
+2020-01-09 11:11:48 INFO:plate_spec:totalNbWells = 0
+2020-01-09 11:11:57 INFO:data_import:File ind_groupes_NASH.csv was uploaded
+2020-01-09 11:11:57 INFO:plate_spec:nb of plate lines : 0
+2020-01-09 11:11:57 INFO:plate_spec:nb of plate cols : 0
+2020-01-09 11:11:57 INFO:plate_spec:selected mode : NS
+2020-01-09 11:11:57 INFO:plate_spec:nb samples : 161, totalNbWells : 0
+2020-01-09 11:11:57 INFO:server:dataframe/matrix successfully created
+2020-01-09 11:12:00 INFO:plate_spec:nb of plate lines : 0
+2020-01-09 11:12:00 INFO:plate_spec:nb of plate cols : 0
+2020-01-09 11:12:00 INFO:plate_spec:selected mode : NS
+2020-01-09 11:12:00 INFO:plate_spec:nb samples : 160, totalNbWells : 0
+2020-01-09 11:12:00 INFO:server:dataframe/matrix successfully created
+2020-01-09 11:12:05 INFO:plate_spec:totalNbWells = 0
+2020-01-09 11:12:05 INFO:plate_spec:nb of plate lines : 8
+2020-01-09 11:12:05 INFO:plate_spec:nb of plate cols : 0
+2020-01-09 11:12:05 INFO:plate_spec:selected mode : NS
+2020-01-09 11:12:05 INFO:plate_spec:nb samples : 160, totalNbWells : 0
+2020-01-09 11:12:05 INFO:plate_spec:totalNbWells = 96
+2020-01-09 11:12:05 INFO:plate_spec:nb of plate lines : 8
+2020-01-09 11:12:05 INFO:plate_spec:nb of plate cols : 12
+2020-01-09 11:12:05 INFO:plate_spec:selected mode : NS
+2020-01-09 11:12:05 INFO:plate_spec:nb samples : 160, totalNbWells : 96
+2020-01-09 11:12:05 INFO:plate_spec:nb_b: 0
+2020-01-09 11:12:05 INFO:plate_spec:nb_f: 0
+2020-01-09 11:18:22 INFO:plate_spec:nb of plate lines : 8
+2020-01-09 11:18:22 INFO:plate_spec:nb of plate cols : 12
+2020-01-09 11:18:22 INFO:plate_spec:selected mode : WE
+2020-01-09 11:18:22 INFO:plate_spec:nb samples : 160, totalNbWells : 96
+2020-01-09 11:18:22 INFO:plate_spec:nb_b: 48
+2020-01-09 11:18:22 INFO:plate_spec:nb_f: 0
+2020-01-09 11:18:38 INFO:data_import:File ind_groupes_NASH-80.csv was uploaded
+2020-01-09 11:18:38 INFO:plate_spec:nb of plate lines : 8
+2020-01-09 11:18:38 INFO:plate_spec:nb of plate cols : 12
+2020-01-09 11:18:38 INFO:plate_spec:selected mode : WE
+2020-01-09 11:18:38 INFO:plate_spec:nb samples : 80, totalNbWells : 96
+2020-01-09 11:18:38 INFO:plate_spec:nb_b: 48
+2020-01-09 11:18:38 INFO:plate_spec:nb_f: 0
+2020-01-09 11:18:38 INFO:server:dataframe/matrix successfully created
+2020-01-09 11:19:18 INFO:plate_spec:nb samples : 80, totalNbWells : 96
+2020-01-09 11:19:18 INFO:plate_spec:nb_b: 48
+2020-01-09 11:19:18 INFO:plate_spec:nb_f: 0
+2020-01-09 11:19:18 INFO:plate_spec:nb of plate lines : 8
+2020-01-09 11:19:18 INFO:plate_spec:nb of plate cols : 12
+2020-01-09 11:19:18 INFO:plate_spec:selected mode : NS
+2020-01-09 11:19:20 INFO:plate_spec:nb samples : 80, totalNbWells : 96
+2020-01-09 11:19:20 INFO:plate_spec:nb_b: 48
+2020-01-09 11:19:20 INFO:plate_spec:nb_f: 0
+2020-01-09 11:19:20 INFO:plate_spec:nb of plate lines : 8
+2020-01-09 11:19:20 INFO:plate_spec:nb of plate cols : 12
+2020-01-09 11:19:20 INFO:plate_spec:selected mode : none
+2020-01-09 11:19:21 INFO:plate_spec:nb samples : 80, totalNbWells : 96
+2020-01-09 11:19:21 INFO:plate_spec:nb_b: 0
+2020-01-09 11:19:21 INFO:plate_spec:nb_f: 0
+2020-01-09 11:19:22 INFO:plate_spec:nb of plate lines : 8
+2020-01-09 11:19:22 INFO:plate_spec:nb of plate cols : 12
+2020-01-09 11:19:22 INFO:plate_spec:selected mode : NS
+2020-01-09 11:19:27 INFO:plate_spec:nb samples : 80, totalNbWells : 96
+2020-01-09 11:19:27 INFO:plate_spec:nb_b: 48
+2020-01-09 11:19:27 INFO:plate_spec:nb_f: 0
+2020-01-09 11:19:27 INFO:plate_spec:nb of plate lines : 8
+2020-01-09 11:19:27 INFO:plate_spec:nb of plate cols : 12
+2020-01-09 11:19:27 INFO:plate_spec:selected mode : WE
