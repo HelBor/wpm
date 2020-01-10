@@ -86,10 +86,13 @@ server <- function(input, output, session) {
                id = "backtrack",
                df = datafile(),
                nb_g = distinct_gps(),
-               max_iter = input$nb_iter,
+               # does not automatically restart the module when the isolated
+               # input changes, and therefore needs start_WPM_Btn to be restarted
+               max_iter = isolate(input$nb_iter),
                forbidden_wells = reactive(plate_specs$forbidden_wells),
                rows = reactive(plate_specs$nb_lines),
                columns = reactive(plate_specs$nb_cols),
+               nb_plates = reactive(plate_specs$nb_plates),
                constraint = reactive(plate_specs$neighborhood_mod),
                project_name = reactive(input$project_title)
                )
