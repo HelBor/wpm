@@ -36,7 +36,7 @@ backtrackUI <- function(id, label = NULL) {
 # rows : integer - plate's number of rows
 # columns : integer - plate's number of columns
 # constraint : character - neighborhood spatial constraint mode
-backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_wells, rows, columns, constraint, project_name) {
+backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_wells, rows, columns, nb_plates, constraint, project_name) {
 
   toReturn <- reactiveValues(
     final_df = NULL,
@@ -58,14 +58,14 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
   #                   be plotted or/and downloaded)
   #     the number of attempts to success
   map <- reactive({
-    generateMapPlate(user_df = user_data(),
-                  nb_rows = rows(),
-                  nb_cols = columns(),
-                  df_forbidden = forbidden_wells(),
-                  mod = constraint(),
-                  max_it = max_iter
+      generateMapPlate(user_df = user_data(),
+                       nb_rows = rows(),
+                       nb_cols = columns(),
+                       df_forbidden = forbidden_wells(),
+                       mod = constraint(),
+                       max_it = max_iter
 
-    )
+      )
   })
 
   output$df_modif <- renderDataTable(datatable({

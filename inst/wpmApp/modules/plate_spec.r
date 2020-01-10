@@ -113,6 +113,7 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
   toReturn <- reactiveValues(
     nb_lines = NULL,
     nb_cols = NULL,
+    nb_plates = NULL,
     forbidden_wells = NULL,
     neighborhood_mod = NULL
   )
@@ -290,6 +291,7 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
 
     toReturn$nb_lines <- p_lines()
     toReturn$nb_cols <- p_cols()
+    toReturn$nb_plates <- nb_p()
     # contains the blanks and forbidden wells
     toReturn$forbidden_wells <- wells_to_plot()
     toReturn$neighborhood_mod <- nbh_mod()
