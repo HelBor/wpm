@@ -5,11 +5,13 @@ library(shinyWidgets)
 library(shinycustomloader)
 library(DT)
 library(RColorBrewer)
-library(dplyr)
 library(data.table)
-library(ggplot2)
-library(readr)
-library(tidyverse)
+
+#library(dplyr)
+#library(ggplot2)
+#library(readr)
+#library(stringr)
+library(tidyverse) # meta package containing the packages above
 # library(extrafont)
 library(logging)
 
