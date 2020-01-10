@@ -30,8 +30,8 @@ source(file.path("modules", "data_import.r"), local = TRUE)
 source(file.path("modules","plate_spec.r"), local = TRUE)
 source(file.path("modules","backtracking.r"), local = TRUE)
 source(file.path("modules","data_export.r"), local = TRUE)
-source(file.path("functions", "fonctions.r"), local = TRUE)
-source(file.path("functions", "plotPlateMaps.r"), local = TRUE)
+source(file.path("../../R", "fonctions.r"), local = TRUE)
+source(file.path("../../R", "plotPlateMaps.r"), local = TRUE)
 
 # import the font for ggplots
 #font_import(paths = "./www/fonts/")
@@ -39,3 +39,6 @@ source(file.path("functions", "plotPlateMaps.r"), local = TRUE)
 # windowsFonts("Amatic-Bold")
 # loadfonts(device="win")
 # loadfonts(device="postscript")
+
+
+source(file.path("../../R", "helpers.R"), local = TRUE) # Load all the code needed to show feedback on a button click
