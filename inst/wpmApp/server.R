@@ -81,28 +81,52 @@ server <- function(input, output, session) {
       need(plate_specs$nb_lines > 0, "requires a number of rows greater than 0"),
       need(plate_specs$nb_cols > 0, "requires a number of columns greater than 0")
     )
+    withBusyIndicatorServer("start_WPM_Btn", {
+      data_export <- callModule(module = backtrack,
+                 id = "backtrack",
+                 df = datafile(),
+                 nb_g = distinct_gps(),
+                 # does not automatically restart the module when the isolated
+                 # input changes, and therefore needs start_WPM_Btn to be restarted
+                 max_iter = isolate(input$nb_iter),
+                 forbidden_wells = isolate(reactive(plate_specs$forbidden_wells)),
+                 rows = isolate(reactive(plate_specs$nb_lines)),
+                 columns = isolate(reactive(plate_specs$nb_cols)),
+                 nb_plates = isolate(reactive(plate_specs$nb_plates)),
+                 constraint = isolate(reactive(plate_specs$neighborhood_mod)),
+                 project_name = isolate(reactive(input$project_title))
+                 )
 
-    data_export <- callModule(module = backtrack,
-               id = "backtrack",
-               df = datafile(),
-               nb_g = distinct_gps(),
-               # does not automatically restart the module when the isolated
-               # input changes, and therefore needs start_WPM_Btn to be restarted
-               max_iter = isolate(input$nb_iter),
-               forbidden_wells = reactive(plate_specs$forbidden_wells),
-               rows = reactive(plate_specs$nb_lines),
-               columns = reactive(plate_specs$nb_cols),
-               nb_plates = reactive(plate_specs$nb_plates),
-               constraint = reactive(plate_specs$neighborhood_mod),
-               project_name = reactive(input$project_title)
-               )
+      observeEvent(data_export$final_df,{
+        loginfo("data_export$final_df: %s", class(data_export$final_df), logger = "server")
+        if(class(data_export$final_df) != "data.frame"){
+          sendSweetAlert(
+            session = session,
+            title = "WPM failed...",
+            text = "Seems that we reeched the maximal number of iterations without any result... Try again by increasing the number of iterations. ",
+            type = "error"
+          )
+        }else{
+          sendSweetAlert(
+            session = session,
+            title = "Success !!",
+            text = "All in order, you can check your results in the Results Panel",
+            type = "success"
+          )
+
+          callModule(module = export,
+                     id = "export",
+                     df = reactive(data_export$final_df),
+                     plot = reactive(data_export$final_map)
+          )
+        }
 
 
-    callModule(module = export,
-               id = "export",
-               df = reactive(data_export$final_df),
-               plot = reactive(data_export$final_map)
-    )
+      })
+
+    })
+
+
   })
 
 

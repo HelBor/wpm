@@ -1,4 +1,59 @@
-2020-01-10 15:07:49 INFO::Initiating the log file...
-2020-01-10 15:07:50 INFO:plate_spec:nb of plate lines : 0
-2020-01-10 15:07:50 INFO:plate_spec:nb of plate cols : 0
-2020-01-10 15:07:50 INFO:plate_spec:selected mode : NS
+2020-01-10 17:17:40 INFO::Initiating the log file...
+2020-01-10 17:17:41 INFO:plate_spec:nb of plate lines : 0
+2020-01-10 17:17:41 INFO:plate_spec:nb of plate cols : 0
+2020-01-10 17:17:41 INFO:plate_spec:selected mode : NS
+2020-01-10 17:17:45 INFO:plate_spec:nb of plate lines : 0
+2020-01-10 17:17:45 INFO:plate_spec:nb of plate cols : 0
+2020-01-10 17:17:45 INFO:plate_spec:selected mode : NS
+2020-01-10 17:17:46 INFO:plate_spec:totalNbWells = 0
+2020-01-10 17:18:13 INFO:plate_spec:nb of plate lines : 0
+2020-01-10 17:18:13 INFO:plate_spec:nb of plate cols : 0
+2020-01-10 17:18:13 INFO:plate_spec:selected mode : NS
+2020-01-10 17:18:14 INFO:plate_spec:totalNbWells = 0
+2020-01-10 17:18:16 INFO:data_import:File ind_groupes_NASH-80.csv was uploaded
+2020-01-10 17:18:16 INFO:plate_spec:nb of plate lines : 0
+2020-01-10 17:18:16 INFO:plate_spec:nb of plate cols : 0
+2020-01-10 17:18:16 INFO:plate_spec:selected mode : NS
+2020-01-10 17:18:16 INFO:plate_spec:nb samples : 81, totalNbWells : 0
+2020-01-10 17:18:16 INFO:server:dataframe/matrix successfully created
+2020-01-10 17:18:17 INFO:plate_spec:nb of plate lines : 0
+2020-01-10 17:18:17 INFO:plate_spec:nb of plate cols : 0
+2020-01-10 17:18:17 INFO:plate_spec:selected mode : NS
+2020-01-10 17:18:17 INFO:plate_spec:nb samples : 80, totalNbWells : 0
+2020-01-10 17:18:17 INFO:server:dataframe/matrix successfully created
+2020-01-10 17:18:20 INFO:plate_spec:totalNbWells = 0
+2020-01-10 17:18:20 INFO:plate_spec:nb of plate lines : 8
+2020-01-10 17:18:20 INFO:plate_spec:nb of plate cols : 0
+2020-01-10 17:18:20 INFO:plate_spec:selected mode : NS
+2020-01-10 17:18:20 INFO:plate_spec:nb samples : 80, totalNbWells : 0
+2020-01-10 17:18:20 INFO:plate_spec:totalNbWells = 96
+2020-01-10 17:18:20 INFO:plate_spec:nb of plate lines : 8
+2020-01-10 17:18:20 INFO:plate_spec:nb of plate cols : 12
+2020-01-10 17:18:20 INFO:plate_spec:selected mode : NS
+2020-01-10 17:18:20 INFO:plate_spec:nb samples : 80, totalNbWells : 96
+2020-01-10 17:18:20 INFO:plate_spec:nb_b: 0
+2020-01-10 17:18:20 INFO:plate_spec:nb_f: 0
+2020-01-10 17:18:22 INFO:plate_spec:nb of plate lines : 8
+2020-01-10 17:18:22 INFO:plate_spec:nb of plate cols : 12
+2020-01-10 17:18:22 INFO:plate_spec:selected mode : NEWS
+2020-01-10 17:18:35 INFO:plate_spec:nb samples : 80, totalNbWells : 96
+2020-01-10 17:18:35 INFO:plate_spec:nb_b: 0
+2020-01-10 17:18:35 INFO:plate_spec:nb_f: 16
+2020-01-10 17:18:36 INFO:plate_spec:nb of plate lines : 8
+2020-01-10 17:18:36 INFO:plate_spec:nb of plate cols : 12
+2020-01-10 17:18:36 INFO:plate_spec:selected mode : NEWS
+2020-01-10 17:18:38 INFO:fonctions.generateMapPlate:attempt n° 1
+2020-01-10 17:18:38 INFO:fonctions.randomWalk:names de df: Sample.name,Group,Well,Status,Row,Column
+2020-01-10 17:18:38 INFO:fonctions.randomWalk:df 1srt line: 8,1,NA,1,2,3
+2020-01-10 17:18:38 INFO:fonctions.randomWalk:df 2nd line: 10,1,NA,1,5,12
+2020-01-10 17:18:38 WARNING:fonctions.generateMapPlate:number of attempts: 1
+2020-01-10 17:18:38 INFO::map isn't null so we return map and map_plot
+2020-01-10 17:18:38 INFO:server:data_export$final_df: data.frame
+2020-01-10 17:18:55 INFO:fonctions.generateMapPlate:attempt n° 1
+2020-01-10 17:18:55 WARNING:fonctions.generateMapPlate:we reeched the maximal number of iterations with no success
+2020-01-10 17:18:55 INFO::map is null so we return errors
+2020-01-10 17:18:55 INFO:server:data_export$final_df: character
+2020-01-10 17:19:57 INFO:fonctions.generateMapPlate:attempt n° 1
+2020-01-10 17:19:57 WARNING:fonctions.generateMapPlate:we reeched the maximal number of iterations with no success
+2020-01-10 17:19:57 INFO::map is null so we return errors
+2020-01-10 17:19:57 INFO:server:data_export$final_df: character

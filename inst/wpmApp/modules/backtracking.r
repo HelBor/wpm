@@ -74,14 +74,16 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
   )
 
   map_plot <- reactive({
-    if("forbidden" %in% map()$Status | "blank" %in% map()$Status){
-      nb_g = nb_g + 1
-      drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns(), project_title = project_name())
-    }else if("forbidden" %in% map()$Status & "blank" %in% map()$Status){
-      nb_g = nb_g + 2
-      drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns(), project_title = project_name())
-    }else{
-      drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns(), project_title = project_name())
+    if(!is.null(map())){
+      if("forbidden" %in% map()$Status | "blank" %in% map()$Status){
+        nb_g = nb_g + 1
+        drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns(), project_title = project_name())
+      }else if("forbidden" %in% map()$Status & "blank" %in% map()$Status){
+        nb_g = nb_g + 2
+        drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns(), project_title = project_name())
+      }else{
+        drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns(), project_title = project_name())
+      }
     }
   })
 
@@ -89,36 +91,17 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
     map_plot()
   })
 
-  loginfo("class(map()): %s",class(map()), logger = "backtracking")
-  observeEvent(map(), {
-    sendSweetAlert(
-      session = session,
-      title = "Success !!",
-      text = "All in order, you can check your results in the Results Panel",
-      type = "success"
-    )
-    },
-    ignoreNULL = TRUE
-  )
-
-  # observeEvent(map(), {
-  #   sendSweetAlert(
-  #     session = session,
-  #     title = "WPM failed...",
-  #     text = "Seems that we reeched the maximal number of iterations without any result... Try again by increasing the number of iterations. ",
-  #     type = "error"
-  #   )
-  #   },
-  #   ignoreNULL = FALSE,
-  #   ignoreInit = TRUE
-  # )
-
-
-
-
   observe({
-    toReturn$final_df <- map()
-    toReturn$final_map <- map_plot()
+    if(is.null(map())){
+      loginfo("map is null so we return errors")
+      toReturn$final_df <- "error"
+      toReturn$final_map <- NULL
+    }else{
+      loginfo("map isn't null so we return map and map_plot")
+      toReturn$final_df <- map()
+      toReturn$final_map <- map_plot()
+    }
+
   })
 
 

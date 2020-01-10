@@ -264,8 +264,7 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
         toVisit <- c(toVisit, paste0(i,j))
       }
     }
-    print(df_forbidden$Well)
-    # print(anyNA(df_forbidden$Well))
+
     if(is.null(df_forbidden$Well)){
       toVisit <- toVisit[1:nrow(user_df)]
     }else{
@@ -278,7 +277,7 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
                       groups = length(unique(user_df$Group)),
                       constraint = mod
                       )
-    loginfo("class(ret): %s", class(ret), logger = "fonctions.generateMapPlate")
+    # loginfo("class(ret): %s", class(ret), logger = "fonctions.generateMapPlate")
     if(class(ret)=="data.frame"){
       ret$Well <- paste0(LETTERS[ret$Row], ret$Column, sep = "")
       ret <- rbind(ret, df_forbidden)
