@@ -46,25 +46,42 @@ plateSpecUI <- function(id, label = "Plate specifications") {
           h4("Neighborhood contraints"),
 
           conditionalPanel(condition = "input.blank_mode == 'by_row'",
-                           div(
-                             HTML(paste("You have selected the ",
-                                        tags$span(style="color:red", "Per Row"),
-                                        "mode, therefore the only available neighborhood constraint is 'West-East'.",
-                                        sep = " ")
-                             )
+                           # div(
+                           #   HTML(paste("You have selected the ",
+                           #              tags$span(style="color:red", "Per Row"),
+                           #              "mode, therefore the only available neighborhood constraint is 'West-East'.",
+                           #              sep = " ")
+                           #   )
+                           # ),
+                           awesomeRadio(inputId = ns("constraint_row"),
+                                        label = NULL,
+                                        choices = c(
+                                                    "West-East" = "WE",
+                                                    "None" = "none"),
+                                        selected = NULL,
+                                        status = "warning"
+
                            ),
                            ns = ns),
           conditionalPanel(condition = "input.blank_mode == 'by_column'",
-                           div(
-                             HTML(paste("You have selected the ",
-                                        tags$span(style="color:red", "Per Column"),
-                                        "mode, therefore the only available neighborhood constraint is 'North-South'.",
-                                        sep = " ")
-                             )
+                           # div(
+                           #   HTML(paste("You have selected the ",
+                           #              tags$span(style="color:red", "Per Column"),
+                           #              "mode, therefore the only available neighborhood constraint is 'North-South'.",
+                           #              sep = " ")
+                           #   )
+                           # ),
+                           awesomeRadio(inputId = ns("constraint_column"),
+                                        label = NULL,
+                                        choices = c("North-South" = "NS",
+                                                    "None" = "none"),
+                                        selected = NULL,
+                                        status = "warning"
+
                            ),
                            ns = ns),
           conditionalPanel(condition = "input.blank_mode == 'none'",
-                           awesomeRadio(inputId = ns("constraint_select"),
+                           awesomeRadio(inputId = ns("constraint_none"),
                                         label = NULL,
                                         choices = c("North-South" = "NS",
                                                    "West-East" = "WE",
@@ -274,11 +291,11 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
 
   nbh_mod <- reactive({
     if(input$blank_mode == "by_row"){
-      return("WE")
+      return(input$constraint_row)
     }else if(input$blank_mode == "by_column"){
-      return("NS")
+      return(input$constraint_column)
     }else if(input$blank_mode == "none"){
-      return(input$constraint_select)
+      return(input$constraint_none)
     }else if(input$blank_mode == "checkerboard"){
       return("none")
     }
