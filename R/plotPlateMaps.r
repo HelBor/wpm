@@ -176,7 +176,8 @@ theme_bdc_microtiter <- function(base_size = 12, base_family = "") {
 }
 
 
-# function to place the blanks on the plate according to the selected mode
+# function to place the blanks on the plate according to the selected mode: it
+# generates a dataframe containing the row and column coordinates for each blank
 placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
   p_lines <- as.numeric(p_lines)
   p_cols <- as.numeric(p_cols)
@@ -254,7 +255,7 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
       result <- df %>%
         distinct(Row, Column, .keep_all = TRUE)
 
-      # supprimer les lignes créées en trop (Row et Column contiennent des NAs)
+      # delete extra rows (Row and Column contain NAs)
       if(anyNA(result$Row) | anyNA(result$Column)){
         result <- na.omit(result, cols = c("Row", "Column"))
       }
@@ -270,24 +271,21 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
 
 #*******************************************************************************
 # Function to determine the coordinates of the forbidden wells for the plot
+# and generates the dataframe containing the Row and Column coordinates
 #*******************************************************************************
 convertVector2Df <- function(forbidden_wells, max_Row, max_Col){
 
   if(length(forbidden_wells)>0){
     check_rows <- as.numeric(match(toupper(substr(forbidden_wells, 1, 1)), LETTERS))
     check_columns <- as.numeric(substr(forbidden_wells, 2, 5))
-    # simule en fait si user n'a pas fini de saisir tout
+    # actually simulates if user hasn't finished typing everything
     if(any(is.na(check_rows)) | any(is.na(check_columns))){
       return("ya un pb")
     }else if((max(check_rows) > max_Row) | (max(check_columns) > max_Col) ){
-      #error_msg <- "Error - One or more of the prohibited wells do not exist
-      #depending on the plate sizes that have been provided"
+      # depending on the plate sizes that have been provided
       result <- NULL
     }else{
       # put the forbidden wells into the df
-      #forbidden <- setnames(setDF(lapply(c(NA, NA, "forbidden", "forbidden", NA, NA),
-      #                                   function(...) character(length(forbidden_wells)))),
-      #                      c("Well", "Sample.name", "Group", "Status", "Row", "Column"))
       forbidden <- setnames(setDF(lapply(c(NA, "forbidden", NA, "forbidden", NA, NA),
                                          function(...) character(length(forbidden_wells)))),
                             c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
@@ -298,8 +296,8 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col){
       forbidden$Row <- as.numeric(NA)
       forbidden$Column <- as.numeric(NA)
 
-      # convert the Well names into Row/column coordinates it will be used to
-      # compute the backtracking step
+      # converts Well names to Row / Column coordinates as this is what is used
+      # to calculate the backtracking step.
       forbidden <- mutate(forbidden,
                           Row=as.numeric(match(toupper(substr(Well, 1, 1)), LETTERS)),
                           Column=as.numeric(substr(Well, 2, 5)))
@@ -310,7 +308,7 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col){
     }
 
   }else{
-    # forbidden_wells is NULL
+    # no forbidden wells, so doesn't return a dataframe
     result <- NULL
   }
   return(result)
@@ -328,7 +326,8 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col){
 
 drawPlateMap <- function(df, nb_gps, plate_lines, plate_cols, project_title){
 
-  # cette palette permet de colorier selon que c'est un blank, une case interdite, ou un groupe
+  # this palette allows coloring depending on whether it is a blank, a
+  # prohibited box, or a group
   palette_strains <- c("blank"="grey", "forbidden"="red")
   palette_complete <- c(brewer.pal(7, "Set2"), brewer.pal(7, "Accent"))
   palette_choisie <- palette_complete[1:nb_gps]

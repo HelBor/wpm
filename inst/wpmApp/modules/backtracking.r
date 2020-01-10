@@ -58,6 +58,8 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
   #                   be plotted or/and downloaded)
   #     the number of attempts to success
   map <- reactive({
+    # look for withProgress but seems to need that we no longer use generateMapPlate
+    #since it will be the code needed here to update the progress bar
       generateMapPlate(user_df = user_data(),
                        nb_rows = rows(),
                        nb_cols = columns(),
@@ -66,6 +68,7 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
                        max_it = max_iter
 
       )
+
   })
 
   output$df_modif <- renderDataTable(datatable({

@@ -93,7 +93,7 @@ body <- dashboardBody(
                          ),
                          div(
                            useSweetAlert(),
-                           withBusyIndicatorUI(
+
                            actionBttn(inputId="start_WPM_Btn",
                                       label = "Start WPM",
                                       icon = icon("play"),
@@ -101,12 +101,6 @@ body <- dashboardBody(
                                       style = "unite"
                                 )
                              )
-                           )#,
-                         # withLoader(
-                         #  textOutput("pressedBtn"),
-                         #  type = "html",
-                         #  loader = "loader3"
-                         # )
                      )
 
                      )# end of column

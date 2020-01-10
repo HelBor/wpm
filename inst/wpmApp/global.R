@@ -39,6 +39,3 @@ source(file.path("../../R", "plotPlateMaps.r"), local = TRUE)
 # windowsFonts("Amatic-Bold")
 # loadfonts(device="win")
 # loadfonts(device="postscript")
-
-
-source(file.path("../../R", "helpers.R"), local = TRUE) # Load all the code needed to show feedback on a button click
