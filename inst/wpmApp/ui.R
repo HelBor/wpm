@@ -1,13 +1,13 @@
 # Header elements for the visualization
 header <- dashboardHeader(title="Well-Plate Maker",
-                          titleWidth = 250
+                          titleWidth = 200
 )
 
 
 
 # Sidebar elements for the search visualizations
 sidebar <- dashboardSidebar(
-  width = 150,
+  width = 200,
   sidebarMenu(
     menuItem("Home", tabName = "home", icon = icon("home")),
     menuItem("Parameters", tabName = "parameters", icon = icon("cogs")),
