@@ -2,6 +2,7 @@
 library(shiny)
 library(shinydashboard)
 library(shinyWidgets)
+library(shinythemes)
 library(shinycustomloader)
 library(DT)
 library(RColorBrewer)

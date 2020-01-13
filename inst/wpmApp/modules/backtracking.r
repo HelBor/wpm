@@ -60,14 +60,29 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
   map <- reactive({
     # look for withProgress but seems to need that we no longer use generateMapPlate
     #since it will be the code needed here to update the progress bar
-      generateMapPlate(user_df = user_data(),
-                       nb_rows = rows(),
-                       nb_cols = columns(),
-                       df_forbidden = forbidden_wells(),
-                       mod = constraint(),
-                       max_it = max_iter
+    progress <- shiny::Progress$new()
+    progress$set(message = "WPM running...", value = 0)
 
-      )
+    on.exit(progress$close())
+
+    updateProgress <- function(value = NULL, detail = NULL) {
+      if (is.null(value)) {
+        value <- progress$getValue()
+        # value <- value + (progress$getMax() - value)
+      }
+      progress$set(value = value, detail = detail)
+      progress$inc(amount = 1/max_iter)
+    }
+
+    generateMapPlate(user_df = user_data(),
+                     nb_rows = rows(),
+                     nb_cols = columns(),
+                     df_forbidden = forbidden_wells(),
+                     mod = constraint(),
+                     max_it = max_iter,
+                     updateProgress
+
+    )
 
   })
 

@@ -248,12 +248,20 @@ randomWalk <- function(m, toVisit, d, groups, constraint){
 # mod          : character (neighborhood spatial constraint)
 # max_it       : integer (maximum number of attempts to generate a plate plan before
 #                returning a failure.)
-generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_it){
+generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_it, updateProgress = NULL){
 
   nb_attempts = 1
   ret=1
   # loginfo("mode: %s", mod, logger = "fonctions.generateMapPlate")
   while (ret==1 & nb_attempts <= max_it) {
+
+    # If we were passed a progress update function, call it
+    if (is.function(updateProgress)) {
+      text <- paste0("attempt number", nb_attempts)
+      updateProgress(detail = text)
+    }
+
+
     loginfo("attempt n° %d", nb_attempts, logger = "fonctions.generateMapPlate")
     mat = matrix(NA,nrow=nb_rows, ncol=nb_cols)
 
@@ -284,7 +292,7 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
       logwarn("number of attempts: %d", nb_attempts, logger = "fonctions.generateMapPlate")
       return(ret)
     }
-
+    # Sys.sleep(0.5)
     nb_attempts = nb_attempts + 1
   }
   logwarn("we reeched the maximal number of iterations with no success", logger = "fonctions.generateMapPlate")
