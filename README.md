@@ -79,16 +79,19 @@ WPM has 4 main panels:
 * provide a data set in a CSV format.
 * specify a project name.
 * specify the dimensions of the plate to be filled.
-* specify whether there are blanks or not.
-* specify spatial neighboring constraints for the positioning of the samples (ie prevent 2 samples belonging to the same group from finding themselves side by side).
-* specify if there are "forbidden" boxes, that is to say leave them blank. (to put control samples for example)
+* specify whether there are blanks or not. (present the different possibilities)
+* specify spatial neighboring constraints for the positioning of the samples (ie prevent 2 samples belonging to the same group from finding themselves side by side). (present the different possibilities))
+* specify if there are "forbidden" boxes, that is to say leave them blank. (to put control samples for example) (put a capture for example)
 * specify the number of attempts that WPM can make to find a possible configuration of the plate plan.
 
 
 ### Check your Results
 
+add a capture of dataframe and map plot
 
 ### Export your results
+
+add capture of export panel
 
 ## Pending Features
 
