@@ -69,10 +69,10 @@ Since WPM is a GUI, the idea is to just provide a minimum of parameters to the a
 ### WPM structure
 
 WPM has 4 main panels:
-* Home: explains you how to use WPM
-* Parameters: the Panel where you fill the parameters needed to run WPM
-* Results: the Panel where you can look after the final dataset containing the wells chosen for each sample and a plot of your final well-plate map.
-* Export: the Panel to export your dataset in CSV and your map in PNG format.
+* __Home__: explains you how to use WPM
+* __Parameters__: the Panel where you fill the parameters needed to run WPM
+* __Results__: the Panel where you can look after the final dataset containing the wells chosen for each sample and a plot of your final well-plate map.
+* __Export__: the Panel to export your dataset in CSV and your map in PNG format.
 
 
 ### Provide parameters:
