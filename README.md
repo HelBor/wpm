@@ -2,7 +2,7 @@
 <p align="center"><img width=70% src="https://github.com/HelBor/wpm/blob/master/inst/wpmApp/www/images/wpm_name.png"></p>
 
 
-[![R](https://img.shields.io/badge/R-v3.6+-blue?style=flat-square)](https://img.shields.io/badge/R-v3.6+-blue?style=flat-square)
+[![R](https://img.shields.io/badge/R-v3.4+-blue?style=flat-square)](https://img.shields.io/badge/R-v3.4+-blue?style=flat-square)
 [![GitHub issues](https://img.shields.io/github/issues/HelBor/wpm?style=flat-square)](https://github.com/HelBor/wpm/issues)
 [![GitHub license](https://img.shields.io/github/license/HelBor/wpm?style=flat-square)](https://github.com/HelBor/wpm)
 
