@@ -168,7 +168,7 @@ solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
       # use resample because this function also works as expected when there is
       # only one element in the set to be sampled.
       chosen_ind <- resample(available_ind,size=1)
-      # loginfo("chosen_ind : %s", chosen_ind)
+      loginfo("chosen_ind : %s", chosen_ind)
       m[i,j] <- chosen_ind
       already_drawn <- c(already_drawn,chosen_ind)
       # loginfo("already_drawn: %s", already_drawn)
@@ -183,7 +183,8 @@ solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
 # m est une matrice
 # forbidden_cells est un vecteur contenant les coordonnées sous forme xy des cases
 # interdites
-# toVisit contient les cases sous forme A1, et ne contient que les cases à remplir
+# toVisit contient les cases sous forme A1, et ne contient que les cases
+# autorisée à être remplies
 # d est le dataframe fournit par l'utilisateur
 # groups est le nombre de groupes distincts existant dans les données utilisateur
 # constraint est le mode de contrainte de voisinnage choisi par l'utilisateur
@@ -193,17 +194,15 @@ randomWalk <- function(m, toVisit, d, groups, constraint){
     logerror("m is not a matrix, m: %s", class(m))
     warning("Need m to be a matrix")
   }
+  loginfo("*****************")
 
-
-  visited <- c() # cases visitées - que ce soit interdites ou autorisées aux échantillons
+  visited <- c() # cases visitées
   nb_lig <- dim(m)[1]
   nb_col <- dim(m)[2]
   ret = m
   placed = c() # échantillons déjà tirés et placés
-  # tant que toutes les cases n'ont pas été visitées
-
-  while (length(toVisit) != 0) {
-    # loginfo("length of toVisit: %d", length(toVisit), logger = "fonctions.randomWalk")
+  # tant que tous les échantillons n'ont pas été placés dans visited
+  while (length(visited) != nrow(d)) {
 
     cell <- resample(toVisit, size = 1)
     # loginfo("chosen cell: %s", cell, logger = "fonctions.randomWalk")
@@ -234,9 +233,9 @@ randomWalk <- function(m, toVisit, d, groups, constraint){
     }
 
   }
-  loginfo("names de df: %s", names(d), logger = "fonctions.randomWalk")
-  loginfo("df 1srt line: %s", d[1,], logger = "fonctions.randomWalk")
-  loginfo("df 2nd line: %s", d[2,], logger = "fonctions.randomWalk")
+  loginfo("length of toVisit: %d", length(toVisit), logger = "fonctions.randomWalk")
+  loginfo("length(visited) : %s", length(visited), logger = "fonctions.randomWalk")
+
   return(d)
 }
 
@@ -273,8 +272,10 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
       }
     }
 
+    # loginfo("is.null(df_forbidden$Well): %s",is.null(df_forbidden$Well))
     if(is.null(df_forbidden$Well)){
-      toVisit <- toVisit[1:nrow(user_df)]
+
+      # toVisit <- toVisit[1:nrow(user_df)]
     }else{
       toVisit <- toVisit[!toVisit %in% df_forbidden$Well]
     }

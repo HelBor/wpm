@@ -59,21 +59,6 @@ server <- function(input, output, session) {
   # launched only if start button is clicked and required parameters are validated
   #*****************************************************************************
 
-  # startBtn <- eventReactive(input$start_WPM_Btn, {
-  #   validate(
-  #     need(datafile(), "requires a user data file"),
-  #     need(plate_specs$nb_lines > 0, "requires a number of rows greater than 0"),
-  #     need(plate_specs$nb_cols > 0, "requires a number of columns greater than 0")
-  #   )
-  #   "Done"
-  # })
-  #
-  # output$pressedBtn <- renderText({
-  #   startBtn()
-  # })
-
-
-
   observeEvent(input$start_WPM_Btn,{
 
     # requires that the dimensions of the plate be greater than 0

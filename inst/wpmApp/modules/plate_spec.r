@@ -200,17 +200,18 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
   })
 
   wells_to_plot <- reactive({
+    ret <- NULL
     loginfo("nb samples : %d, totalNbWells : %d", nb_samples(), totalNbWells(), logger = "plate_spec")
 
     if(is.null(blank_wells())){
-      nb_b <- length(blank_wells())
+      nb_b <- 0
       loginfo("nb_b: %s", nb_b, logger = "plate_spec")
     }else{
       nb_b <- nrow(blank_wells())
       loginfo("nb_b: %s", nb_b, logger = "plate_spec")
     }
     if(is.null(forbid_wells())){
-      nb_f <- length(forbid_wells())
+      nb_f <- 0
       loginfo("nb_f: %s", nb_f, logger = "plate_spec")
     }else{
       nb_f <- nrow(forbid_wells())
@@ -218,37 +219,44 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
     }
     validate(
       need(nb_samples() <= (totalNbWells()),
-           "the dimensions of the plate are not compatible with the number of samples to be placed.
+           "The dimensions of the plate are not compatible with the number of samples to be placed.
            Please increase the number of plates to fill or provide a dataset with fewer samples.")
     )
     # s'il y a des blancs et des cases interdites alors il faut les rassembler
     if(!is.null(blank_wells()) & !is.null(forbid_wells()) ){
       validate(
         need(nb_samples() <= (totalNbWells() - (nb_b*nb_p()) - (nb_f*nb_p())),
-             "the blank mode and/or forbidden wells selected are not compatible with the plate's dimensions and the number of samples to be placed.
-             Please increase the number of plates to fill or provide a dataset with fewer samples.")
+             "The blank mode and/or forbidden wells selected are not compatible with the plate's dimensions and the number of samples to be placed.
+             If you want to keep this blank mode, please increase the number of plates to fill or provide a dataset with fewer samples.
+             Otherwise, please change the blank mode.")
       )
       result <- base::rbind(blank_wells(), forbid_wells())
       result <- distinct(result, Row, Column, .keep_all = TRUE)
-      result
+      ret <- result
       # s'il n'y a pas de blancs, qu'il y a des interdits, on ne renvoie que les
       # interdits
     }else if(input$blank_mode == "none" & !is.null(forbid_wells()) ){
       validate(
         need(nb_samples() <= (totalNbWells() - (nb_f*nb_p())),
-             "the forbidden wells selected are not compatible with the plate's dimensions and the number of samples to be placed.
-             Please increase the number of plates to fill or provide a dataset with fewer samples.")
+             "The forbidden wells selected are not compatible with the plate's dimensions and the number of samples to be placed.
+             To solve this issue, please:
+             - decrease the number of forbidden wells
+             - or increase the number of plates to fill
+             - or provide a dataset with fewer samples.")
       )
-      forbid_wells()
+      ret <- forbid_wells()
       # s'il n'y a que des blancs, on ne renvoie que ça
     }else if(!is.null(blank_wells()) & is.null(forbid_wells())){
       validate(
         need(nb_samples() <= (totalNbWells() - (nb_b*nb_p())),
-             "the blank mode selected is not compatible with the plate's dimensions and the number of samples to be placed.
-             Please increase the number of plates to fill or provide a dataset with fewer samples.")
+             "The blank mode selected is not compatible with the plate's dimensions and the number of samples to be placed.
+             If you want to keep this blank mode, please increase the number of plates to fill or provide a dataset with fewer samples.
+             Otherwise, please change the blank mode.")
       )
-      blank_wells()
+      ret <- blank_wells()
     }
+
+    return(ret)
   })
 
 
@@ -291,11 +299,11 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
     loginfo("nb of plate lines : %d", p_lines(), logger = "plate_spec")
     loginfo("nb of plate cols : %d", p_cols(), logger = "plate_spec")
     loginfo("selected mode : %s", nbh_mod(), logger = "plate_spec")
-
+    loginfo("number of forbidden wells: %s ", nrow(wells_to_plot()), logger = "plate_spec")
     toReturn$nb_lines <- p_lines()
     toReturn$nb_cols <- p_cols()
     toReturn$nb_plates <- nb_p()
-    # contains the blanks and forbidden wells
+    # dataframe which contains the blanks and forbidden wells
     toReturn$forbidden_wells <- wells_to_plot()
     toReturn$neighborhood_mod <- nbh_mod()
   })

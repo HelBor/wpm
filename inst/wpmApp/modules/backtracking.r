@@ -77,8 +77,8 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
     generateMapPlate(user_df = user_data(),
                      nb_rows = rows(),
                      nb_cols = columns(),
-                     df_forbidden = forbidden_wells(),
-                     mod = constraint(),
+                     df_forbidden = isolate(forbidden_wells()),
+                     mod = isolate(constraint()),
                      max_it = max_iter,
                      updateProgress
 
