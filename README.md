@@ -20,15 +20,9 @@
 `R version > 3.4.1`
 
 WPM R package depedencies:
-* `shiny`
-* `shinydashboard`
-* `shinyWidgets`
-* `shinycustomloader`
-* `DT`
-* `RColorBrewer`
-* `data.table`
-* `tidyverse`
-* `logging`
+
+`shiny`, `shinydashboard`, `shinyWidgets`, `shinycustomloader`, `DT`, 
+`RColorBrewer`, `data.table`, `tidyverse`, `logging`
 
 ### How to install
 
