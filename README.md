@@ -14,6 +14,18 @@
 > Its objective is to allow a user to generate a well plate plan in order to perform his experiments by controlling batch effects (in particular preventing plate edge effects).
 > The algorithm for placing the samples is inspired by the backtracking algorithm.
 
+## Table of content
+[Getting started](https://github.com/HelBor/wpm#getting-started)
+[How to use WPM](https://github.com/HelBor/wpm#how-to-use-wpm)
+* [WPM structure](https://github.com/HelBor/wpm#wpm-structure)
+* [Provide parameters](https://github.com/HelBor/wpm#provide-parameters)
+* [Check your Results](https://github.com/HelBor/wpm#check-your-results)
+* [Export your results](https://github.com/HelBor/wpm#export-your-results)
+[Pending Features](https://github.com/HelBor/wpm#pending-features)
+
+
+
+
 ## Getting started
 
 ### Pre-requisites
@@ -75,3 +87,4 @@ WPM has
 ## Pending Features
 
 * Support for multiple plates and place samples in a balanced way.
+* For proteomics, add the option to generate serialization of samples.
