@@ -16,11 +16,13 @@
 
 ## Table of content
 [Getting started](https://github.com/HelBor/wpm#getting-started)
+
 [How to use WPM](https://github.com/HelBor/wpm#how-to-use-wpm)
 * [WPM structure](https://github.com/HelBor/wpm#wpm-structure)
 * [Provide parameters](https://github.com/HelBor/wpm#provide-parameters)
 * [Check your Results](https://github.com/HelBor/wpm#check-your-results)
 * [Export your results](https://github.com/HelBor/wpm#export-your-results)
+
 [Pending Features](https://github.com/HelBor/wpm#pending-features)
 
 
