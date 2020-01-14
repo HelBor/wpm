@@ -4,7 +4,7 @@
 
 ![R](https://img.shields.io/badge/R-v3.4+-blue?style=flat-square)
 [![GitHub issues](https://img.shields.io/github/issues/HelBor/wpm?style=flat-square)](https://github.com/HelBor/wpm/issues)
-![Release](https://img.shields.io/badge/release-beta-orange?style=flat-square)
+![Release](https://img.shields.io/badge/release-alpha-orange?style=flat-square)
 ![GitHub license](https://img.shields.io/github/license/HelBor/wpm?style=flat-square)
 
 

@@ -22,8 +22,9 @@ sidebar <- dashboardSidebar(
 body <- dashboardBody(
   tabItems(
     tabItem(tabName = "home",
-            h2("Welcome to Well Plate Maker!"),
-            div(""),
+            div(img(src='images/wpm_logo.png', width = 300), style = "text-align:center;"),
+            div(img(src='images/wpm_name.png', width = 300), style = "text-align:center;"),
+            h2("Welcome!"),
             br(),
             box(width = 12,
                 status = "warning",
