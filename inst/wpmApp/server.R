@@ -19,9 +19,9 @@ server <- function(input, output, session) {
 
   output$nb_ech <- renderValueBox({
     if(is.null(datafile())){
-      valueBox(value = 0 , subtitle = "Total number of samples to place", color="aqua")
+      valueBox(value = 0 , subtitle = "Total number of samples to place", color="teal")
     }else{
-      valueBox(value = nrow(datafile()) , subtitle = "Total number of samples to place", icon=icon("list"))
+      valueBox(value = nrow(datafile()) , subtitle = "Total number of samples to place", icon=icon("list"), color="teal")
     }
   })
 
@@ -35,7 +35,7 @@ server <- function(input, output, session) {
   })
 
   output$nb_gp <- renderValueBox({
-    valueBox(value = distinct_gps() , subtitle = "Total number of distinct groups", icon=icon("layer-group"))
+    valueBox(value = distinct_gps() , subtitle = "Total number of distinct groups", icon=icon("layer-group"), color="teal")
   })
 
 

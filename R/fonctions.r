@@ -194,7 +194,6 @@ randomWalk <- function(m, toVisit, d, groups, constraint){
     logerror("m is not a matrix, m: %s", class(m))
     warning("Need m to be a matrix")
   }
-  loginfo("*****************")
 
   visited <- c() # cases visitées
   nb_lig <- dim(m)[1]
@@ -233,8 +232,8 @@ randomWalk <- function(m, toVisit, d, groups, constraint){
     }
 
   }
-  loginfo("length of toVisit: %d", length(toVisit), logger = "fonctions.randomWalk")
-  loginfo("length(visited) : %s", length(visited), logger = "fonctions.randomWalk")
+  # loginfo("length of toVisit: %d", length(toVisit), logger = "fonctions.randomWalk")
+  # loginfo("length(visited) : %s", length(visited), logger = "fonctions.randomWalk")
 
   return(d)
 }

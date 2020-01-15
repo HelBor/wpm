@@ -155,13 +155,15 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
   output$total_nb_wells <- renderValueBox({
     valueBox(value=totalNbWells(),
              subtitle = "Number of fillable wells",
-             icon = icon("vials"))
+             icon = icon("vials"),
+             color="teal")
   })
 
   output$nb_plates_to_fill <- renderValueBox({
     valueBox(value=as.numeric(input$no_plates),
              subtitle = "Number of plates to fill",
-             icon = icon("dice-four"))
+             icon = icon("dice-four"),
+             color="teal")
   })
 
   output$warning_plate <- renderInfoBox({
