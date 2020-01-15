@@ -43,8 +43,7 @@ WPM R package depedencies:
 
 From GitHub
 ```R
-library(devtools)
-devtools::install_github("HelBor/wpm")
+The project has not yet been built as a package 
 ```
 
 
@@ -53,12 +52,12 @@ devtools::install_github("HelBor/wpm")
 #### in RStudio
 
 ```R
-library(wmp)
+
 
 ```
 #### in an R console
 ```R
-library(wmp)
+
 ```
 
 
