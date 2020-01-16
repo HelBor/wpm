@@ -14,7 +14,25 @@ csvFileInput <- function(id, label = "CSV file") {
     ),
     hr(),
     # Input: Select quotes
-    h4("Please select the appropriate quote"),
+    fluidRow(
+      column(width = 10,
+             h4("Please select the appropriate quote")
+             ),
+      column(width = 2,
+             align = "right",
+        dropdownButton(
+          tags$h4("What are quotes?"),
+          div("Character strings in a file are quoted, that means they are
+          surrounded by quotes (Eg: \"string\" or  \'string\') "),
+          icon = icon("info-circle"),
+          tooltip = tooltipOptions(title = "Help"),
+          status = "warning",
+          size = "sm",
+          width = "350px"
+        )
+      )
+    ),
+
     selectInput(ns("quote"),
                 label = NULL,
                 c("None" = "",

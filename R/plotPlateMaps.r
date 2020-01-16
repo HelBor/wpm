@@ -157,7 +157,7 @@ theme_bdc_microtiter <- function(base_size = 12, base_family = "") {
       ),
       axis.ticks.length = unit(0, "pt"),
       # legend.direction = "horizontal",
-      legend.key.size = unit(0.01, units = "lines"),
+      legend.key.size = unit(1.0, units = "pt"),
       legend.box = "vertical",
       legend.spacing = unit(6, "pt"),
       plot.title = element_text(

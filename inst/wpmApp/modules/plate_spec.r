@@ -30,20 +30,62 @@ plateSpecUI <- function(id, label = "Plate specifications") {
       box(status="warning",
           width = 12,
           title=h3("3 - Plate constraints"),
-          h4("How to place Blanks on the plate"),
+          fluidRow(
+            column(width = 10,
+                   h4("How to place Blanks on the plate")
+            ),
+            column(width = 2,
+                   align = "right",
+                   dropdownButton(
+                     tags$h4("What are blanks?"),
+                     div("By blanks we mean a preparation without a biological sample in it.",
+                         br(),
+                         "You can place them in line or column. In these two cases
+                         there will be blanks every other line/column."),
+                     icon = icon("info-circle"),
+                     tooltip = tooltipOptions(title = "Help"),
+                     status = "warning",
+                     size = "sm",
+                     width = "350px"
+                   ))
+          ),
 
           awesomeRadio(inputId = ns("blank_mode"),
                        label = NULL,
                        choices = c("No blanks" = "none",
                                    "Per line" = "by_row",
                                    "Per column" = "by_column",
+                                   "Choose by hand" = "by_hand",
                                    "Checkerboard" = "checkerboard"),
                        selected = NULL,
                        status = "warning"
 
           ),
+          conditionalPanel(condition = "input.blank_mode == 'by_hand'",
+                           textInput(ns("hand_select"), h4("Enter Line Letter & Column number,
+                                         each box separated by commas without spaces."),
+                                     value = NULL,
+                                     placeholder = "Ex: A1,B2,C3"),
+                           ns = ns),
           hr(),
-          h4("Neighborhood contraints"),
+          fluidRow(
+            column(width = 10,
+                   h4("Neighborhood contraints")
+            ),
+            column(width = 2,
+                   align = "right",
+                   dropdownButton(
+                     tags$h4("What are neighborhood constraints?"),
+                     div(""),
+                     icon = icon("info-circle"),
+                     tooltip = tooltipOptions(title = "Help"),
+                     status = "warning",
+                     size = "sm",
+                     width = "350px"
+                   ))
+          ),
+
+
 
           conditionalPanel(condition = "input.blank_mode == 'by_row'",
                            awesomeRadio(inputId = ns("constraint_row"),
@@ -73,6 +115,18 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                                                    "West-East" = "WE",
                                                    "North-South-West-East" = "NEWS",
                                                    "None" = "none"),
+                                        selected = NULL,
+                                        status = "warning"
+
+                           ),
+                           ns = ns),
+          conditionalPanel(condition = "input.blank_mode == 'by_hand'",
+                           awesomeRadio(inputId = ns("constraint_by_hand"),
+                                        label = NULL,
+                                        choices = c("North-South" = "NS",
+                                                    "West-East" = "WE",
+                                                    "North-South-West-East" = "NEWS",
+                                                    "None" = "none"),
                                         selected = NULL,
                                         status = "warning"
 
@@ -184,9 +238,16 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
     validate(
       need((p_lines() > 0 & p_cols() > 0), "requires a plate with positive dimensions.")
     )
-    placeBlanksOnPlate(p_lines(),
-                       p_cols(),
-                       as.character(input$blank_mode))
+    if(input$blank_mode != "by_hand"){
+      placeBlanksOnPlate(p_lines(),
+                         p_cols(),
+                         as.character(input$blank_mode))
+    }else{
+      bw <- as.vector(unlist(strsplit(as.character(input$hand_select),
+                                      split=",")))
+      return(convertVector2Df(bw, p_lines(), p_cols()))
+    }
+
   })
 
   forbid_wells <- reactive({
@@ -290,6 +351,8 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
       return(input$constraint_row)
     }else if(input$blank_mode == "by_column"){
       return(input$constraint_column)
+    }else if(input$blank_mode == "by_hand"){
+      return(input$constraint_by_hand)
     }else if(input$blank_mode == "none"){
       return(input$constraint_none)
     }else if(input$blank_mode == "checkerboard"){

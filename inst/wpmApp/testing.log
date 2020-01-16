@@ -1,62 +1,29 @@
-2020-01-15 17:36:35 INFO::Initiating the log file...
-2020-01-15 17:36:36 INFO:plate_spec:nb of plate lines : 0
-2020-01-15 17:36:36 INFO:plate_spec:nb of plate cols : 0
-2020-01-15 17:36:36 INFO:plate_spec:selected mode : NS
-2020-01-15 17:36:39 INFO:plate_spec:nb of plate lines : 0
-2020-01-15 17:36:39 INFO:plate_spec:nb of plate cols : 0
-2020-01-15 17:36:39 INFO:plate_spec:selected mode : NS
-2020-01-15 17:36:40 INFO:plate_spec:totalNbWells = 0
-2020-01-15 17:36:43 INFO:data_import:File ind_groupes_NASH-only3groups.csv was uploaded
-2020-01-15 17:36:43 INFO:plate_spec:nb of plate lines : 0
-2020-01-15 17:36:43 INFO:plate_spec:nb of plate cols : 0
-2020-01-15 17:36:43 INFO:plate_spec:selected mode : NS
-2020-01-15 17:36:43 INFO:plate_spec:nb samples : 23, totalNbWells : 0
-2020-01-15 17:36:43 INFO:server:dataframe/matrix successfully created
-2020-01-15 17:36:43 INFO:plate_spec:nb of plate lines : 0
-2020-01-15 17:36:43 INFO:plate_spec:nb of plate cols : 0
-2020-01-15 17:36:43 INFO:plate_spec:selected mode : NS
-2020-01-15 17:36:43 INFO:plate_spec:nb samples : 22, totalNbWells : 0
-2020-01-15 17:36:43 INFO:server:dataframe/matrix successfully created
-2020-01-15 17:36:46 INFO:plate_spec:totalNbWells = 0
-2020-01-15 17:36:46 INFO:plate_spec:nb of plate lines : 8
-2020-01-15 17:36:46 INFO:plate_spec:nb of plate cols : 0
-2020-01-15 17:36:46 INFO:plate_spec:selected mode : NS
-2020-01-15 17:36:46 INFO:plate_spec:nb samples : 22, totalNbWells : 0
-2020-01-15 17:36:46 INFO:plate_spec:totalNbWells = 96
-2020-01-15 17:36:46 INFO:plate_spec:nb of plate lines : 8
-2020-01-15 17:36:46 INFO:plate_spec:nb of plate cols : 12
-2020-01-15 17:36:46 INFO:plate_spec:selected mode : NS
-2020-01-15 17:36:46 INFO:plate_spec:nb samples : 22, totalNbWells : 96
-2020-01-15 17:36:46 INFO:plate_spec:nb_b: 0
-2020-01-15 17:36:46 INFO:plate_spec:nb_f: 0
-2020-01-15 17:36:46 INFO:plate_spec:number of forbidden wells:
-2020-01-15 17:36:48 INFO:plate_spec:nb of plate lines : 8
-2020-01-15 17:36:48 INFO:plate_spec:nb of plate cols : 12
-2020-01-15 17:36:48 INFO:plate_spec:selected mode : none
-2020-01-15 17:36:48 INFO:plate_spec:number of forbidden wells:
-2020-01-15 17:36:50 INFO:fonctions.generateMapPlate:attempt n° 1
-2020-01-15 17:36:50 INFO::chosen_ind : 135
-2020-01-15 17:36:50 INFO::chosen_ind : 100
-2020-01-15 17:36:50 INFO::chosen_ind : 6
-2020-01-15 17:36:50 INFO::chosen_ind : 52
-2020-01-15 17:36:50 INFO::chosen_ind : 14
-2020-01-15 17:36:50 INFO::chosen_ind : 92
-2020-01-15 17:36:50 INFO::chosen_ind : 34
-2020-01-15 17:36:50 INFO::chosen_ind : 85
-2020-01-15 17:36:50 INFO::chosen_ind : 73
-2020-01-15 17:36:50 INFO::chosen_ind : 88
-2020-01-15 17:36:50 INFO::chosen_ind : 137
-2020-01-15 17:36:50 INFO::chosen_ind : 61
-2020-01-15 17:36:50 INFO::chosen_ind : 23
-2020-01-15 17:36:50 INFO::chosen_ind : 124
-2020-01-15 17:36:50 INFO::chosen_ind : 108
-2020-01-15 17:36:50 INFO::chosen_ind : 15
-2020-01-15 17:36:50 INFO::chosen_ind : 114
-2020-01-15 17:36:50 INFO::chosen_ind : 36
-2020-01-15 17:36:50 INFO::chosen_ind : 47
-2020-01-15 17:36:50 INFO::chosen_ind : 64
-2020-01-15 17:36:50 INFO::chosen_ind : 90
-2020-01-15 17:36:50 INFO::chosen_ind : 5
-2020-01-15 17:36:50 WARNING:fonctions.generateMapPlate:number of attempts: 1
-2020-01-15 17:36:50 INFO::map isn't null so we return map and map_plot
-2020-01-15 17:36:50 INFO:server:data_export$final_df: data.frame
+2020-01-16 17:40:58 INFO::Initiating the log file...
+2020-01-16 17:40:59 INFO:plate_spec:nb of plate lines : 0
+2020-01-16 17:40:59 INFO:plate_spec:nb of plate cols : 0
+2020-01-16 17:40:59 INFO:plate_spec:selected mode : NS
+2020-01-16 17:41:02 INFO:plate_spec:nb of plate lines : 0
+2020-01-16 17:41:02 INFO:plate_spec:nb of plate cols : 0
+2020-01-16 17:41:02 INFO:plate_spec:selected mode : NS
+2020-01-16 17:41:02 INFO:plate_spec:totalNbWells = 0
+2020-01-16 17:41:05 INFO:plate_spec:nb of plate lines : 0
+2020-01-16 17:41:05 INFO:plate_spec:nb of plate cols : 0
+2020-01-16 17:41:05 INFO:plate_spec:selected mode : NS
+2020-01-16 17:41:20 INFO:plate_spec:nb of plate lines : 0
+2020-01-16 17:41:20 INFO:plate_spec:nb of plate cols : 0
+2020-01-16 17:41:20 INFO:plate_spec:selected mode : NS
+2020-01-16 17:41:21 INFO:plate_spec:nb of plate lines : 0
+2020-01-16 17:41:21 INFO:plate_spec:nb of plate cols : 0
+2020-01-16 17:41:21 INFO:plate_spec:selected mode : none
+2020-01-16 17:41:21 INFO:plate_spec:nb of plate lines : 0
+2020-01-16 17:41:22 INFO:plate_spec:nb of plate cols : 0
+2020-01-16 17:41:22 INFO:plate_spec:selected mode : NS
+2020-01-16 17:41:22 INFO:plate_spec:nb of plate lines : 0
+2020-01-16 17:41:22 INFO:plate_spec:nb of plate cols : 0
+2020-01-16 17:41:22 INFO:plate_spec:selected mode : NS
+2020-01-16 17:41:25 INFO:plate_spec:nb of plate lines : 0
+2020-01-16 17:41:25 INFO:plate_spec:nb of plate cols : 0
+2020-01-16 17:41:25 INFO:plate_spec:selected mode : NS
+2020-01-16 17:41:27 INFO:plate_spec:nb of plate lines : 0
+2020-01-16 17:41:27 INFO:plate_spec:nb of plate cols : 0
+2020-01-16 17:41:27 INFO:plate_spec:selected mode : NS
