@@ -387,7 +387,7 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
 #
 #
 #
-#
+# #
 # d_input <- d
 # toReturn <- list()
 # rm(p,w,group,g,df, toTake)
@@ -422,4 +422,7 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
 #   # rajouter ce nouveau dataframe dans la liste des df à renvoyer
 #   toReturn[[paste0("p",p, collapse = "")]] <- df
 # }
+
+
+## A REVOIR: l'idée de thomas c'est d'abord tu répartis équitablement sans tenir compte des groupes, puis ensuite, tu tires au hasard dans les effectifs en prenant le reste (et non pas le modulo)
 
