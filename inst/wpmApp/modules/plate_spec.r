@@ -1,9 +1,6 @@
 # This R script contains the UI and Server side of the app to manage the plates
 # specifications.
 
-
-
-
 # Module UI function
 plateSpecUI <- function(id, label = "Plate specifications") {
   # Create a namespace function using the provided id
@@ -144,7 +141,27 @@ plateSpecUI <- function(id, label = "Plate specifications") {
       ),
       box(status="warning",
           width = 12,
-          title=h3("4 - Forbidden Wells"),
+
+          fluidRow(
+            column(width = 10,
+                   h3("4 - Forbidden Wells")),
+            column(width = 2,
+                   align = "right",
+                   dropdownButton(
+                     tags$h4("What does \"forbidden\" mean?"),
+                     div("Forbidden means that the wells in question will not be
+                         filled at all in the final plate plan.",br(),
+                         "Consequently, during the experiment, these will be
+                         completely empty wells or well filled with control
+                         samples."),
+                     icon = icon("info-circle"),
+                     tooltip = tooltipOptions(title = "Help"),
+                     status = "warning",
+                     size = "sm",
+                     width = "350px"
+                   ))
+          ),
+
           textInput(ns("forbid_select"), h4("Enter Line Letter & Column number,
                                          each box separated by commas without spaces.\n
                                             The wells already filled with a blank
@@ -245,7 +262,7 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
     }else{
       bw <- as.vector(unlist(strsplit(as.character(input$hand_select),
                                       split=",")))
-      return(convertVector2Df(bw, p_lines(), p_cols()))
+      return(convertVector2Df(bw, p_lines(), p_cols(), status = "blank"))
     }
 
   })
@@ -256,7 +273,7 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
     if(input$forbid_select != ""){
       fw <- as.vector(unlist(strsplit(as.character(input$forbid_select),
                                       split=",")))
-      return(convertVector2Df(fw, p_lines(), p_cols()))
+      return(convertVector2Df(fw, p_lines(), p_cols(), status = "forbidden"))
     }else{
       return(NULL)
     }

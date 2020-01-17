@@ -274,7 +274,7 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
 # Function to determine the coordinates of the forbidden wells for the plot
 # and generates the dataframe containing the Row and Column coordinates
 #*******************************************************************************
-convertVector2Df <- function(forbidden_wells, max_Row, max_Col){
+convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
 
   if(length(forbidden_wells)>0){
     check_rows <- as.numeric(match(toupper(substr(forbidden_wells, 1, 1)), LETTERS))
@@ -287,13 +287,13 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col){
       result <- NULL
     }else{
       # put the forbidden wells into the df
-      forbidden <- setnames(setDF(lapply(c(NA, "forbidden", NA, "forbidden", NA, NA),
+      forbidden <- setnames(setDF(lapply(c(NA, as.character(status), NA, as.character(status), NA, NA),
                                          function(...) character(length(forbidden_wells)))),
                             c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
       forbidden$Well <- as.character(forbidden_wells)
       forbidden$Sample.name <- as.integer(NA)
-      forbidden$Group <- as.factor("forbidden")
-      forbidden$Status <- as.factor("forbidden")
+      forbidden$Group <- as.factor(status)
+      forbidden$Status <- as.factor(status)
       forbidden$Row <- as.numeric(NA)
       forbidden$Column <- as.numeric(NA)
 

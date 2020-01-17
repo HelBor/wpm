@@ -51,6 +51,13 @@ body <- dashboardBody(
                 status = "warning",
                 h2("How to use WPM?"),
                 h3("1 - Fill the Parameters section"),
+
+                div(img(src = "images/blanks_per_line_plate.png", width = "30%"),
+                    img(src = "images/blanks_per_column_plate.png", width = "30%"),
+                    img(src = "images/blanks_by_hand_plate.png", width = "30%"),
+                    style = "display: inline-block;"
+                    ),
+
                 h3("2 - Check the Results section"),
                 h3("3 - Export your results if everything is ok")
             ),

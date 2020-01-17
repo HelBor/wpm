@@ -32,7 +32,7 @@
 
 ### Pre-requisites
 `R version > 3.4.1`
-OS platforms: `Windows 10, Fedora 24+, Ubuntu`
+OS platforms: `Windows`
 
 WPM R package depedencies:
 
