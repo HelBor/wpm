@@ -1,8 +1,7 @@
-2020-01-20 17:45:50 INFO::Initiating the log file...
-2020-01-20 17:45:51 INFO:plate_spec:nb of plate lines : 0
-2020-01-20 17:45:51 INFO:plate_spec:nb of plate cols : 0
-2020-01-20 17:45:51 INFO:plate_spec:selected mode : NS
-2020-01-20 17:45:52 INFO:plate_spec:nb of plate lines : 0
-2020-01-20 17:45:52 INFO:plate_spec:nb of plate cols : 0
-2020-01-20 17:45:52 INFO:plate_spec:selected mode : NS
-2020-01-20 17:46:14 INFO:plate_spec:totalNbWells = 0
+2020-01-20 17:49:11 INFO::Initiating the log file...
+2020-01-20 17:49:12 INFO:plate_spec:nb of plate lines : 0
+2020-01-20 17:49:12 INFO:plate_spec:nb of plate cols : 0
+2020-01-20 17:49:12 INFO:plate_spec:selected mode : NS
+2020-01-20 17:49:14 INFO:plate_spec:nb of plate lines : 0
+2020-01-20 17:49:14 INFO:plate_spec:nb of plate cols : 0
+2020-01-20 17:49:14 INFO:plate_spec:selected mode : NS
