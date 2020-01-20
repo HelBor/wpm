@@ -68,7 +68,6 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
     updateProgress <- function(value = NULL, detail = NULL) {
       if (is.null(value)) {
         value <- progress$getValue()
-        # value <- value + (progress$getMax() - value)
       }
       progress$set(value = value, detail = detail)
       progress$inc(amount = 1/max_iter)
@@ -121,8 +120,6 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
     }
 
   })
-
-
 
   return(toReturn)
 

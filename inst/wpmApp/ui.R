@@ -29,14 +29,15 @@ body <- dashboardBody(
               box(width = 12,
                   status = "warning",
                   h1("Welcome to Well Plate Maker!"),
-                  div("WPM is a shiny application (web-based GUI) allowing to create a
-                  plan of well-plate for the experiments by controlling batch effects.",
+                  div("WPM is a shiny application (web-based GUI) allowing you to create a
+                  plan of well-plate for your experiments by controlling batch effects.",
                       br(),br(),
                       "Indeed, the placement of samples on a plate can raise questions
-                  when we want to take into account batch effects or plate edge
-                  effects. The question therefore arises mainly when the samples
-                  are divided into different groups (here, we speak of a group
-                  to define a category of the factor to be studied.
+                  when we want to take into account batch effects (because a placement on a plate is a technical
+                  source of variation), which may confound the discovery of real
+                  biological variation. The question therefore arises mainly when
+                  the samples are divided into different groups (here, we speak
+                  of a group to define a category of the factor to be studied.
                   Eg: different treatments to compare, different stages of development, etc.)",
                       br(),br(),
                       "The plate plan is built using a backtracking-inspired algorithm
@@ -151,29 +152,32 @@ body <- dashboardBody(
 
     ),
     tabItem(tabName = "help",
-            box(width = 12,
-                status = "warning",
-                h2("Contact"),
-                div("Please contact me if you need any help, or if you want to
+            fluidRow(
+              box(width = 12,
+                  status = "warning",
+                  h2("Contact"),
+                  div("Please contact me if you need any help, or if you want to
                     report a bug or if you wish to make comments/suggestions:",
-                    style = "font-size:18px"),
-                br(),
-                column(width = 4,
-                       valueBox(value = "New issue",
-                                subtitle = "https://github.com/HelBor/wpm/issues",
-                                width = 12,
-                                color = "teal",
-                                icon = icon("github"))
+                      style = "font-size:18px"),
+                  br(),
+                  column(width = 4,
+                         valueBox(value = "New issue",
+                                  subtitle = "https://github.com/HelBor/wpm/issues",
+                                  width = 12,
+                                  color = "teal",
+                                  icon = icon("github"))
 
-                ),
-                column(width = 4,
-                       valueBox(value = "Email",
-                                subtitle = "helene.borges@cea.fr",
-                                width = 12,
-                                color = "teal",
-                                icon = icon("envelope"))
-                )
+                  ),
+                  column(width = 4,
+                         valueBox(value = "Email",
+                                  subtitle = "helene.borges@cea.fr",
+                                  width = 12,
+                                  color = "teal",
+                                  icon = icon("envelope"))
+                  )
+              )
             )
+
     )
   )
 )

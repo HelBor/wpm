@@ -168,7 +168,7 @@ solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
       # use resample because this function also works as expected when there is
       # only one element in the set to be sampled.
       chosen_ind <- resample(available_ind,size=1)
-      loginfo("chosen_ind : %s", chosen_ind)
+      # loginfo("chosen_ind : %s", chosen_ind)
       m[i,j] <- chosen_ind
       already_drawn <- c(already_drawn,chosen_ind)
       # loginfo("already_drawn: %s", already_drawn)
