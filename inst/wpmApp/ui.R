@@ -12,7 +12,8 @@ sidebar <- dashboardSidebar(
     menuItem("Home", tabName = "home", icon = icon("home")),
     menuItem("Parameters", tabName = "parameters", icon = icon("cogs")),
     menuItem("Results", tabName = "results", icon = icon("chart-bar")),
-    menuItem("Export", tabName = "export", icon = icon("download"))
+    menuItem("Export", tabName = "export", icon = icon("download")),
+    menuItem("Help", tabName = "help", icon = icon("hands-helping"))
   )
 )
 
@@ -60,29 +61,6 @@ body <- dashboardBody(
 
                 h3("2 - Check the Results section"),
                 h3("3 - Export your results if everything is ok")
-            ),
-            box(width = 12,
-                status = "warning",
-                h2("Contact"),
-                div("Please contact me if you need any help, or if you want to
-                    report a bug or if you wish to make comments/suggestions:",
-                    style = "font-size:18px"),
-                br(),
-                column(width = 4,
-                       valueBox(value = "New issue",
-                                subtitle = "https://github.com/HelBor/wpm/issues",
-                                width = 12,
-                                color = "teal",
-                                icon = icon("github"))
-
-                ),
-                column(width = 4,
-                      valueBox(value = "Email",
-                               subtitle = "helene.borges@cea.fr",
-                               width = 12,
-                               color = "teal",
-                               icon = icon("envelope"))
-                )
             )
 
     ),
@@ -168,6 +146,31 @@ body <- dashboardBody(
             h2("Download your data here"),
             exportUI("export")
 
+    ),
+    tabItem(tabName = "help",
+            box(width = 12,
+                status = "warning",
+                h2("Contact"),
+                div("Please contact me if you need any help, or if you want to
+                    report a bug or if you wish to make comments/suggestions:",
+                    style = "font-size:18px"),
+                br(),
+                column(width = 4,
+                       valueBox(value = "New issue",
+                                subtitle = "https://github.com/HelBor/wpm/issues",
+                                width = 12,
+                                color = "teal",
+                                icon = icon("github"))
+
+                ),
+                column(width = 4,
+                       valueBox(value = "Email",
+                                subtitle = "helene.borges@cea.fr",
+                                width = 12,
+                                color = "teal",
+                                icon = icon("envelope"))
+                )
+            )
     )
   )
 )
