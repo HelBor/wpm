@@ -219,7 +219,7 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
 
   totalNbWells <- reactive({
     tNbW <- p_lines()*p_cols()*nb_p()
-    loginfo("totalNbWells = %d", tNbW, logger = "plate_spec")
+    # loginfo("totalNbWells = %d", tNbW, logger = "plate_spec")
     return(tNbW)
     })
 
@@ -281,21 +281,21 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
 
   wells_to_plot <- reactive({
     ret <- NULL
-    loginfo("nb samples : %d, totalNbWells : %d", nb_samples(), totalNbWells(), logger = "plate_spec")
+    # loginfo("nb samples : %d, totalNbWells : %d", nb_samples(), totalNbWells(), logger = "plate_spec")
 
     if(is.null(blank_wells())){
       nb_b <- 0
-      loginfo("nb_b: %s", nb_b, logger = "plate_spec")
+      # loginfo("nb_b: %s", nb_b, logger = "plate_spec")
     }else{
       nb_b <- nrow(blank_wells())
-      loginfo("nb_b: %s", nb_b, logger = "plate_spec")
+      # loginfo("nb_b: %s", nb_b, logger = "plate_spec")
     }
     if(is.null(forbid_wells())){
       nb_f <- 0
-      loginfo("nb_f: %s", nb_f, logger = "plate_spec")
+      # loginfo("nb_f: %s", nb_f, logger = "plate_spec")
     }else{
       nb_f <- nrow(forbid_wells())
-      loginfo("nb_f: %s", nb_f, logger = "plate_spec")
+      # loginfo("nb_f: %s", nb_f, logger = "plate_spec")
     }
     validate(
       need(nb_samples() <= (totalNbWells()),
@@ -378,10 +378,10 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
   })
 
   observe({
-    loginfo("nb of plate lines : %d", p_lines(), logger = "plate_spec")
-    loginfo("nb of plate cols : %d", p_cols(), logger = "plate_spec")
-    loginfo("selected mode : %s", nbh_mod(), logger = "plate_spec")
-    loginfo("number of forbidden wells: %s ", nrow(wells_to_plot()), logger = "plate_spec")
+    # loginfo("nb of plate lines : %d", p_lines(), logger = "plate_spec")
+    # loginfo("nb of plate cols : %d", p_cols(), logger = "plate_spec")
+    # loginfo("selected mode : %s", nbh_mod(), logger = "plate_spec")
+    # loginfo("number of forbidden wells: %s ", nrow(wells_to_plot()), logger = "plate_spec")
     toReturn$nb_lines <- p_lines()
     toReturn$nb_cols <- p_cols()
     toReturn$nb_plates <- nb_p()

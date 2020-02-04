@@ -49,12 +49,16 @@ export <- function(input, output, session, df, plot){
       paste0(input$filename, ".png", sep = "")
     },
     content = function(file) {
-      ggsave(file,
-             plot = plot(),
-             device = "png",
-             width = 10,
-             height = 7,
-             units = "in")
+      if(class(plot())=="list"){
+        # TODO
+      }else{
+        ggsave(file,
+               plot = plot(),
+               device = "png",
+               width = 10,
+               height = 7,
+               units = "in")
+      }
     }
   )
 }

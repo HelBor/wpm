@@ -3,7 +3,7 @@ backtrackUI <- function(id, label = NULL) {
   fluidRow(
     box(title = h3("Your dataset"),
         collapsible = TRUE,
-        width = 4,
+        width = 5,
         status = "warning",
         withLoader(
           dataTableOutput(ns("df_modif")),
@@ -13,10 +13,10 @@ backtrackUI <- function(id, label = NULL) {
 
     ),
     box(title = h3("Plate Layout Experiment"),
-        width = 8,
+        width = 7,
         status = "warning",
         withLoader(
-          plotOutput(ns("mapPlot"), height = 600),
+          uiOutput(ns("mapPlot")),
           type = "html",
           loader = "loader3"
         )
@@ -36,7 +36,7 @@ backtrackUI <- function(id, label = NULL) {
 # rows : integer - plate's number of rows
 # columns : integer - plate's number of columns
 # constraint : character - neighborhood spatial constraint mode
-backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_wells, rows, columns, nb_plates, constraint, project_name) {
+backtrack <- function(input, output, session, df, max_iter, forbidden_wells, rows, columns, nb_plates, constraint, project_name) {
 
   toReturn <- reactiveValues(
     final_df = NULL,
@@ -73,17 +73,47 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
       progress$inc(amount = 1/max_iter)
     }
 
-    generateMapPlate(user_df = user_data(),
-                     nb_rows = rows(),
-                     nb_cols = columns(),
-                     df_forbidden = isolate(forbidden_wells()),
-                     mod = isolate(constraint()),
-                     max_it = max_iter,
-                     updateProgress
+    final_df <- data.frame("Sample.name" = as.character(NA),
+                           "Group" = as.factor(NA),
+                           "Well" = as.character(NA),
+                           "Status" = as.factor(NA),
+                           "Row" = as.numeric(NA),
+                           "Column" = as.numeric(NA),
+                           "Plate" = as.numeric(NA))
 
-    )
 
+    if(nb_plates() > 1){
+      # loginfo("on est dans le if nb_plate > 1")
+      res <- balancedGrpDistrib(d = user_data(),
+                              nb_p = nb_plates())
+
+    }else{
+      res <- list("p1" = user_data())
+    }
+
+    p <- 1
+    for(current_p in res){
+      new_df <- NULL
+      # print(str(current_p))
+      new_df <- generateMapPlate(user_df = current_p,
+                                 nb_rows = rows(),
+                                 nb_cols = columns(),
+                                 df_forbidden = isolate(forbidden_wells()),
+                                 mod = isolate(constraint()),
+                                 max_it = max_iter,
+                                 updateProgress
+                                )
+      # loginfo("class(new_df): %s",class(new_df), logger = "backtracking")
+      if(class(new_df) == "data.frame"){
+        new_df$Plate <- p
+        final_df <- rbind(final_df, new_df)
+      }
+      p <- p + 1
+
+    }
+    return(final_df)
   })
+
 
   output$df_modif <- renderDataTable(datatable({
     map()
@@ -92,20 +122,29 @@ backtrack <- function(input, output, session, df, nb_g, max_iter, forbidden_well
 
   map_plot <- reactive({
     if(!is.null(map())){
-      if("forbidden" %in% map()$Status | "blank" %in% map()$Status){
-        nb_g = nb_g + 1
-        drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns(), project_title = project_name())
-      }else if("forbidden" %in% map()$Status & "blank" %in% map()$Status){
-        nb_g = nb_g + 2
-        drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns(), project_title = project_name())
-      }else{
-        drawPlateMap(df = map(), nb_gps = nb_g, plate_lines = rows(), plate_cols = columns(), project_title = project_name())
-      }
+      toPlot = list()
+      nb_g <- length(levels(map()$Group))
+      toPlot <- lapply(X = 1:nb_plates(),
+                       function(x) drawPlateMap(df = map()[which(map()$Plate == x),],
+                                                nb_gps = nb_g, plate_lines = rows(),
+                                                plate_cols = columns(),
+                                                project_title = project_name())
+      )
+      return(toPlot)
     }
   })
 
-  output$mapPlot <- renderPlot({
-    map_plot()
+
+  output$mapPlot <- renderUI({
+    lapply(1:length(map_plot()), function(i){
+      box(
+        title = h4(paste0("Plate ", i)),
+        width = 12,
+        renderPlot({map_plot()[[i]]})
+      )
+
+    }
+    )# fin lapply
   })
 
   observe({

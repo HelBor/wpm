@@ -6,6 +6,7 @@ library(shinycustomloader)
 library(DT)
 library(RColorBrewer)
 library(data.table)
+library(gridExtra)
 
 #library(dplyr)
 #library(ggplot2)

@@ -59,12 +59,12 @@ server <- function(input, output, session) {
   # the prohibited wells, the spatial constraints of the plate
   #*****************************************************************************
 
-  plate_specs <- callModule(plateSpec,
+  plate_specs <- isolate(callModule(plateSpec,
                             "plate",
                             project_name = input$project_title,
                             nb_samples = reactive(nrow(datafile()))
                             )
-
+                         )
 
   #*****************************************************************************
   # backtracking module part
@@ -80,21 +80,20 @@ server <- function(input, output, session) {
       need(plate_specs$nb_cols > 0, "requires a number of columns greater than 0")
     )
 
-    data_export <- callModule(module = backtrack,
-               id = "backtrack",
-               df = isolate(datafile()),
-               nb_g = isolate(distinct_gps()),
-               # does not automatically restart the module when the isolated
-               # input changes, and therefore needs start_WPM_Btn to be restarted
-               max_iter = isolate(input$nb_iter),
-               forbidden_wells = isolate(reactive(plate_specs$forbidden_wells)),
-               rows = isolate(reactive(plate_specs$nb_lines)),
-               columns = isolate(reactive(plate_specs$nb_cols)),
-               nb_plates = isolate(reactive(plate_specs$nb_plates)),
-               constraint = isolate(reactive(plate_specs$neighborhood_mod)),
-               project_name = isolate(reactive(input$project_title))
-               )
-
+    data_export <- isolate(callModule(module = backtrack,
+                                      id = "backtrack",
+                                      df = datafile(),
+                                      # does not automatically restart the module when the isolated
+                                      # input changes, and therefore needs start_WPM_Btn to be restarted
+                                      max_iter = input$nb_iter,
+                                      forbidden_wells = reactive(plate_specs$forbidden_wells),
+                                      rows = reactive(plate_specs$nb_lines),
+                                      columns = reactive(plate_specs$nb_cols),
+                                      nb_plates = reactive(plate_specs$nb_plates),
+                                      constraint = reactive(plate_specs$neighborhood_mod),
+                                      project_name = reactive(input$project_title)
+                                      )
+                           )
 
     observeEvent(data_export$final_df,{
       loginfo("data_export$final_df: %s", class(data_export$final_df), logger = "server")

@@ -123,7 +123,8 @@ checkConstraints <- function(m, row, col, mode){
 resample <- function(x, ...) x[sample.int(length(x), ...)]
 
 
-solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
+solveCell <- function(m, d, i, j, already_drawn, constraint){
+
   if(class(m) != "matrix"){
     logerror("m is not a matrix, m: %s", class(m))
     warning("Need m to be a matrix")
@@ -132,10 +133,7 @@ solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
     logerror("d is not a dataframe, d: %s", class(d))
     warning("Need d to be a dataframe")
   }
-  if(class(nb_gps) != "integer"){
-    logerror("nb_gps is not an integer, nb_gps: %s", class(nb_gps))
-    warning("Need nb_gps to be numeric")
-  }
+
 
   # we look at which individuals are neighbors of the current box
   if(constraint != "none"){
@@ -148,19 +146,20 @@ solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
   # identify which group the neighbors belong to in order to obtain a reduced
   # list of possibilities of groups for the current cell to fill
   forbidden_groups <- unique(d$Group[which(d$Sample.name %in% neighbors)])
-  possible_groups <- which(!1:nb_gps %in% forbidden_groups)
+  possible_groups <- levels(d$Group)[which(!levels(d$Group) %in% forbidden_groups)]
 
+  # loginfo("possible_groups : %s", possible_groups)
   if(length(possible_groups)==0){
     #there are no more possibilities
     return(1)
   }else{
-    # loginfo("possible_groups : %s", possible_groups)
     # only take in individuals belonging to the possible groups
     # and who are not in already_drawn
     possible_ind <- d$Sample.name[which(d$Group %in% possible_groups)]
-    # loginfo("possible_ind : %s", possible_ind)
+    # loginfo("nb of possible_ind : %s", length(possible_ind))
     available_ind <- d$Sample.name[which(d$Sample.name %in% possible_ind & !(d$Sample.name %in% already_drawn))]
     # loginfo("available_ind: %s", available_ind)
+    # loginfo("length(available_ind): %s", length(available_ind))
     if(length(available_ind)==0){
       #there are no more possibilities
       return(1)
@@ -188,7 +187,7 @@ solveCell <- function(m, d, nb_gps, i, j, already_drawn, constraint){
 # d est le dataframe fournit par l'utilisateur
 # groups est le nombre de groupes distincts existant dans les données utilisateur
 # constraint est le mode de contrainte de voisinnage choisi par l'utilisateur
-randomWalk <- function(m, toVisit, d, groups, constraint){
+randomWalk <- function(m, toVisit, d, constraint){
 
   if(class(m) != "matrix"){
     logerror("m is not a matrix, m: %s", class(m))
@@ -201,6 +200,9 @@ randomWalk <- function(m, toVisit, d, groups, constraint){
   ret = m
   placed = c() # échantillons déjà tirés et placés
   # tant que tous les échantillons n'ont pas été placés dans visited
+  # loginfo("nrow(d): %s", nrow(d), logger = "fonctions.randomWalk")
+
+
   while (length(visited) != nrow(d)) {
 
     cell <- resample(toVisit, size = 1)
@@ -208,18 +210,19 @@ randomWalk <- function(m, toVisit, d, groups, constraint){
     # loginfo("visited: %s", visited, logger = "fonctions.randomWalk")
     # mise à jour des cases visitées
     visited <- c(visited,cell)
+    # loginfo("length(visited): %s", length(visited), logger = "fonctions.randomWalk")
+    # loginfo("length(toVisit): %s", length(toVisit))
 
     i <- as.numeric(match(toupper(substr(cell, 1, 1)), LETTERS))
     j <- as.numeric(substr(cell, 2, 5))
     # uniformisation de plaque
     test <- solveCell(m=ret,
                       d=d,
-                      nb_gps=groups,
                       i=i,
                       j=j,
                       already_drawn = placed,
                       constraint = constraint)
-
+    # loginfo("test: %s", class(test))
     if(class(test)=="numeric"){
       return(1)
     }else{
@@ -234,7 +237,7 @@ randomWalk <- function(m, toVisit, d, groups, constraint){
   }
   # loginfo("length of toVisit: %d", length(toVisit), logger = "fonctions.randomWalk")
   # loginfo("length(visited) : %s", length(visited), logger = "fonctions.randomWalk")
-
+  # loginfo(d[1,], logger = "fonctions.randomWalf")
   return(d)
 }
 
@@ -282,7 +285,6 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
     ret <- randomWalk(m = mat,
                       toVisit = toVisit,
                       d = user_df,
-                      groups = length(unique(user_df$Group)),
                       constraint = mod
                       )
     # loginfo("class(ret): %s", class(ret), logger = "fonctions.generateMapPlate")
@@ -292,58 +294,13 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
       logwarn("number of attempts: %d", nb_attempts, logger = "fonctions.generateMapPlate")
       return(ret)
     }
-    # Sys.sleep(0.5)
+
     nb_attempts = nb_attempts + 1
   }
   logwarn("we reeched the maximal number of iterations with no success", logger = "fonctions.generateMapPlate")
   return(NULL)
 }
 
-
-# Permet de générer un nombre précis d'échantillons (effectifs) qui correspondent à des groupes
-# ATTENTION à n'utiliser que si l'on doit tenir compte de groupes évidemment...
-# En entrée
-# dataset: dataframe contenant deux colonnes (individu et groupe)
-# effectifs: vecteur contenant les effectifs pour chaque groupe existant dans le jeu de données
-# En sortie
-# res:
-# selectBioSamples  <- function(dataset, effectifs){
-#   group = 1
-#   res = c()
-#   for (effectif in effectifs) {
-#     g <- dataset[dataset$groupe==group,][sample(nrow(dataset[dataset$groupe==group,]),effectif),]
-#     res <- rbind(res,g)
-#     group <- group + 1
-#   }
-#   return(res)
-# }
-
-# convertForbiddenStringIntoNumber <- function(forbidden_wells){
-#   forbidden_wells <- unlist(strsplit(as.character(forbidden_wells), split=","))
-#   forbidden <- c()
-#   for(element in forbidden_wells){
-#     xy = unlist(strsplit(element, split = "-"))
-#     forbidden = c(forbidden,as.numeric(paste0(xy[1],xy[2])))
-#   }
-#   return(forbidden)
-# }
-
-# function that generates the plate according to its dimensions, the chosen
-# spatial constraints, the number of different groups and the numbers for each
-# group.
-# platePreparation <- function(d, r, c, forbid_wells){
-#   colnames(d) = c("ind","group")
-#   mat = matrix(NA,nrow=r, ncol=c)
-#   forbidden <- convertForbiddenStringIntoNumber(forbid_wells)
-#
-#   nb.groups = length(unique(d$group))
-#   # number of samples per group
-  # workforce = d %>%
-  #   group_by(group) %>%
-  #   summarise(n_distinct(ind))
-#   data = selectBioSamples(d, workforce$`n_distinct(ind)` %/% 2)
-#   plate <- generatePlate(m=mat, interdit=forbidden, d=data, groupes=nb.groups)
-# }
 
 
 #*******************************************************************************
@@ -353,7 +310,7 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
 #*******************************************************************************
 
 # # preparation des inputs comme ceux qu'on obtient dans l'appli shiny
-# d <- read.csv2("../data/ind_groupes_NASH-80.csv",
+# d <- read.csv2("./data/ind_groupes_NASH-160.csv",
 #                 header = TRUE,
 #                 sep = ";",
 #                 col.names = c("Sample.name", "Group"),
@@ -364,8 +321,8 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
 # d$Status <- as.factor("allowed")
 # d$Row <- NA
 # d$Column <- NA
-#
-#
+
+
 # nb_l <- 8
 # nb_c <- 12
 # nb_p <- 3
@@ -380,49 +337,66 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
 # # drawPlateMap(df = plate, nb_gps = 11, plate_lines = nb_l, plate_cols = nb_c)
 # #
 # #
-# workforce <- d_input %>%
-#   group_by(Group) %>%
-#   summarise(n_distinct(Sample.name))
-# names(workforce) <- c("Group", "nb_samples")
+
 #
 #
 #
 # #
 # d_input <- d
-# toReturn <- list()
-# rm(p,w,group,g,df, toTake)
-#
-# # pour chaque plaque
-# for(p in 1:nb_p){
-#
-#   # si on est au dernier tour
-#   if(p == nb_p){
-#     loginfo("p = %s, du coup on est dans le if p == nb_p", p)
-#     # prendre ce qui reste dans le df de départ
-#     df <- d_input
-#   }else{
-#     loginfo("p = %s, du coup on est dans le else", p)
-#     # pour chaque group existant, prendre au hasard des échantillons dans df avec worforce %/% nb_p
-#     group = 1
-#     df = data.frame(matrix(ncol = length(d_input)))
-#     names(df) <- names(d_input)
-#     for (w in workforce$nb_samples) {
-#       toTake <- (w %/% nb_p)
-#       loginfo("toTake: %s", toTake)
-#       g <- d_input[d_input$Group==group,][sample(nrow(d_input[d_input$Group==group,]), toTake),]
-#       df <- rbind(df,g)
-#       group <- group + 1
-#     }
-#     loginfo("df dimensions: %d", nrow(df))
-#     # enlever les échantillons choisis du df de départ
-#     d_input <- d_input[!d_input$Sample.name %in% df$Sample.name,]
-#     loginfo("d_input dimensions: %d", nrow(d_input))
-#
-#   }
-#   # rajouter ce nouveau dataframe dans la liste des df à renvoyer
-#   toReturn[[paste0("p",p, collapse = "")]] <- df
-# }
+
+balancedGrpDistrib <- function(d, nb_p){
+
+  grouped <- d %>%
+    group_by(Group)
+  # vecteur contenant les effectifs pour chaque groupe
+  workforces <- group_size(grouped)
+  test <- group_split(grouped)
+  # effectifs par groupe pour chaque plaque
+  w <- round(workforces/nb_p)
+
+  toReturn <- list()
+  missing <- rep(list(0), times = nb_p)
+
+  for(p in 1:nb_p){
+    df = data.frame(matrix(ncol = ncol(grouped)))
+    names(df) <- names(grouped)
+
+    for(g in 1:length(workforces)){
+      if(nrow(test[[g]]) < w[g]){
+        df <- rbind(df, as.data.frame(test[[g]]))
+
+        missing[[p]] <- missing[[p]] + as.numeric(w[g] - nrow(test[[g]]))
+        test[[g]] <- data.frame("Sample.name" = NA,
+                                "Group" = NA, "Well" = NA,
+                                "Status" = NA, "Row" = NA,
+                                "Column" = NA)
+      }else{
+        selected <- sample(test[[g]]$Sample.name, size = w[g])
+        wg <- as.data.frame(test[[g]][test[[g]]$Sample.name %in% selected,])
+        test[[g]] <- test[[g]][!test[[g]]$Sample.name %in% selected,]
+        df <- rbind(df,wg)
+      }
 
 
-## A REVOIR: l'idée de thomas c'est d'abord tu répartis équitablement sans tenir compte des groupes, puis ensuite, tu tires au hasard dans les effectifs en prenant le reste (et non pas le modulo)
+    }
+    df <- df[!is.na(df$Sample.name),]
+    df$Sample.name <- as.character(df$Sample.name)
+    df$Group <- as.factor(df$Group)
+    df$Status <- as.factor(df$Status)
+
+    toReturn[[p]] <- df
+
+
+  }
+  incomplete_plate <- which.min(unlist(lapply(toReturn, function(x) nrow(x))))
+  m <- bind_rows(test)
+  m <- m[!is.na(m$Sample.name),]
+  toReturn[[incomplete_plate]] <- rbind(toReturn[[incomplete_plate]], m)
+
+  return(toReturn)
+
+}
+
+
+# haha <- balancedGrpDistrib(d = d, nb_p = nb_p)
 
