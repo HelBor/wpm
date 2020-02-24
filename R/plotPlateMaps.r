@@ -332,10 +332,10 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
 
 drawPlateMap <- function(df, nb_gps, plate_lines, plate_cols, project_title){
   LETTERS702 <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))
-  loginfo("on est dans drawPlateMap")
+
   # this palette allows coloring depending on whether it is a blank, a
-  # prohibited box, or a group
-  palette_strains <- c("blank"="grey", "forbidden"="red")
+  # prohibited well, a Not Randomized sample or a randomized sample
+  palette_strains <- c("blank"="grey", "forbidden"="red", "notRandom" = "green")
   palette_complete <- c(brewer.pal(7, "Set2"), brewer.pal(7, "Accent"))
   palette_choisie <- palette_complete[1:nb_gps]
   names(palette_choisie) <- levels(df$Group)
@@ -348,7 +348,7 @@ drawPlateMap <- function(df, nb_gps, plate_lines, plate_cols, project_title){
     geom_point(aes(shape = Status, colour = Group), size = 12) +
     geom_text(aes(label = Sample.name), size = 4) +
     colScale +
-    scale_shape_manual(values = c("forbidden" = 4, "blank" = 15, "allowed" = 19)) +
+    scale_shape_manual(values = c("forbidden" = 4, "blank" = 15, "notRandom" = 17, "toRandom" = 16)) +
     coord_fixed(ratio = (13/plate_cols)/(9/plate_lines), xlim = c(0.9, plate_cols+0.1), ylim = c(0, plate_lines+1)) +
     scale_y_reverse(breaks = seq(1, plate_lines), labels = LETTERS702[1:plate_lines]) +
     scale_x_continuous(breaks = seq(1, plate_cols)) +

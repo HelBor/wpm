@@ -46,7 +46,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, row
   user_data <- reactive({
     df$Group <- as.factor(df$Group)
     df$Well <- as.character(NA)
-    df$Status <- as.factor("allowed")
+    df$Status <- as.factor("toRandom")
     df$Row <- NA
     df$Column <- NA
     return(df)
@@ -111,6 +111,9 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, row
       p <- p + 1
 
     }
+
+
+    final_df <- final_df[!is.na(final_df$Status),]
     return(final_df)
   })
 

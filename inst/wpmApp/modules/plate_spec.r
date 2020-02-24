@@ -9,6 +9,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 
   fluidRow(
     column(width=6,
+      #-------------------------------------------------------------------------
       box(status="warning",
           width = 12,
           solidHeader = TRUE,
@@ -43,10 +44,48 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                        value=1, min=1,
                        width = "80px")
       ),
+      #-------------------------------------------------------------------------
+
+      #-------------------------------------------------------------------------
       box(status="warning",
           width = 12,
           solidHeader = TRUE,
-          title=h3("3 - Plate constraints"),
+          title = h3("3 - Forbidden Wells"),
+          fluidRow(
+            column(width = 10,
+                   p("Sometimes we do not want fill some wells because: We do
+                     not want to fill the corners, there are broken pipettes,
+                     there are dirty wells, ...")
+            ),
+            column(width = 2,
+                   align = "right",
+                   dropdownButton(
+                     tags$h4("What does \"forbidden\" mean?"),
+                     div("Forbidden means that the wells in question will not be
+                         filled at all in the final plate plan.",br(),
+                         "Consequently, during the experiment, these will be
+                         completely empty wells"),
+                     icon = icon("info-circle"),
+                     tooltip = tooltipOptions(title = "Help"),
+                     status = "warning",
+                     size = "sm",
+                     width = "350px"
+                     ))
+          ),
+
+
+          textInput(ns("forbid_select"), h4("Enter Line Letter & Column number,
+                                            each box separated by commas without spaces."),
+                    value = NULL,
+                    placeholder = "Ex: A1,B2,C3")
+          ),
+      #-------------------------------------------------------------------------
+
+      #-------------------------------------------------------------------------
+      box(status="warning",
+          width = 12,
+          solidHeader = TRUE,
+          title=h3("4 - Blanks"),
           fluidRow(
             column(width = 10,
                    h4("How to place Blanks on the plate")
@@ -79,8 +118,11 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 
           ),
           conditionalPanel(condition = "input.blank_mode == 'by_hand'",
-                           textInput(ns("hand_select"), h4("Enter Line Letter & Column number,
-                                         each box separated by commas without spaces."),
+                           textInput(ns("hand_select"),
+                                     h4("Enter Line Letter & Column number, each
+                                        box separated by commas without spaces.
+                                        \n The wells already filled as forbidden
+                                        will not be drawn as 'Blank'."),
                                      value = NULL,
                                      placeholder = "Ex: A1,B2,C3"),
                            ns = ns),
@@ -159,37 +201,29 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                            ),
                            ns = ns)
       ),
+      #-------------------------------------------------------------------------
+
+      #-------------------------------------------------------------------------
       box(status="warning",
           width = 12,
           solidHeader = TRUE,
-          title = h3("4 - Forbidden Wells"),
+          title = h3("5 - Not randomized Wells"),
           fluidRow(
-            column(width = 10
-                   ),
-            column(width = 2,
-                   align = "right",
-                   dropdownButton(
-                     tags$h4("What does \"forbidden\" mean?"),
-                     div("Forbidden means that the wells in question will not be
-                         filled at all in the final plate plan.",br(),
-                         "Consequently, during the experiment, these will be
-                         completely empty wells"),
-                     icon = icon("info-circle"),
-                     tooltip = tooltipOptions(title = "Help"),
-                     status = "warning",
-                     size = "sm",
-                     width = "350px"
-                   ))
+            p("These samples will not be used for the backtracking algorithm.
+              They correspond to Quality controls or Standards.")
           ),
 
-          textInput(ns("forbid_select"), h4("Enter Line Letter & Column number,
-                                         each box separated by commas without spaces.\n
-                                            The wells already filled with a blank
-                                            will not appear crossed out."),
+
+          textInput(ns("notRandom_select"), h4("Enter Line Letter & Column number,
+                                            each box separated by commas without spaces.\n
+                                            The wells already filled as forbidden
+                                            will not be drawn as 'Not Random'."),
                     value = NULL,
                     placeholder = "Ex: A1,B2,C3")
       )
+      #-------------------------------------------------------------------------
     ),
+
     # Plate specification outputs
     column(width = 6,
            fluidRow(infoBoxOutput(ns("warning_plate"), width = 12)),
@@ -283,6 +317,19 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
 
 
 
+  forbid_wells <- reactive({
+    # si des cases interdites on été saisies, alors on transforme en un df compatible
+    # avec la suite du code
+    if(input$forbid_select != ""){
+      fw <- as.vector(unlist(strsplit(as.character(input$forbid_select),
+                                      split=",")))
+      return(convertVector2Df(fw, p_lines(), p_cols(), status = "forbidden"))
+    }else{
+      return(NULL)
+    }
+  })
+
+
   blank_wells <- reactive({
     validate(
       need((p_lines() > 0 & p_cols() > 0), "requires a plate with positive dimensions.")
@@ -299,21 +346,35 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
 
   })
 
-  forbid_wells <- reactive({
-    # si des cases interdites on été saisies, alors on transforme en un df compatible
-    # avec la suite du code
-    if(input$forbid_select != ""){
-      fw <- as.vector(unlist(strsplit(as.character(input$forbid_select),
+
+  notRandom_wells <- reactive({
+    validate(
+      need((p_lines() > 0 & p_cols() > 0), "requires a plate with positive dimensions.")
+    )
+    if(input$notRandom_select != ""){
+      fw <- as.vector(unlist(strsplit(as.character(input$notRandom_select),
                                       split=",")))
-      return(convertVector2Df(fw, p_lines(), p_cols(), status = "forbidden"))
+      return(convertVector2Df(fw, p_lines(), p_cols(), status = "notRandom"))
     }else{
       return(NULL)
     }
+
   })
+
+
 
   wells_to_plot <- reactive({
     ret <- NULL
     # loginfo("nb samples : %d, totalNbWells : %d", nb_samples(), totalNbWells(), logger = "plate_spec")
+
+
+    if(is.null(forbid_wells())){
+      nb_f <- 0
+      # loginfo("nb_f: %s", nb_f, logger = "plate_spec")
+    }else{
+      nb_f <- nrow(forbid_wells())
+      # loginfo("nb_f: %s", nb_f, logger = "plate_spec")
+    }
 
     if(is.null(blank_wells())){
       nb_b <- 0
@@ -322,50 +383,117 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
       nb_b <- nrow(blank_wells())
       # loginfo("nb_b: %s", nb_b, logger = "plate_spec")
     }
-    if(is.null(forbid_wells())){
-      nb_f <- 0
-      # loginfo("nb_f: %s", nb_f, logger = "plate_spec")
+
+    if(is.null(notRandom_wells())){
+      nb_nR <- 0
     }else{
-      nb_f <- nrow(forbid_wells())
-      # loginfo("nb_f: %s", nb_f, logger = "plate_spec")
+      nb_nR <- nrow(notRandom_wells())
     }
+
     validate(
       need(nb_samples() <= (totalNbWells()),
            "The dimensions of the plate are not compatible with the number of samples to be placed.
            Please increase the number of plates to fill or provide a dataset with fewer samples.")
     )
-    # s'il y a des blancs et des cases interdites alors il faut les rassembler
-    if(!is.null(blank_wells()) & !is.null(forbid_wells()) ){
-      validate(
-        need(nb_samples() <= (totalNbWells() - (nb_b*nb_p()) - (nb_f*nb_p())),
-             "The blank mode and/or forbidden wells selected are not compatible with the plate's dimensions and the number of samples to be placed.
-             If you want to keep this blank mode, please increase the number of plates to fill or provide a dataset with fewer samples.
-             Otherwise, please change the blank mode.")
-      )
-      result <- base::rbind(blank_wells(), forbid_wells())
-      result <- distinct(result, Row, Column, .keep_all = TRUE)
-      ret <- result
-      # s'il n'y a pas de blancs, qu'il y a des interdits, on ne renvoie que les
-      # interdits
-    }else if(input$blank_mode == "none" & !is.null(forbid_wells()) ){
-      validate(
-        need(nb_samples() <= (totalNbWells() - (nb_f*nb_p())),
-             "The forbidden wells selected are not compatible with the plate's dimensions and the number of samples to be placed.
-             To solve this issue, please:
-             - decrease the number of forbidden wells
-             - or increase the number of plates to fill
-             - or provide a dataset with fewer samples.")
-      )
-      ret <- forbid_wells()
-      # s'il n'y a que des blancs, on ne renvoie que ça
-    }else if(!is.null(blank_wells()) & is.null(forbid_wells())){
-      validate(
-        need(nb_samples() <= (totalNbWells() - (nb_b*nb_p())),
-             "The blank mode selected is not compatible with the plate's dimensions and the number of samples to be placed.
-             If you want to keep this blank mode, please increase the number of plates to fill or provide a dataset with fewer samples.
-             Otherwise, please change the blank mode.")
-      )
-      ret <- blank_wells()
+
+
+
+    # si forbidden
+    if(!is.null(forbid_wells())){
+      # si blanks
+      if(!is.null(blank_wells())){
+        # si NotRandom
+        if(!is.null(notRandom_wells())){
+          validate(
+            need(nb_samples() <= (totalNbWells() - (nb_b*nb_p()) - (nb_f*nb_p()) - (nb_nR*nb_p())),
+                 "The dimensions of the plate are not compatible with the number of samples to be placed.
+                 Maybe are you specifying to many forbidden/blanks/notRandom wells.")
+          )
+          # We put the forbidden wells first because they have priority over the blanks ones.
+          result <- base::rbind(forbid_wells(), blank_wells(), notRandom_wells())
+          result <- distinct(result, Row, Column, .keep_all = TRUE)
+          ret <- result
+        # si pas de NotRandom
+        }else{
+          validate(
+            need(nb_samples() <= (totalNbWells() - (nb_b*nb_p()) - (nb_f*nb_p())),
+                 "The blank mode and/or forbidden wells selected are not compatible with the plate's dimensions and the number of samples to be placed.
+                 If you want to keep this blank mode, please increase the number of plates to fill or provide a dataset with fewer samples.
+                 Otherwise, please change the blank mode.")
+            )
+          # We put the forbidden wells first because they have priority over the blanks ones.
+          result <- base::rbind(forbid_wells(), blank_wells())
+          result <- distinct(result, Row, Column, .keep_all = TRUE)
+          ret <- result
+        }
+      # si pas de blanks
+      }else{
+        # si NotRandom
+        if(!is.null(notRandom_wells())){
+          validate(
+            need(nb_samples() <= (totalNbWells() - (nb_f*nb_p()) - (nb_nR*nb_p()) ),
+                 "The dimensions of the plate are not compatible with the number of samples to be placed.
+                 Maybe are you specifying to many forbidden/notRandom wells."
+            )
+          )
+          result <- base::rbind(forbid_wells(), notRandom_wells())
+          result <- distinct(result, Row, Column, .keep_all = TRUE)
+          ret <- result
+        # si pas de NotRandom
+        }else{
+          validate(
+            need(nb_samples() <= (totalNbWells() - (nb_f*nb_p())),
+                 "The forbidden wells selected are not compatible with the plate's dimensions and the number of samples to be placed.
+                 To solve this issue, please:
+                 - decrease the number of forbidden wells
+                 - or increase the number of plates to fill
+                 - or provide a dataset with fewer samples.")
+            )
+          ret <- forbid_wells()
+        }
+      }
+
+    # sinon
+    }else{
+      # si blanks
+      if(!is.null(blank_wells())){
+        # si NotRandom
+        if(!is.null(notRandom_wells())){
+          validate(
+            need(nb_samples() <= ( totalNbWells() - (nb_b*nb_p()) - (nb_nR*nb_p()) ),
+                   "The dimensions of the plate are not compatible with the number of samples to be placed.
+                 Maybe are you specifying to many blanks/notRandom wells."
+                   )
+            )
+          result <- base::rbind(blanks_wells(), notRandom_wells())
+          result <- distinct(result, Row, Column, .keep_all = TRUE)
+          ret <- result
+          # si pas de NotRandom
+        }else{
+          validate(
+            need(nb_samples() <= (totalNbWells() - (nb_b*nb_p())),
+                 "The blank mode selected is not compatible with the plate's dimensions and the number of samples to be placed.
+                 If you want to keep this blank mode, please increase the number of plates to fill or provide a dataset with fewer samples.
+                 Otherwise, please change the blank mode.")
+            )
+          ret <- blank_wells()
+        }
+        # si pas de blanks
+      }else{
+        # si NotRandom
+        if(!is.null(notRandom_wells())){
+          validate(
+            need(nb_samples() <= totalNbWells() - (nb_nR*nb_p()),
+              "The dimensions of the plate are not compatible with the number of samples to be placed.
+                 Maybe are you specifying to many notRandom wells."
+            )
+          )
+          ret <- notRandom_wells()
+          # si pas de NotRandom
+        }else{
+          ret <- NULL
+        }
+      }
     }
 
     return(ret)
@@ -384,13 +512,13 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
         df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(0))),
                        c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
         drawPlateMap(df = df,
-                     1,
+                     nb_gps = length(levels(df$Group)),
                      plate_lines = p_lines(),
                      plate_cols = p_cols(),
                      project_title = project_name)
       }else{
         drawPlateMap(df = wells_to_plot(),
-                     2,
+                     nb_gps = length(levels(wells_to_plot()$Group)),
                      plate_lines = p_lines(),
                      plate_cols = p_cols(),
                      project_title = project_name)

@@ -1,22 +1,18 @@
-2020-02-24 15:57:35 INFO::Initiating the log file...
-2020-02-24 15:57:42 INFO:plate_spec:totalNbWells = 6
-2020-02-24 15:58:02 INFO:data_import:File ind_groupes_NASH-80.csv was uploaded
-2020-02-24 15:58:02 INFO::on est dans drawPlateMap
-2020-02-24 15:58:03 INFO:server:dataframe/matrix successfully created
-2020-02-24 15:58:03 INFO::on est dans drawPlateMap
-2020-02-24 15:58:04 INFO:server:dataframe/matrix successfully created
-2020-02-24 15:58:04 INFO:server:dataframe/matrix successfully created
-2020-02-24 15:58:09 INFO:plate_spec:totalNbWells = 96
-2020-02-24 15:58:09 INFO::on est dans drawPlateMap
-2020-02-24 15:58:12 INFO:plate_spec:totalNbWells = 384
-2020-02-24 15:58:12 INFO::on est dans drawPlateMap
-2020-02-24 15:58:14 INFO:plate_spec:totalNbWells = 1536
-2020-02-24 15:58:14 INFO::on est dans drawPlateMap
-2020-02-24 15:59:04 INFO::on est dans drawPlateMap
-2020-02-24 15:59:10 INFO::on est dans drawPlateMap
-2020-02-24 15:59:12 INFO::on est dans drawPlateMap
-2020-02-24 15:59:16 INFO::on est dans drawPlateMap
-2020-02-24 15:59:37 INFO:plate_spec:totalNbWells = 6
-2020-02-24 15:59:40 INFO:plate_spec:totalNbWells = 1536
-2020-02-24 15:59:40 INFO::on est dans drawPlateMap
-2020-02-24 15:59:55 INFO::on est dans drawPlateMap
+2020-02-24 17:47:25 INFO::Initiating the log file...
+2020-02-24 17:47:33 INFO:plate_spec:totalNbWells = 6
+2020-02-24 17:47:36 INFO:data_import:File ind_groupes_NASH-80.csv was uploaded
+2020-02-24 17:47:37 INFO:server:dataframe/matrix successfully created
+2020-02-24 17:47:38 INFO:server:dataframe/matrix successfully created
+2020-02-24 17:47:38 INFO:server:dataframe/matrix successfully created
+2020-02-24 17:47:40 INFO:plate_spec:totalNbWells = 96
+2020-02-24 17:48:05 INFO:fonctions.generateMapPlate:attempt n° 1
+2020-02-24 17:48:05 WARNING:fonctions.generateMapPlate:number of attempts: 1
+2020-02-24 17:48:05 INFO::map isn't null so we return map and map_plot
+2020-02-24 17:48:06 INFO:server:data_export$final_df: data.frame
+2020-02-24 17:50:46 INFO:plate_spec:totalNbWells = 192
+2020-02-24 17:50:47 INFO:fonctions.generateMapPlate:attempt n° 1
+2020-02-24 17:50:47 WARNING:fonctions.generateMapPlate:number of attempts: 1
+2020-02-24 17:50:47 INFO:fonctions.generateMapPlate:attempt n° 1
+2020-02-24 17:50:47 WARNING:fonctions.generateMapPlate:number of attempts: 1
+2020-02-24 17:50:47 INFO::map isn't null so we return map and map_plot
+2020-02-24 17:50:47 INFO:server:data_export$final_df: data.frame
