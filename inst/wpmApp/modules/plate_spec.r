@@ -13,14 +13,31 @@ plateSpecUI <- function(id, label = "Plate specifications") {
           width = 12,
           solidHeader = TRUE,
           title=h3("2 - Plate dimensions"),
-          h4("How many lines on your plate?"),
-          numericInput(ns("plate_lines"), label = NULL,
-                       value=0, min=0,
-                       width = "80px"),
-          h4("how many columns on your plate?"),
-          numericInput(ns("plate_cols"), label = NULL,
-                       value=0, min=0,
-                       width = "80px"),
+
+          selectInput(ns("plate_size"),
+                      label = NULL,
+                      choices = c("6" = "s6",
+                        "24" = "s24",
+                        "48" = "s48",
+                        "96" = "s96",
+                        "384" = "s384",
+                        "1536" = "s1536",
+                        "custom" = "custom"
+                      ),
+                      selected = NULL),
+
+          conditionalPanel(
+            condition = "input.plate_size == 'custom'",
+            h4("How many lines on your plate?"),
+            numericInput(ns("plate_lines"), label = NULL,
+                         value=0, min=0,
+                         width = "80px"),
+            h4("how many columns on your plate?"),
+            numericInput(ns("plate_cols"), label = NULL,
+                         value=0, min=0,
+                         width = "80px"),
+            ns = ns
+          ),
           h4("How many plates?"),
           numericInput(ns("no_plates"), label = NULL,
                        value=1, min=1,
@@ -196,19 +213,31 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
 
 
   p_lines <- reactive({
-    if(is.na(input$plate_lines)){
-      return(0)
-    }else{
-      return(input$plate_lines)
-    }
+    switch (input$plate_size,
+            NULL = {nb <- 0},
+            "s6" = {nb <- 1},
+            "s24" = {nb <-4},
+            "s48" = {nb <-6},
+            "s96" = {nb <-8},
+            "s384" = {nb <-16},
+            "s1536" = {nb <- 32},
+            "custom" = {nb <- input$plate_lines}
+    )
+    return(nb)
   })
 
   p_cols <- reactive({
-    if(is.na(input$plate_cols)){
-      return(0)
-    }else{
-      return(input$plate_cols)
-    }
+    switch (input$plate_size,
+            NULL = {nb <- 0},
+            "s6" = {nb <- 6},
+            "s24" = {nb <-6},
+            "s48" = {nb <-8},
+            "s96" = {nb <-12},
+            "s384" = {nb <-24},
+            "s1536" = {nb <- 48},
+            "custom" = {nb <- input$plate_cols}
+    )
+    return(nb)
   })
 
   nb_p <- reactive({
@@ -221,7 +250,7 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
 
   totalNbWells <- reactive({
     tNbW <- p_lines()*p_cols()*nb_p()
-    # loginfo("totalNbWells = %d", tNbW, logger = "plate_spec")
+    loginfo("totalNbWells = %d", tNbW, logger = "plate_spec")
     return(tNbW)
     })
 
@@ -233,7 +262,7 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
   })
 
   output$nb_plates_to_fill <- renderValueBox({
-    valueBox(value=as.numeric(input$no_plates),
+    valueBox(value=as.numeric(nb_p()),
              subtitle = "Number of plates to fill",
              icon = icon("dice-four"),
              color="teal")
@@ -346,8 +375,15 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
     # pour que la fonction drawPlateMap fonctionne, il faut donner un nombre de
     # lignes et de colonnes > 0 et au minimum un dataframe vide avec les bons
     # noms de colonne
+
     if(p_lines() != 0 & p_cols() != 0){
+
+      loginfo("on a passé le premier if")
+
+      loginfo("is.null(wells_to_plot()): %s", is.null(wells_to_plot()) )
+
       if(is.null(wells_to_plot())){
+
         df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(0))),
                        c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
         drawPlateMap(df = df,

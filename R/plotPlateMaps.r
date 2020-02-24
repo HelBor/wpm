@@ -326,7 +326,7 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
 #*******************************************************************************
 
 drawPlateMap <- function(df, nb_gps, plate_lines, plate_cols, project_title){
-
+  loginfo("on est dans drawPlateMap")
   # this palette allows coloring depending on whether it is a blank, a
   # prohibited box, or a group
   palette_strains <- c("blank"="grey", "forbidden"="red")
