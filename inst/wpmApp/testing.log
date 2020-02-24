@@ -1,108 +1,22 @@
-2020-02-24 12:44:44 INFO::Initiating the log file...
-2020-02-24 12:44:48 INFO:plate_spec:totalNbWells = 6
-2020-02-24 12:44:48 INFO::on a passé le premier if
-2020-02-24 12:44:54 INFO::on a passé le premier if
-2020-02-24 12:44:54 INFO:plate_spec:totalNbWells = 24
-2020-02-24 12:44:59 INFO::on a passé le premier if
-2020-02-24 12:44:59 INFO:plate_spec:totalNbWells = 384
-2020-02-24 12:45:03 INFO:plate_spec:totalNbWells = 768
-2020-02-24 12:45:04 INFO:plate_spec:totalNbWells = 1152
-2020-02-24 12:45:05 INFO:plate_spec:totalNbWells = 768
-2020-02-24 12:45:06 INFO:plate_spec:totalNbWells = 384
-2020-02-24 12:45:29 INFO:data_import:File ind_groupes_NASH-80.csv was uploaded
-2020-02-24 12:45:29 INFO::on a passé le premier if
-2020-02-24 12:45:29 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:45:29 INFO::on est dans drawPlateMap
-2020-02-24 12:45:30 INFO:server:dataframe/matrix successfully created
-2020-02-24 12:45:36 INFO::on a passé le premier if
-2020-02-24 12:45:36 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:45:36 INFO::on est dans drawPlateMap
-2020-02-24 12:45:36 INFO:server:dataframe/matrix successfully created
-2020-02-24 12:47:59 INFO:data_import:File ind_groupes_NASH-80.csv was uploaded
-2020-02-24 12:47:59 INFO::on a passé le premier if
-2020-02-24 12:47:59 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:47:59 INFO::on est dans drawPlateMap
-2020-02-24 12:47:59 INFO:server:dataframe/matrix successfully created
-2020-02-24 12:48:19 INFO::on a passé le premier if
-2020-02-24 12:48:19 INFO:plate_spec:totalNbWells = 48
-2020-02-24 12:48:19 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:48:19 INFO::on est dans drawPlateMap
-2020-02-24 12:48:22 INFO::on a passé le premier if
-2020-02-24 12:48:22 INFO:plate_spec:totalNbWells = 24
-2020-02-24 12:48:22 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:48:22 INFO::on est dans drawPlateMap
-2020-02-24 12:48:26 INFO::on a passé le premier if
-2020-02-24 12:48:26 INFO:plate_spec:totalNbWells = 6
-2020-02-24 12:48:26 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:48:26 INFO::on est dans drawPlateMap
-2020-02-24 12:48:30 INFO::on a passé le premier if
-2020-02-24 12:48:30 INFO:plate_spec:totalNbWells = 96
-2020-02-24 12:48:30 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:48:30 INFO::on est dans drawPlateMap
-2020-02-24 12:48:33 INFO::on a passé le premier if
-2020-02-24 12:48:33 INFO:plate_spec:totalNbWells = 1536
-2020-02-24 12:48:33 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:48:33 INFO::on est dans drawPlateMap
-2020-02-24 12:48:51 INFO:plate_spec:totalNbWells = 0
-2020-02-24 12:48:58 INFO:plate_spec:totalNbWells = 0
-2020-02-24 12:49:00 INFO::on a passé le premier if
-2020-02-24 12:49:00 INFO:plate_spec:totalNbWells = 63
-2020-02-24 12:49:00 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:49:00 INFO::on est dans drawPlateMap
-2020-02-24 12:49:04 INFO:plate_spec:totalNbWells = NA
-2020-02-24 12:49:06 INFO:plate_spec:totalNbWells = NA
-2020-02-24 12:49:11 INFO::on a passé le premier if
-2020-02-24 12:49:11 INFO:plate_spec:totalNbWells = 6
-2020-02-24 12:49:11 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:49:11 INFO::on est dans drawPlateMap
-2020-02-24 12:51:02 INFO:data_import:File ind_groupes_NASH-160.csv was uploaded
-2020-02-24 12:51:02 INFO::on a passé le premier if
-2020-02-24 12:51:02 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:51:02 INFO::on est dans drawPlateMap
-2020-02-24 12:51:02 INFO:server:dataframe/matrix successfully created
-2020-02-24 12:51:11 INFO::on a passé le premier if
-2020-02-24 12:51:11 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:51:11 INFO::on est dans drawPlateMap
-2020-02-24 12:51:11 INFO:server:dataframe/matrix successfully created
-2020-02-24 12:51:15 INFO::on a passé le premier if
-2020-02-24 12:51:15 INFO:server:dataframe/matrix successfully created
-2020-02-24 12:51:20 INFO::on a passé le premier if
-2020-02-24 12:51:20 INFO:server:dataframe/matrix successfully created
-2020-02-24 12:51:26 INFO::on a passé le premier if
-2020-02-24 12:51:26 INFO:server:dataframe/matrix successfully created
-2020-02-24 12:51:56 INFO::on a passé le premier if
-2020-02-24 12:51:56 INFO:plate_spec:totalNbWells = 96
-2020-02-24 12:52:05 INFO::on a passé le premier if
-2020-02-24 12:52:05 INFO:plate_spec:totalNbWells = 192
-2020-02-24 12:52:05 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:52:05 INFO::on est dans drawPlateMap
-2020-02-24 12:52:09 INFO::on a passé le premier if
-2020-02-24 12:52:09 INFO:plate_spec:totalNbWells = 768
-2020-02-24 12:52:09 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:52:09 INFO::on est dans drawPlateMap
-2020-02-24 12:52:11 INFO::on a passé le premier if
-2020-02-24 12:52:11 INFO:plate_spec:totalNbWells = 384
-2020-02-24 12:52:11 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:52:11 INFO::on est dans drawPlateMap
-2020-02-24 12:52:18 INFO::on a passé le premier if
-2020-02-24 12:52:18 INFO::is.null(wells_to_plot()): FALSE
-2020-02-24 12:52:18 INFO::on est dans drawPlateMap
-2020-02-24 12:52:25 INFO::on a passé le premier if
-2020-02-24 12:52:25 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:52:25 INFO::on est dans drawPlateMap
-2020-02-24 12:52:26 INFO::on a passé le premier if
-2020-02-24 12:52:26 INFO::is.null(wells_to_plot()): FALSE
-2020-02-24 12:52:26 INFO::on est dans drawPlateMap
-2020-02-24 12:52:28 INFO::on a passé le premier if
-2020-02-24 12:52:28 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:52:28 INFO::on est dans drawPlateMap
-2020-02-24 12:52:29 INFO::on a passé le premier if
-2020-02-24 12:52:29 INFO::is.null(wells_to_plot()): FALSE
-2020-02-24 12:52:29 INFO::on est dans drawPlateMap
-2020-02-24 12:52:43 INFO::on a passé le premier if
-2020-02-24 12:52:43 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:52:43 INFO::on est dans drawPlateMap
-2020-02-24 12:52:48 INFO:plate_spec:totalNbWells = 1536
-2020-02-24 12:52:48 INFO::on a passé le premier if
-2020-02-24 12:52:48 INFO::is.null(wells_to_plot()): TRUE
-2020-02-24 12:52:48 INFO::on est dans drawPlateMap
+2020-02-24 15:57:35 INFO::Initiating the log file...
+2020-02-24 15:57:42 INFO:plate_spec:totalNbWells = 6
+2020-02-24 15:58:02 INFO:data_import:File ind_groupes_NASH-80.csv was uploaded
+2020-02-24 15:58:02 INFO::on est dans drawPlateMap
+2020-02-24 15:58:03 INFO:server:dataframe/matrix successfully created
+2020-02-24 15:58:03 INFO::on est dans drawPlateMap
+2020-02-24 15:58:04 INFO:server:dataframe/matrix successfully created
+2020-02-24 15:58:04 INFO:server:dataframe/matrix successfully created
+2020-02-24 15:58:09 INFO:plate_spec:totalNbWells = 96
+2020-02-24 15:58:09 INFO::on est dans drawPlateMap
+2020-02-24 15:58:12 INFO:plate_spec:totalNbWells = 384
+2020-02-24 15:58:12 INFO::on est dans drawPlateMap
+2020-02-24 15:58:14 INFO:plate_spec:totalNbWells = 1536
+2020-02-24 15:58:14 INFO::on est dans drawPlateMap
+2020-02-24 15:59:04 INFO::on est dans drawPlateMap
+2020-02-24 15:59:10 INFO::on est dans drawPlateMap
+2020-02-24 15:59:12 INFO::on est dans drawPlateMap
+2020-02-24 15:59:16 INFO::on est dans drawPlateMap
+2020-02-24 15:59:37 INFO:plate_spec:totalNbWells = 6
+2020-02-24 15:59:40 INFO:plate_spec:totalNbWells = 1536
+2020-02-24 15:59:40 INFO::on est dans drawPlateMap
+2020-02-24 15:59:55 INFO::on est dans drawPlateMap

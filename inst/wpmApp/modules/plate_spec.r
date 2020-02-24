@@ -45,6 +45,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
       ),
       box(status="warning",
           width = 12,
+          solidHeader = TRUE,
           title=h3("3 - Plate constraints"),
           fluidRow(
             column(width = 10,
@@ -160,10 +161,11 @@ plateSpecUI <- function(id, label = "Plate specifications") {
       ),
       box(status="warning",
           width = 12,
-
+          solidHeader = TRUE,
+          title = h3("4 - Forbidden Wells"),
           fluidRow(
-            column(width = 10,
-                   h3("4 - Forbidden Wells")),
+            column(width = 10
+                   ),
             column(width = 2,
                    align = "right",
                    dropdownButton(
@@ -171,8 +173,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                      div("Forbidden means that the wells in question will not be
                          filled at all in the final plate plan.",br(),
                          "Consequently, during the experiment, these will be
-                         completely empty wells or well filled with control
-                         samples."),
+                         completely empty wells"),
                      icon = icon("info-circle"),
                      tooltip = tooltipOptions(title = "Help"),
                      status = "warning",
@@ -377,10 +378,6 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
     # noms de colonne
 
     if(p_lines() != 0 & p_cols() != 0){
-
-      loginfo("on a passé le premier if")
-
-      loginfo("is.null(wells_to_plot()): %s", is.null(wells_to_plot()) )
 
       if(is.null(wells_to_plot())){
 

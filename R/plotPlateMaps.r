@@ -180,6 +180,7 @@ theme_bdc_microtiter <- function(base_size = 12, base_family = "") {
 # function to place the blanks on the plate according to the selected mode: it
 # generates a dataframe containing the row and column coordinates for each blank
 placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
+
   p_lines <- as.numeric(p_lines)
   p_cols <- as.numeric(p_cols)
   if(mod == "none"){
@@ -247,7 +248,9 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
       df$Status <- as.factor("blank")
       df$Row <- as.numeric(df$Row)
       df$Column <- as.numeric(df$Column)
-      df$Letters <- LETTERS[df$Row]
+
+      LETTERS702 <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))
+      df$Letters <- LETTERS702[df$Row]
       df$Well <- apply( df[ , c("Letters", "Column") ] , 1 , paste0 , collapse = "" )
       df$Letters <- NULL
       # remove space between letters and numbers
@@ -276,8 +279,10 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
 #*******************************************************************************
 convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
 
+  LETTERS702 <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))
+
   if(length(forbidden_wells)>0){
-    check_rows <- as.numeric(match(toupper(substr(forbidden_wells, 1, 1)), LETTERS))
+    check_rows <- as.numeric(match(toupper(substr(forbidden_wells, 1, 1)), LETTERS702))
     check_columns <- as.numeric(substr(forbidden_wells, 2, 5))
     # actually simulates if user hasn't finished typing everything
     if(any(is.na(check_rows)) | any(is.na(check_columns))){
@@ -300,7 +305,7 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
       # converts Well names to Row / Column coordinates as this is what is used
       # to calculate the backtracking step.
       forbidden <- mutate(forbidden,
-                          Row=as.numeric(match(toupper(substr(Well, 1, 1)), LETTERS)),
+                          Row=as.numeric(match(toupper(substr(Well, 1, 1)), LETTERS702)),
                           Column=as.numeric(substr(Well, 2, 5)))
       #erase all duplicated rows
       result <- forbidden %>%
@@ -326,6 +331,7 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
 #*******************************************************************************
 
 drawPlateMap <- function(df, nb_gps, plate_lines, plate_cols, project_title){
+  LETTERS702 <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))
   loginfo("on est dans drawPlateMap")
   # this palette allows coloring depending on whether it is a blank, a
   # prohibited box, or a group
@@ -344,7 +350,7 @@ drawPlateMap <- function(df, nb_gps, plate_lines, plate_cols, project_title){
     colScale +
     scale_shape_manual(values = c("forbidden" = 4, "blank" = 15, "allowed" = 19)) +
     coord_fixed(ratio = (13/plate_cols)/(9/plate_lines), xlim = c(0.9, plate_cols+0.1), ylim = c(0, plate_lines+1)) +
-    scale_y_reverse(breaks = seq(1, plate_lines), labels = LETTERS[1:plate_lines]) +
+    scale_y_reverse(breaks = seq(1, plate_lines), labels = LETTERS702[1:plate_lines]) +
     scale_x_continuous(breaks = seq(1, plate_cols)) +
     labs(title = project_title) +
     theme_bdc_microtiter()

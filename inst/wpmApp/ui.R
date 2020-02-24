@@ -21,7 +21,9 @@ sidebar <- dashboardSidebar(
 
 #Body elements for the search visualizations.
 body <- dashboardBody(
-
+  tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
+  ),
   tabItems(
     tabItem(tabName = "home",
             fluidRow(
@@ -53,7 +55,7 @@ body <- dashboardBody(
               ),
               box(width = 12,
                   status = "warning",
-                  h2("How to use WPM?"),
+                  h1("How to use WPM?"),
                   h3("1 - Fill the Parameters section"),
 
                   div(img(src = "images/blanks_per_line_plate.png", width = "30%"),
@@ -70,13 +72,13 @@ body <- dashboardBody(
 
     ),
     tabItem(tabName = "parameters",
-            h2("Parameters"),
-
+            h1("Parameters"),
             # Input File section
             fluidRow(
               column(width=6,
                 box(status="warning",
                     width = 12,
+                    solidHeader = TRUE,
                     title=h3("1 - Upload dataset"),
                     h4("Please use .csv format. \n File must
                                  contain 2 columns: samples in the first one,
@@ -92,16 +94,17 @@ body <- dashboardBody(
                 )
               ),
               column(width=6,
-                box(title = h3("Your dataset"),
-                    solidHeader = TRUE,
-                    collapsible = TRUE,
-                    width = 6,
-                    status = "warning",
-                    dataTableOutput("table")
-                    ),
-                fluidRow(valueBoxOutput("nb_ech", width=3),
-                         valueBoxOutput("nb_gp", width=3)
-                         )
+                fluidRow(
+                  box(title = h3("Your dataset"),
+                      solidHeader = TRUE,
+                      collapsible = TRUE,
+                      width = 6,
+                      status = "warning",
+                      dataTableOutput("table")
+                  ),
+                  valueBoxOutput("nb_ech", width=3),
+                  valueBoxOutput("nb_gp", width=3)
+                  )
               )
             ), # end of fluidRow 1: input file
 
@@ -112,6 +115,7 @@ body <- dashboardBody(
               column(width=6,
                      box(status="warning",
                          width = 12,
+                         solidHeader = TRUE,
                          title=h3("5 - Number of iterations"),
                          h4("Please specify the maximum number of iterations
                              that WPM can perform. Default value is 20."),
@@ -144,11 +148,11 @@ body <- dashboardBody(
 
     ),# end of tabItem 2
     tabItem(tabName = "results",
-            h2("Your results"),
+            h1("Your results"),
             backtrackUI("backtrack")
     ),# end of tabItem 3
     tabItem(tabName = "export",
-            h2("Download your data here"),
+            h1("Download your data here"),
             exportUI("export")
 
     ),
@@ -156,7 +160,7 @@ body <- dashboardBody(
             fluidRow(
               box(width = 12,
                   status = "warning",
-                  h2("Contact"),
+                  h1("Contact"),
                   div("Please contact me if you need any help, or if you want to
                     report a bug or if you wish to make comments/suggestions:",
                       style = "font-size:18px"),

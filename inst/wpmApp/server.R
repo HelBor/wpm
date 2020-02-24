@@ -23,10 +23,13 @@ server <- function(input, output, session) {
                          stringsAsFactors = FALSE)
 
   output$table <- renderDataTable(datatable({
-    if(class(datafile()) == "data.frame" | class(datafile()) == "matrix"){
-      loginfo("dataframe/matrix successfully created", logger = "server")
+    if(!is.null(datafile())){
+      if(class(datafile()) == "data.frame" | class(datafile()) == "matrix"){
+        loginfo("dataframe/matrix successfully created", logger = "server")
+      }
+      datafile()
     }
-    datafile() }, rownames=FALSE)
+ }, rownames=FALSE)
   )
 
   output$nb_ech <- renderValueBox({
