@@ -22,6 +22,7 @@ server <- function(input, output, session) {
   datafile <- callModule(csvFile, "datafile",
                          stringsAsFactors = FALSE)
 
+
   output$table <- renderDataTable(datatable({
     if(!is.null(datafile())){
       if(class(datafile()) == "data.frame" | class(datafile()) == "matrix"){
@@ -29,7 +30,7 @@ server <- function(input, output, session) {
       }
       datafile()
     }
- }, rownames=FALSE)
+  }, rownames=FALSE)
   )
 
   output$nb_ech <- renderValueBox({

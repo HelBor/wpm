@@ -208,12 +208,9 @@ plateSpecUI <- function(id, label = "Plate specifications") {
           width = 12,
           solidHeader = TRUE,
           title = h3("5 - Not randomized Wells"),
-          fluidRow(
-            p("These samples will not be used for the backtracking algorithm.
+          p("These samples will not be used for the backtracking algorithm.
               They correspond to Quality controls or Standards.")
-          ),
-
-
+          ,
           textInput(ns("notRandom_select"), h4("Enter Line Letter & Column number,
                                             each box separated by commas without spaces.\n
                                             The wells already filled as forbidden

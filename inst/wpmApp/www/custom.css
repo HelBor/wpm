@@ -30,3 +30,20 @@ h4{
   font-family: "Corbel";
   font-weight: normal;
 }
+
+.shiny-download-link, a:hover{
+  color:#6B6B6B;
+}
+
+
+.box.box-solid.box-warning>.box-header {
+  color:#fff;
+  background:#6B6B6B
+                    }
+
+.box.box-solid.box-warning{
+border-bottom-color:#6B6B6B;
+border-left-color:#6B6B6B;
+border-right-color:#6B6B6B;
+border-top-color:#6B6B6B;
+}

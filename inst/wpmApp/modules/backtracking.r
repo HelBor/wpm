@@ -73,7 +73,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, row
       progress$inc(amount = 1/max_iter)
     }
 
-    final_df <- data.frame("Sample.name" = as.character(NA),
+    final_df <- data.frame("Sample.name" = as.integer(NA),
                            "Group" = as.factor(NA),
                            "Well" = as.character(NA),
                            "Status" = as.factor(NA),
@@ -106,7 +106,10 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, row
       # loginfo("class(new_df): %s",class(new_df), logger = "backtracking")
       if(class(new_df) == "data.frame"){
         new_df$Plate <- p
+
+
         final_df <- rbind(final_df, new_df)
+
       }
       p <- p + 1
 
@@ -114,6 +117,9 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, row
 
 
     final_df <- final_df[!is.na(final_df$Status),]
+
+
+
     return(final_df)
   })
 

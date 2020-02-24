@@ -54,18 +54,12 @@ theme_bdc_grey <- function(base_size = 12, base_family = "",
     legend.margin = margin(0, 0, 0, 0),
     legend.spacing = unit(0, units = "cm"),
     legend.key = element_rect(fill = "transparent", color = NA),
-    # legend.key.size = unit(0.01, units = "lines"),
-    # legend.key.height = unit(0.5, units = "lines"),
-    # legend.key.width = unit(1.0, units = "lines"),
     legend.text = element_text(size = rel(0.6), hjust = 0, vjust = 0.5,
                                color = medgrey),
     legend.text.align = NULL,
     legend.title = element_text(size = rel(0.6), face = "bold",
                                 vjust = 0.5),
     legend.title.align = 1,
-    legend.direction = "vertical",
-    legend.justification = "top",
-    legend.box = "vertical",
     legend.box.just = "left",
     legend.box.margin = margin(0, 0, 0, 0, unit = "pt"),
     legend.box.background = element_blank(),
@@ -156,10 +150,8 @@ theme_bdc_microtiter <- function(base_size = 12, base_family = "") {
         margin = margin(t = 0.4 * base_size, b = 0.4 * base_size)
       ),
       axis.ticks.length = unit(0, "pt"),
-      # legend.direction = "horizontal",
-      legend.key.size = unit(1.0, units = "pt"),
-      legend.box = "vertical",
-      legend.spacing = unit(6, "pt"),
+      legend.key.size = unit(0.5, units = "pt"),
+      legend.spacing = unit(1, "pt"),
       plot.title = element_text(
         size = rel(1.2),
         hjust = 0.5,
@@ -340,20 +332,35 @@ drawPlateMap <- function(df, nb_gps, plate_lines, plate_cols, project_title){
   palette_choisie <- palette_complete[1:nb_gps]
   names(palette_choisie) <- levels(df$Group)
   palette_strains <- c(palette_strains, palette_choisie)
-  colScale <- scale_colour_manual(name = "group", values = palette_strains)
+  colScale <- scale_colour_manual(name = "Group", values = palette_strains)
+
+  # g <- ggplot(data = df, aes(x = Column, y = Row)) +
+  #   geom_point(data = expand.grid(seq(1, plate_cols), seq(1, plate_lines)), aes(x = Var1, y = Var2),
+  #              color = "grey90", fill = "white", shape = 21, size = 6) +
+  #   geom_point(aes(shape = Status, colour = Group), size = 12) +
+  #   geom_text(aes(label = Sample.name), size = 4) +
+  #   colScale +
+  #   scale_shape_manual(values = c("forbidden" = 4, "blank" = 15, "notRandom" = 17, "toRandom" = 16)) +
+  #   coord_fixed(ratio = (13/plate_cols)/(9/plate_lines), xlim = c(0.9, plate_cols+0.1), ylim = c(0, plate_lines+1)) +
+  #   scale_y_reverse(breaks = seq(1, plate_lines), labels = LETTERS702[1:plate_lines]) +
+  #   scale_x_continuous(breaks = seq(1, plate_cols)) +
+  #   labs(title = project_title) +
+  #   theme_bdc_microtiter()
+  #
 
   g <- ggplot(data = df, aes(x = Column, y = Row)) +
     geom_point(data = expand.grid(seq(1, plate_cols), seq(1, plate_lines)), aes(x = Var1, y = Var2),
                color = "grey90", fill = "white", shape = 21, size = 6) +
-    geom_point(aes(shape = Status, colour = Group), size = 12) +
+    geom_point(aes(colour = Group), size = 12) +
     geom_text(aes(label = Sample.name), size = 4) +
     colScale +
-    scale_shape_manual(values = c("forbidden" = 4, "blank" = 15, "notRandom" = 17, "toRandom" = 16)) +
     coord_fixed(ratio = (13/plate_cols)/(9/plate_lines), xlim = c(0.9, plate_cols+0.1), ylim = c(0, plate_lines+1)) +
     scale_y_reverse(breaks = seq(1, plate_lines), labels = LETTERS702[1:plate_lines]) +
     scale_x_continuous(breaks = seq(1, plate_cols)) +
     labs(title = project_title) +
     theme_bdc_microtiter()
+
+
 
   return(g)
 }

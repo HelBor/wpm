@@ -290,6 +290,8 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
     # loginfo("class(ret): %s", class(ret), logger = "fonctions.generateMapPlate")
     if(class(ret)=="data.frame"){
       ret$Well <- paste0(LETTERS[ret$Row], ret$Column, sep = "")
+
+
       ret <- rbind(ret, df_forbidden)
       logwarn("number of attempts: %d", nb_attempts, logger = "fonctions.generateMapPlate")
       return(ret)
@@ -398,5 +400,4 @@ balancedGrpDistrib <- function(d, nb_p){
 }
 
 
-# haha <- balancedGrpDistrib(d = d, nb_p = nb_p)
 

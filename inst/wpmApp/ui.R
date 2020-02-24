@@ -116,7 +116,7 @@ body <- dashboardBody(
                      box(status="warning",
                          width = 12,
                          solidHeader = TRUE,
-                         title=h3("5 - Number of iterations"),
+                         title=h3("6 - Number of iterations"),
                          h4("Please specify the maximum number of iterations
                              that WPM can perform. Default value is 20."),
                          knobInput(
