@@ -21,6 +21,7 @@ sidebar <- dashboardSidebar(
 
 #Body elements for the search visualizations.
 body <- dashboardBody(
+
   tabItems(
     tabItem(tabName = "home",
             fluidRow(

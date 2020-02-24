@@ -35,7 +35,7 @@ csvFileInput <- function(id, label = "CSV file") {
 
     selectInput(ns("quote"),
                 label = NULL,
-                c("None" = "",
+                c("None" = "None",
                   "Single quote" = "'",
                   "Double quote" = "\""
                   ),

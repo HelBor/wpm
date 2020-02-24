@@ -6,10 +6,12 @@ plateSpecUI <- function(id, label = "Plate specifications") {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
+
   fluidRow(
     column(width=6,
       box(status="warning",
           width = 12,
+          solidHeader = TRUE,
           title=h3("2 - Plate dimensions"),
           h4("How many lines on your plate?"),
           numericInput(ns("plate_lines"), label = NULL,
