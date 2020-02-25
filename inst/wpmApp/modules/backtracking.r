@@ -132,10 +132,9 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, row
   map_plot <- reactive({
     if(!is.null(map())){
       toPlot = list()
-      nb_g <- length(levels(map()$Group))
       toPlot <- lapply(X = 1:nb_plates(),
                        function(x) drawPlateMap(df = map()[which(map()$Plate == x),],
-                                                nb_gps = nb_g, plate_lines = rows(),
+                                                plate_lines = rows(),
                                                 plate_cols = columns(),
                                                 project_title = project_name())
       )

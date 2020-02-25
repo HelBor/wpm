@@ -305,46 +305,6 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
 
 
 
-#*******************************************************************************
-#
-#                                   TEST ZONE
-#
-#*******************************************************************************
-
-# # preparation des inputs comme ceux qu'on obtient dans l'appli shiny
-# d <- read.csv2("./data/ind_groupes_NASH-160.csv",
-#                 header = TRUE,
-#                 sep = ";",
-#                 col.names = c("Sample.name", "Group"),
-#                 stringsAsFactors = FALSE)
-#
-# d$Group <- as.factor(d$Group)
-# d$Well <- as.character(NA)
-# d$Status <- as.factor("allowed")
-# d$Row <- NA
-# d$Column <- NA
-
-
-# nb_l <- 8
-# nb_c <- 12
-# nb_p <- 3
-# forbidden_wells <- "A1,A2,A3,A10,A11,A12,B1,B12,G1,G12,H1,H2,H3,H10,H11,H12"
-# fw <- as.vector(unlist(strsplit(as.character(forbidden_wells),
-#                                 split=",")))
-# fw <- convertVector2Df(fw, nb_l, nb_c)
-# mod <- "NEWS"
-# max_it <- 20
-# # lancement de l'algo
-# # plate <- generateMapPlate(user_df = df, nb_rows = nb_l, nb_cols = nb_c, df_forbidden = fw, mod = mod, max_it = max_it)
-# # drawPlateMap(df = plate, nb_gps = 11, plate_lines = nb_l, plate_cols = nb_c)
-# #
-# #
-
-#
-#
-#
-# #
-# d_input <- d
 
 balancedGrpDistrib <- function(d, nb_p){
 
@@ -398,6 +358,3 @@ balancedGrpDistrib <- function(d, nb_p){
   return(toReturn)
 
 }
-
-
-

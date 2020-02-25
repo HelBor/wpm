@@ -509,13 +509,11 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
         df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(0))),
                        c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
         drawPlateMap(df = df,
-                     nb_gps = length(levels(df$Group)),
                      plate_lines = p_lines(),
                      plate_cols = p_cols(),
                      project_title = project_name)
       }else{
         drawPlateMap(df = wells_to_plot(),
-                     nb_gps = length(levels(wells_to_plot()$Group)),
                      plate_lines = p_lines(),
                      plate_cols = p_cols(),
                      project_title = project_name)

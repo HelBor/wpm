@@ -1,173 +1,3 @@
-#*******************************************************************************
-# theme functions for ggplot plate map
-# code from https://github.com/briandconnelly/ggplot2bdc/blob/master/R/theme_bdc_grey.R
-# and https://github.com/briandconnelly/ggplot2bdc/blob/master/R/theme_bdc_microtiter.R
-#*******************************************************************************
-theme_bdc_grey <- function(base_size = 12, base_family = "",
-                           base_grey = "grey70",
-                           grid.x = FALSE, grid.y = FALSE,
-                           gridmin.x = grid.x, gridmin.y = grid.y,
-                           ticks.x = TRUE, ticks.y = TRUE,
-                           pmargin = base_size / 2) {
-  half_line <- base_size / 2
-  quarter_line <- base_size / 4
-  line_size <- 0.5
-  medgrey <- "grey40"
-
-  t <- theme(
-    line = element_line(color = base_grey, size = line_size,
-                        linetype = 1, lineend = "square"),
-    rect = element_rect(fill = "white", color = base_grey,
-                        size = line_size, linetype = 1),
-    text = element_text(family = base_family, face = "plain",
-                        color = "black", size = base_size,
-                        lineheight = 0.9, hjust = 0.5, vjust = 0.5,
-                        angle = 0, margin = margin(), debug = FALSE),
-
-    axis.line = element_blank(),
-    axis.text = element_text(size = rel(0.8), color = medgrey),
-    axis.text.x = element_text(
-      margin = margin(t = 0.8 * quarter_line),
-      vjust = 1
-    ),
-    axis.text.y = element_text(
-      margin = margin(r = 0.8 * quarter_line),
-      hjust = 1
-    ),
-    axis.ticks = element_line(size = line_size / 2),
-    axis.ticks.x = element_line(
-      size = ifelse(ticks.x, line_size / 2, 0)
-    ),
-    axis.ticks.y = element_line(
-      size = ifelse(ticks.y, line_size / 2, 0)
-    ),
-    axis.ticks.length = unit(quarter_line, units = "pt"),
-    axis.title.x = element_text(
-      margin = margin(t = 0.8 * half_line, b = 0.8 * quarter_line)
-    ),
-    axis.title.y = element_text(
-      angle = 90,
-      margin = margin(r = 0.8 * half_line, l = 0.8 * quarter_line)
-    ),
-
-    legend.background = element_rect(fill = "transparent", color = NA),
-    legend.margin = margin(0, 0, 0, 0),
-    legend.spacing = unit(0, units = "cm"),
-    legend.key = element_rect(fill = "transparent", color = NA),
-    legend.text = element_text(size = rel(0.6), hjust = 0, vjust = 0.5,
-                               color = medgrey),
-    legend.text.align = NULL,
-    legend.title = element_text(size = rel(0.6), face = "bold",
-                                vjust = 0.5),
-    legend.title.align = 1,
-    legend.box.just = "left",
-    legend.box.margin = margin(0, 0, 0, 0, unit = "pt"),
-    legend.box.background = element_blank(),
-    legend.box.spacing = unit(6, units = "pt"),
-
-    panel.background = element_rect(fill = "white", color = base_grey),
-    panel.border = element_blank(),
-    panel.grid.major = element_line(color = NA, size = line_size / 5),
-    panel.grid.major.x = element_line(
-      color = ifelse(grid.x, base_grey, NA)
-    ),
-    panel.grid.major.y = element_line(
-      color = ifelse(grid.y, base_grey, NA)
-    ),
-    panel.grid.minor = element_line(color = NA, size = line_size / 10),
-    panel.grid.minor.x = element_line(
-      color = ifelse(gridmin.x, base_grey, NA)
-    ),
-    panel.grid.minor.y = element_line(
-      color = ifelse(gridmin.y, base_grey, NA)
-    ),
-    panel.spacing = unit(quarter_line, units = "pt"),
-    panel.spacing.x = NULL,
-    panel.spacing.y = NULL,
-    panel.ontop = FALSE,
-
-    strip.background = element_rect(fill = "transparent", color = NA),
-    strip.text = element_text(
-      color = "grey40",
-      size = rel(0.8),
-      face = "bold"
-    ),
-    strip.text.x = element_text(
-      margin = margin(t = quarter_line, b = quarter_line)
-    ),
-    strip.text.y = element_text(
-      angle = -90,
-      margin = margin(l = quarter_line, r = quarter_line)
-    ),
-    strip.switch.pad.grid = unit(0.1, units = "cm"),
-    strip.switch.pad.wrap = unit(0.1, units = "cm"),
-
-    plot.background = element_rect(color = "transparent"),
-    plot.title = element_text(
-      size = rel(1.2),
-      #face = "bold",
-      hjust = 0,
-      margin = margin(b = half_line * 1.2)
-    ),
-    plot.subtitle = element_text(
-      size = rel(0.8),
-      color = "grey40",
-      face = "italic",
-      hjust = 0,
-      margin = margin(b = (base_size / 2) * 1.2)
-    ),
-    plot.caption = element_text(
-      size = rel(0.7),
-      color = "grey40",
-      face = "plain",
-      hjust = 0,
-      margin = margin(b = base_size * 0.4, t = base_size * 0.4,
-                      r = 0, l = 0)
-    ),
-    plot.margin = margin(pmargin, pmargin, pmargin, pmargin),
-    complete = TRUE
-  )
-
-  return(t)
-}
-
-
-
-theme_bdc_microtiter <- function(base_size = 12, base_family = "") {
-  t <- theme_bdc_grey(base_size = base_size, base_family = base_family,
-                      grid.x = FALSE, grid.y = FALSE,
-                      gridmin.x = FALSE, gridmin.y = FALSE,
-                      ticks.x = FALSE, ticks.y = FALSE,
-                      pmargin = base_size / 2) %+replace%
-    theme(
-      panel.spacing = unit(0, units = "pt"),
-      axis.title = element_blank(),
-      axis.text = element_text(size = rel(1.0), face = "bold"),
-      axis.text.y = element_text(
-        margin = margin(r = 0.4 * base_size, l = 0.4 * base_size)
-      ),
-      axis.text.x = element_text(
-        margin = margin(t = 0.4 * base_size, b = 0.4 * base_size)
-      ),
-      axis.ticks.length = unit(0, "pt"),
-      legend.key.size = unit(0.5, units = "pt"),
-      legend.spacing = unit(1, "pt"),
-      plot.title = element_text(
-        size = rel(1.2),
-        hjust = 0.5,
-        margin = margin(b = (base_size / 2) * 1.2)
-      ),
-      plot.subtitle = element_text(
-        size = rel(0.8),
-        color = "grey50",
-        hjust = 0.5,
-        margin = margin(b = (base_size / 2) * 1.2)
-      )
-    )
-
-  return(t)
-}
-
 
 # function to place the blanks on the plate according to the selected mode: it
 # generates a dataframe containing the row and column coordinates for each blank
@@ -322,43 +152,41 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
 # Column coordinates, the group and the status
 #*******************************************************************************
 
-drawPlateMap <- function(df, nb_gps, plate_lines, plate_cols, project_title){
-  LETTERS702 <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))
 
+drawPlateMap <- function(df, plate_lines, plate_cols, project_title = NULL){
+  LETTERS702 <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))
+  nb_gps <- length(levels(df$Group))
   # this palette allows coloring depending on whether it is a blank, a
   # prohibited well, a Not Randomized sample or a randomized sample
-  palette_strains <- c("blank"="grey", "forbidden"="red", "notRandom" = "green")
-  palette_complete <- c(brewer.pal(7, "Set2"), brewer.pal(7, "Accent"))
+  palette_strains <- c("blank"="#8B8378", "forbidden"="red", "notRandom" = "#9ACD32")
+  # palette_complete <- c("#FFC125", "#FF7F00", "#458B00", "#104E8B", "#48D1CC", "#CD6889", "#FFD39B", "#8B1A1A", "#EEDC82", "#9F79EE", "#FF7F50")
+  palette_complete <- c("#00AFBB", "#FC4E07", "#FFDB6D", "#C4961A", "#F4EDCA", "#D16103", "#C3D7A4", "#52854C", "#4E84C4", "#293352")
   palette_choisie <- palette_complete[1:nb_gps]
   names(palette_choisie) <- levels(df$Group)
   palette_strains <- c(palette_strains, palette_choisie)
-  colScale <- scale_colour_manual(name = "Group", values = palette_strains)
-
-  # g <- ggplot(data = df, aes(x = Column, y = Row)) +
-  #   geom_point(data = expand.grid(seq(1, plate_cols), seq(1, plate_lines)), aes(x = Var1, y = Var2),
-  #              color = "grey90", fill = "white", shape = 21, size = 6) +
-  #   geom_point(aes(shape = Status, colour = Group), size = 12) +
-  #   geom_text(aes(label = Sample.name), size = 4) +
-  #   colScale +
-  #   scale_shape_manual(values = c("forbidden" = 4, "blank" = 15, "notRandom" = 17, "toRandom" = 16)) +
-  #   coord_fixed(ratio = (13/plate_cols)/(9/plate_lines), xlim = c(0.9, plate_cols+0.1), ylim = c(0, plate_lines+1)) +
-  #   scale_y_reverse(breaks = seq(1, plate_lines), labels = LETTERS702[1:plate_lines]) +
-  #   scale_x_continuous(breaks = seq(1, plate_cols)) +
-  #   labs(title = project_title) +
-  #   theme_bdc_microtiter()
-  #
+  colScale <- scale_color_manual(values = palette_strains)
 
   g <- ggplot(data = df, aes(x = Column, y = Row)) +
     geom_point(data = expand.grid(seq(1, plate_cols), seq(1, plate_lines)), aes(x = Var1, y = Var2),
-               color = "grey90", fill = "white", shape = 21, size = 6) +
-    geom_point(aes(colour = Group), size = 12) +
-    geom_text(aes(label = Sample.name), size = 4) +
+               color = "grey95", fill = "white", shape = 21, size = 6) +
+    geom_point(aes(colour = Group), size = 10, shape = 19) +
+    geom_point(colour = "white", size = 7, shape =19) +
     colScale +
     coord_fixed(ratio = (13/plate_cols)/(9/plate_lines), xlim = c(0.9, plate_cols+0.1), ylim = c(0, plate_lines+1)) +
     scale_y_reverse(breaks = seq(1, plate_lines), labels = LETTERS702[1:plate_lines]) +
     scale_x_continuous(breaks = seq(1, plate_cols)) +
+    geom_text(aes(label = Sample.name), size = 3, na.rm = TRUE) +
     labs(title = project_title) +
-    theme_bdc_microtiter()
+    theme(
+      panel.background = element_rect(fill = "white", colour = "grey50"),
+      panel.grid = element_blank(),
+      legend.key = element_rect(fill = "white"),
+      axis.ticks = element_blank(),
+      axis.text = element_text(face = "bold", size = 12),
+      axis.title = element_blank(),
+      legend.title = element_text(face = "bold"),
+      legend.justification = c("top")
+    )
 
 
 
@@ -369,19 +197,29 @@ drawPlateMap <- function(df, nb_gps, plate_lines, plate_cols, project_title){
 #*******************************************************************************
 # How to use the functions
 #*******************************************************************************
-# nb_l <- 8
-# nb_c <- 12
-# test_df <- placeBlanksOnPlate(nb_l,nb_c,"by_column")
-#forbid_wells <- c("A1")
-#forbid_wells_df <- convertVector2Df(forbid_wells, nb_l, nb_c)
-#test2_df <- rbind(test_df,forbid_wells_df)
-#test2_df <- forbid_wells_df
-#if(class(test2_df) == "data.frame"){
-#  drawPlateMap(df = test2_df, 1, plate_lines = nb_l, plate_cols = nb_c)
-#}else{
-#  print(test2_df)
-#}
-#df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(0))),
-#               c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
+# # # preparation des inputs comme ceux qu'on obtient dans l'appli shiny
+d <- read.csv2("./data/ind_groupes_NASH-80.csv",
+               header = TRUE,
+               sep = ";",
+               col.names = c("Sample.name", "Group"),
+               stringsAsFactors = FALSE)
 
-#drawPlateMap(df = df, 1, plate_lines = nb_l, plate_cols = nb_c)
+d$Group <- as.factor(d$Group)
+d$Well <- as.character(NA)
+d$Status <- as.factor("allowed")
+d$Row <- NA
+d$Column <- NA
+
+
+nb_l <- 8
+nb_c <- 12
+nb_p <- 1
+forbidden_wells <- "A1,A2,A3,A10,A11,A12"
+fw <- as.vector(unlist(strsplit(as.character(forbidden_wells),
+                                split=",")))
+fw <- convertVector2Df(fw, nb_l, nb_c, "forbidden")
+mod <- "NEWS"
+max_it <- 20
+# # lancement de l'algo
+plate <- generateMapPlate(user_df = d, nb_rows = nb_l, nb_cols = nb_c, df_forbidden = fw, mod = mod, max_it = max_it)
+drawPlateMap(df = plate, plate_lines = nb_l, plate_cols = nb_c)
