@@ -30,7 +30,6 @@ options(shiny.reactlog = TRUE)
 source(file.path("modules", "data_import.r"), local = TRUE)
 source(file.path("modules","plate_spec.r"), local = TRUE)
 source(file.path("modules","backtracking.r"), local = TRUE)
-source(file.path("modules","data_export.r"), local = TRUE)
 source(file.path("../../R", "fonctions.r"), local = TRUE)
 source(file.path("../../R", "plotPlateMaps.r"), local = TRUE)
 

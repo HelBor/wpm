@@ -198,28 +198,28 @@ drawPlateMap <- function(df, plate_lines, plate_cols, project_title = NULL){
 # How to use the functions
 #*******************************************************************************
 # # # preparation des inputs comme ceux qu'on obtient dans l'appli shiny
-d <- read.csv2("./data/ind_groupes_NASH-80.csv",
-               header = TRUE,
-               sep = ";",
-               col.names = c("Sample.name", "Group"),
-               stringsAsFactors = FALSE)
-
-d$Group <- as.factor(d$Group)
-d$Well <- as.character(NA)
-d$Status <- as.factor("allowed")
-d$Row <- NA
-d$Column <- NA
-
-
-nb_l <- 8
-nb_c <- 12
-nb_p <- 1
-forbidden_wells <- "A1,A2,A3,A10,A11,A12"
-fw <- as.vector(unlist(strsplit(as.character(forbidden_wells),
-                                split=",")))
-fw <- convertVector2Df(fw, nb_l, nb_c, "forbidden")
-mod <- "NEWS"
-max_it <- 20
-# # lancement de l'algo
-plate <- generateMapPlate(user_df = d, nb_rows = nb_l, nb_cols = nb_c, df_forbidden = fw, mod = mod, max_it = max_it)
-drawPlateMap(df = plate, plate_lines = nb_l, plate_cols = nb_c)
+# d <- read.csv2("./data/ind_groupes_NASH-80.csv",
+#                header = TRUE,
+#                sep = ";",
+#                col.names = c("Sample.name", "Group"),
+#                stringsAsFactors = FALSE)
+#
+# d$Group <- as.factor(d$Group)
+# d$Well <- as.character(NA)
+# d$Status <- as.factor("allowed")
+# d$Row <- NA
+# d$Column <- NA
+#
+#
+# nb_l <- 8
+# nb_c <- 12
+# nb_p <- 1
+# forbidden_wells <- "A1,A2,A3,A10,A11,A12"
+# fw <- as.vector(unlist(strsplit(as.character(forbidden_wells),
+#                                 split=",")))
+# fw <- convertVector2Df(fw, nb_l, nb_c, "forbidden")
+# mod <- "NEWS"
+# max_it <- 20
+# # # lancement de l'algo
+# plate <- generateMapPlate(user_df = d, nb_rows = nb_l, nb_cols = nb_c, df_forbidden = fw, mod = mod, max_it = max_it)
+# drawPlateMap(df = plate, plate_lines = nb_l, plate_cols = nb_c)

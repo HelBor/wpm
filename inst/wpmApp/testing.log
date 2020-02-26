@@ -1,40 +1,15 @@
-2020-02-24 19:36:28 INFO::Initiating the log file...
-2020-02-24 19:36:37 INFO:plate_spec:totalNbWells = 6
-2020-02-24 19:36:39 INFO:data_import:File ind_groupes_NASH-80.csv was uploaded
-2020-02-24 19:36:40 INFO:server:dataframe/matrix successfully created
-2020-02-24 19:36:41 INFO:server:dataframe/matrix successfully created
-2020-02-24 19:36:42 INFO:server:dataframe/matrix successfully created
-2020-02-24 19:36:45 INFO:plate_spec:totalNbWells = 96
-2020-02-24 19:37:01 INFO:fonctions.generateMapPlate:attempt n° 1
-2020-02-24 19:37:01 INFO:fonctions.generateMapPlate:attempt n° 2
-2020-02-24 19:37:01 INFO:fonctions.generateMapPlate:attempt n° 3
-2020-02-24 19:37:01 INFO:fonctions.generateMapPlate:attempt n° 4
-2020-02-24 19:37:02 INFO:fonctions.generateMapPlate:attempt n° 5
-2020-02-24 19:37:02 INFO:fonctions.generateMapPlate:attempt n° 6
-2020-02-24 19:37:02 INFO:fonctions.generateMapPlate:attempt n° 7
-2020-02-24 19:37:02 INFO:fonctions.generateMapPlate:attempt n° 8
-2020-02-24 19:37:02 INFO:fonctions.generateMapPlate:attempt n° 9
-2020-02-24 19:37:02 INFO:fonctions.generateMapPlate:attempt n° 10
-2020-02-24 19:37:03 INFO:fonctions.generateMapPlate:attempt n° 11
-2020-02-24 19:37:03 INFO:fonctions.generateMapPlate:attempt n° 12
-2020-02-24 19:37:03 INFO:fonctions.generateMapPlate:attempt n° 13
-2020-02-24 19:37:03 INFO:fonctions.generateMapPlate:attempt n° 14
-2020-02-24 19:37:03 INFO:fonctions.generateMapPlate:attempt n° 15
-2020-02-24 19:37:03 INFO:fonctions.generateMapPlate:attempt n° 16
-2020-02-24 19:37:03 INFO:fonctions.generateMapPlate:attempt n° 17
-2020-02-24 19:37:03 INFO:fonctions.generateMapPlate:attempt n° 18
-2020-02-24 19:37:04 INFO:fonctions.generateMapPlate:attempt n° 19
-2020-02-24 19:37:04 WARNING:fonctions.generateMapPlate:number of attempts: 19
-2020-02-24 19:37:04 INFO::map isn't null so we return map and map_plot
-2020-02-24 19:37:04 INFO:server:data_export$final_df: data.frame
-2020-02-24 19:37:48 INFO:plate_spec:totalNbWells = 96
-2020-02-24 19:37:53 INFO:data_import:File ind_groupes_NASH-80.csv was uploaded
-2020-02-24 19:37:54 INFO:server:dataframe/matrix successfully created
-2020-02-24 19:37:58 INFO:fonctions.generateMapPlate:attempt n° 1
-2020-02-24 19:37:59 INFO:fonctions.generateMapPlate:attempt n° 2
-2020-02-24 19:37:59 INFO:fonctions.generateMapPlate:attempt n° 3
-2020-02-24 19:37:59 INFO:fonctions.generateMapPlate:attempt n° 4
-2020-02-24 19:37:59 WARNING:fonctions.generateMapPlate:number of attempts: 4
-2020-02-24 19:37:59 INFO::map isn't null so we return map and map_plot
-2020-02-24 19:37:59 INFO:server:data_export$final_df: data.frame
-2020-02-24 19:38:45 INFO:plate_spec:totalNbWells = 96
+2020-02-26 18:12:56 INFO::Initiating the log file...
+2020-02-26 18:13:03 INFO:plate_spec:totalNbWells = 6
+2020-02-26 18:13:06 INFO:data_import:File ind_groupes_NASH-160.csv was uploaded
+2020-02-26 18:13:07 INFO:server:dataframe/matrix successfully created
+2020-02-26 18:13:07 INFO:server:dataframe/matrix successfully created
+2020-02-26 18:13:09 INFO:server:dataframe/matrix successfully created
+2020-02-26 18:13:12 INFO:plate_spec:totalNbWells = 96
+2020-02-26 18:13:13 INFO:plate_spec:totalNbWells = 192
+2020-02-26 18:13:27 INFO:fonctions.generateMapPlate:attempt n° 1
+2020-02-26 18:13:27 WARNING:fonctions.generateMapPlate:number of attempts: 1
+2020-02-26 18:13:27 INFO:fonctions.generateMapPlate:attempt n° 1
+2020-02-26 18:13:27 INFO:fonctions.generateMapPlate:attempt n° 2
+2020-02-26 18:13:27 WARNING:fonctions.generateMapPlate:number of attempts: 2
+2020-02-26 18:13:27 INFO::map isn't null so we return map and map_plot
+2020-02-26 18:13:27 INFO:server:data_export$final_df: data.frame

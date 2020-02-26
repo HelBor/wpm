@@ -12,7 +12,6 @@ sidebar <- dashboardSidebar(
     menuItem("Home", tabName = "home", icon = icon("home")),
     menuItem("Parameters", tabName = "parameters", icon = icon("cogs")),
     menuItem("Results", tabName = "results", icon = icon("chart-bar")),
-    menuItem("Export", tabName = "export", icon = icon("download")),
     menuItem("Help", tabName = "help", icon = icon("hands-helping"))
   )
 )
@@ -151,11 +150,7 @@ body <- dashboardBody(
             h1("Your results"),
             backtrackUI("backtrack")
     ),# end of tabItem 3
-    tabItem(tabName = "export",
-            h1("Download your data here"),
-            exportUI("export")
 
-    ),
     tabItem(tabName = "help",
             fluidRow(
               box(width = 12,

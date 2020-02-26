@@ -74,60 +74,58 @@ server <- function(input, output, session) {
   # backtracking module part
   # launched only if start button is clicked and required parameters are validated
   #*****************************************************************************
+  isolate(
+    observeEvent(input$start_WPM_Btn,{
 
-  observeEvent(input$start_WPM_Btn,{
+      # requires that the dimensions of the plate be greater than 0
+      validate(
+        need(!is.null(datafile()), "requires a user data file"),
+        need(nrow(datafile()) > 1, "requires a non empty data file"),
+        need(plate_specs$nb_lines > 0, "requires a number of rows greater than 0"),
+        need(plate_specs$nb_cols > 0, "requires a number of columns greater than 0")
+      )
 
-    # requires that the dimensions of the plate be greater than 0
-    validate(
-      need(!is.null(datafile()), "requires a user data file"),
-      need(plate_specs$nb_lines > 0, "requires a number of rows greater than 0"),
-      need(plate_specs$nb_cols > 0, "requires a number of columns greater than 0")
-    )
+      data_export <- isolate(callModule(module = backtrack,
+                                        id = "backtrack",
+                                        df = datafile(),
+                                        # does not automatically restart the module when the isolated
+                                        # input changes, and therefore needs start_WPM_Btn to be restarted
+                                        max_iter = input$nb_iter,
+                                        forbidden_wells = reactive(plate_specs$forbidden_wells),
+                                        rows = reactive(plate_specs$nb_lines),
+                                        columns = reactive(plate_specs$nb_cols),
+                                        nb_plates = reactive(plate_specs$nb_plates),
+                                        constraint = reactive(plate_specs$neighborhood_mod),
+                                        project_name = reactive(input$project_title)
+      )
+      )
 
-    data_export <- isolate(callModule(module = backtrack,
-                                      id = "backtrack",
-                                      df = datafile(),
-                                      # does not automatically restart the module when the isolated
-                                      # input changes, and therefore needs start_WPM_Btn to be restarted
-                                      max_iter = input$nb_iter,
-                                      forbidden_wells = reactive(plate_specs$forbidden_wells),
-                                      rows = reactive(plate_specs$nb_lines),
-                                      columns = reactive(plate_specs$nb_cols),
-                                      nb_plates = reactive(plate_specs$nb_plates),
-                                      constraint = reactive(plate_specs$neighborhood_mod),
-                                      project_name = reactive(input$project_title)
-                                      )
-                           )
+      observeEvent(data_export$final_df,{
+        loginfo("data_export$final_df: %s", class(data_export$final_df), logger = "server")
+        if(class(data_export$final_df) != "data.frame"){
+          sendSweetAlert(
+            session = session,
+            title = "WPM failed...",
+            text = "Seems that we reeched the maximal number of iterations without any result... Try again by increasing the number of iterations. ",
+            type = "error"
+          )
+        }else{
+          sendSweetAlert(
+            session = session,
+            title = "Success !!",
+            text = "All in order, you can check your results in the Results Panel",
+            type = "success"
+          )
 
-    observeEvent(data_export$final_df,{
-      loginfo("data_export$final_df: %s", class(data_export$final_df), logger = "server")
-      if(class(data_export$final_df) != "data.frame"){
-        sendSweetAlert(
-          session = session,
-          title = "WPM failed...",
-          text = "Seems that we reeched the maximal number of iterations without any result... Try again by increasing the number of iterations. ",
-          type = "error"
-        )
-      }else{
-        sendSweetAlert(
-          session = session,
-          title = "Success !!",
-          text = "All in order, you can check your results in the Results Panel",
-          type = "success"
-        )
+        }
 
-        callModule(module = export,
-                   id = "export",
-                   df = reactive(data_export$final_df),
-                   plot = reactive(data_export$final_map)
-        )
-      }
+
+      })
 
 
     })
+  )
 
-
-  })
 
 
 }

@@ -6,9 +6,9 @@ backtrackUI <- function(id, label = NULL) {
         width = 5,
         status = "warning",
         withLoader(
-          dataTableOutput(ns("df_modif")),
+          uiOutput(ns("data_export")),
           type = "html",
-          loader = "loader3"
+          loader = "loader7"
         )
 
     ),
@@ -18,7 +18,7 @@ backtrackUI <- function(id, label = NULL) {
         withLoader(
           uiOutput(ns("mapPlot")),
           type = "html",
-          loader = "loader3"
+          loader = "loader7"
         )
 
 
@@ -123,12 +123,28 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, row
     return(final_df)
   })
 
+  #-----------------------------------------------------------------------------
+  # Dataframe export
 
-  output$df_modif <- renderDataTable(datatable({
-    map()
-  }, rownames=FALSE)
-  )
+  output$data_export <- renderUI({
+    column(width = 12,
+           renderDataTable(datatable({map()}, rownames = FALSE)),
+           downloadHandler(
+             filename = function() {
+               paste("data-", Sys.Date(), ".csv", sep="")
+             },
+             content = function(file) {
+               write_excel_csv2(map(),
+                                file)
+             }
+           )
+           )
 
+
+  })
+
+  #-----------------------------------------------------------------------------
+  # Plots export
   map_plot <- reactive({
     if(!is.null(map())){
       toPlot = list()
@@ -143,17 +159,32 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, row
   })
 
 
+
   output$mapPlot <- renderUI({
     lapply(1:length(map_plot()), function(i){
       box(
         title = h4(paste0("Plate ", i)),
-        width = 12,
-        renderPlot({map_plot()[[i]]})
+        width = 6,
+        renderPlot({map_plot()[[i]]}),
+        downloadHandler(
+          filename = function() {
+            paste("plot", i, ".png", sep="")
+          },
+          content = function(file) {
+            ggsave(filename = file,
+                   plot = map_plot()[[i]],
+                   width = 10,
+                   height = 7,
+                   units = "in"
+            )
+          }
+        )
       )
 
     }
     )# fin lapply
   })
+  #-----------------------------------------------------------------------------
 
   observe({
     if(is.null(map())){
