@@ -21,7 +21,6 @@
   - [WPM structure](https://github.com/HelBor/wpm#wpm-structure)
   - [Provide parameters](https://github.com/HelBor/wpm#provide-parameters)
   - [Check your Results](https://github.com/HelBor/wpm#check-your-results)
-  - [Export your results](https://github.com/HelBor/wpm#export-your-results)
 
 * [Pending Features](https://github.com/HelBor/wpm#pending-features)
 
@@ -64,15 +63,15 @@ The project has not yet been built as a package
 
 ## How to use WPM
 
-Since WPM is a GUI, the idea is to just provide a minimum of parameters to the application. No programming skills are required.
+Since WPM is a GUI, the idea is to just provide a minimum of parameters to the application. No programming skills are required. WPM supports multiple plates and places samples in a balanced way among the plates.
 
 ### WPM structure
 
-WPM has 4 main panels:
-* __Home__: explains you how to use WPM
-* __Parameters__: the Panel where you fill the parameters needed to run WPM
-* __Results__: the Panel where you can look after the final dataset containing the wells chosen for each sample and a plot of your final well-plate map.
-* __Export__: the Panel to export your dataset in CSV and your map in PNG format.
+WPM has 3 main panels:
+* __Home__
+* __Parameters__
+* __Results__
+
 
 
 ### Provide parameters:
@@ -87,13 +86,8 @@ WPM has 4 main panels:
 
 ### Check your Results
 
-add a capture of dataframe and map plot
+This Panel allows you to look after the final dataset containing the wells chosen for each sample and a plot of your final well-plate map. Dataframe and plots are downloadable separately.
 
-### Export your results
-
-add capture of export panel
 
 ## Pending Features
-
-* Support for multiple plates and place samples in a balanced way.
 * For proteomics, add the option to generate serialization of samples.
