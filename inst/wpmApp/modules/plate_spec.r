@@ -9,6 +9,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 
   fluidRow(
     column(width=6,
+
       #-------------------------------------------------------------------------
       box(status="warning",
           width = 12,
@@ -111,21 +112,30 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                        choices = c("No blanks" = "none",
                                    "Per line" = "by_row",
                                    "Per column" = "by_column",
-                                   "Choose by hand" = "by_hand",
-                                   "Checkerboard" = "checkerboard"),
+                                   "Checkerboard" = "checkerboard",
+                                   "Choose by hand" = "by_hand"
+                                   ),
                        selected = NULL,
                        status = "warning"
 
           ),
-          conditionalPanel(condition = "input.blank_mode == 'by_hand'",
-                           textInput(ns("hand_select"),
-                                     h4("Enter Line Letter & Column number, each
-                                        box separated by commas without spaces.
-                                        \n The wells already filled as forbidden
-                                        will not be drawn as 'Blank'."),
-                                     value = NULL,
-                                     placeholder = "Ex: A1,B2,C3"),
+          conditionalPanel(condition = "input.blank_mode == 'by_row' | input.blank_mode == 'by_column' | input.blank_mode == 'checkerboard'",
+                           awesomeRadio(inputId = ns("start_blank"),
+                                        label = NULL,
+                                        choices = c("even" = "even",
+                                                    "odd" = "odd"),
+                                        selected = NULL,
+                                        status = "warning"),
                            ns = ns),
+          conditionalPanel(condition = "input.blank_mode == 'by_hand'",
+                 textInput(ns("hand_select"),
+                           h4("Enter Line Letter & Column number, each
+                              box separated by commas without spaces.
+                              \n The wells already filled as forbidden
+                              will not be drawn as 'Blank'."),
+                           value = NULL,
+                           placeholder = "Ex: A1,B2,C3"),
+                 ns = ns),
           hr(),
           fluidRow(
             column(width = 10,
@@ -221,14 +231,21 @@ plateSpecUI <- function(id, label = "Plate specifications") {
       #-------------------------------------------------------------------------
     ),
 
+    #-------------------------------------------------------------------------
     # Plate specification outputs
     column(width = 6,
            fluidRow(infoBoxOutput(ns("warning_plate"), width = 12)),
            fluidRow(valueBoxOutput(ns("total_nb_wells"), width = 6),
                     valueBoxOutput(ns("nb_plates_to_fill"), width = 6)
                     ),
-           plotOutput(ns("plotOut"), height = 500)
+           withLoader(
+             plotOutput(ns("plotOut"), height = 500),
+             type = "html",
+             loader = "loader7"
+           )
+
     )
+    #-------------------------------------------------------------------------
   )
 }
 
@@ -247,7 +264,7 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
   p_lines <- reactive({
     switch (input$plate_size,
             NULL = {nb <- 0},
-            "s6" = {nb <- 1},
+            "s6" = {nb <- 2},
             "s24" = {nb <-4},
             "s48" = {nb <-6},
             "s96" = {nb <-8},
@@ -261,7 +278,7 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
   p_cols <- reactive({
     switch (input$plate_size,
             NULL = {nb <- 0},
-            "s6" = {nb <- 6},
+            "s6" = {nb <- 3},
             "s24" = {nb <-6},
             "s48" = {nb <-8},
             "s96" = {nb <-12},
@@ -328,13 +345,15 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
 
 
   blank_wells <- reactive({
+
     validate(
       need((p_lines() > 0 & p_cols() > 0), "requires a plate with positive dimensions.")
     )
     if(input$blank_mode != "by_hand"){
       placeBlanksOnPlate(p_lines(),
                          p_cols(),
-                         as.character(input$blank_mode))
+                         as.character(input$blank_mode),
+                         input$start_blank)
     }else{
       bw <- as.vector(unlist(strsplit(as.character(input$hand_select),
                                       split=",")))
@@ -511,12 +530,12 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
         drawPlateMap(df = df,
                      plate_lines = p_lines(),
                      plate_cols = p_cols(),
-                     project_title = project_name)
+                     project_title = project_name())
       }else{
         drawPlateMap(df = wells_to_plot(),
                      plate_lines = p_lines(),
                      plate_cols = p_cols(),
-                     project_title = project_name)
+                     project_title = project_name())
       }
     }
   })

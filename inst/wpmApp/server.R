@@ -63,18 +63,18 @@ server <- function(input, output, session) {
   # the prohibited wells, the spatial constraints of the plate
   #*****************************************************************************
 
-  plate_specs <- isolate(callModule(plateSpec,
+  plate_specs <- callModule(plateSpec,
                             "plate",
-                            project_name = input$project_title,
+                            project_name = reactive(input$project_title),
                             nb_samples = reactive(nrow(datafile()))
                             )
-                         )
 
   #*****************************************************************************
   # backtracking module part
   # launched only if start button is clicked and required parameters are validated
   #*****************************************************************************
-  isolate(
+
+
     observeEvent(input$start_WPM_Btn,{
 
       # requires that the dimensions of the plate be greater than 0
@@ -84,21 +84,21 @@ server <- function(input, output, session) {
         need(plate_specs$nb_lines > 0, "requires a number of rows greater than 0"),
         need(plate_specs$nb_cols > 0, "requires a number of columns greater than 0")
       )
+      isolate({
+        data_export <- callModule(module = backtrack,
+                                  id = "backtrack",
+                                  df = datafile(),
+                                  max_iter = input$nb_iter,
+                                  forbidden_wells = reactive(plate_specs$forbidden_wells),
+                                  rows = reactive(plate_specs$nb_lines),
+                                  columns = reactive(plate_specs$nb_cols),
+                                  nb_plates = reactive(plate_specs$nb_plates),
+                                  constraint = reactive(plate_specs$neighborhood_mod),
+                                  project_name = reactive(input$project_title)
+        )
+      })
 
-      data_export <- isolate(callModule(module = backtrack,
-                                        id = "backtrack",
-                                        df = datafile(),
-                                        # does not automatically restart the module when the isolated
-                                        # input changes, and therefore needs start_WPM_Btn to be restarted
-                                        max_iter = input$nb_iter,
-                                        forbidden_wells = reactive(plate_specs$forbidden_wells),
-                                        rows = reactive(plate_specs$nb_lines),
-                                        columns = reactive(plate_specs$nb_cols),
-                                        nb_plates = reactive(plate_specs$nb_plates),
-                                        constraint = reactive(plate_specs$neighborhood_mod),
-                                        project_name = reactive(input$project_title)
-      )
-      )
+
 
       observeEvent(data_export$final_df,{
         loginfo("data_export$final_df: %s", class(data_export$final_df), logger = "server")
@@ -124,7 +124,7 @@ server <- function(input, output, session) {
 
 
     })
-  )
+
 
 
 

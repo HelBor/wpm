@@ -84,12 +84,16 @@ body <- dashboardBody(
                                  and group number in the second one."),
                     csvFileInput("datafile"
                                  ),
+
+                    #-------------------------------------------------------------------------
                     hr(),
-                    h4("Please choose a Project name for the plot title"),
+                    h4("Please choose a Project name"),
                     textInput(inputId = "project_title",
                               label = NULL,
                               value = "",
                               placeholder = "my project title")
+
+                    #-------------------------------------------------------------------------
                 )
               ),
               column(width=6,

@@ -1,23 +1,29 @@
 
 # function to place the blanks on the plate according to the selected mode: it
 # generates a dataframe containing the row and column coordinates for each blank
-placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
+placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none", start_blank){
 
   p_lines <- as.numeric(p_lines)
   p_cols <- as.numeric(p_cols)
   if(mod == "none"){
     result <- NULL
   }else{
+    if(start_blank == "even"){
+      start = 2
+    }else{
+      start = 1
+    }
     if(p_lines == 0 | p_cols == 0){
       result <- NULL
     }else{
       switch (mod,
               "by_column" = {
+
                 nb_rows <- p_lines * ceiling(p_cols/2)
                 df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
                                c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
                 k=1
-                for(j in seq(from = 1, to = p_cols, by=2)){
+                for(j in seq(from = start, to = p_cols, by=2)){
                   for(i in 1:p_lines){
                     df$Row[k] <- i
                     df$Column[k] <- j
@@ -28,12 +34,13 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
 
               },
               "by_row" = {
+
                 nb_rows <- p_cols * ceiling(p_lines/2)
                 df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
                                c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
 
                 k=1
-                for(i in seq(from = 1, to = p_lines, by=2)){
+                for(i in seq(from = start, to = p_lines, by=2)){
                   for(j in 1:p_cols){
                     df$Row[k] <- i
                     df$Column[k] <- j
@@ -48,7 +55,7 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none"){
                                c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
                 k=1
                 for(j in seq(from = 1, to = p_cols)){
-                  if(j%%2 == 0){ # j is peer
+                  if(j%%2 == 0){ # j is even
                     for(i in seq(from = 2, to = p_lines, by=2)){
                       df$Row[k] <- i
                       df$Column[k] <- j
@@ -153,7 +160,7 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
 #*******************************************************************************
 
 
-drawPlateMap <- function(df, plate_lines, plate_cols, project_title = NULL){
+drawPlateMap <- function(df, plate_lines, plate_cols, project_title){
   LETTERS702 <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))
   nb_gps <- length(levels(df$Group))
   # this palette allows coloring depending on whether it is a blank, a
