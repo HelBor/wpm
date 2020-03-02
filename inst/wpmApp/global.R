@@ -6,14 +6,7 @@ library(shinycustomloader)
 library(DT)
 library(RColorBrewer)
 library(data.table)
-library(gridExtra)
-
-#library(dplyr)
-#library(ggplot2)
-#library(readr)
-#library(stringr)
-library(tidyverse) # meta package containing the packages above
-# library(extrafont)
+library(tidyverse)
 library(logging)
 
 file.remove("./testing.log")
@@ -33,9 +26,4 @@ source(file.path("modules","backtracking.r"), local = TRUE)
 source(file.path("../../R", "fonctions.r"), local = TRUE)
 source(file.path("../../R", "plotPlateMaps.r"), local = TRUE)
 
-# import the font for ggplots
-#font_import(paths = "./www/fonts/")
-# windowsFonts("MyriadSetPro-Ultralight")
-# windowsFonts("Amatic-Bold")
-# loadfonts(device="win")
-# loadfonts(device="postscript")
+

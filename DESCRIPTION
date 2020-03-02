@@ -1,11 +1,25 @@
 Package: wpm
 Type: Package
 Title: Well Plate Maker
-Version: 0.1.0
-Author: Hélène BORGES
-Maintainer: helene.sophie.borges@gmail.com
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Version: 1.0
+Date: 2020-03-02
+Author: Hélène Borges
+Maintainer: Hélène Borges <helene.sophie.borges@gmail.com>
+Description: This is a shiny application for creating well-plate plans.
+    It uses a backtracking-inspired algorithm to place samples on plates based
+    on specfic neighborhood constraints.
+Depends: R (>= 3.6.2)
+Imports:
+    shiny,
+    shinydashboard,
+    shinyWidgets,
+    shinycustomloader,
+    DT,
+    RColorBrewer,
+    data.table,
+    tidyverse,
+    logging,
+    reactlog
+License: Artistic 2.0
 Encoding: UTF-8
 LazyData: true
