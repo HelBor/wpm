@@ -1,27 +1,31 @@
 backtrackUI <- function(id, label = NULL) {
   ns <- NS(id)
-  fluidRow(
-    box(title = h3("Your dataset"),
-        collapsible = TRUE,
-        width = 5,
-        status = "warning",
-        withLoader(
-          uiOutput(ns("data_export")),
-          type = "html",
-          loader = "loader7"
-        )
+  tagList(
+    fluidRow(
+      box(title = h3("Your dataset"),
+          collapsible = TRUE,
+          width = 12,
+          status = "warning",
+          withLoader(
+            uiOutput(ns("data_export")),
+            type = "html",
+            loader = "loader7"
+          )
 
+      )
     ),
-    box(title = h3("Plate Layout Experiment"),
-        width = 7,
-        status = "warning",
-        withLoader(
-          uiOutput(ns("mapPlot")),
-          type = "html",
-          loader = "loader7"
-        )
+    fluidRow(
+      box(title = h3("Plate Layout Experiment"),
+          width = 12,
+          status = "warning",
+          withLoader(
+            uiOutput(ns("mapPlot")),
+            type = "html",
+            loader = "loader7"
+          )
 
 
+      )
     )
   )
 
@@ -84,9 +88,16 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, row
 
     if(nb_plates() > 1){
       # loginfo("on est dans le if nb_plate > 1")
+      if(is.null(forbidden_wells())){
+        nb_forbid <- 0
+      }else{
+        nb_forbid <- nrow(forbidden_wells())
+      }
+
       res <- balancedGrpDistrib(d = user_data(),
                               nb_p = nb_plates(),
-                              df_max_size = (rows()*columns()) - nrow(forbidden_wells()))
+                              df_max_size = (ceiling(nrow(user_data())/nb_plates()) - nb_forbid)
+                              )
 
     }else{
       res <- list("p1" = user_data())
@@ -96,9 +107,6 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, row
       loginfo("nrow(c): %s", nrow(c))
 
     }
-
-
-
 
     p <- 1
     for(current_p in res){
