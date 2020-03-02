@@ -85,16 +85,26 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, row
     if(nb_plates() > 1){
       # loginfo("on est dans le if nb_plate > 1")
       res <- balancedGrpDistrib(d = user_data(),
-                              nb_p = nb_plates())
+                              nb_p = nb_plates(),
+                              df_max_size = (rows()*columns()) - nrow(forbidden_wells()))
 
     }else{
       res <- list("p1" = user_data())
     }
 
+    for(c in res){
+      loginfo("nrow(c): %s", nrow(c))
+
+    }
+
+
+
+
     p <- 1
     for(current_p in res){
       new_df <- NULL
-      # print(str(current_p))
+      loginfo("plate n°%s", p)
+
       new_df <- generateMapPlate(user_df = current_p,
                                  nb_rows = rows(),
                                  nb_cols = columns(),

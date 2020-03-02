@@ -221,7 +221,7 @@ drawPlateMap <- function(df, plate_lines, plate_cols, project_title){
 # nb_l <- 8
 # nb_c <- 12
 # nb_p <- 1
-# forbidden_wells <- "A1,A2,A3,A10,A11,A12"
+# forbidden_wells <- "A1,A2,A3,A10,A11,A12,B1,B12,G1,G12,H1,H2,H3,H10,H11,H12"
 # fw <- as.vector(unlist(strsplit(as.character(forbidden_wells),
 #                                 split=",")))
 # fw <- convertVector2Df(fw, nb_l, nb_c, "forbidden")

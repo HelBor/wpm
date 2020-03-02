@@ -204,10 +204,11 @@ randomWalk <- function(m, toVisit, d, constraint){
 
 
   while (length(visited) != nrow(d)) {
-
+    # loginfo("*********")
+    # loginfo("toVisit: %s ", toVisit, logger = "fonctions/randomWalk")
     cell <- resample(toVisit, size = 1)
-    # loginfo("chosen cell: %s", cell, logger = "fonctions.randomWalk")
-    # loginfo("visited: %s", visited, logger = "fonctions.randomWalk")
+    # loginfo("chosen cell: %s", cell, logger = "fonctions/randomWalk")
+    # loginfo("visited: %s", visited, logger = "fonctions/randomWalk")
     # mise à jour des cases visitées
     visited <- c(visited,cell)
     # loginfo("length(visited): %s", length(visited), logger = "fonctions.randomWalk")
@@ -305,8 +306,8 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
 
 
 
-
-balancedGrpDistrib <- function(d, nb_p){
+# df_max_size : le nombre maximal d'échantillon plaçable sur la plaque en cours
+balancedGrpDistrib <- function(d, nb_p, df_max_size){
 
   grouped <- d %>%
     group_by(Group)
@@ -350,11 +351,24 @@ balancedGrpDistrib <- function(d, nb_p){
 
 
   }
-  incomplete_plate <- which.min(unlist(lapply(toReturn, function(x) nrow(x))))
+
   m <- bind_rows(test)
   m <- m[!is.na(m$Sample.name),]
-  toReturn[[incomplete_plate]] <- rbind(toReturn[[incomplete_plate]], m)
 
+  # tant qu'il reste des échantillons non affectés à une plaque
+  while(nrow(m) !=0){
+    # on en affecte à la plaque possédant l'effectif le plus faible sans dépasser
+    #le nombre max autorisé d'échantillons par plaque
+    incomplete_plate <- which.min(unlist(lapply(toReturn, function(x) nrow(x))))
+
+    incomplete_size <- nrow(toReturn[[incomplete_plate]])
+    if(incomplete_size <= df_max_size){
+      toTake <- sample(m$Sample.name, size = (df_max_size-incomplete_size))
+      totake_df <- m[which(m$Sample.name %in% toTake),]
+      toReturn[[incomplete_plate]] <- rbind(toReturn[[incomplete_plate]], totake_df)
+      m <- subset(m, !(m$Sample.name %in% toTake))
+    }
+  }
   return(toReturn)
 
 }

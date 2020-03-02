@@ -1,7 +1,27 @@
-2020-03-02 14:41:29 INFO::Initiating the log file...
-2020-03-02 14:41:43 INFO:plate_spec:totalNbWells = 6
-2020-03-02 14:41:51 INFO:data_import:File ind_groupes_NASH-160.csv was uploaded
-2020-03-02 14:41:51 INFO:server:dataframe/matrix successfully created
-2020-03-02 14:41:52 INFO:server:dataframe/matrix successfully created
-2020-03-02 14:41:53 INFO:server:dataframe/matrix successfully created
-2020-03-02 14:41:57 INFO:plate_spec:totalNbWells = 384
+2020-03-02 16:03:13 INFO::Initiating the log file...
+2020-03-02 16:03:20 INFO:plate_spec:totalNbWells = 6
+2020-03-02 16:03:23 INFO:data_import:File ind_groupes_NASH-160.csv was uploaded
+2020-03-02 16:03:23 INFO:server:dataframe/matrix successfully created
+2020-03-02 16:03:26 INFO:server:dataframe/matrix successfully created
+2020-03-02 16:03:27 INFO:server:dataframe/matrix successfully created
+2020-03-02 16:03:29 INFO:plate_spec:totalNbWells = 96
+2020-03-02 16:03:30 INFO:plate_spec:totalNbWells = 192
+2020-03-02 16:03:58 INFO::df_max_size: 80
+2020-03-02 16:03:58 INFO::nrow(toReturn[[incomplete_plate]]): 76
+2020-03-02 16:03:58 INFO::toTake: 187,79,106,129
+2020-03-02 16:03:58 INFO::nrow(toReturn[[incomplete_plate]]): 78
+2020-03-02 16:03:58 INFO::toTake: 161,192
+2020-03-02 16:03:58 INFO::nrow(c): 80
+2020-03-02 16:03:58 INFO::nrow(c): 80
+2020-03-02 16:03:58 INFO::plate n°1
+2020-03-02 16:03:58 INFO:fonctions.generateMapPlate:attempt n° 1
+2020-03-02 16:03:59 INFO:fonctions.generateMapPlate:attempt n° 2
+2020-03-02 16:03:59 INFO:fonctions.generateMapPlate:attempt n° 3
+2020-03-02 16:03:59 INFO:fonctions.generateMapPlate:attempt n° 4
+2020-03-02 16:03:59 WARNING:fonctions.generateMapPlate:number of attempts: 4
+2020-03-02 16:03:59 INFO::plate n°2
+2020-03-02 16:03:59 INFO:fonctions.generateMapPlate:attempt n° 1
+2020-03-02 16:03:59 INFO:fonctions.generateMapPlate:attempt n° 2
+2020-03-02 16:03:59 WARNING:fonctions.generateMapPlate:number of attempts: 2
+2020-03-02 16:03:59 INFO::map isn't null so we return map and map_plot
+2020-03-02 16:03:59 INFO:server:data_export$final_df: data.frame
