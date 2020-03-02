@@ -199,9 +199,6 @@ randomWalk <- function(m, toVisit, d, constraint){
   nb_col <- dim(m)[2]
   ret = m
   placed = c() # échantillons déjà tirés et placés
-  # tant que tous les échantillons n'ont pas été placés dans visited
-  # loginfo("nrow(d): %s", nrow(d), logger = "fonctions.randomWalk")
-
 
   while (length(visited) != nrow(d)) {
     # loginfo("*********")
@@ -294,13 +291,15 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
 
 
       ret <- rbind(ret, df_forbidden)
-      logwarn("number of attempts: %d", nb_attempts, logger = "fonctions.generateMapPlate")
+      logwarn("number of attempts: %d", nb_attempts,
+              logger = "fonctions.generateMapPlate")
       return(ret)
     }
 
     nb_attempts = nb_attempts + 1
   }
-  logwarn("we reeched the maximal number of iterations with no success", logger = "fonctions.generateMapPlate")
+  logwarn("we reeched the maximal number of iterations with no success",
+          logger = "fonctions.generateMapPlate")
   return(NULL)
 }
 
@@ -348,17 +347,15 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
     df$Status <- as.factor(df$Status)
 
     toReturn[[p]] <- df
-
-
   }
 
   m <- bind_rows(test)
   m <- m[!is.na(m$Sample.name),]
 
-  # tant qu'il reste des échantillons non affectés à une plaque
+  # as long as samples remain unassigned to a plate.
   while(nrow(m) !=0){
-    # on en affecte à la plaque possédant l'effectif le plus faible sans dépasser
-    #le nombre max autorisé d'échantillons par plaque
+    # they are assigned to the plate with the lowest number of employees without
+    #exceeding the maximum authorized number of samples per plate.
     incomplete_plate <- which.min(unlist(lapply(toReturn, function(x) nrow(x))))
 
     incomplete_size <- nrow(toReturn[[incomplete_plate]])
@@ -370,5 +367,4 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
     }
   }
   return(toReturn)
-
 }
