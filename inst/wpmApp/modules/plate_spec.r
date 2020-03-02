@@ -107,35 +107,44 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                    ))
           ),
 
-          awesomeRadio(inputId = ns("blank_mode"),
-                       label = NULL,
-                       choices = c("No blanks" = "none",
-                                   "Per line" = "by_row",
-                                   "Per column" = "by_column",
-                                   "Checkerboard" = "checkerboard",
-                                   "Choose by hand" = "by_hand"
-                                   ),
-                       selected = NULL,
-                       status = "warning"
+          fluidRow(
+            column(width = 5,
+                   awesomeRadio(inputId = ns("blank_mode"),
+                                label = NULL,
+                                choices = c("No blanks" = "none",
+                                            "Per line" = "by_row",
+                                            "Per column" = "by_column",
+                                            "Checkerboard" = "checkerboard",
+                                            "Choose by hand" = "by_hand"
+                                ),
+                                selected = NULL,
+                                status = "warning"
 
-          ),
-          conditionalPanel(condition = "input.blank_mode == 'by_row' | input.blank_mode == 'by_column' | input.blank_mode == 'checkerboard'",
-                           awesomeRadio(inputId = ns("start_blank"),
-                                        label = NULL,
-                                        choices = c("even" = "even",
-                                                    "odd" = "odd"),
-                                        selected = NULL,
-                                        status = "warning"),
-                           ns = ns),
-          conditionalPanel(condition = "input.blank_mode == 'by_hand'",
-                 textInput(ns("hand_select"),
-                           h4("Enter Line Letter & Column number, each
+                   )
+                   ),
+            column(width = 7,
+                   conditionalPanel(condition = "input.blank_mode == 'by_row' | input.blank_mode == 'by_column' | input.blank_mode == 'checkerboard'",
+                                    awesomeRadio(inputId = ns("start_blank"),
+                                                 label = h4("starting placing in:"),
+                                                 choices = c("even" = "even",
+                                                             "odd" = "odd"),
+                                                 selected = NULL,
+                                                 status = "warning"),
+                                    ns = ns),
+                   conditionalPanel(condition = "input.blank_mode == 'by_hand'",
+                                    textInput(ns("hand_select"),
+                                              h4("Enter Line Letter & Column number, each
                               box separated by commas without spaces.
                               \n The wells already filled as forbidden
                               will not be drawn as 'Blank'."),
-                           value = NULL,
-                           placeholder = "Ex: A1,B2,C3"),
-                 ns = ns),
+                                              value = NULL,
+                                              placeholder = "Ex: A1,B2,C3"),
+                                    ns = ns)
+                   )
+          ),
+
+
+
           hr(),
           fluidRow(
             column(width = 10,
@@ -481,7 +490,7 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
                  Maybe are you specifying to many blanks/notRandom wells."
                    )
             )
-          result <- base::rbind(blanks_wells(), notRandom_wells())
+          result <- base::rbind(blank_wells(), notRandom_wells())
           result <- distinct(result, Row, Column, .keep_all = TRUE)
           ret <- result
           # si pas de NotRandom
