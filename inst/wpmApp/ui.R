@@ -179,11 +179,11 @@ body <- dashboardBody(
                                   color = "teal",
                                   icon = icon("envelope"))
                   )
-              )
-            )
+              ) # end of box
+            ) # end of fluiRow
 
-    )
-  )
+    ) # end of tabItem 4
+  ) # end of tabItems
 )
 
 

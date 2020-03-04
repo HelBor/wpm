@@ -8,7 +8,7 @@ Maintainer: Hélène Borges <helene.sophie.borges@gmail.com>
 Description: This is a shiny application for creating well-plate plans.
     It uses a backtracking-inspired algorithm to place samples on plates based
     on specfic neighborhood constraints.
-Depends: R (>= 3.6.2)
+Depends: R (>= 3.6.0)
 Imports:
     shiny,
     shinydashboard,
@@ -20,6 +20,7 @@ Imports:
     tidyverse,
     logging,
     reactlog
-License: Artistic 2.0
+License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.0.2
