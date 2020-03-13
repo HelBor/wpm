@@ -12,9 +12,6 @@ library(logging)
 file.remove("./testing.log")
 
 basicConfig()
-addHandler(writeToFile, file = "./testing.log")
-loginfo('Initiating the log file...')
-
 
 library(reactlog)
 # tell shiny to log all reactivity
