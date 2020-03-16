@@ -9,8 +9,6 @@ library(data.table)
 library(tidyverse)
 library(logging)
 
-file.remove("./testing.log")
-
 basicConfig()
 
 library(reactlog)
