@@ -166,11 +166,11 @@ drawPlateMap <- function(df, plate_lines, plate_cols, project_title){
   # this palette allows coloring depending on whether it is a blank, a
   # prohibited well, a Not Randomized sample or a randomized sample
   palette_strains <- c("blank"="#8B8378", "forbidden"="red", "notRandom" = "#9ACD32")
-  # palette_complete <- c("#FFC125", "#FF7F00", "#458B00", "#104E8B", "#48D1CC", "#CD6889", "#FFD39B", "#8B1A1A", "#EEDC82", "#9F79EE", "#FF7F50")
-  palette_complete <- c("#00AFBB", "#FC4E07", "#FFDB6D", "#C4961A", "#F4EDCA", "#D16103", "#C3D7A4", "#52854C", "#4E84C4", "#293352")
-  palette_choisie <- palette_complete[1:nb_gps]
-  names(palette_choisie) <- levels(df$Group)
-  palette_strains <- c(palette_strains, palette_choisie)
+
+  palette_complete <- c("#00AFBB", "#FFD759", "#FFBDE5", "#FFAC0B", "#84E3FF", "#345382", "#BA1376", "#CC807D", "#4E84C4", "#293352")
+  sub_palette <- palette_complete[1:nb_gps]
+  names(sub_palette) <- levels(df$Group)
+  palette_strains <- c(palette_strains, sub_palette)
   colScale <- scale_color_manual(values = palette_strains)
 
   g <- ggplot(data = df, aes(x = Column, y = Row)) +
