@@ -42,11 +42,24 @@ server <- function(input, output, session) {
   })
 
 
+
+  gp_levels <- reactive({
+    if(is.null(datafile())){
+      return(0)
+    }else{
+      return(unique(datafile()[,2]))
+    }
+  })
+
   distinct_gps <- reactive({
     if(is.null(datafile())){
       return(0)
     }else{
-      return(length(unique(datafile()[,2])))
+      nb_gps <- length(unique(datafile()[,2]))
+      validate(
+        need(nb_gps <= 12, message = "The number of separate groups must not exceed 12.")
+        )
+      return(nb_gps)
     }
   })
 
@@ -65,6 +78,8 @@ server <- function(input, output, session) {
 
   plate_specs <- callModule(plateSpec,
                             "plate",
+                            nb_samp_gps = distinct_gps,
+                            gp_levels = gp_levels,
                             project_name = reactive(input$project_title),
                             nb_samples = reactive(nrow(datafile()))
                             )
@@ -89,6 +104,8 @@ server <- function(input, output, session) {
                                   id = "backtrack",
                                   df = datafile(),
                                   max_iter = input$nb_iter,
+                                  distinct_sample_gps = distinct_gps,
+                                  gp_levels = gp_levels,
                                   forbidden_wells = reactive(plate_specs$forbidden_wells),
                                   rows = reactive(plate_specs$nb_lines),
                                   columns = reactive(plate_specs$nb_cols),

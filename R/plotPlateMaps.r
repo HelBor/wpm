@@ -160,16 +160,19 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
 #*******************************************************************************
 
 
-drawPlateMap <- function(df, plate_lines, plate_cols, project_title){
+drawPlateMap <- function(df, sample_gps, gp_levels, plate_lines, plate_cols, project_title){
   LETTERS702 <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))
   nb_gps <- length(levels(df$Group))
+  loginfo("gp_levels: %s", gp_levels, logger = "drawPlateMap")
+  loginfo("nb_gps: %s", nb_gps,logger = "drawPlateMap")
   # this palette allows coloring depending on whether it is a blank, a
   # prohibited well, a Not Randomized sample or a randomized sample
-  palette_strains <- c("blank"="#8B8378", "forbidden"="red", "notRandom" = "#9ACD32")
 
-  palette_complete <- c("#00AFBB", "#FFD759", "#FFBDE5", "#FFAC0B", "#84E3FF", "#345382", "#BA1376", "#CC807D", "#4E84C4", "#293352")
-  sub_palette <- palette_complete[1:nb_gps]
-  names(sub_palette) <- levels(df$Group)
+  palette_strains <- c("blank"="#8B8378", "forbidden"="red", "notRandom" = "black")
+
+
+  sub_palette <- RColorBrewer::brewer.pal(n = sample_gps, "Paired")
+  names(sub_palette) <- gp_levels
   palette_strains <- c(palette_strains, sub_palette)
   colScale <- scale_color_manual(values = palette_strains)
 

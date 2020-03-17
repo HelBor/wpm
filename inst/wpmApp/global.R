@@ -9,6 +9,7 @@ library(data.table)
 library(tidyverse)
 library(logging)
 
+
 basicConfig()
 
 library(reactlog)

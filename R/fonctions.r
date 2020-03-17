@@ -185,8 +185,12 @@ randomWalk <- function(m, toVisit, d, constraint){
   nb_col <- dim(m)[2]
   ret = m
   placed = c() # samples already picked up and placed
-
+  # loginfo("nrow(d): %s", nrow(d), logger = "randomWalk")
   while (length(visited) != nrow(d)) {
+    # loginfo("length(visited): %s", length(visited), logger = "randomWalk")
+
+    # loginfo("toVisit: %s", toVisit, logger = "randomWalk")
+
     cell <- resample(toVisit, size = 1)
     visited <- c(visited,cell)
     i <- as.numeric(match(toupper(substr(cell, 1, 1)), LETTERS))
@@ -249,6 +253,11 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
 
     if(!is.null(df_forbidden$Well)){
       toVisit <- toVisit[!toVisit %in% df_forbidden$Well]
+    }
+
+
+    if(length(toVisit) < nrow(user_df)){
+      return(0)
     }
 
     ret <- randomWalk(m = mat,
@@ -318,9 +327,15 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
     toReturn[[p]] <- df
   }
 
+
+  # loginfo("nrow in toReturn BEFORE while(nrow(m) !=0): %s ", unlist(lapply(toReturn, function(x) nrow(x))), logger = "balancedGrpDistrib")
+
+
+
   m <- bind_rows(test)
   m <- m[!is.na(m$Sample.name),]
 
+  # loginfo("df_max_size: %s", df_max_size, logger = "balancedGrpDistrib")
 
   # as long as samples remain unassigned to a plate.
   while(nrow(m) !=0){
@@ -328,7 +343,7 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
     # they are assigned to the plate with the lowest number of employees without
     #exceeding the maximum authorized number of samples per plate.
 
-    print(unlist(lapply(toReturn, function(x) nrow(x))))
+    # print(unlist(lapply(toReturn, function(x) nrow(x))))
 
     incomplete_plate <- which.min(unlist(lapply(toReturn, function(x) nrow(x))))
 
@@ -354,5 +369,6 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
 
     }
   }
+  loginfo("nrow in toReturn: %s ", unlist(lapply(toReturn, function(x) nrow(x))), logger = "balancedGrpDistrib")
   return(toReturn)
 }

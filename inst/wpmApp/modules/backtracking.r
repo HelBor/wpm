@@ -40,7 +40,7 @@ backtrackUI <- function(id, label = NULL) {
 # rows : integer - plate's number of rows
 # columns : integer - plate's number of columns
 # constraint : character - neighborhood spatial constraint mode
-backtrack <- function(input, output, session, df, max_iter, forbidden_wells, rows, columns, nb_plates, constraint, project_name) {
+backtrack <- function(input, output, session, df, max_iter, forbidden_wells, distinct_sample_gps, gp_levels, rows, columns, nb_plates, constraint, project_name) {
 
   toReturn <- reactiveValues(
     final_df = NULL,
@@ -94,9 +94,12 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, row
         nb_forbid <- nrow(forbidden_wells())
       }
 
+      loginfo("nb_forbid:%s", nb_forbid, logger = "backtrack/map")
+      loginfo("nombre de puits disponibles pour une plaque: %s",(rows()*columns()) - nb_forbid, logger = "backtrack/map")
+
       res <- balancedGrpDistrib(d = user_data(),
                               nb_p = nb_plates(),
-                              df_max_size = (ceiling(nrow(user_data())/nb_plates()) - nb_forbid)
+                              df_max_size = ((rows()*columns()) - nb_forbid)
                               )
 
     }else{
@@ -104,7 +107,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, row
     }
 
     for(c in res){
-      loginfo("nrow(c): %s", nrow(c))
+      loginfo("nrow(c): %s", nrow(c), logger = "backtrack/map")
 
     }
 
@@ -128,6 +131,8 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, row
 
         final_df <- rbind(final_df, new_df)
 
+      }else if(new_df == 0){
+        stop("ERROR, number of available cells is less than number of samples to place.")
       }
       p <- p + 1
 
@@ -168,6 +173,8 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, row
       toPlot = list()
       toPlot <- lapply(X = 1:nb_plates(),
                        function(x) drawPlateMap(df = map()[which(map()$Plate == x),],
+                                                sample_gps = distinct_sample_gps(),
+                                                gp_levels = gp_levels(),
                                                 plate_lines = rows(),
                                                 plate_cols = columns(),
                                                 project_title = project_name())

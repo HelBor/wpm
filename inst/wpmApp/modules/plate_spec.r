@@ -259,7 +259,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 }
 
 # Module server function
-plateSpec <- function(input, output, session, project_name, nb_samples) {
+plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_name, nb_samples) {
 
   toReturn <- reactiveValues(
     nb_lines = NULL,
@@ -529,7 +529,7 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
     # pour que la fonction drawPlateMap fonctionne, il faut donner un nombre de
     # lignes et de colonnes > 0 et au minimum un dataframe vide avec les bons
     # noms de colonne
-
+    loginfo("class(nb_samp_gps): %s",class(nb_samp_gps()),logger = "output$plotOut")
     if(p_lines() != 0 & p_cols() != 0){
 
       if(is.null(wells_to_plot())){
@@ -537,11 +537,15 @@ plateSpec <- function(input, output, session, project_name, nb_samples) {
         df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(0))),
                        c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
         drawPlateMap(df = df,
+                     sample_gps = nb_samp_gps(),
+                     gp_levels = gp_levels(),
                      plate_lines = p_lines(),
                      plate_cols = p_cols(),
                      project_title = project_name())
       }else{
         drawPlateMap(df = wells_to_plot(),
+                     sample_gps = nb_samp_gps(),
+                     gp_levels = gp_levels(),
                      plate_lines = p_lines(),
                      plate_cols = p_cols(),
                      project_title = project_name())
