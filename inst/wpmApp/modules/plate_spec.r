@@ -123,7 +123,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                    )
                    ),
             column(width = 7,
-                   conditionalPanel(condition = "input.blank_mode == 'by_row' | input.blank_mode == 'by_column' | input.blank_mode == 'checkerboard'",
+                   conditionalPanel(condition = "input.blank_mode == 'by_row' | input.blank_mode == 'by_column'",
                                     awesomeRadio(inputId = ns("start_blank"),
                                                  label = h4("starting placing in:"),
                                                  choices = c("even" = "even",
