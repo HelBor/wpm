@@ -186,7 +186,10 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 
                            ),
                            ns = ns),
-          conditionalPanel(condition = "input.blank_mode == 'none'",
+
+
+
+          conditionalPanel(condition = "input.blank_mode == 'none' & output.nb_gps > 3",
                            awesomeRadio(inputId = ns("constraint_none"),
                                         label = NULL,
                                         choices = c("North-South" = "NS",
@@ -198,7 +201,22 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 
                            ),
                            ns = ns),
-          conditionalPanel(condition = "input.blank_mode == 'by_hand'",
+
+          conditionalPanel(condition = "input.blank_mode == 'none' & output.nb_gps <= 3",
+                           awesomeRadio(inputId = ns("constraint_none"),
+                                        label = NULL,
+                                        choices = c("North-South" = "NS",
+                                                    "West-East" = "WE",
+                                                    "None" = "none"),
+                                        selected = NULL,
+                                        status = "warning"
+
+                           ),
+                           ns = ns),
+
+
+
+          conditionalPanel(condition = "input.blank_mode == 'by_hand' & output.nb_gps > 3",
                            awesomeRadio(inputId = ns("constraint_by_hand"),
                                         label = NULL,
                                         choices = c("North-South" = "NS",
@@ -210,6 +228,20 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 
                            ),
                            ns = ns),
+
+
+          conditionalPanel(condition = "input.blank_mode == 'by_hand' & output.nb_gps <= 3",
+                           awesomeRadio(inputId = ns("constraint_by_hand"),
+                                        label = NULL,
+                                        choices = c("North-South" = "NS",
+                                                    "West-East" = "WE",
+                                                    "None" = "none"),
+                                        selected = NULL,
+                                        status = "warning"
+
+                           ),
+                           ns = ns),
+
           conditionalPanel(condition = "input.blank_mode == 'checkerboard'",
                            div(
                              HTML(paste("You have selected the ",
@@ -337,6 +369,15 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
             color = "red",
             fill=TRUE)
   })
+
+
+  output$nb_gps <- reactive({
+    print(paste0("*** nb_samp_gps class:", class(nb_samp_gps())))
+    print(paste0("*** nb_samp_gps :", nb_samp_gps()))
+    return(nb_samp_gps())
+  })
+
+  outputOptions(output, "nb_gps", suspendWhenHidden = FALSE)
 
 
 
@@ -529,7 +570,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
     # pour que la fonction drawPlateMap fonctionne, il faut donner un nombre de
     # lignes et de colonnes > 0 et au minimum un dataframe vide avec les bons
     # noms de colonne
-    loginfo("class(nb_samp_gps): %s",class(nb_samp_gps()),logger = "output$plotOut")
+
     if(p_lines() != 0 & p_cols() != 0){
 
       if(is.null(wells_to_plot())){
@@ -554,24 +595,26 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
   })
 
   nbh_mod <- reactive({
+
     if(input$blank_mode == "by_row"){
       return(input$constraint_row)
+
     }else if(input$blank_mode == "by_column"){
       return(input$constraint_column)
+
     }else if(input$blank_mode == "by_hand"){
       return(input$constraint_by_hand)
+
     }else if(input$blank_mode == "none"){
       return(input$constraint_none)
+
     }else if(input$blank_mode == "checkerboard"){
       return("none")
     }
+
   })
 
   observe({
-    # loginfo("nb of plate lines : %d", p_lines(), logger = "plate_spec")
-    # loginfo("nb of plate cols : %d", p_cols(), logger = "plate_spec")
-    # loginfo("selected mode : %s", nbh_mod(), logger = "plate_spec")
-    # loginfo("number of forbidden wells: %s ", nrow(wells_to_plot()), logger = "plate_spec")
     toReturn$nb_lines <- p_lines()
     toReturn$nb_cols <- p_cols()
     toReturn$nb_plates <- nb_p()
