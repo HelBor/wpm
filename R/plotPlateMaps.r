@@ -170,8 +170,15 @@ drawPlateMap <- function(df, sample_gps, gp_levels, plate_lines, plate_cols, pro
 
   palette_strains <- c("blank"="#8B8378", "forbidden"="red", "notRandom" = "black")
 
+  # control the number of colors to pick according to the number of groups
+  if(sample_gps == 1){
+    sub_palette <- RColorBrewer::brewer.pal(n = 4, "Paired")[4]
+  }else if(sample_gps == 2){
+    sub_palette <- RColorBrewer::brewer.pal(n = 8, "Paired")[c(4,8)]
+  }else{
+    sub_palette <- RColorBrewer::brewer.pal(n = sample_gps, "Paired")
+  }
 
-  sub_palette <- RColorBrewer::brewer.pal(n = sample_gps, "Paired")
   names(sub_palette) <- gp_levels
   palette_strains <- c(palette_strains, sub_palette)
   colScale <- scale_color_manual(values = palette_strains)
