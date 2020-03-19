@@ -57,13 +57,10 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
   })
 
 
-  # map is a list containing:
-  #     a map plate : dataframe (containing user data + blanks + forbidden wells, ready to
+  # map is a dataframe containing: user data + blanks + forbidden wells, ready to
   #                   be plotted or/and downloaded)
-  #     the number of attempts to success
   map <- reactive({
-    # look for withProgress but seems to need that we no longer use generateMapPlate
-    #since it will be the code needed here to update the progress bar
+
     progress <- shiny::Progress$new()
     progress$set(message = "WPM running...", value = 0)
 
@@ -77,8 +74,9 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
       progress$inc(amount = 1/max_iter)
     }
 
-    final_df <- data.frame("Sample.name" = as.integer(NA),
+    final_df <- data.frame("Sample" = as.character(NA),
                            "Group" = as.factor(NA),
+                           "Sample.name" = as.integer(NA),
                            "Well" = as.character(NA),
                            "Status" = as.factor(NA),
                            "Row" = as.numeric(NA),
@@ -127,7 +125,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
       # loginfo("class(new_df): %s",class(new_df), logger = "backtracking")
       if(class(new_df) == "data.frame"){
         new_df$Plate <- p
-
+        print(str(dplyr::tibble(new_df)))
 
         final_df <- rbind(final_df, new_df)
 
@@ -140,7 +138,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
 
 
     final_df <- final_df[!is.na(final_df$Status),]
-
+    final_df$Status <- NULL
 
 
     return(final_df)

@@ -74,7 +74,6 @@ csvFile <- function(input, output, session, stringsAsFactors) {
              header = input$heading,
              quote = input$quote,
              sep = input$sep_input,
-             # col.names = c("Sample.name", "Group"),
              stringsAsFactors = stringsAsFactors)
 
     #check if file contains groups or not
@@ -84,6 +83,7 @@ csvFile <- function(input, output, session, stringsAsFactors) {
       colnames(df) <- c("Sample", "Group")
     }
 
+    df$Sample <- as.character(df$Sample)
     df$Sample.name <- seq_len(nrow(df))
 
     return(df)
