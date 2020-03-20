@@ -372,8 +372,6 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
 
 
   output$nb_gps <- reactive({
-    print(paste0("*** nb_samp_gps class:", class(nb_samp_gps())))
-    print(paste0("*** nb_samp_gps :", nb_samp_gps()))
     return(nb_samp_gps())
   })
 
@@ -595,31 +593,32 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
   })
 
   nbh_mod <- reactive({
-
+    nbh_mod <- NULL
     if(input$blank_mode == "by_row"){
-      return(input$constraint_row)
+      nbh_mod <- input$constraint_row
 
     }else if(input$blank_mode == "by_column"){
-      return(input$constraint_column)
+      nbh_mod <- input$constraint_column
 
     }else if(input$blank_mode == "by_hand"){
       if(nb_samp_gps() > 3){
-        return(input$constraint_by_hand_sup3)
+        nbh_mod <- input$constraint_by_hand_sup3
       }else{
-        return(input$constraint_by_hand_inf3)
+        nbh_mod <- input$constraint_by_hand_inf3
       }
 
     }else if(input$blank_mode == "none"){
       if(nb_samp_gps() > 3){
-        return(input$constraint_none_sup3)
+        nbh_mod <- input$constraint_none_sup3
       }else{
-        return(input$constraint_none_inf3)
+        nbh_mod <- input$constraint_none_inf3
       }
 
     }else if(input$blank_mode == "checkerboard"){
-      return("none")
+      nbh_mod <- "none"
     }
 
+    return(nbh_mod)
   })
 
   observe({
