@@ -190,7 +190,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 
 
           conditionalPanel(condition = "input.blank_mode == 'none' & output.nb_gps > 3",
-                           awesomeRadio(inputId = ns("constraint_none"),
+                           awesomeRadio(inputId = ns("constraint_none_sup3"),
                                         label = NULL,
                                         choices = c("North-South" = "NS",
                                                    "West-East" = "WE",
@@ -203,7 +203,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                            ns = ns),
 
           conditionalPanel(condition = "input.blank_mode == 'none' & output.nb_gps <= 3",
-                           awesomeRadio(inputId = ns("constraint_none"),
+                           awesomeRadio(inputId = ns("constraint_none_inf3"),
                                         label = NULL,
                                         choices = c("North-South" = "NS",
                                                     "West-East" = "WE",
@@ -217,7 +217,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 
 
           conditionalPanel(condition = "input.blank_mode == 'by_hand' & output.nb_gps > 3",
-                           awesomeRadio(inputId = ns("constraint_by_hand"),
+                           awesomeRadio(inputId = ns("constraint_by_hand_sup3"),
                                         label = NULL,
                                         choices = c("North-South" = "NS",
                                                     "West-East" = "WE",
@@ -231,7 +231,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 
 
           conditionalPanel(condition = "input.blank_mode == 'by_hand' & output.nb_gps <= 3",
-                           awesomeRadio(inputId = ns("constraint_by_hand"),
+                           awesomeRadio(inputId = ns("constraint_by_hand_inf3"),
                                         label = NULL,
                                         choices = c("North-South" = "NS",
                                                     "West-East" = "WE",
@@ -603,10 +603,18 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
       return(input$constraint_column)
 
     }else if(input$blank_mode == "by_hand"){
-      return(input$constraint_by_hand)
+      if(nb_samp_gps() > 3){
+        return(input$constraint_by_hand_sup3)
+      }else{
+        return(input$constraint_by_hand_inf3)
+      }
 
     }else if(input$blank_mode == "none"){
-      return(input$constraint_none)
+      if(nb_samp_gps() > 3){
+        return(input$constraint_none_sup3)
+      }else{
+        return(input$constraint_none_inf3)
+      }
 
     }else if(input$blank_mode == "checkerboard"){
       return("none")
