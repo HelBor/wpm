@@ -1,4 +1,4 @@
-backtrackUI <- function(id, label = NULL) {
+randomUI <- function(id, label = NULL) {
   ns <- NS(id)
   tagList(
     fluidRow(
@@ -40,7 +40,7 @@ backtrackUI <- function(id, label = NULL) {
 # rows : integer - plate's number of rows
 # columns : integer - plate's number of columns
 # constraint : character - neighborhood spatial constraint mode
-backtrack <- function(input, output, session, df, max_iter, forbidden_wells, distinct_sample_gps, gp_levels, rows, columns, nb_plates, constraint, project_name) {
+random <- function(input, output, session, df, max_iter, forbidden_wells, rows, columns, nb_plates, project_name) {
 
   toReturn <- reactiveValues(
     final_df = NULL,
@@ -48,7 +48,6 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
   )
 
   user_data <- reactive({
-    df$Group <- as.factor(df$Group)
     df$Well <- as.character(NA)
     df$Status <- as.factor("toRandom")
     df$Row <- NA
@@ -75,7 +74,6 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
     }
 
     final_df <- data.frame("Sample" = as.character(NA),
-                           "Group" = as.factor(NA),
                            "Sample.name" = as.integer(NA),
                            "Well" = as.character(NA),
                            "Status" = as.factor(NA),
@@ -94,19 +92,13 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
 
       loginfo("nb_forbid:%s", nb_forbid, logger = "backtrack/map")
       loginfo("nombre de puits disponibles pour une plaque: %s",(rows()*columns()) - nb_forbid, logger = "backtrack/map")
-      loginfo("nombre maximum d'échantillons plaçable sur une plaque : %s", ceiling(nrow(user_data())/nb_plates()) - nb_forbid, logger = "backtrack/map")
-      nb_max <- ceiling(nrow(user_data())/nb_plates()) - nb_forbid
-      res <- balancedGrpDistrib(d = user_data(),
-                              nb_p = nb_plates(),
-                              df_max_size = nb_max
-                              )
 
     }else{
       res <- list("p1" = user_data())
     }
 
     for(c in res){
-      loginfo("nrow(c): %s", nrow(c), logger = "backtrack/map")
+      loginfo("nrow(c): %s", nrow(c), logger = "random/map")
 
     }
 
@@ -115,19 +107,20 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
       new_df <- NULL
       loginfo("plate n°%s", p)
 
+      # TODO function for random assignation
+
+
       new_df <- generateMapPlate(user_df = current_p,
                                  nb_rows = rows(),
                                  nb_cols = columns(),
                                  df_forbidden = isolate(forbidden_wells()),
-                                 mod = isolate(constraint()),
+                                 mod = "none",
                                  max_it = max_iter,
                                  updateProgress
-                                )
+      )
       # loginfo("class(new_df): %s",class(new_df), logger = "backtracking")
       if(class(new_df) == "data.frame"){
         new_df$Plate <- p
-        print(str(dplyr::tibble(new_df)))
-
         final_df <- rbind(final_df, new_df)
 
       }else if(new_df == 0){
@@ -141,7 +134,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
     final_df <- final_df[!is.na(final_df$Status),]
     final_df$Status <- NULL
 
-
+    print(dplyr::tibble(final_df))
     return(final_df)
   })
 
@@ -160,7 +153,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
                                 file)
              }
            )
-           )
+    )
 
 
   })
@@ -172,8 +165,8 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
       toPlot = list()
       toPlot <- lapply(X = 1:nb_plates(),
                        function(x) drawPlateMap(df = map()[which(map()$Plate == x),],
-                                                sample_gps = distinct_sample_gps(),
-                                                gp_levels = gp_levels(),
+                                                sample_gps = 1,
+                                                gp_levels = as.factor(1),
                                                 plate_lines = rows(),
                                                 plate_cols = columns(),
                                                 project_title = project_name())

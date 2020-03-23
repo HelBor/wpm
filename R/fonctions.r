@@ -133,33 +133,44 @@ solveCell <- function(m, d, i, j, already_drawn, constraint){
     neighbors <- c(NA,NA,NA,NA)
   }
 
+  if("Group" %in% colnames(d)){
 
-  # identify which group the neighbors belong to in order to obtain a reduced
-  # list of possibilities of groups for the current cell to fill
-  forbidden_groups <- unique(d$Group[which(d$Sample.name %in% neighbors)])
-  possible_groups <- levels(d$Group)[which(!levels(d$Group) %in% forbidden_groups)]
+    # identify which group the neighbors belong to in order to obtain a reduced
+    # list of possibilities of groups for the current cell to fill
+    forbidden_groups <- unique(d$Group[which(d$Sample.name %in% neighbors)])
+    possible_groups <- levels(d$Group)[which(!levels(d$Group) %in% forbidden_groups)]
 
 
-  if(length(possible_groups)==0){
-    #there are no more possibilities
-    return(1)
-  }else{
-    # only take in individuals belonging to the possible groups
-    # and who are not in already_drawn
-    possible_ind <- d$Sample.name[which(d$Group %in% possible_groups)]
-    available_ind <- d$Sample.name[which(d$Sample.name %in% possible_ind & !(d$Sample.name %in% already_drawn))]
-
-    if(length(available_ind)==0){
+    if(length(possible_groups)==0){
       #there are no more possibilities
       return(1)
     }else{
-      # use resample because this function also works as expected when there is
-      # only one element in the set to be sampled.
-      chosen_ind <- resample(available_ind,size=1)
-      m[i,j] <- chosen_ind
-      already_drawn <- c(already_drawn,chosen_ind)
+      # only take in individuals belonging to the possible groups
+      # and who are not in already_drawn
+      possible_ind <- d$Sample.name[which(d$Group %in% possible_groups)]
+      available_ind <- d$Sample.name[which(d$Sample.name %in% possible_ind & !(d$Sample.name %in% already_drawn))]
+
+      if(length(available_ind)==0){
+        #there are no more possibilities
+        return(1)
+      }else{
+        # use resample because this function also works as expected when there is
+        # only one element in the set to be sampled.
+        chosen_ind <- resample(available_ind,size=1)
+        m[i,j] <- chosen_ind
+        already_drawn <- c(already_drawn,chosen_ind)
+      }
     }
+  }else{ # if there are no groups in the dataframe
+
+    available_ind <- d$Sample.name[which(!(d$Sample.name %in% already_drawn))]
+    # use resample because this function also works as expected when there is
+    # only one element in the set to be sampled.
+    chosen_ind <- resample(available_ind,size=1)
+    m[i,j] <- chosen_ind
+    already_drawn <- c(already_drawn,chosen_ind)
   }
+
 
   return(list("m" = m, "already_drawn" = already_drawn))
 }
@@ -239,7 +250,6 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
       updateProgress(detail = text)
     }
 
-
     mat = matrix(NA,nrow=nb_rows, ncol=nb_cols)
 
     # Generate all the cells that are allowed to be filled
@@ -282,7 +292,8 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
 }
 
 
-
+# d: the user dataframe
+# nb_p: the number of plates to fill
 # df_max_size : the maximum number of samples that can be placed on the current plate
 balancedGrpDistrib <- function(d, nb_p, df_max_size){
 

@@ -162,7 +162,12 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
 
 drawPlateMap <- function(df, sample_gps, gp_levels, plate_lines, plate_cols, project_title){
   LETTERS702 <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))
-  nb_gps <- length(levels(df$Group))
+  if("Group" %in% colnames(df)){
+    nb_gps <- length(levels(df$Group))
+  }else{
+    df$Group <- as.factor(1)
+  }
+
   # loginfo("gp_levels: %s", gp_levels, logger = "drawPlateMap")
   # loginfo("nb_gps: %s", nb_gps,logger = "drawPlateMap")
   # this palette allows coloring depending on whether it is a blank, a
