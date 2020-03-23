@@ -430,22 +430,24 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
   wells_to_plot <- reactive({
     ret <- NULL
     # loginfo("nb samples : %d, totalNbWells : %d", nb_samples(), totalNbWells(), logger = "plate_spec")
-
+    loginfo("forbid_wells(): %s", nrow(forbid_wells()), logger = "plate_spec/wells_to_plot")
+    loginfo("blank_wells(): %s", nrow(blank_wells()), logger = "plate_spec/wells_to_plot")
+    loginfo("notRandom_wells(): %s", nrow(notRandom_wells()), logger = "plate_spec/wells_to_plot")
 
     if(is.null(forbid_wells())){
       nb_f <- 0
-      # loginfo("nb_f: %s", nb_f, logger = "plate_spec")
+
     }else{
       nb_f <- nrow(forbid_wells())
-      # loginfo("nb_f: %s", nb_f, logger = "plate_spec")
+
     }
 
     if(is.null(blank_wells())){
       nb_b <- 0
-      # loginfo("nb_b: %s", nb_b, logger = "plate_spec")
+
     }else{
       nb_b <- nrow(blank_wells())
-      # loginfo("nb_b: %s", nb_b, logger = "plate_spec")
+
     }
 
     if(is.null(notRandom_wells())){
@@ -570,7 +572,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
     # noms de colonne
 
     if(p_lines() != 0 & p_cols() != 0){
-
+      # loginfo("wells_to_plots: %s", is.null(wells_to_plot()))
       if(is.null(wells_to_plot())){
 
         df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(0))),
@@ -582,6 +584,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
                      plate_cols = p_cols(),
                      project_title = project_name())
       }else{
+
         drawPlateMap(df = wells_to_plot(),
                      sample_gps = nb_samp_gps(),
                      gp_levels = gp_levels(),

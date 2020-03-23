@@ -111,12 +111,21 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
   LETTERS702 <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))
 
   if(length(forbidden_wells)>0){
-    check_rows <- as.numeric(match(toupper(substr(forbidden_wells, 1, 1)), LETTERS702))
-    check_columns <- as.numeric(substr(forbidden_wells, 2, 5))
+
+
+    check_columns <- as.numeric(stringr::str_extract(forbidden_wells, "[0-9]+"))
+    check_rows <- (stringr::str_extract(forbidden_wells, "[aA-zZ]+"))
+
+#
+#
+#
+#     check_rows <- as.numeric(match(toupper(substr(forbidden_wells, 1, 1)), LETTERS702))
+#     check_columns <- as.numeric(substr(forbidden_wells, 2, 5))
     # actually simulates if user hasn't finished typing everything
-    if(any(is.na(check_rows)) | any(is.na(check_columns))){
+    if(any(is.na(as.numeric(match(toupper(check_rows), LETTERS702)))) | any(is.na(check_columns))){
       return("ya un pb")
-    }else if((max(check_rows) > max_Row) | (max(check_columns) > max_Col) ){
+    }else if((max(as.numeric(match(toupper(check_rows), LETTERS702))) > max_Row) | (max(check_columns) > max_Col) ){
+
       # depending on the plate sizes that have been provided
       result <- NULL
     }else{
@@ -134,8 +143,8 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
       # converts Well names to Row / Column coordinates as this is what is used
       # to calculate the backtracking step.
       forbidden <- mutate(forbidden,
-                          Row=as.numeric(match(toupper(substr(Well, 1, 1)), LETTERS702)),
-                          Column=as.numeric(substr(Well, 2, 5)))
+                          Row=as.numeric(match(toupper(check_rows), LETTERS702)),
+                          Column=check_columns)
       #erase all duplicated rows
       result <- forbidden %>%
         distinct(Row, Column, .keep_all = TRUE)
@@ -174,7 +183,7 @@ drawPlateMap <- function(df, sample_gps, gp_levels, plate_lines, plate_cols, pro
   # prohibited well, a Not Randomized sample or a randomized sample
 
   palette_strains <- c("blank"="#8B8378", "forbidden"="red", "notRandom" = "black")
-
+  # loginfo("sample_gps: %s", sample_gps, logger = "drawPlateMap")
   # control the number of colors to pick according to the number of groups
   if(sample_gps == 1){
     sub_palette <- RColorBrewer::brewer.pal(n = 4, "Paired")[4]
@@ -183,7 +192,7 @@ drawPlateMap <- function(df, sample_gps, gp_levels, plate_lines, plate_cols, pro
   }else{
     sub_palette <- RColorBrewer::brewer.pal(n = sample_gps, "Paired")
   }
-
+  # loginfo("gp_levels: %s", gp_levels, logger = "drawPlateMap")
   names(sub_palette) <- gp_levels
   palette_strains <- c(palette_strains, sub_palette)
   colScale <- scale_color_manual(values = palette_strains)

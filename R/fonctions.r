@@ -204,7 +204,8 @@ randomWalk <- function(m, toVisit, d, constraint){
 
     cell <- resample(toVisit, size = 1)
     visited <- c(visited,cell)
-    i <- as.numeric(match(toupper(substr(cell, 1, 1)), LETTERS))
+    LETTERS702 <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))
+    i <- as.numeric(match(toupper(substr(cell, 1, 1)), LETTERS702))
     j <- as.numeric(substr(cell, 2, 5))
     # uniformisation de plaque
     test <- solveCell(m=ret,
