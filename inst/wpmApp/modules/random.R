@@ -74,6 +74,7 @@ random <- function(input, output, session, df, max_iter, forbidden_wells, rows, 
     }
 
     final_df <- data.frame("Sample" = as.character(NA),
+                           "Group" = as.factor(NA),
                            "Sample.name" = as.integer(NA),
                            "Well" = as.character(NA),
                            "Status" = as.factor(NA),
@@ -107,9 +108,6 @@ random <- function(input, output, session, df, max_iter, forbidden_wells, rows, 
       new_df <- NULL
       loginfo("plate n°%s", p)
 
-      # TODO function for random assignation
-
-
       new_df <- generateMapPlate(user_df = current_p,
                                  nb_rows = rows(),
                                  nb_cols = columns(),
@@ -121,6 +119,12 @@ random <- function(input, output, session, df, max_iter, forbidden_wells, rows, 
       # loginfo("class(new_df): %s",class(new_df), logger = "backtracking")
       if(class(new_df) == "data.frame"){
         new_df$Plate <- p
+
+
+        loginfo("cols new_df: %s", colnames(new_df), logger = "random")
+        loginfo("cols final_df : %s", colnames(final_df),  logger = "random")
+
+
         final_df <- rbind(final_df, new_df)
 
       }else if(new_df == 0){
@@ -134,7 +138,6 @@ random <- function(input, output, session, df, max_iter, forbidden_wells, rows, 
     final_df <- final_df[!is.na(final_df$Status),]
     final_df$Status <- NULL
 
-    print(dplyr::tibble(final_df))
     return(final_df)
   })
 

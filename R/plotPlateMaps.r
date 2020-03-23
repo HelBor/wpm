@@ -116,11 +116,6 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
     check_columns <- as.numeric(stringr::str_extract(forbidden_wells, "[0-9]+"))
     check_rows <- (stringr::str_extract(forbidden_wells, "[aA-zZ]+"))
 
-#
-#
-#
-#     check_rows <- as.numeric(match(toupper(substr(forbidden_wells, 1, 1)), LETTERS702))
-#     check_columns <- as.numeric(substr(forbidden_wells, 2, 5))
     # actually simulates if user hasn't finished typing everything
     if(any(is.na(as.numeric(match(toupper(check_rows), LETTERS702)))) | any(is.na(check_columns))){
       return("ya un pb")
@@ -130,15 +125,17 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
       result <- NULL
     }else{
       # put the forbidden wells into the df
-      forbidden <- setnames(setDF(lapply(c(NA, as.character(status), NA, as.character(status), NA, NA),
+      forbidden <- setnames(setDF(lapply(c(NA, as.character(status), NA, NA, as.character(status), NA, NA),
                                          function(...) character(length(forbidden_wells)))),
-                            c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
-      forbidden$Well <- as.character(forbidden_wells)
-      forbidden$Sample.name <- as.integer(NA)
+                            c("Sample", "Group", "Sample.name", "Well", "Status", "Row", "Column"))
+      forbidden$Sample <- as.integer(NA)
       forbidden$Group <- as.factor(status)
+      forbidden$Sample.name <- as.integer(NA)
+      forbidden$Well <- as.character(forbidden_wells)
       forbidden$Status <- as.factor(status)
       forbidden$Row <- as.numeric(NA)
       forbidden$Column <- as.numeric(NA)
+
 
       # converts Well names to Row / Column coordinates as this is what is used
       # to calculate the backtracking step.

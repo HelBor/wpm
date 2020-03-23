@@ -429,10 +429,6 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
 
   wells_to_plot <- reactive({
     ret <- NULL
-    # loginfo("nb samples : %d, totalNbWells : %d", nb_samples(), totalNbWells(), logger = "plate_spec")
-    loginfo("forbid_wells(): %s", nrow(forbid_wells()), logger = "plate_spec/wells_to_plot")
-    loginfo("blank_wells(): %s", nrow(blank_wells()), logger = "plate_spec/wells_to_plot")
-    loginfo("notRandom_wells(): %s", nrow(notRandom_wells()), logger = "plate_spec/wells_to_plot")
 
     if(is.null(forbid_wells())){
       nb_f <- 0
