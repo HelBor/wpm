@@ -120,12 +120,6 @@ random <- function(input, output, session, df, max_iter, forbidden_wells, rows, 
       if(class(new_df) == "data.frame"){
         new_df$Plate <- p
 
-
-
-        print(str(tibble(new_df)))
-        print(str(tibble(final_df)))
-
-
         final_df <- bind_rows(final_df, new_df)
 
       }else if(new_df == 0){
