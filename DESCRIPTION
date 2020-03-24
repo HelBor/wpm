@@ -1,7 +1,7 @@
 Package: wpm
 Type: Package
 Title: Well Plate Maker
-Version: 1.0
+Version: 0.99.0
 Date: 2020-03-02
 Author: Hélène Borges
 Maintainer: Hélène Borges <helene.sophie.borges@gmail.com>
