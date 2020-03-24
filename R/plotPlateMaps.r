@@ -20,8 +20,8 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none", start_blank){
               "by_column" = {
 
                 nb_rows <- p_lines * ceiling(p_cols/2)
-                df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
-                               c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
+                df <- setnames(data.table::setDF(lapply(c(NA, NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
+                               c("Sample", "Group", "Sample.name", "Well", "Status", "Row", "Column"))
                 k=1
                 for(j in seq(from = start, to = p_cols, by=2)){
                   for(i in 1:p_lines){
@@ -36,8 +36,8 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none", start_blank){
               "by_row" = {
 
                 nb_rows <- p_cols * ceiling(p_lines/2)
-                df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
-                               c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
+                df <- setnames(data.table::setDF(lapply(c(NA, NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
+                               c("Sample", "Group", "Sample.name", "Well", "Status", "Row", "Column"))
 
                 k=1
                 for(i in seq(from = start, to = p_lines, by=2)){
@@ -51,8 +51,8 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none", start_blank){
               },
               "checkerboard" = {
                 nb_rows <- p_cols * ceiling(p_lines/2)
-                df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
-                               c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
+                df <- setnames(data.table::setDF(lapply(c(NA, NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
+                               c("Sample", "Group", "Sample.name", "Well", "Status", "Row", "Column"))
                 k=1
                 for(j in seq(from = 1, to = p_cols)){
                   if(j%%2 == 0){ # j is even
@@ -72,9 +72,10 @@ placeBlanksOnPlate <- function(p_lines, p_cols, mod = "none", start_blank){
               }
       )
 
-      df$Sample.name <- NA
-      df$Group <- as.factor("blank")
-      df$Status <- as.factor("blank")
+      # df$Sample <- NA
+      df$Group <- as.character("blank")
+      df$Sample.name <- as.integer(NA)
+      df$Status <- as.character("blank")
       df$Row <- as.numeric(df$Row)
       df$Column <- as.numeric(df$Column)
 
@@ -128,11 +129,11 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
       forbidden <- setnames(setDF(lapply(c(NA, as.character(status), NA, NA, as.character(status), NA, NA),
                                          function(...) character(length(forbidden_wells)))),
                             c("Sample", "Group", "Sample.name", "Well", "Status", "Row", "Column"))
-      forbidden$Sample <- as.integer(NA)
-      forbidden$Group <- as.factor(status)
+      forbidden$Sample <- as.character(NA)
+      forbidden$Group <- as.character(status)
       forbidden$Sample.name <- as.integer(NA)
       forbidden$Well <- as.character(forbidden_wells)
-      forbidden$Status <- as.factor(status)
+      forbidden$Status <- as.character(status)
       forbidden$Row <- as.numeric(NA)
       forbidden$Column <- as.numeric(NA)
 

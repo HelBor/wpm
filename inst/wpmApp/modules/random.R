@@ -74,15 +74,15 @@ random <- function(input, output, session, df, max_iter, forbidden_wells, rows, 
     }
 
     final_df <- data.frame("Sample" = as.character(NA),
-                           "Group" = as.factor(NA),
+                           "Group" = as.character(NA),
                            "Sample.name" = as.integer(NA),
                            "Well" = as.character(NA),
-                           "Status" = as.factor(NA),
+                           "Status" = as.character(NA),
                            "Row" = as.numeric(NA),
                            "Column" = as.numeric(NA),
                            "Plate" = as.numeric(NA))
 
-
+    final_df %>% dplyr::mutate_if(is.factor, as.character) -> final_df
     if(nb_plates() > 1){
       # loginfo("on est dans le if nb_plate > 1")
       if(is.null(forbidden_wells())){
@@ -121,11 +121,12 @@ random <- function(input, output, session, df, max_iter, forbidden_wells, rows, 
         new_df$Plate <- p
 
 
-        loginfo("cols new_df: %s", colnames(new_df), logger = "random")
-        loginfo("cols final_df : %s", colnames(final_df),  logger = "random")
+
+        print(str(tibble(new_df)))
+        print(str(tibble(final_df)))
 
 
-        final_df <- rbind(final_df, new_df)
+        final_df <- bind_rows(final_df, new_df)
 
       }else if(new_df == 0){
         stop("ERROR, number of available cells is less than number of samples to place.")

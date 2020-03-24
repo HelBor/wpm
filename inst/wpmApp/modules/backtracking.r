@@ -51,8 +51,9 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
     df$Group <- as.factor(df$Group)
     df$Well <- as.character(NA)
     df$Status <- as.factor("toRandom")
-    df$Row <- NA
-    df$Column <- NA
+    df$Row <- as.numeric(NA)
+    df$Column <- as.numeric(NA)
+
     return(df)
   })
 
@@ -75,13 +76,15 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
     }
 
     final_df <- data.frame("Sample" = as.character(NA),
-                           "Group" = as.factor(NA),
+                           "Group" = as.character(NA),
                            "Sample.name" = as.integer(NA),
                            "Well" = as.character(NA),
-                           "Status" = as.factor(NA),
+                           "Status" = as.character(NA),
                            "Row" = as.numeric(NA),
                            "Column" = as.numeric(NA),
                            "Plate" = as.numeric(NA))
+
+    final_df %>% dplyr::mutate_if(is.factor, as.character) -> final_df
 
 
     if(nb_plates() > 1){
@@ -94,8 +97,8 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
 
       loginfo("nb_forbid:%s", nb_forbid, logger = "backtrack/map")
       loginfo("nombre de puits disponibles pour une plaque: %s",(rows()*columns()) - nb_forbid, logger = "backtrack/map")
-      loginfo("nombre maximum d'échantillons plaçable sur une plaque : %s", ceiling(nrow(user_data())/nb_plates()) - nb_forbid, logger = "backtrack/map")
-      nb_max <- ceiling(nrow(user_data())/nb_plates()) - nb_forbid
+      loginfo("nombre maximum d'échantillons plaçable sur une plaque : %s", ceiling(nrow(user_data())/nb_plates()), logger = "backtrack/map")
+      nb_max <- ceiling(nrow(user_data())/nb_plates())
       res <- balancedGrpDistrib(d = user_data(),
                               nb_p = nb_plates(),
                               df_max_size = nb_max
@@ -123,14 +126,19 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
                                  max_it = max_iter,
                                  updateProgress
                                 )
-      # loginfo("class(new_df): %s",class(new_df), logger = "backtracking")
+      loginfo("class(new_df): %s",class(new_df), logger = "backtracking")
       if(class(new_df) == "data.frame"){
         new_df$Plate <- p
 
-        final_df <- rbind(final_df, new_df)
+#
+#         print(str(tibble(new_df)))
+#         print(str(tibble(final_df)))
+        final_df <- dplyr::bind_rows(final_df, new_df)
 
       }else if(new_df == 0){
         stop("ERROR, number of available cells is less than number of samples to place.")
+      }else if(is.null(new_df)){
+        return(NULL)
       }
       p <- p + 1
 
@@ -149,7 +157,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
 
   output$data_export <- renderUI({
     column(width = 12,
-           renderDataTable(datatable({map()}, rownames = FALSE)),
+           renderDataTable(DT::datatable({map()}, rownames = FALSE)),
            downloadHandler(
              filename = function() {
                paste("data-", Sys.Date(), ".csv", sep="")

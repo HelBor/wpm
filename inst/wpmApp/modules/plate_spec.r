@@ -383,7 +383,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
     # si des cases interdites on été saisies, alors on transforme en un df compatible
     # avec la suite du code
     if(input$forbid_select != ""){
-      fw <- as.vector(unlist(strsplit(as.character(input$forbid_select),
+      fw <- as.vector(unlist(base::strsplit(as.character(input$forbid_select),
                                       split=",")))
       return(convertVector2Df(fw, p_lines(), p_cols(), status = "forbidden"))
     }else{
@@ -403,7 +403,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
                          as.character(input$blank_mode),
                          input$start_blank)
     }else{
-      bw <- as.vector(unlist(strsplit(as.character(input$hand_select),
+      bw <- as.vector(unlist(base::strsplit(as.character(input$hand_select),
                                       split=",")))
       return(convertVector2Df(bw, p_lines(), p_cols(), status = "blank"))
     }
@@ -416,7 +416,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
       need((p_lines() > 0 & p_cols() > 0), "requires a plate with positive dimensions.")
     )
     if(input$notRandom_select != ""){
-      fw <- as.vector(unlist(strsplit(as.character(input$notRandom_select),
+      fw <- as.vector(unlist(base::strsplit(as.character(input$notRandom_select),
                                       split=",")))
       return(convertVector2Df(fw, p_lines(), p_cols(), status = "notRandom"))
     }else{
@@ -459,7 +459,6 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
     )
 
 
-
     # si forbidden
     if(!is.null(forbid_wells())){
       # si blanks
@@ -473,7 +472,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
           )
           # We put the forbidden wells first because they have priority over the blanks ones.
           result <- base::rbind(forbid_wells(), blank_wells(), notRandom_wells())
-          result <- distinct(result, Row, Column, .keep_all = TRUE)
+          result <- dplyr::distinct(result, Row, Column, .keep_all = TRUE)
           ret <- result
         # si pas de NotRandom
         }else{
@@ -485,7 +484,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
             )
           # We put the forbidden wells first because they have priority over the blanks ones.
           result <- base::rbind(forbid_wells(), blank_wells())
-          result <- distinct(result, Row, Column, .keep_all = TRUE)
+          result <- dplyr::distinct(result, Row, Column, .keep_all = TRUE)
           ret <- result
         }
       # si pas de blanks
@@ -499,7 +498,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
             )
           )
           result <- base::rbind(forbid_wells(), notRandom_wells())
-          result <- distinct(result, Row, Column, .keep_all = TRUE)
+          result <- dplyr::distinct(result, Row, Column, .keep_all = TRUE)
           ret <- result
         # si pas de NotRandom
         }else{
@@ -571,7 +570,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
       # loginfo("wells_to_plots: %s", is.null(wells_to_plot()))
       if(is.null(wells_to_plot())){
 
-        df <- setnames(setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(0))),
+        df <- setnames(data.table::setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(0))),
                        c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
         drawPlateMap(df = df,
                      sample_gps = nb_samp_gps(),

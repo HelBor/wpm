@@ -285,8 +285,14 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
 
       if(!("Group" %in% colnames(ret))){
         loginfo("on rajoute la colonne Group!")
-        ret$Group <- as.factor("1")
+        ret$Group <- as.character("1")
       }
+
+
+      ret %>% dplyr::mutate_if(is.factor, as.character) -> ret
+#
+#       print(str(tibble(ret)))
+#       print(str(tibble(df_forbidden)))
 
       ret <- dplyr::bind_rows(ret, df_forbidden)
       logwarn("number of attempts: %d", nb_attempts,
