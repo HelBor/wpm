@@ -4,7 +4,12 @@ csvFileInput <- function(id, label = "CSV file") {
   ns <- NS(id)
 
   tagList(
-    fileInput(ns("file"), label = NULL),
+    fileInput(ns("file"),
+              label = NULL,
+              accept = c(
+                "text/csv",
+                "text/comma-separated-values,text/plain",
+                ".csv")),
     materialSwitch(
       inputId = ns("heading"),
       label = "Header",
