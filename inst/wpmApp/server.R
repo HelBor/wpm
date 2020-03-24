@@ -23,7 +23,7 @@ server <- function(input, output, session) {
                          stringsAsFactors = FALSE)
 
 
-  output$table <- renderDataTable(datatable({
+  output$table <- renderDataTable(DT::datatable({
     if(!is.null(datafile())){
       if(class(datafile()) == "data.frame" | class(datafile()) == "matrix"){
         loginfo("dataframe/matrix successfully created", logger = "server")

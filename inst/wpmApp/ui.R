@@ -25,48 +25,67 @@ body <- dashboardBody(
   ),
   tabItems(
     tabItem(tabName = "home",
+
             fluidRow(
               div(img(src='images/wpm_logo.png', width = 300), style = "text-align:center;"),
-              div(img(src='images/wpm_name.png', width = 300), style = "text-align:center;"),
-              box(width = 12,
-                  status = "warning",
-                  h1("Welcome to Well Plate Maker!"),
-                  div("WPM is a shiny application (web-based GUI) allowing you to create a
+              div(img(src='images/wpm_name.png', width = 300), style = "text-align:center;")
+            ),
+
+
+            fluidRow(
+
+              column(width = 9,
+                box(width = 12,
+                    status = "warning",
+                    h1("Welcome to Well Plate Maker!"),
+                    div("WPM is a shiny application (web-based GUI) allowing you to create a
                   plan of well-plate for your experiments by controlling batch effects.",
-                      br(),br(),
-                      "Indeed, the placement of samples on a plate can raise questions
+                        br(),br(),
+                        "Indeed, the placement of samples on a plate can raise questions
                   when we want to take into account batch effects (because a placement on a plate is a technical
                   source of variation), which may confound the discovery of real
                   biological variation. The question therefore arises mainly when
                   the samples are divided into different groups (here, we speak
                   of a group to define a category of the factor to be studied.
                   Eg: different treatments to compare, different stages of development, etc.)",
-                      br(),br(),
-                      "The plate plan is built using a backtracking-inspired algorithm
+                        br(),br(),
+                        "The plate plan is built using a backtracking-inspired algorithm
                   with some specific spatial constraints which can be chosen by the user.
                   The plate is filled randomly (and not linearly), i.e. the
                   plate is not filled from left to right (or from top to bottom,
                   etc.). This avoids having to end up with a checkerboard plate
                   plan when the numbers in the groups are unbalanced (which would
                   correspond to a form of batch effect).",
-                      style = "font-size:18px")
+                        style = "font-size:18px"),
 
-              ),
-              box(width = 12,
-                  status = "warning",
-                  h1("How to use WPM?"),
-                  h3("1 - Fill the Parameters section"),
+                    # div(img(src = "images/blanks_per_line_plate.png", width = "30%"),
+                    #     img(src = "images/blanks_per_column_plate.png", width = "30%"),
+                    #     img(src = "images/blanks_by_hand_plate.png", width = "30%"),
+                    #     style = "display: inline-block;"
+                    # )
+                )# end of box
+              ),# end column 1
+              column(width = 3,
+                     valueBox(value = "0.99.0",
+                              subtitle = "R package version",
+                              width = 12,
+                              color = "teal",
+                              icon = icon("box-open"))
 
-                  div(img(src = "images/blanks_per_line_plate.png", width = "30%"),
-                      img(src = "images/blanks_per_column_plate.png", width = "30%"),
-                      img(src = "images/blanks_by_hand_plate.png", width = "30%"),
-                      style = "display: inline-block;"
-                  ),
 
-                  h3("2 - Check the Results section"),
-                  h3("3 - Export your results if everything is ok")
+              ) # end column 2
+            ), # end fluidRow 1
+            fluidRow(
+              column(width =9,
+                box(width = 12,
+                    status = "warning",
+                    h1("Citing our work"),
+                    div("If you use it, please cite the following reference:",
+                        style = "font-size:18px"
+
+                    )
+                )
               )
-
             )
 
     ),
@@ -165,6 +184,8 @@ body <- dashboardBody(
               box(width = 12,
                   status = "warning",
                   h1("Contact"),
+                  div("A vignette is available in the package explaining how to use WPM in detail.",
+                      style = "font-size:18px"),
                   div("Please contact me if you need any help, or if you want to
                     report a bug or if you wish to make comments/suggestions:",
                       style = "font-size:18px"),
