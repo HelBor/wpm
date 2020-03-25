@@ -1,14 +1,5 @@
----
-title: " "
-author: "Hélène Borges"
-output:
-  html_document:
-    toc: yes
-    toc_float: yes
----
-
-<p align="center"><img width=40% src="https://github.com/HelBor/wpm/master/inst/wpmApp/www/images/wpm_logo.png"></p>
-<p align="center"><img width=70% src="https://github.com/HelBor/wpm/master/inst/wpmApp/www/images/wpm_name.png"></p>
+<p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/inst/wpmApp/www/images/wpm_logo.png"></p>
+<p align="center"><img width=70% src="https://github.com/HelBor/wpm/blob/master/inst/wpmApp/www/images/wpm_name.png"></p>
 
 
 ![R](https://img.shields.io/badge/R-v3.4+-blue?style=flat-square)
