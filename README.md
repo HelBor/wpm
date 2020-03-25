@@ -1,5 +1,14 @@
-<p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/inst/wpmApp/www/images/wpm_logo.png"></p>
-<p align="center"><img width=70% src="https://github.com/HelBor/wpm/blob/master/inst/wpmApp/www/images/wpm_name.png"></p>
+---
+title: " "
+author: "Hélène Borges"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+<p align="center"><img width=40% src="https://github.com/HelBor/wpm/master/inst/wpmApp/www/images/wpm_logo.png"></p>
+<p align="center"><img width=70% src="https://github.com/HelBor/wpm/master/inst/wpmApp/www/images/wpm_name.png"></p>
 
 
 ![R](https://img.shields.io/badge/R-v3.4+-blue?style=flat-square)
@@ -15,22 +24,22 @@
 > The algorithm for placing the samples is inspired by the backtracking algorithm.
 
 ## Table of content
-* [Getting started](https://github.com/HelBor/wpm#getting-started)
+ * [Getting started](https://github.com/HelBor/wpm#getting-started)
 
-* [How to use WPM](https://github.com/HelBor/wpm#how-to-use-wpm)
-  - [WPM structure](https://github.com/HelBor/wpm#wpm-structure)
-  - [Provide parameters](https://github.com/HelBor/wpm#provide-parameters)
-  - [Check your Results](https://github.com/HelBor/wpm#check-your-results)
+ * [How to use WPM](https://github.com/HelBor/wpm#how-to-use-wpm)
+   - [Provide parameters](https://github.com/HelBor/wpm#provide-parameters)
+   - [Check your Results](https://github.com/HelBor/wpm#check-your-results)
 
-* [Pending Features](https://github.com/HelBor/wpm#pending-features)
+ * [Pending Features](https://github.com/HelBor/wpm#pending-features)
 
+ * [Documentation](htttps://github.com/HelBor/wpm#documentation)
 
 
 
 ## Getting started
 
 ### Pre-requisites
-`R version > 3.4.1`
+`R version > 3.4`
 OS platforms: `Windows`
 
 WPM R package depedencies:
@@ -41,7 +50,7 @@ WPM R package depedencies:
 ### How to install
 
 
-From GitHub
+From BioConductor
 ```R
 The project has not yet been built as a package 
 ```
@@ -65,23 +74,27 @@ The project has not yet been built as a package
 
 Since WPM is a GUI, the idea is to just provide a minimum of parameters to the application. No programming skills are required. WPM supports multiple plates and places samples in a balanced way among the plates.
 
-### WPM structure
+WPM has 4 main panels:
 
-WPM has 3 main panels:
 * __Home__
 * __Parameters__
 * __Results__
+* __Help__
 
 
+### Provide parameters
 
-### Provide parameters:
-* provide a data set in a CSV format.
-* specify a project name.
-* specify the dimensions of the plate to be filled.
-* specify whether there are blanks or not. (present the different possibilities)
-* specify spatial neighboring constraints for the positioning of the samples (ie prevent 2 samples belonging to the same group from finding themselves side by side). (present the different possibilities))
-* specify if there are "forbidden" boxes, that is to say leave them blank. (to put control samples for example) (put a capture for example)
-* specify the number of attempts that WPM can make to find a possible configuration of the plate plan.
+- **1)** Provide a CSV file containing the sample names and respective groups if any.
+
+- **2)** Specify the plate dimensions and their number (the user can choose between 6,24,  48,  96,  386,  1534  and  custom)  (WPM  checks  that  all  the  given  settings  arecompatible)
+
+- **3)** Specify the __Forbidden well__: These  wells  will  not  be  filled  with  any  kind  of  sample. We simply do not want to fill them (e.g. the coins of the plate), or in case of dirty wells, broken pipettes, etc.
+
+- **4)** Specify the __Blanks__: correspond to solution without biological sample in it. Provide the neighborhood constraints, which depend on the "Blank" mode chosen. (Shouldn't samples from the same group be found side by side?)
+
+- **5)** Specify the __Not Randomized samples__: correspond to Quality Control samples or standards.
+
+- **6)** Choose a maximum number of iterations that WPM can do to find a solution,then start WPM. If the samples do not have a group, then the samples will be placedcompletely randomly on the plates. If there are groups, wpm will use an algorithminspired by the backtracking algorithm (in order to place the samples in the wellswhile respecting the specified constraints.).
 
 
 ### Check your Results
@@ -91,3 +104,6 @@ This Panel allows you to look after the final dataset containing the wells chose
 
 ## Pending Features
 * For proteomics, add the option to generate serialization of samples.
+
+
+## Documentation
