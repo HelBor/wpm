@@ -166,10 +166,11 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
 # Column coordinates, the group and the status
 #*******************************************************************************
 
-
+# gp_levels: Group column levels  before adding the forbidden wells to df
 drawPlateMap <- function(df, sample_gps, gp_levels, plate_lines, plate_cols, project_title){
   LETTERS702 <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))
   if("Group" %in% colnames(df)){
+    df$Group <- as.factor(df$Group)
     nb_gps <- length(levels(df$Group))
   }else{
     df$Group <- as.factor(1)
@@ -195,17 +196,18 @@ drawPlateMap <- function(df, sample_gps, gp_levels, plate_lines, plate_cols, pro
   palette_strains <- c(palette_strains, sub_palette)
   colScale <- scale_color_manual(values = palette_strains)
 
-  g <- ggplot(data = df, aes(x = Column, y = Row)) +
+  g <- ggplot(data = df, aes(x = Column, y = Row, color = Group)) +
     geom_point(data = expand.grid(seq(1, plate_cols), seq(1, plate_lines)), aes(x = Var1, y = Var2),
-               color = "grey95", fill = "white", shape = 21, size = 6) +
-    geom_point(aes(colour = Group), size = 10, shape = 19) +
-    geom_point(colour = "white", size = 7, shape =19) +
+               color = "grey90", fill = "white", shape = 21, size = 10) +
+    geom_point(aes(colour = Group), size = 10) +
+    geom_point(colour = "white", size = 7) +
     colScale +
-    coord_fixed(ratio = (13/plate_cols)/(9/plate_lines), xlim = c(0.9, plate_cols+0.1), ylim = c(0, plate_lines+1)) +
+    coord_equal()+
     scale_y_reverse(breaks = seq(1, plate_lines), labels = LETTERS702[1:plate_lines]) +
     scale_x_continuous(breaks = seq(1, plate_cols)) +
-    geom_text(aes(label = Sample.name), size = 3, na.rm = TRUE) +
+    geom_text(aes(label = Sample.name), colour = "black", size = 3, na.rm = TRUE) +
     labs(title = project_title) +
+    guides(colour = guide_legend(override.aes = list(size=7))) +
     theme(
       panel.background = element_rect(fill = "white", colour = "grey50"),
       panel.grid = element_blank(),

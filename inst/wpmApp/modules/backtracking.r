@@ -129,6 +129,10 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
       loginfo("class(new_df): %s",class(new_df), logger = "backtracking")
       if(class(new_df) == "data.frame"){
         new_df$Plate <- p
+        loginfo("*** new_df", logger = "backatracking")
+        print(dplyr::tibble(new_df))
+        loginfo("*** final_df", logger = "backatracking")
+        print(dplyr::tibble(final_df))
 
         final_df <- dplyr::bind_rows(final_df, new_df)
 
@@ -160,8 +164,8 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
                paste("data-", Sys.Date(), ".csv", sep="")
              },
              content = function(file) {
-               write_excel_csv2(map(),
-                                file)
+               # readr::write_excel_csv2(map(), file)
+               write.csv2(map(), file, row.names = FALSE, quote = FALSE)
              }
            )
            )

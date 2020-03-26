@@ -16,11 +16,11 @@ library(reactlog)
 # tell shiny to log all reactivity
 options(shiny.reactlog = TRUE)
 # import modules and functions from another R files
-source(file.path("modules", "data_import.r"), local = TRUE)
-source(file.path("modules","plate_spec.r"), local = TRUE)
-source(file.path("modules","backtracking.r"), local = TRUE)
-source(file.path("modules","random.r"), local = TRUE)
-source(file.path("../../R", "fonctions.r"), local = TRUE)
-source(file.path("../../R", "plotPlateMaps.r"), local = TRUE)
+source(file.path("modules", "data_import.R"), local = TRUE)
+source(file.path("modules","plate_spec.R"), local = TRUE)
+source(file.path("modules","backtracking.R"), local = TRUE)
+source(file.path("modules","random.R"), local = TRUE)
+source(file.path("../../R", "functions.R"), local = TRUE)
+source(file.path("../../R", "plot_plate_maps.R"), local = TRUE)
 
 

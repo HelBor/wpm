@@ -290,9 +290,7 @@ generateMapPlate <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_i
 
 
       ret %>% dplyr::mutate_if(is.factor, as.character) -> ret
-#
-#       print(str(tibble(ret)))
-#       print(str(tibble(df_forbidden)))
+
 
       ret <- dplyr::bind_rows(ret, df_forbidden)
       logwarn("number of attempts: %d", nb_attempts,
@@ -347,7 +345,7 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
 
     }
     df <- df[!is.na(df$Sample.name),]
-    df$Sample.name <- as.character(df$Sample.name)
+    # df$Sample.name <- as.character(df$Sample.name)
     df$Group <- as.factor(df$Group)
     df$Status <- as.factor(df$Status)
 
