@@ -10,8 +10,7 @@ library(tidyverse)
 library(logging)
 
 basicConfig()
-# tell shiny to log all reactivity
-options(shiny.reactlog = TRUE)
+
 # import modules and functions from another R files
 source(file.path("modules", "data_import.R"), local = TRUE)
 source(file.path("modules","plate_spec.R"), local = TRUE)
