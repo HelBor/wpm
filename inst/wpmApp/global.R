@@ -15,7 +15,7 @@ basicConfig()
 source(file.path("modules", "data_import.R"), local = TRUE)
 source(file.path("modules","plate_spec.R"), local = TRUE)
 source(file.path("modules","backtracking.R"), local = TRUE)
-source(file.path("modules","random.R"), local = TRUE)
+# source(file.path("modules","random.R"), local = TRUE)
 # source(file.path("../../R", "functions.R"), local = TRUE)
 # source(file.path("../../R", "plot_plate_maps.R"), local = TRUE)
 

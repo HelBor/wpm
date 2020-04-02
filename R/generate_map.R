@@ -49,10 +49,10 @@ generateMap <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_it, up
     if(class(ret)=="data.frame"){
       ret$Well <- paste0(LETTERS702[ret$Row], ret$Column, sep = "")
 
-      if(!("Group" %in% colnames(ret))){
-        loginfo("on rajoute la colonne Group!")
-        ret$Group <- as.character("1")
-      }
+      # if(!("Group" %in% colnames(ret))){
+      #   loginfo("on rajoute la colonne Group!")
+      #   ret$Group <- as.character("1")
+      # }
 
 
       ret %>% dplyr::mutate_if(is.factor, as.character) -> ret

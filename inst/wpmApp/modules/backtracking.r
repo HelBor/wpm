@@ -146,6 +146,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
     final_df$Status <- NULL
 
 
+
     return(final_df)
   })
 

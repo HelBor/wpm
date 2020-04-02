@@ -60,8 +60,6 @@ server <- function(input, output, session) {
     }else if("Group" %in% colnames(datafile())){
       d_gp <- length(unique(datafile()$Group))
 
-    }else{
-      d_gp <- 1
     }
     validate(
       need(d_gp <= 12, message = "The number of separate groups must not exceed 12.")
@@ -111,37 +109,51 @@ server <- function(input, output, session) {
         need(plate_specs$nb_cols > 0, "requires a number of columns greater than 0")
       )
 
-
-      if(distinct_gps() == 1){
-        loginfo("on est dans le if pour lancer le module random")
-          data_export <- callModule(module = random,
-                                    id = "random",
-                                    df = datafile(),
-                                    max_iter = input$nb_iter,
-                                    forbidden_wells = reactive(plate_specs$forbidden_wells),
-                                    rows = reactive(plate_specs$nb_lines),
-                                    columns = reactive(plate_specs$nb_cols),
-                                    nb_plates = reactive(plate_specs$nb_plates),
-                                    project_name = reactive(input$project_title)
-          )
-      }else{
-        loginfo("on est dans le else pour lancer le module backtrack")
-        isolate({
-          data_export <- callModule(module = backtrack,
-                                    id = "backtrack",
-                                    df = datafile(),
-                                    max_iter = input$nb_iter,
-                                    distinct_sample_gps = distinct_gps,
-                                    gp_levels = gp_levels,
-                                    forbidden_wells = reactive(plate_specs$forbidden_wells),
-                                    rows = reactive(plate_specs$nb_lines),
-                                    columns = reactive(plate_specs$nb_cols),
-                                    nb_plates = reactive(plate_specs$nb_plates),
-                                    constraint = reactive(plate_specs$neighborhood_mod),
-                                    project_name = reactive(input$project_title)
-          )
-        })
-      }
+      loginfo("distinct_gps :%s", distinct_gps())
+      loginfo("gp_levels :%s", gp_levels())
+      data_export <- callModule(module = backtrack,
+                                id = "backtrack",
+                                df = datafile(),
+                                max_iter = input$nb_iter,
+                                distinct_sample_gps = distinct_gps,
+                                gp_levels = gp_levels,
+                                forbidden_wells = reactive(plate_specs$forbidden_wells),
+                                rows = reactive(plate_specs$nb_lines),
+                                columns = reactive(plate_specs$nb_cols),
+                                nb_plates = reactive(plate_specs$nb_plates),
+                                constraint = reactive(plate_specs$neighborhood_mod),
+                                project_name = reactive(input$project_title)
+                                )
+      # if(distinct_gps() == 1){
+      #   loginfo("on est dans le if pour lancer le module random")
+      #     data_export <- callModule(module = random,
+      #                               id = "random",
+      #                               df = datafile(),
+      #                               max_iter = input$nb_iter,
+      #                               forbidden_wells = reactive(plate_specs$forbidden_wells),
+      #                               rows = reactive(plate_specs$nb_lines),
+      #                               columns = reactive(plate_specs$nb_cols),
+      #                               nb_plates = reactive(plate_specs$nb_plates),
+      #                               project_name = reactive(input$project_title)
+      #     )
+      # }else{
+      #   loginfo("on est dans le else pour lancer le module backtrack")
+      #   isolate({
+      #     data_export <- callModule(module = backtrack,
+      #                               id = "backtrack",
+      #                               df = datafile(),
+      #                               max_iter = input$nb_iter,
+      #                               distinct_sample_gps = distinct_gps,
+      #                               gp_levels = gp_levels,
+      #                               forbidden_wells = reactive(plate_specs$forbidden_wells),
+      #                               rows = reactive(plate_specs$nb_lines),
+      #                               columns = reactive(plate_specs$nb_cols),
+      #                               nb_plates = reactive(plate_specs$nb_plates),
+      #                               constraint = reactive(plate_specs$neighborhood_mod),
+      #                               project_name = reactive(input$project_title)
+      #     )
+      #   })
+      # }
 
       observeEvent(data_export$final_df,{
         loginfo("data_export$final_df: %s", class(data_export$final_df), logger = "server")

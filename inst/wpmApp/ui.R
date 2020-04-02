@@ -171,10 +171,11 @@ body <- dashboardBody(
     ),# end of tabItem 2
     tabItem(tabName = "results",
             h1("Your results"),
-            conditionalPanel(condition = "output.distinct_gps > 1",
-                             backtrackUI("backtrack")),
-            conditionalPanel(condition = "output.distinct_gps == 1",
-                             randomUI("random"))
+            backtrackUI("backtrack")
+            # conditionalPanel(condition = "output.distinct_gps > 1",
+            #                  backtrackUI("backtrack")),
+            # conditionalPanel(condition = "output.distinct_gps == 1",
+            #                  randomUI("random"))
 
 
     ),# end of tabItem 3

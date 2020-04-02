@@ -5,10 +5,10 @@
 balancedGrpDistrib <- function(d, nb_p, df_max_size){
 
   grouped <- d %>%
-    group_by(Group)
+    dplyr::group_by(Group)
   # vecteur contenant les effectifs pour chaque groupe
-  workforces <- group_size(grouped)
-  test <- group_split(grouped)
+  workforces <- dplyr::group_size(grouped)
+  test <- dplyr::group_split(grouped)
   # effectifs par groupe pour chaque plaque
   w <- round(workforces/nb_p)
 
@@ -38,23 +38,15 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
 
     }
     df <- df[!is.na(df$Sample.name),]
-    # df$Sample.name <- as.character(df$Sample.name)
     df$Group <- as.factor(df$Group)
     df$Status <- as.factor(df$Status)
 
     toReturn[[p]] <- df
   }
-
-
   # loginfo("nrow in toReturn BEFORE while(nrow(m) !=0): %s ", unlist(lapply(toReturn, function(x) nrow(x))), logger = "balancedGrpDistrib")
-
-
-
   m <- bind_rows(test)
   m <- m[!is.na(m$Sample.name),]
-
   # loginfo("df_max_size: %s", df_max_size, logger = "balancedGrpDistrib")
-
   # as long as samples remain unassigned to a plate.
   while(nrow(m) !=0){
 
@@ -68,7 +60,13 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
     incomplete_size <- nrow(toReturn[[incomplete_plate]])
 
     if(incomplete_size < df_max_size){
-      toTake <- resample(m$Sample.name, size = (df_max_size-incomplete_size))
+      if(df_max_size-incomplete_size > nrow(m)){
+        nb_to_pick <- nrow(m)
+      }else{
+        nb_to_pick <- df_max_size-incomplete_size
+      }
+      # loginfo("nb_to_pick: %s", nb_to_pick)
+      toTake <- resample(m$Sample.name, size = (nb_to_pick))
       totake_df <- m[which(m$Sample.name %in% toTake),]
       toReturn[[incomplete_plate]] <- rbind(toReturn[[incomplete_plate]], totake_df)
       m <- subset(m, !(m$Sample.name %in% toTake))

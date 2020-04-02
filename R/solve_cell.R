@@ -9,7 +9,6 @@ solveCell <- function(m, d, i, j, already_drawn, constraint){
     warning("Need d to be a dataframe")
   }
 
-
   # we look at which individuals are neighbors of the current box
   if(constraint != "none"){
     neighbors <- checkConstraints(m, row=i, col=j, mode=constraint)
@@ -17,7 +16,8 @@ solveCell <- function(m, d, i, j, already_drawn, constraint){
     neighbors <- c(NA,NA,NA,NA)
   }
 
-  if("Group" %in% colnames(d)){
+  # normalement, quand on a pas de groupes dans le dataset, le mode constraint est à "none", donc neighbors <- c(NA,NA,NA,NA) et ça devrait marcher.
+  # if("Group" %in% colnames(d)){
 
     # identify which group the neighbors belong to in order to obtain a reduced
     # list of possibilities of groups for the current cell to fill
@@ -45,15 +45,15 @@ solveCell <- function(m, d, i, j, already_drawn, constraint){
         already_drawn <- c(already_drawn,chosen_ind)
       }
     }
-  }else{ # if there are no groups in the dataframe
-
-    available_ind <- d$Sample.name[which(!(d$Sample.name %in% already_drawn))]
-    # use resample because this function also works as expected when there is
-    # only one element in the set to be sampled.
-    chosen_ind <- resample(available_ind,size=1)
-    m[i,j] <- chosen_ind
-    already_drawn <- c(already_drawn,chosen_ind)
-  }
+  # }else{ # if there are no groups in the dataframe
+  #
+  #   available_ind <- d$Sample.name[which(!(d$Sample.name %in% already_drawn))]
+  #   # use resample because this function also works as expected when there is
+  #   # only one element in the set to be sampled.
+  #   chosen_ind <- resample(available_ind,size=1)
+  #   m[i,j] <- chosen_ind
+  #   already_drawn <- c(already_drawn,chosen_ind)
+  # }
 
 
   return(list("m" = m, "already_drawn" = already_drawn))

@@ -27,8 +27,10 @@ csvFileInput <- function(id, label = "CSV file") {
              align = "right",
         dropdownButton(
           tags$h4("What are quotes?"),
-          div("Character strings in a file are quoted, that means they are
-          surrounded by quotes (Eg: \"string\" or  \'string\') "),
+          div("Character strings in a file can be quoted, meaning they are
+          surrounded by quotes (Eg: \"string\" or  \'string\') ",
+              br(),
+              "If you don't see your data on the right side (number of samples to zero), you need to change the quote option"),
           icon = icon("info-circle"),
           tooltip = tooltipOptions(title = "Help"),
           status = "warning",
@@ -84,6 +86,7 @@ csvFile <- function(input, output, session, stringsAsFactors) {
     #check if file contains groups or not
     if(length(colnames(df)) == 1){
       colnames(df) <- "Sample"
+      df$Group <- as.factor(1)
     }else{
       colnames(df) <- c("Sample", "Group")
     }
