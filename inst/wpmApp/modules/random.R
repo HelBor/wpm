@@ -108,7 +108,7 @@ random <- function(input, output, session, df, max_iter, forbidden_wells, rows, 
       new_df <- NULL
       loginfo("plate n°%s", p)
 
-      new_df <- generateMapPlate(user_df = current_p,
+      new_df <- generateMap(user_df = current_p,
                                  nb_rows = rows(),
                                  nb_cols = columns(),
                                  df_forbidden = isolate(forbidden_wells()),
@@ -162,7 +162,7 @@ random <- function(input, output, session, df, max_iter, forbidden_wells, rows, 
     if(!is.null(map())){
       toPlot = list()
       toPlot <- lapply(X = 1:nb_plates(),
-                       function(x) drawPlateMap(df = map()[which(map()$Plate == x),],
+                       function(x) drawMap(df = map()[which(map()$Plate == x),],
                                                 sample_gps = 1,
                                                 gp_levels = as.factor(1),
                                                 plate_lines = rows(),

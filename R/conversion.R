@@ -1,0 +1,56 @@
+
+#*******************************************************************************
+# Function to determine the coordinates of the forbidden wells for the plot
+# and generates the dataframe containing the Row and Column coordinates
+#*******************************************************************************
+convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
+
+  LETTERS702 <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))
+
+  if(length(forbidden_wells)>0){
+
+
+    check_columns <- as.numeric(stringr::str_extract(forbidden_wells, "[0-9]+"))
+    check_rows <- (stringr::str_extract(forbidden_wells, "[aA-zZ]+"))
+
+    # actually simulates if user hasn't finished typing everything
+    if(any(is.na(as.numeric(match(toupper(check_rows), LETTERS702)))) | any(is.na(check_columns))){
+      return("ya un pb")
+    }else if((max(as.numeric(match(toupper(check_rows), LETTERS702))) > max_Row) | (max(check_columns) > max_Col) ){
+
+      # depending on the plate sizes that have been provided
+      result <- NULL
+    }else{
+      # put the forbidden wells into the df
+      forbidden <- setnames(setDF(lapply(c(NA, as.character(status), NA, NA, as.character(status), NA, NA),
+                                         function(...) character(length(forbidden_wells)))),
+                            c("Sample", "Group", "Sample.name", "Well", "Status", "Row", "Column"))
+      forbidden$Sample <- as.character(NA)
+      forbidden$Group <- as.character(status)
+      forbidden$Sample.name <- as.integer(NA)
+      forbidden$Well <- as.character(forbidden_wells)
+      forbidden$Status <- as.character(status)
+      forbidden$Row <- as.numeric(NA)
+      forbidden$Column <- as.numeric(NA)
+
+
+      # converts Well names to Row / Column coordinates as this is what is used
+      # to calculate the backtracking step.
+      forbidden <- mutate(forbidden,
+                          Row=as.numeric(match(toupper(check_rows), LETTERS702)),
+                          Column=check_columns)
+      #erase all duplicated rows
+      result <- forbidden %>%
+        distinct(Row, Column, .keep_all = TRUE)
+
+    }
+
+  }else{
+    # no forbidden wells, so doesn't return a dataframe
+    result <- NULL
+  }
+  return(result)
+}
+
+
+

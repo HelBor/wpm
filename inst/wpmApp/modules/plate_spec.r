@@ -398,7 +398,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
       need((p_lines() > 0 & p_cols() > 0), "requires a plate with positive dimensions.")
     )
     if(input$blank_mode != "by_hand"){
-      placeBlanksOnPlate(p_lines(),
+      defineBlankCoords(p_lines(),
                          p_cols(),
                          as.character(input$blank_mode),
                          input$start_blank)
@@ -562,7 +562,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
 
 
   output$plotOut <- renderPlot({
-    # pour que la fonction drawPlateMap fonctionne, il faut donner un nombre de
+    # pour que la fonction drawMap fonctionne, il faut donner un nombre de
     # lignes et de colonnes > 0 et au minimum un dataframe vide avec les bons
     # noms de colonne
 
@@ -572,7 +572,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
 
         df <- setnames(data.table::setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(0))),
                        c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
-        drawPlateMap(df = df,
+        drawMap(df = df,
                      sample_gps = nb_samp_gps(),
                      gp_levels = gp_levels(),
                      plate_lines = p_lines(),
@@ -580,7 +580,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
                      project_title = project_name())
       }else{
 
-        drawPlateMap(df = wells_to_plot(),
+        drawMap(df = wells_to_plot(),
                      sample_gps = nb_samp_gps(),
                      gp_levels = gp_levels(),
                      plate_lines = p_lines(),

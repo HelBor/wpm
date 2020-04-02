@@ -118,7 +118,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
       new_df <- NULL
       loginfo("plate n°%s", p)
 
-      new_df <- generateMapPlate(user_df = current_p,
+      new_df <- generateMap(user_df = current_p,
                                  nb_rows = rows(),
                                  nb_cols = columns(),
                                  df_forbidden = isolate(forbidden_wells()),
@@ -175,7 +175,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
     if(!is.null(map())){
       toPlot = list()
       toPlot <- lapply(X = 1:nb_plates(),
-                       function(x) drawPlateMap(df = map()[which(map()$Plate == x),],
+                       function(x) drawMap(df = map()[which(map()$Plate == x),],
                                                 sample_gps = distinct_sample_gps(),
                                                 gp_levels = gp_levels(),
                                                 plate_lines = rows(),
