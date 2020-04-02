@@ -336,7 +336,7 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
                                 "Status" = NA, "Row" = NA,
                                 "Column" = NA)
       }else{
-        selected <- sample(test[[g]]$Sample.name, size = w[g])
+        selected <- resample(test[[g]]$Sample.name, size = w[g])
         wg <- as.data.frame(test[[g]][test[[g]]$Sample.name %in% selected,])
         test[[g]] <- test[[g]][!test[[g]]$Sample.name %in% selected,]
         df <- rbind(df,wg)
@@ -375,7 +375,7 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
     incomplete_size <- nrow(toReturn[[incomplete_plate]])
 
     if(incomplete_size < df_max_size){
-      toTake <- sample(m$Sample.name, size = (df_max_size-incomplete_size))
+      toTake <- resample(m$Sample.name, size = (df_max_size-incomplete_size))
       totake_df <- m[which(m$Sample.name %in% toTake),]
       toReturn[[incomplete_plate]] <- rbind(toReturn[[incomplete_plate]], totake_df)
       m <- subset(m, !(m$Sample.name %in% toTake))
@@ -383,7 +383,7 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
       maxi <- which.max(unlist(lapply(toReturn, function(x) nrow(x))))
 
       if(incomplete_size < nrow(toReturn[[maxi]])){
-        toTake <- sample(m$Sample.name, size = (nrow(toReturn[[maxi]])-incomplete_size))
+        toTake <- resample(m$Sample.name, size = (nrow(toReturn[[maxi]])-incomplete_size))
         totake_df <- m[which(m$Sample.name %in% toTake),]
         toReturn[[incomplete_plate]] <- rbind(toReturn[[incomplete_plate]], totake_df)
         m <- subset(m, !(m$Sample.name %in% toTake))
