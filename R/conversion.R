@@ -39,8 +39,7 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
                           Row=as.numeric(match(toupper(check_rows), LETTERS702)),
                           Column=check_columns)
       #erase all duplicated rows
-      result <- forbidden %>%
-        dplyr::distinct(Row, Column, .keep_all = TRUE)
+      result <- dplyr::distinct(forbidden, Row, Column, .keep_all = TRUE)
 
     }
 

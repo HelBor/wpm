@@ -19,12 +19,8 @@ randomWalk <- function(m, toVisit, d, constraint){
   nb_col <- dim(m)[2]
   ret = m
   placed = c() # samples already picked up and placed
-  # loginfo("nrow(d): %s", nrow(d), logger = "randomWalk")
+
   while (length(visited) != nrow(d)) {
-    # loginfo("length(visited): %s", length(visited), logger = "randomWalk")
-
-    # loginfo("toVisit: %s", toVisit, logger = "randomWalk")
-
     cell <- resample(toVisit, size = 1)
     visited <- c(visited,cell)
     LETTERS702 <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))

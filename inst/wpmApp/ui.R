@@ -116,7 +116,7 @@ body <- dashboardBody(
                       collapsible = TRUE,
                       width = 6,
                       status = "warning",
-                      DT::dataTableOutput("table")
+                      dataTableOutput("table")
                   ),
                   valueBoxOutput("nb_ech", width=3),
                   valueBoxOutput("nb_gp", width=3)

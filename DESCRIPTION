@@ -16,7 +16,6 @@ Imports:
     shinycustomloader,
     DT,
     RColorBrewer,
-    data.table,
     dplyr,
     stringr,
     ggplot2,

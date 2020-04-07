@@ -3,14 +3,11 @@ library(shiny)
 library(shinydashboard)
 library(shinyWidgets)
 library(shinycustomloader)
-library(DT)
 library(RColorBrewer)
-# library(data.table)
-library(dplyr)
 library(ggplot2)
 library(logging)
 
-basicConfig()
+logging::basicConfig()
 
 # import modules
 source(file.path("modules", "data_import.R"), local = TRUE)

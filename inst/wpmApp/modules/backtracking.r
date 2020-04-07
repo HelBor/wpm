@@ -84,8 +84,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
                            "Column" = as.numeric(NA),
                            "Plate" = as.numeric(NA))
 
-    final_df %>% dplyr::mutate_if(is.factor, as.character) -> final_df
-
+    final_df <- dplyr::mutate_if(final_df, is.factor, as.character)
 
     if(nb_plates() > 1){
       # loginfo("on est dans le if nb_plate > 1")

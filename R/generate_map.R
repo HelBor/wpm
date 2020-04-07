@@ -48,7 +48,7 @@ generateMap <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_it, up
 
     if(class(ret)=="data.frame"){
       ret$Well <- paste0(LETTERS702[ret$Row], ret$Column, sep = "")
-      ret %>% dplyr::mutate_if(is.factor, as.character) -> ret
+      ret <- dplyr::mutate_if(ret, is.factor, as.character)
       ret <- dplyr::bind_rows(ret, df_forbidden)
       logwarn("number of attempts: %d", nb_attempts,
               logger = "fonctions.generateMapPlate")
