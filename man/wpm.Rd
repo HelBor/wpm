@@ -16,5 +16,5 @@ Well-Plate Maker : a GUI for building well-plates plans.
 wpm()
 }
 \author{
-Hélène  Borges
+H攼㸹l攼㸸ne  Borges
 }

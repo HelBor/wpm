@@ -40,6 +40,7 @@ backtrackUI <- function(id, label = NULL) {
 # rows : integer - plate's number of rows
 # columns : integer - plate's number of columns
 # constraint : character - neighborhood spatial constraint mode
+#' @importFrom DT renderDataTable datatable
 backtrack <- function(input, output, session, df, max_iter, forbidden_wells, distinct_sample_gps, gp_levels, rows, columns, nb_plates, constraint, project_name) {
 
   toReturn <- reactiveValues(

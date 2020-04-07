@@ -1,6 +1,7 @@
 
 # function to place the blanks on the plate according to the selected mode: it
 # generates a dataframe containing the row and column coordinates for each blank
+#' @importFrom rlang .data
 defineBlankCoords <- function(p_lines, p_cols, mod = "none", start_blank){
 
   p_lines <- as.numeric(p_lines)
@@ -89,7 +90,7 @@ defineBlankCoords <- function(p_lines, p_cols, mod = "none", start_blank){
       # remove space between letters and numbers
       df$Well <- stringr::str_remove(df$Well, " ")
 
-      result <- dplyr::distinct(df, Row, Column, .keep_all = TRUE)
+      result <- dplyr::distinct(df, .data$Row, .data$Column, .keep_all = TRUE)
 
       # delete extra rows (Row and Column contain NAs)
       if(anyNA(result$Row) | anyNA(result$Column)){

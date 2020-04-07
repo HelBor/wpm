@@ -18,7 +18,8 @@ sidebar <- dashboardSidebar(
 
 
 
-#Body elements for the search visualizations.
+#' Body elements for the search visualizations.
+#' @importFrom DT dataTableOutput
 body <- dashboardBody(
   tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
@@ -116,7 +117,7 @@ body <- dashboardBody(
                       collapsible = TRUE,
                       width = 6,
                       status = "warning",
-                      dataTableOutput("table")
+                      DT::dataTableOutput("table")
                   ),
                   valueBoxOutput("nb_ech", width=3),
                   valueBoxOutput("nb_gp", width=3)

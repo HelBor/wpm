@@ -2,7 +2,7 @@ rm(list=ls())
 
 options(encoding = "UTF-8")
 
-
+#' @importFrom DT renderDataTable datatable
 server <- function(input, output, session) {
 
   #*****************************************************************************

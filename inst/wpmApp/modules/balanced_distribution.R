@@ -2,9 +2,10 @@
 # d: the user dataframe
 # nb_p: the number of plates to fill
 # df_max_size : the maximum number of samples that can be placed on the current plate
+#' @importFrom rlang .data
 balancedGrpDistrib <- function(d, nb_p, df_max_size){
 
-  grouped <- dplyr::group_by(d, Group)
+  grouped <- dplyr::group_by(d, .data$Group)
   # vecteur contenant les effectifs pour chaque groupe
   workforces <- dplyr::group_size(grouped)
   test <- dplyr::group_split(grouped)

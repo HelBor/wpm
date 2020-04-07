@@ -3,6 +3,7 @@
 # Function to determine the coordinates of the forbidden wells for the plot
 # and generates the dataframe containing the Row and Column coordinates
 #*******************************************************************************
+#' @importFrom rlang .data
 convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
 
   LETTERS702 <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))
@@ -36,10 +37,10 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
       # converts Well names to Row / Column coordinates as this is what is used
       # to calculate the backtracking step.
       forbidden <- dplyr::mutate(forbidden,
-                          Row=as.numeric(match(toupper(check_rows), LETTERS702)),
-                          Column=check_columns)
+                          Row = as.numeric(match(toupper(check_rows), LETTERS702)),
+                          Column = check_columns)
       #erase all duplicated rows
-      result <- dplyr::distinct(forbidden, Row, Column, .keep_all = TRUE)
+      result <- dplyr::distinct(forbidden, .data$Row, .data$Column, .keep_all = TRUE)
 
     }
 

@@ -6,6 +6,7 @@
 #*******************************************************************************
 
 # gp_levels: Group column levels  before adding the forbidden wells to df
+#' @importFrom rlang .data
 drawMap <- function(df, sample_gps, gp_levels, plate_lines, plate_cols, project_title){
   LETTERS702 <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))
   if("Group" %in% colnames(df)){
@@ -35,16 +36,16 @@ drawMap <- function(df, sample_gps, gp_levels, plate_lines, plate_cols, project_
   palette_strains <- c(palette_strains, sub_palette)
   colScale <- scale_color_manual(values = palette_strains)
 
-  g <- ggplot(data = df, aes(x = Column, y = Row, color = Group)) +
-    geom_point(data = expand.grid(seq(1, plate_cols), seq(1, plate_lines)), aes(x = Var1, y = Var2),
+  g <- ggplot(data = df, aes(x = .data$Column, y = .data$Row, color = .data$Group)) +
+    geom_point(data = expand.grid(seq(1, plate_cols), seq(1, plate_lines)), aes(x = .data$Var1, y = .data$Var2),
                color = "grey90", fill = "white", shape = 21, size = 10) +
-    geom_point(aes(colour = Group), size = 10) +
+    geom_point(aes(colour = .data$Group), size = 10) +
     geom_point(colour = "white", size = 7) +
     colScale +
     coord_equal()+
     scale_y_reverse(breaks = seq(1, plate_lines), labels = LETTERS702[1:plate_lines]) +
     scale_x_continuous(breaks = seq(1, plate_cols)) +
-    geom_text(aes(label = ID), colour = "black", size = 3, na.rm = TRUE) +
+    geom_text(aes(label = .data$ID), colour = "black", size = 3, na.rm = TRUE) +
     labs(title = project_title) +
     guides(colour = guide_legend(override.aes = list(size=7))) +
     theme(
