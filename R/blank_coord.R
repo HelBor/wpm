@@ -21,7 +21,7 @@ defineBlankCoords <- function(p_lines, p_cols, mod = "none", start_blank){
 
                 nb_rows <- p_lines * ceiling(p_cols/2)
                 df <- setnames(data.table::setDF(lapply(c(NA, NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
-                               c("Sample", "Group", "Sample.name", "Well", "Status", "Row", "Column"))
+                               c("Sample", "Group", "ID", "Well", "Status", "Row", "Column"))
                 k=1
                 for(j in seq(from = start, to = p_cols, by=2)){
                   for(i in 1:p_lines){
@@ -37,7 +37,7 @@ defineBlankCoords <- function(p_lines, p_cols, mod = "none", start_blank){
 
                 nb_rows <- p_cols * ceiling(p_lines/2)
                 df <- setnames(data.table::setDF(lapply(c(NA, NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
-                               c("Sample", "Group", "Sample.name", "Well", "Status", "Row", "Column"))
+                               c("Sample", "Group", "ID", "Well", "Status", "Row", "Column"))
 
                 k=1
                 for(i in seq(from = start, to = p_lines, by=2)){
@@ -52,7 +52,7 @@ defineBlankCoords <- function(p_lines, p_cols, mod = "none", start_blank){
               "checkerboard" = {
                 nb_rows <- p_cols * ceiling(p_lines/2)
                 df <- setnames(data.table::setDF(lapply(c(NA, NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
-                               c("Sample", "Group", "Sample.name", "Well", "Status", "Row", "Column"))
+                               c("Sample", "Group", "ID", "Well", "Status", "Row", "Column"))
                 k=1
                 for(j in seq(from = 1, to = p_cols)){
                   if(j%%2 == 0){ # j is even
@@ -74,7 +74,7 @@ defineBlankCoords <- function(p_lines, p_cols, mod = "none", start_blank){
 
       # df$Sample <- NA
       df$Group <- as.character("blank")
-      df$Sample.name <- as.integer(NA)
+      df$ID <- as.integer(NA)
       df$Status <- as.character("blank")
       df$Row <- as.numeric(df$Row)
       df$Column <- as.numeric(df$Column)

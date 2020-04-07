@@ -46,8 +46,8 @@ randomWalk <- function(m, toVisit, d, constraint){
       ret <- test$m
       placed <- test$already_drawn
       # we look after the last placed element
-      d[which(d$Sample.name == placed[length(placed)]),]$Row <- i
-      d[which(d$Sample.name == placed[length(placed)]),]$Column <- j
+      d[which(d$ID == placed[length(placed)]),]$Row <- i
+      d[which(d$ID == placed[length(placed)]),]$Column <- j
       toVisit <- toVisit[!toVisit == cell]
     }
 

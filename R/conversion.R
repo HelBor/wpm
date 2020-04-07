@@ -24,10 +24,10 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
       # put the forbidden wells into the df
       forbidden <- setnames(setDF(lapply(c(NA, as.character(status), NA, NA, as.character(status), NA, NA),
                                          function(...) character(length(forbidden_wells)))),
-                            c("Sample", "Group", "Sample.name", "Well", "Status", "Row", "Column"))
+                            c("Sample", "Group", "ID", "Well", "Status", "Row", "Column"))
       forbidden$Sample <- as.character(NA)
       forbidden$Group <- as.character(status)
-      forbidden$Sample.name <- as.integer(NA)
+      forbidden$ID <- as.integer(NA)
       forbidden$Well <- as.character(forbidden_wells)
       forbidden$Status <- as.character(status)
       forbidden$Row <- as.numeric(NA)

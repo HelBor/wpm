@@ -6,24 +6,13 @@ options(encoding = "UTF-8")
 server <- function(input, output, session) {
 
   #*****************************************************************************
-  # Home page part
-  #*****************************************************************************
-
-
-
-
-
-
-
-
-  #*****************************************************************************
   # Input file part
   #*****************************************************************************
   datafile <- callModule(csvFile, "datafile",
                          stringsAsFactors = FALSE)
 
 
-  output$table <- renderDataTable(DT::datatable({
+  output$table <- DT::renderDataTable(DT::datatable({
     if(!is.null(datafile())){
       if(class(datafile()) == "data.frame" | class(datafile()) == "matrix"){
         loginfo("dataframe/matrix successfully created", logger = "server")
@@ -33,7 +22,7 @@ server <- function(input, output, session) {
   }, rownames=FALSE)
   )
 
-  output$nb_ech <- renderValueBox({
+  output$nb_ech <- shinydashboard::renderValueBox({
     if(is.null(datafile())){
       valueBox(value = 0 , subtitle = "Total number of samples to place", color="teal")
     }else{
@@ -124,36 +113,7 @@ server <- function(input, output, session) {
                                 constraint = reactive(plate_specs$neighborhood_mod),
                                 project_name = reactive(input$project_title)
                                 )
-      # if(distinct_gps() == 1){
-      #   loginfo("on est dans le if pour lancer le module random")
-      #     data_export <- callModule(module = random,
-      #                               id = "random",
-      #                               df = datafile(),
-      #                               max_iter = input$nb_iter,
-      #                               forbidden_wells = reactive(plate_specs$forbidden_wells),
-      #                               rows = reactive(plate_specs$nb_lines),
-      #                               columns = reactive(plate_specs$nb_cols),
-      #                               nb_plates = reactive(plate_specs$nb_plates),
-      #                               project_name = reactive(input$project_title)
-      #     )
-      # }else{
-      #   loginfo("on est dans le else pour lancer le module backtrack")
-      #   isolate({
-      #     data_export <- callModule(module = backtrack,
-      #                               id = "backtrack",
-      #                               df = datafile(),
-      #                               max_iter = input$nb_iter,
-      #                               distinct_sample_gps = distinct_gps,
-      #                               gp_levels = gp_levels,
-      #                               forbidden_wells = reactive(plate_specs$forbidden_wells),
-      #                               rows = reactive(plate_specs$nb_lines),
-      #                               columns = reactive(plate_specs$nb_cols),
-      #                               nb_plates = reactive(plate_specs$nb_plates),
-      #                               constraint = reactive(plate_specs$neighborhood_mod),
-      #                               project_name = reactive(input$project_title)
-      #     )
-      #   })
-      # }
+
 
       observeEvent(data_export$final_df,{
         loginfo("data_export$final_df: %s", class(data_export$final_df), logger = "server")

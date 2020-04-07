@@ -92,7 +92,7 @@ csvFile <- function(input, output, session, stringsAsFactors) {
     }
 
     df$Sample <- as.character(df$Sample)
-    df$Sample.name <- seq_len(nrow(df))
+    df$ID <- seq_len(nrow(df))
 
     return(df)
   })

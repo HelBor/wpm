@@ -34,7 +34,7 @@ solveCell <- function(m, d, i, j, already_drawn, constraint){
 
   # identify which group the neighbors belong to in order to obtain a reduced
   # list of possibilities of groups for the current cell to fill
-  forbidden_groups <- unique(d$Group[which(d$Sample.name %in% neighbors)])
+  forbidden_groups <- unique(d$Group[which(d$ID %in% neighbors)])
   possible_groups <- levels(d$Group)[which(!levels(d$Group) %in% forbidden_groups)]
 
 
@@ -44,8 +44,8 @@ solveCell <- function(m, d, i, j, already_drawn, constraint){
   }else{
     # only take in individuals belonging to the possible groups
     # and who are not in already_drawn
-    possible_ind <- d$Sample.name[which(d$Group %in% possible_groups)]
-    available_ind <- d$Sample.name[which(d$Sample.name %in% possible_ind & !(d$Sample.name %in% already_drawn))]
+    possible_ind <- d$ID[which(d$Group %in% possible_groups)]
+    available_ind <- d$ID[which(d$ID %in% possible_ind & !(d$ID %in% already_drawn))]
 
     if(length(available_ind)==0){
       #there are no more possibilities

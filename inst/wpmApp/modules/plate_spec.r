@@ -570,8 +570,8 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
       # loginfo("wells_to_plots: %s", is.null(wells_to_plot()))
       if(is.null(wells_to_plot())){
 
-        df <- setnames(data.table::setDF(lapply(c(NA, NA, NA, NA, NA, NA), function(...) character(0))),
-                       c("Sample.name", "Group", "Well", "Status", "Row", "Column"))
+        df <- setnames(data.table::setDF(lapply(c(NA, NA, NA, NA, NA, NA, NA), function(...) character(0))),
+                       c("Sample", "Group", "ID", "Well", "Status", "Row", "Column"))
         drawMap(df = df,
                      sample_gps = nb_samp_gps(),
                      gp_levels = gp_levels(),

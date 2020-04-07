@@ -23,7 +23,7 @@ drawMap <- function(df, sample_gps, gp_levels, plate_lines, plate_cols, project_
   palette_strains <- c("blank"="#8B8378", "forbidden"="red", "notRandom" = "black")
   # loginfo("sample_gps: %s", sample_gps, logger = "drawPlateMap")
   # control the number of colors to pick according to the number of groups
-  if(sample_gps == 1){
+  if(sample_gps <= 1){
     sub_palette <- RColorBrewer::brewer.pal(n = 4, "Paired")[4]
   }else if(sample_gps == 2){
     sub_palette <- RColorBrewer::brewer.pal(n = 8, "Paired")[c(4,8)]
@@ -44,7 +44,7 @@ drawMap <- function(df, sample_gps, gp_levels, plate_lines, plate_cols, project_
     coord_equal()+
     scale_y_reverse(breaks = seq(1, plate_lines), labels = LETTERS702[1:plate_lines]) +
     scale_x_continuous(breaks = seq(1, plate_cols)) +
-    geom_text(aes(label = Sample.name), colour = "black", size = 3, na.rm = TRUE) +
+    geom_text(aes(label = ID), colour = "black", size = 3, na.rm = TRUE) +
     labs(title = project_title) +
     guides(colour = guide_legend(override.aes = list(size=7))) +
     theme(

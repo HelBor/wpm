@@ -77,7 +77,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
 
     final_df <- data.frame("Sample" = as.character(NA),
                            "Group" = as.character(NA),
-                           "Sample.name" = as.integer(NA),
+                           "ID" = as.integer(NA),
                            "Well" = as.character(NA),
                            "Status" = as.character(NA),
                            "Row" = as.numeric(NA),
@@ -155,7 +155,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
 
   output$data_export <- renderUI({
     column(width = 12,
-           renderDataTable(DT::datatable({map()}, rownames = FALSE)),
+           DT::renderDataTable(DT::datatable({map()}, rownames = FALSE)),
            downloadHandler(
              filename = function() {
                paste("data-", Sys.Date(), ".csv", sep="")

@@ -24,20 +24,19 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
         df <- rbind(df, as.data.frame(test[[g]]))
 
         missing[[p]] <- missing[[p]] + as.numeric(w[g] - nrow(test[[g]]))
-        test[[g]] <- data.frame("Sample.name" = NA,
-                                "Group" = NA, "Well" = NA,
-                                "Status" = NA, "Row" = NA,
+        test[[g]] <- data.frame("Sample" = NA, "Group" = NA, "ID" = NA,
+                                "Well" = NA, "Status" = NA, "Row" = NA,
                                 "Column" = NA)
       }else{
-        selected <- resample(test[[g]]$Sample.name, size = w[g])
-        wg <- as.data.frame(test[[g]][test[[g]]$Sample.name %in% selected,])
-        test[[g]] <- test[[g]][!test[[g]]$Sample.name %in% selected,]
+        selected <- resample(test[[g]]$ID, size = w[g])
+        wg <- as.data.frame(test[[g]][test[[g]]$ID %in% selected,])
+        test[[g]] <- test[[g]][!test[[g]]$ID %in% selected,]
         df <- rbind(df,wg)
       }
 
 
     }
-    df <- df[!is.na(df$Sample.name),]
+    df <- df[!is.na(df$ID),]
     df$Group <- as.factor(df$Group)
     df$Status <- as.factor(df$Status)
 
@@ -45,7 +44,7 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
   }
   # loginfo("nrow in toReturn BEFORE while(nrow(m) !=0): %s ", unlist(lapply(toReturn, function(x) nrow(x))), logger = "balancedGrpDistrib")
   m <- bind_rows(test)
-  m <- m[!is.na(m$Sample.name),]
+  m <- m[!is.na(m$ID),]
   # loginfo("df_max_size: %s", df_max_size, logger = "balancedGrpDistrib")
   # as long as samples remain unassigned to a plate.
   while(nrow(m) !=0){
@@ -66,21 +65,21 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
         nb_to_pick <- df_max_size-incomplete_size
       }
       # loginfo("nb_to_pick: %s", nb_to_pick)
-      toTake <- resample(m$Sample.name, size = (nb_to_pick))
-      totake_df <- m[which(m$Sample.name %in% toTake),]
+      toTake <- resample(m$ID, size = (nb_to_pick))
+      totake_df <- m[which(m$ID %in% toTake),]
       toReturn[[incomplete_plate]] <- rbind(toReturn[[incomplete_plate]], totake_df)
-      m <- subset(m, !(m$Sample.name %in% toTake))
+      m <- subset(m, !(m$ID %in% toTake))
     }else if(incomplete_size >= df_max_size){
       maxi <- which.max(unlist(lapply(toReturn, function(x) nrow(x))))
 
       if(incomplete_size < nrow(toReturn[[maxi]])){
-        toTake <- resample(m$Sample.name, size = (nrow(toReturn[[maxi]])-incomplete_size))
-        totake_df <- m[which(m$Sample.name %in% toTake),]
+        toTake <- resample(m$ID, size = (nrow(toReturn[[maxi]])-incomplete_size))
+        totake_df <- m[which(m$ID %in% toTake),]
         toReturn[[incomplete_plate]] <- rbind(toReturn[[incomplete_plate]], totake_df)
-        m <- subset(m, !(m$Sample.name %in% toTake))
+        m <- subset(m, !(m$ID %in% toTake))
       }else if(incomplete_size == nrow(toReturn[[maxi]])){
         toReturn[[incomplete_plate]] <- rbind(toReturn[[incomplete_plate]], m)
-        m <- m[!m$Sample.name,]
+        m <- m[!m$ID,]
       }
 
     }
