@@ -12,6 +12,9 @@ launches the WPM app in a new window in the default browser
 \description{
 Well-Plate Maker : a GUI for building well-plates plans.
 }
+\examples{
+wpm()
+}
 \author{
 Hélène  Borges
 }

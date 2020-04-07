@@ -3,7 +3,7 @@
 ##' @title wpm
 ##' @return launches the WPM app in a new window in the default browser
 ##' @author Hélène  Borges
-##' @example
+##' @examples
 ##' wpm()
 ##' @export
 
