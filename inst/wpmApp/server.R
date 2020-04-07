@@ -22,7 +22,7 @@ server <- function(input, output, session) {
   }, rownames=FALSE)
   )
 
-  output$nb_ech <- shinydashboard::renderValueBox({
+  output$nb_ech <- renderValueBox({
     if(is.null(datafile())){
       valueBox(value = 0 , subtitle = "Total number of samples to place", color="teal")
     }else{

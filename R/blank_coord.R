@@ -20,8 +20,9 @@ defineBlankCoords <- function(p_lines, p_cols, mod = "none", start_blank){
               "by_column" = {
 
                 nb_rows <- p_lines * ceiling(p_cols/2)
-                df <- setnames(data.table::setDF(lapply(c(NA, NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
-                               c("Sample", "Group", "ID", "Well", "Status", "Row", "Column"))
+                df <- data.frame(lapply(c(NA, NA, NA, NA, NA, NA, NA), function(...) character(nb_rows)),
+                                 stringsAsFactors = FALSE)
+                colnames(df) <- c("Sample", "Group", "ID", "Well", "Status", "Row", "Column")
                 k=1
                 for(j in seq(from = start, to = p_cols, by=2)){
                   for(i in 1:p_lines){
@@ -36,8 +37,9 @@ defineBlankCoords <- function(p_lines, p_cols, mod = "none", start_blank){
               "by_row" = {
 
                 nb_rows <- p_cols * ceiling(p_lines/2)
-                df <- setnames(data.table::setDF(lapply(c(NA, NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
-                               c("Sample", "Group", "ID", "Well", "Status", "Row", "Column"))
+                df <- data.frame(lapply(c(NA, NA, NA, NA, NA, NA, NA), function(...) character(nb_rows)),
+                                 stringsAsFactors = FALSE)
+                colnames(df) <- c("Sample", "Group", "ID", "Well", "Status", "Row", "Column")
 
                 k=1
                 for(i in seq(from = start, to = p_lines, by=2)){
@@ -51,8 +53,9 @@ defineBlankCoords <- function(p_lines, p_cols, mod = "none", start_blank){
               },
               "checkerboard" = {
                 nb_rows <- p_cols * ceiling(p_lines/2)
-                df <- setnames(data.table::setDF(lapply(c(NA, NA, NA, NA, NA, NA, NA), function(...) character(nb_rows))),
-                               c("Sample", "Group", "ID", "Well", "Status", "Row", "Column"))
+                df <- data.frame(lapply(c(NA, NA, NA, NA, NA, NA, NA), function(...) character(nb_rows)),
+                                 stringsAsFactors = FALSE)
+                colnames(df) <- c("Sample", "Group", "ID", "Well", "Status", "Row", "Column")
                 k=1
                 for(j in seq(from = 1, to = p_cols)){
                   if(j%%2 == 0){ # j is even
@@ -84,10 +87,10 @@ defineBlankCoords <- function(p_lines, p_cols, mod = "none", start_blank){
       df$Well <- apply( df[ , c("Letters", "Column") ] , 1 , paste0 , collapse = "" )
       df$Letters <- NULL
       # remove space between letters and numbers
-      df$Well <- str_remove(df$Well, " ")
+      df$Well <- stringr::str_remove(df$Well, " ")
 
       result <- df %>%
-        distinct(Row, Column, .keep_all = TRUE)
+        dplyr::distinct(Row, Column, .keep_all = TRUE)
 
       # delete extra rows (Row and Column contain NAs)
       if(anyNA(result$Row) | anyNA(result$Column)){

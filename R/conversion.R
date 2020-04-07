@@ -22,9 +22,9 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
       result <- NULL
     }else{
       # put the forbidden wells into the df
-      forbidden <- setnames(setDF(lapply(c(NA, as.character(status), NA, NA, as.character(status), NA, NA),
-                                         function(...) character(length(forbidden_wells)))),
-                            c("Sample", "Group", "ID", "Well", "Status", "Row", "Column"))
+      forbidden <- data.frame(lapply(c(NA, NA, NA, NA, NA, NA, NA), function(...) character(length(forbidden_wells))),
+                       stringsAsFactors = FALSE)
+      colnames(forbidden) <- c("Sample", "Group", "ID", "Well", "Status", "Row", "Column")
       forbidden$Sample <- as.character(NA)
       forbidden$Group <- as.character(status)
       forbidden$ID <- as.integer(NA)
@@ -33,15 +33,14 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
       forbidden$Row <- as.numeric(NA)
       forbidden$Column <- as.numeric(NA)
 
-
       # converts Well names to Row / Column coordinates as this is what is used
       # to calculate the backtracking step.
-      forbidden <- mutate(forbidden,
+      forbidden <- dplyr::mutate(forbidden,
                           Row=as.numeric(match(toupper(check_rows), LETTERS702)),
                           Column=check_columns)
       #erase all duplicated rows
       result <- forbidden %>%
-        distinct(Row, Column, .keep_all = TRUE)
+        dplyr::distinct(Row, Column, .keep_all = TRUE)
 
     }
 

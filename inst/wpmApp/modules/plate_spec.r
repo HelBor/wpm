@@ -527,7 +527,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
                    )
             )
           result <- base::rbind(blank_wells(), notRandom_wells())
-          result <- distinct(result, Row, Column, .keep_all = TRUE)
+          result <- dplyr::distinct(result, Row, Column, .keep_all = TRUE)
           ret <- result
           # si pas de NotRandom
         }else{
@@ -569,9 +569,10 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
     if(p_lines() != 0 & p_cols() != 0){
       # loginfo("wells_to_plots: %s", is.null(wells_to_plot()))
       if(is.null(wells_to_plot())){
+        df <- data.frame(lapply(c(NA, NA, NA, NA, NA, NA, NA), function(...) character(0)),
+                         stringsAsFactors = FALSE)
+        colnames(df) <- c("Sample", "Group", "ID", "Well", "Status", "Row", "Column")
 
-        df <- setnames(data.table::setDF(lapply(c(NA, NA, NA, NA, NA, NA, NA), function(...) character(0))),
-                       c("Sample", "Group", "ID", "Well", "Status", "Row", "Column"))
         drawMap(df = df,
                      sample_gps = nb_samp_gps(),
                      gp_levels = gp_levels(),

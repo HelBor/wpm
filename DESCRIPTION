@@ -17,7 +17,9 @@ Imports:
     DT,
     RColorBrewer,
     data.table,
-    tidyverse,
+    dplyr,
+    stringr,
+    ggplot2,
     logging
 License: Artistic-2.0
 Encoding: UTF-8

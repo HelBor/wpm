@@ -56,13 +56,7 @@ body <- dashboardBody(
                   etc.). This avoids having to end up with a checkerboard plate
                   plan when the numbers in the groups are unbalanced (which would
                   correspond to a form of batch effect).",
-                        style = "font-size:18px"),
-
-                    # div(img(src = "images/blanks_per_line_plate.png", width = "30%"),
-                    #     img(src = "images/blanks_per_column_plate.png", width = "30%"),
-                    #     img(src = "images/blanks_by_hand_plate.png", width = "30%"),
-                    #     style = "display: inline-block;"
-                    # )
+                        style = "font-size:18px")
                 )# end of box
               ),# end column 1
               column(width = 3,
@@ -122,7 +116,7 @@ body <- dashboardBody(
                       collapsible = TRUE,
                       width = 6,
                       status = "warning",
-                      dataTableOutput("table")
+                      DT::dataTableOutput("table")
                   ),
                   valueBoxOutput("nb_ech", width=3),
                   valueBoxOutput("nb_gp", width=3)
@@ -172,12 +166,6 @@ body <- dashboardBody(
     tabItem(tabName = "results",
             h1("Your results"),
             backtrackUI("backtrack")
-            # conditionalPanel(condition = "output.distinct_gps > 1",
-            #                  backtrackUI("backtrack")),
-            # conditionalPanel(condition = "output.distinct_gps == 1",
-            #                  randomUI("random"))
-
-
     ),# end of tabItem 3
 
     tabItem(tabName = "help",

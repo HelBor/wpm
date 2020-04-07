@@ -43,7 +43,7 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
     toReturn[[p]] <- df
   }
   # loginfo("nrow in toReturn BEFORE while(nrow(m) !=0): %s ", unlist(lapply(toReturn, function(x) nrow(x))), logger = "balancedGrpDistrib")
-  m <- bind_rows(test)
+  m <- dplyr::bind_rows(test)
   m <- m[!is.na(m$ID),]
   # loginfo("df_max_size: %s", df_max_size, logger = "balancedGrpDistrib")
   # as long as samples remain unassigned to a plate.
