@@ -71,7 +71,7 @@ csvFile <- function(input, output, session, stringsAsFactors) {
     input$file
   })
   observe({
-    loginfo("File %s was uploaded", userFile()$name, logger = "data_import")
+    logging::loginfo("File %s was uploaded", userFile()$name, logger = "data_import")
 
   })
 

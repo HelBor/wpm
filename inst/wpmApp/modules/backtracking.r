@@ -95,9 +95,9 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
         nb_forbid <- nrow(forbidden_wells())
       }
 
-      loginfo("nb_forbid:%s", nb_forbid, logger = "backtrack/map")
-      loginfo("nombre de puits disponibles pour une plaque: %s",(rows()*columns()) - nb_forbid, logger = "backtrack/map")
-      loginfo("nombre maximum d'échantillons plaçable sur une plaque : %s", ceiling(nrow(user_data())/nb_plates()), logger = "backtrack/map")
+      logging::loginfo("nb_forbid:%s", nb_forbid, logger = "backtrack/map")
+      logging::loginfo("nombre de puits disponibles pour une plaque: %s",(rows()*columns()) - nb_forbid, logger = "backtrack/map")
+      logging::loginfo("nombre maximum d'échantillons plaçable sur une plaque : %s", ceiling(nrow(user_data())/nb_plates()), logger = "backtrack/map")
       nb_max <- ceiling(nrow(user_data())/nb_plates())
       res <- balancedGrpDistrib(d = user_data(),
                               nb_p = nb_plates(),
@@ -109,14 +109,14 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
     }
 
     for(c in res){
-      loginfo("nrow(c): %s", nrow(c), logger = "backtrack/map")
+      logging::loginfo("nrow(c): %s", nrow(c), logger = "backtrack/map")
 
     }
 
     p <- 1
     for(current_p in res){
       new_df <- NULL
-      loginfo("plate n°%s", p)
+      logging::loginfo("plate n°%s", p)
 
       new_df <- generateMap(user_df = current_p,
                                  nb_rows = rows(),
@@ -126,7 +126,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
                                  max_it = max_iter,
                                  updateProgress
                                 )
-      loginfo("class(new_df): %s",class(new_df), logger = "backtracking")
+      logging::loginfo("class(new_df): %s",class(new_df), logger = "backtracking")
       if(class(new_df) == "data.frame"){
         new_df$Plate <- p
 
@@ -217,11 +217,11 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
 
   observe({
     if(is.null(map())){
-      loginfo("map is null so we return errors")
+      logging::loginfo("map is null so we return errors")
       toReturn$final_df <- "error"
       toReturn$final_map <- NULL
     }else{
-      loginfo("map isn't null so we return map and map_plot")
+      logging::loginfo("map isn't null so we return map and map_plot")
       toReturn$final_df <- map()
       toReturn$final_map <- map_plot()
     }

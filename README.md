@@ -34,7 +34,7 @@
 OS platforms tested: `Windows`
 But the app should work also on the others.
 
-WPM R package depedencies:
+WPM R package dependencies:
 
 `shiny`, `shinydashboard`, `shinyWidgets`, `shinycustomloader`, `DT`, 
 `RColorBrewer`, `logging`, `dplyr`, `stringr`, `ggplot2`

@@ -16,7 +16,7 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
 
     # actually simulates if user hasn't finished typing everything
     if(any(is.na(as.numeric(match(toupper(check_rows), LETTERS702)))) | any(is.na(check_columns))){
-      return("ya un pb")
+      return("oh oh... there is a problem")
     }else if((max(as.numeric(match(toupper(check_rows), LETTERS702))) > max_Row) | (max(check_columns) > max_Col) ){
 
       # depending on the plate sizes that have been provided

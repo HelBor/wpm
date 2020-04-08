@@ -10,7 +10,7 @@
 randomWalk <- function(m, toVisit, d, constraint){
 
   if(class(m) != "matrix"){
-    logerror("m is not a matrix, m: %s", class(m))
+    logging::logerror("m is not a matrix, m: %s", class(m))
     warning("Need m to be a matrix")
   }
 

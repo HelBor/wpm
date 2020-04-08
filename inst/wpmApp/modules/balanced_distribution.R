@@ -42,18 +42,15 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
 
     toReturn[[p]] <- df
   }
-  # loginfo("nrow in toReturn BEFORE while(nrow(m) !=0): %s ", unlist(lapply(toReturn, function(x) nrow(x))), logger = "balancedGrpDistrib")
+
   m <- dplyr::bind_rows(test)
   m <- m[!is.na(m$ID),]
-  # loginfo("df_max_size: %s", df_max_size, logger = "balancedGrpDistrib")
+
   # as long as samples remain unassigned to a plate.
   while(nrow(m) !=0){
 
     # they are assigned to the plate with the lowest number of employees without
     #exceeding the maximum authorized number of samples per plate.
-
-    # print(unlist(lapply(toReturn, function(x) nrow(x))))
-
     incomplete_plate <- which.min(unlist(lapply(toReturn, function(x) nrow(x))))
 
     incomplete_size <- nrow(toReturn[[incomplete_plate]])
@@ -64,7 +61,6 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
       }else{
         nb_to_pick <- df_max_size-incomplete_size
       }
-      # loginfo("nb_to_pick: %s", nb_to_pick)
       toTake <- resample(m$ID, size = (nb_to_pick))
       totake_df <- m[which(m$ID %in% toTake),]
       toReturn[[incomplete_plate]] <- rbind(toReturn[[incomplete_plate]], totake_df)
@@ -84,6 +80,6 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
 
     }
   }
-  loginfo("nrow in toReturn: %s ", unlist(lapply(toReturn, function(x) nrow(x))), logger = "balancedGrpDistrib")
+  logging::loginfo("nrow in toReturn: %s ", unlist(lapply(toReturn, function(x) nrow(x))), logger = "balancedGrpDistrib")
   return(toReturn)
 }

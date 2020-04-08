@@ -50,14 +50,14 @@ generateMap <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_it, up
       ret$Well <- paste0(LETTERS702[ret$Row], ret$Column, sep = "")
       ret <- dplyr::mutate_if(ret, is.factor, as.character)
       ret <- dplyr::bind_rows(ret, df_forbidden)
-      logwarn("number of attempts: %d", nb_attempts,
+      logging::logwarn("number of attempts: %d", nb_attempts,
               logger = "fonctions.generateMapPlate")
       return(ret)
     }
 
     nb_attempts = nb_attempts + 1
   }
-  logwarn("we reeched the maximal number of iterations with no success",
+  logging::logwarn("we reeched the maximal number of iterations with no success",
           logger = "fonctions.generateMapPlate")
   return(NULL)
 }

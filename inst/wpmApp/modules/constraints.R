@@ -105,7 +105,7 @@ checkConstraints <- function(m, row, col, mode){
   }else if(mode=="NEWS"){
     neighbors <- findNEWSneighbors(m, row, col)
   }else{
-    logerror("The mode provided is not correct")
+    logging::logerror("The mode provided is not correct")
   }
   return(neighbors)
 }

@@ -17,11 +17,11 @@
 solveCell <- function(m, d, i, j, already_drawn, constraint){
 
   if(class(m) != "matrix"){
-    logerror("m is not a matrix, m: %s", class(m))
+    logging::logerror("m is not a matrix, m: %s", class(m))
     warning("Need m to be a matrix")
   }
   if(class(d) != "data.frame"){
-    logerror("d is not a dataframe, d: %s", class(d))
+    logging::logerror("d is not a dataframe, d: %s", class(d))
     warning("Need d to be a dataframe")
   }
 

@@ -15,7 +15,7 @@ server <- function(input, output, session) {
   output$table <- DT::renderDataTable(DT::datatable({
     if(!is.null(datafile())){
       if(class(datafile()) == "data.frame" | class(datafile()) == "matrix"){
-        loginfo("dataframe/matrix successfully created", logger = "server")
+        logging::loginfo("dataframe/matrix successfully created", logger = "server")
       }
       datafile()
     }
@@ -98,8 +98,8 @@ server <- function(input, output, session) {
         need(plate_specs$nb_cols > 0, "requires a number of columns greater than 0")
       )
 
-      loginfo("distinct_gps :%s", distinct_gps())
-      loginfo("gp_levels :%s", gp_levels())
+      logging::loginfo("distinct_gps :%s", distinct_gps())
+      logging::loginfo("gp_levels :%s", gp_levels())
       data_export <- callModule(module = backtrack,
                                 id = "backtrack",
                                 df = datafile(),
@@ -116,7 +116,7 @@ server <- function(input, output, session) {
 
 
       observeEvent(data_export$final_df,{
-        loginfo("data_export$final_df: %s", class(data_export$final_df), logger = "server")
+        logging::loginfo("data_export$final_df: %s", class(data_export$final_df), logger = "server")
         if(class(data_export$final_df) != "data.frame"){
           sendSweetAlert(
             session = session,

@@ -340,7 +340,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
 
   totalNbWells <- reactive({
     tNbW <- p_lines()*p_cols()*nb_p()
-    loginfo("totalNbWells = %d", tNbW, logger = "plate_spec")
+    logging::loginfo("totalNbWells = %d", tNbW, logger = "plate_spec")
     return(tNbW)
     })
 
