@@ -95,4 +95,4 @@ This Panel allows you to look after the final dataset containing the wells chose
 ## Documentation
 
 ### Citing Our work
-> Here will be linked the corresponding publish article.
+> The published article of the project will be linked here.
