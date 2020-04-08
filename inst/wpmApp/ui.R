@@ -1,3 +1,5 @@
+source(file.path(".", "global.R"), local = TRUE)$value
+
 # Header elements for the visualization
 header <- dashboardHeader(title="Well-Plate Maker",
                           titleWidth = 200
