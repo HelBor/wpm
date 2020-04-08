@@ -8,7 +8,7 @@ library(ggplot2)
 
 
 logging::basicConfig()
-logging::loginfo("working directory: %s", getwd())
+print(paste0("working directory", getwd()))
 
 
 #
