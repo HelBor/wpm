@@ -40,6 +40,10 @@ WPM R package depedencies:
 
 ### How to install
 
+From GitHub
+```R
+devtools::install_github(repo = "HelBor/wpm", dependencies = TRUE)
+```
 
 From BioConductor
 ```R
