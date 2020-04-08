@@ -37,7 +37,7 @@ But the app should work also on the others.
 WPM R package depedencies:
 
 `shiny`, `shinydashboard`, `shinyWidgets`, `shinycustomloader`, `DT`, 
-`RColorBrewer`, `data.table`, `tidyverse`, `logging`
+`RColorBrewer`, `logging`, `dplyr`, `stringr`, `ggplot2`
 
 ### How to install
 
