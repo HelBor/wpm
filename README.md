@@ -16,22 +16,23 @@
 
 ## Table of content
  * [Getting started](https://github.com/HelBor/wpm#getting-started)
-
+   - [Pre-requisites](https://github.com/HelBor/wpm#pre-requisites)
+   - [How to install](https://github.com/HelBor/wpm#how-to-install)
+   - [Launch WPM](https://github.com/HelBor/wpm#launch-wpm)
  * [How to use WPM](https://github.com/HelBor/wpm#how-to-use-wpm)
    - [Provide parameters](https://github.com/HelBor/wpm#provide-parameters)
    - [Check your Results](https://github.com/HelBor/wpm#check-your-results)
-
  * [Pending Features](https://github.com/HelBor/wpm#pending-features)
-
- * [Documentation](htttps://github.com/HelBor/wpm#documentation)
-
+ * [Documentation](https://github.com/HelBor/wpm#documentation)
+   - [Citing Our work](https://github.com/HelBor/wpm#citing-our-work)
 
 
 ## Getting started
 
 ### Pre-requisites
 `R version > 3.4`
-OS platforms: `Windows`
+OS platforms tested: `Windows`
+But the app should work also on the others.
 
 WPM R package depedencies:
 
@@ -45,29 +46,20 @@ From GitHub
 devtools::install_github(repo = "HelBor/wpm", dependencies = TRUE)
 ```
 
-From BioConductor
-```R
-The project has not yet been built as a package 
-```
-
-
 ### Launch WPM
 
-#### in RStudio
+#### in RStudio or R console
 
 ```R
-
-
+library(wpm)
+wpm()
 ```
-#### in an R console
-```R
-
-```
-
+A new window will open in your default browser.
 
 ## How to use WPM
 
-Since WPM is a GUI, the idea is to just provide a minimum of parameters to the application. No programming skills are required. WPM supports multiple plates and places samples in a balanced way among the plates.
+Since WPM is a GUI, the idea is to just provide a minimum of parameters to the application. 
+No programming skills are required. WPM supports multiple plates and places samples in a balanced way among the plates.
 
 WPM has 4 main panels:
 
@@ -100,5 +92,7 @@ This Panel allows you to look after the final dataset containing the wells chose
 ## Pending Features
 * For proteomics, add the option to generate serialization of samples.
 
-
 ## Documentation
+
+### Citing Our work
+> Here will be linked the corresponding publish article.
