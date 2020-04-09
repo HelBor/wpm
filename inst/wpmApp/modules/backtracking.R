@@ -127,16 +127,28 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
                                  updateProgress
                                 )
       logging::loginfo("class(new_df): %s",class(new_df), logger = "backtracking")
-      if(class(new_df) == "data.frame"){
-        new_df$Plate <- p
 
-        final_df <- dplyr::bind_rows(final_df, new_df)
-
-      }else if(new_df == 0){
-        stop("ERROR, number of available cells is less than number of samples to place.")
-      }else if(is.null(new_df)){
-        return(NULL)
+      if(is.null(new_df)){
+        return(new_df)
+      }else{
+        if(class(new_df) == "data.frame"){
+          new_df$Plate <- p
+          final_df <- dplyr::bind_rows(final_df, new_df)
+        }else if(new_df == 0){
+          stop("ERROR, number of available cells is less than number of samples to place.")
+        }
       }
+
+      # if(class(new_df) == "data.frame"){
+      #   new_df$Plate <- p
+      #
+      #   final_df <- dplyr::bind_rows(final_df, new_df)
+      #
+      # }else if(new_df == 0){
+      #   stop("ERROR, number of available cells is less than number of samples to place.")
+      # }else if(is.null(new_df)){
+      #   return(NULL)
+      # }
       p <- p + 1
 
     }
