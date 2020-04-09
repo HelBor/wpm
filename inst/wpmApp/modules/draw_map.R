@@ -7,6 +7,7 @@
 
 # gp_levels: Group column levels  before adding the forbidden wells to df
 #' @importFrom rlang .data
+#' @import ggplot2
 drawMap <- function(df, sample_gps, gp_levels, plate_lines, plate_cols, project_title){
   LETTERS702 <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))
   if("Group" %in% colnames(df)){
@@ -16,13 +17,11 @@ drawMap <- function(df, sample_gps, gp_levels, plate_lines, plate_cols, project_
     df$Group <- as.factor(1)
   }
 
-  # loginfo("gp_levels: %s", gp_levels, logger = "drawPlateMap")
-  # loginfo("nb_gps: %s", nb_gps,logger = "drawPlateMap")
   # this palette allows coloring depending on whether it is a blank, a
   # prohibited well, a Not Randomized sample or a randomized sample
 
   palette_strains <- c("blank"="#8B8378", "forbidden"="red", "notRandom" = "black")
-  # loginfo("sample_gps: %s", sample_gps, logger = "drawPlateMap")
+
   # control the number of colors to pick according to the number of groups
   if(sample_gps <= 1){
     sub_palette <- RColorBrewer::brewer.pal(n = 4, "Paired")[4]
@@ -31,31 +30,42 @@ drawMap <- function(df, sample_gps, gp_levels, plate_lines, plate_cols, project_
   }else{
     sub_palette <- RColorBrewer::brewer.pal(n = sample_gps, "Paired")
   }
-  # loginfo("gp_levels: %s", gp_levels, logger = "drawPlateMap")
+
   names(sub_palette) <- gp_levels
   palette_strains <- c(palette_strains, sub_palette)
-  colScale <- scale_color_manual(values = palette_strains)
+  colScale <- ggplot2::scale_color_manual(values = palette_strains)
 
-  g <- ggplot(data = df, aes(x = .data$Column, y = .data$Row, color = .data$Group)) +
-    geom_point(data = expand.grid(seq(1, plate_cols), seq(1, plate_lines)), aes(x = .data$Var1, y = .data$Var2),
-               color = "grey90", fill = "white", shape = 21, size = 10) +
-    geom_point(aes(colour = .data$Group), size = 10) +
-    geom_point(colour = "white", size = 7) +
+  g <- ggplot2::ggplot(data = df, ggplot2::aes(x = .data$Column, y = .data$Row, color = .data$Group)) +
+    ggplot2::geom_point(data = expand.grid(seq(1, plate_cols),
+                                           seq(1, plate_lines)),
+                        ggplot2::aes(x = .data$Var1, y = .data$Var2),
+                        color = "grey90",
+                        fill = "white",
+                        shape = 21,
+                        size = 10) +
+    ggplot2::geom_point(ggplot2::aes(colour = .data$Group),
+                        size = 10) +
+    ggplot2::geom_point(colour = "white",
+                        size = 7) +
     colScale +
-    coord_equal()+
-    scale_y_reverse(breaks = seq(1, plate_lines), labels = LETTERS702[1:plate_lines]) +
-    scale_x_continuous(breaks = seq(1, plate_cols)) +
-    geom_text(aes(label = .data$ID), colour = "black", size = 3, na.rm = TRUE) +
-    labs(title = project_title) +
-    guides(colour = guide_legend(override.aes = list(size=7))) +
-    theme(
-      panel.background = element_rect(fill = "white", colour = "grey50"),
-      panel.grid = element_blank(),
-      legend.key = element_rect(fill = "white"),
-      axis.ticks = element_blank(),
-      axis.text = element_text(face = "bold", size = 12),
-      axis.title = element_blank(),
-      legend.title = element_text(face = "bold"),
+    ggplot2::coord_equal()+
+    ggplot2::scale_y_reverse(breaks = seq(1, plate_lines),
+                             labels = LETTERS702[1:plate_lines]) +
+    ggplot2::scale_x_continuous(breaks = seq(1, plate_cols)) +
+    ggplot2::geom_text(ggplot2::aes(label = .data$ID),
+                       colour = "black",
+                       size = 3,
+                       na.rm = TRUE) +
+    ggplot2::labs(title = project_title) +
+    ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size=7))) +
+    ggplot2::theme(
+      panel.background = ggplot2::element_rect(fill = "white", colour = "grey50"),
+      panel.grid = ggplot2::element_blank(),
+      legend.key = ggplot2::element_rect(fill = "white"),
+      axis.ticks = ggplot2::element_blank(),
+      axis.text = ggplot2::element_text(face = "bold", size = 12),
+      axis.title = ggplot2::element_blank(),
+      legend.title = ggplot2::element_text(face = "bold"),
       legend.justification = c("top")
     )
 

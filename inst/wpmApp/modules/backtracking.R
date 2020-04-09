@@ -1,25 +1,25 @@
 backtrackUI <- function(id, label = NULL) {
-  ns <- NS(id)
-  tagList(
-    fluidRow(
-      box(title = h3("Your dataset"),
+  ns <- shiny::NS(id)
+  shiny::tagList(
+    shiny::fluidRow(
+      shinydashboard::box(title = shiny::h3("Your dataset"),
           collapsible = TRUE,
           width = 12,
           status = "warning",
-          withLoader(
-            uiOutput(ns("data_export")),
+          shinycustomloader::withLoader(
+            shiny::uiOutput(ns("data_export")),
             type = "html",
             loader = "loader7"
           )
 
       )
     ),
-    fluidRow(
-      box(title = h3("Plate Layout Experiment"),
+    shiny::fluidRow(
+      shinydashboard::box(title = shiny::h3("Plate Layout Experiment"),
           width = 12,
           status = "warning",
-          withLoader(
-            uiOutput(ns("mapPlot")),
+          shinycustomloader::withLoader(
+            shiny::uiOutput(ns("mapPlot")),
             type = "html",
             loader = "loader7"
           )
@@ -43,12 +43,12 @@ backtrackUI <- function(id, label = NULL) {
 #' @importFrom DT renderDataTable datatable
 backtrack <- function(input, output, session, df, max_iter, forbidden_wells, distinct_sample_gps, gp_levels, rows, columns, nb_plates, constraint, project_name) {
 
-  toReturn <- reactiveValues(
+  toReturn <- shiny::reactiveValues(
     final_df = NULL,
     final_map = NULL
   )
 
-  user_data <- reactive({
+  user_data <- shiny::reactive({
     df$Group <- as.factor(df$Group)
     df$Well <- as.character(NA)
     df$Status <- as.factor("toRandom")
@@ -61,7 +61,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
 
   # map is a dataframe containing: user data + blanks + forbidden wells, ready to
   #                   be plotted or/and downloaded)
-  map <- reactive({
+  map <- shiny::reactive({
 
     progress <- shiny::Progress$new()
     progress$set(message = "WPM running...", value = 0)
@@ -121,8 +121,8 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
       new_df <- generateMap(user_df = current_p,
                                  nb_rows = rows(),
                                  nb_cols = columns(),
-                                 df_forbidden = isolate(forbidden_wells()),
-                                 mod = isolate(constraint()),
+                                 df_forbidden = shiny::isolate(forbidden_wells()),
+                                 mod = shiny::isolate(constraint()),
                                  max_it = max_iter,
                                  updateProgress
                                 )
@@ -153,15 +153,14 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
   #-----------------------------------------------------------------------------
   # Dataframe export
 
-  output$data_export <- renderUI({
-    column(width = 12,
+  output$data_export <- shiny::renderUI({
+    shiny::column(width = 12,
            DT::renderDataTable(DT::datatable({map()}, rownames = FALSE)),
-           downloadHandler(
+           shiny::downloadHandler(
              filename = function() {
                paste("data-", Sys.Date(), ".csv", sep="")
              },
              content = function(file) {
-               # readr::write_excel_csv2(map(), file)
                write.csv2(map(), file, row.names = FALSE, quote = FALSE)
              }
            )
@@ -172,7 +171,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
 
   #-----------------------------------------------------------------------------
   # Plots export
-  map_plot <- reactive({
+  map_plot <- shiny::reactive({
     if(!is.null(map())){
       toPlot = list()
       toPlot <- lapply(X = 1:nb_plates(),
@@ -189,18 +188,18 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
 
 
 
-  output$mapPlot <- renderUI({
+  output$mapPlot <- shiny::renderUI({
     lapply(1:length(map_plot()), function(i){
-      box(
-        title = h4(paste0("Plate ", i)),
+      shinydashboard::box(
+        title = shiny::h4(paste0("Plate ", i)),
         width = 6,
-        renderPlot({map_plot()[[i]]}),
-        downloadHandler(
+        shiny::renderPlot({map_plot()[[i]]}),
+        shiny::downloadHandler(
           filename = function() {
             paste("plot", i, ".png", sep="")
           },
           content = function(file) {
-            ggsave(filename = file,
+            ggplot2::ggsave(filename = file,
                    plot = map_plot()[[i]],
                    width = 10,
                    height = 7,
@@ -215,7 +214,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
   })
   #-----------------------------------------------------------------------------
 
-  observe({
+  shiny::observe({
     if(is.null(map())){
       logging::loginfo("map is null so we return errors")
       toReturn$final_df <- "error"

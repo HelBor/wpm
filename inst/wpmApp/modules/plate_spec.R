@@ -4,19 +4,19 @@
 # Module UI function
 plateSpecUI <- function(id, label = "Plate specifications") {
   # Create a namespace function using the provided id
-  ns <- NS(id)
+  ns <- shiny::NS(id)
 
 
-  fluidRow(
-    column(width=6,
+  shiny::fluidRow(
+    shiny::column(width=6,
 
       #-------------------------------------------------------------------------
-      box(status="warning",
+      shinydashboard::box(status="warning",
           width = 12,
           solidHeader = TRUE,
-          title=h3("2 - Plate dimensions"),
+          title = shiny::h3("2 - Plate dimensions"),
 
-          selectInput(ns("plate_size"),
+          shiny::selectInput(ns("plate_size"),
                       label = NULL,
                       choices = c("6" = "s6",
                         "24" = "s24",
@@ -28,46 +28,46 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                       ),
                       selected = NULL),
 
-          conditionalPanel(
+          shiny::conditionalPanel(
             condition = "input.plate_size == 'custom'",
-            h4("How many lines on your plate?"),
-            numericInput(ns("plate_lines"), label = NULL,
+            shiny::h4("How many lines on your plate?"),
+            shiny::numericInput(ns("plate_lines"), label = NULL,
                          value=0, min=0,
                          width = "80px"),
-            h4("how many columns on your plate?"),
-            numericInput(ns("plate_cols"), label = NULL,
+            shiny::h4("how many columns on your plate?"),
+            shiny::numericInput(ns("plate_cols"), label = NULL,
                          value=0, min=0,
                          width = "80px"),
             ns = ns
           ),
-          h4("How many plates?"),
-          numericInput(ns("no_plates"), label = NULL,
+          shiny::h4("How many plates?"),
+          shiny::numericInput(ns("no_plates"), label = NULL,
                        value=1, min=1,
                        width = "80px")
       ),
       #-------------------------------------------------------------------------
 
       #-------------------------------------------------------------------------
-      box(status="warning",
+      shinydashboard::box(status="warning",
           width = 12,
           solidHeader = TRUE,
-          title = h3("3 - Forbidden Wells"),
-          fluidRow(
-            column(width = 10,
-                   p("Sometimes we do not want fill some wells because: We do
+          title = shiny::h3("3 - Forbidden Wells"),
+          shiny::fluidRow(
+            shiny::column(width = 10,
+                          shiny::p("Sometimes we do not want fill some wells because: We do
                      not want to fill the corners, there are broken pipettes,
                      there are dirty wells, ...")
             ),
-            column(width = 2,
+            shiny::column(width = 2,
                    align = "right",
-                   dropdownButton(
+                   shinyWidgets::dropdownButton(
                      tags$h4("What does \"forbidden\" mean?"),
-                     div("Forbidden means that the wells in question will not be
+                     shiny::div("Forbidden means that the wells in question will not be
                          filled at all in the final plate plan.",br(),
                          "Consequently, during the experiment, these will be
                          completely empty wells"),
-                     icon = icon("info-circle"),
-                     tooltip = tooltipOptions(title = "Help"),
+                     icon = shiny::icon("info-circle"),
+                     tooltip = shinyWidgets::tooltipOptions(title = "Help"),
                      status = "warning",
                      size = "sm",
                      width = "350px"
@@ -75,7 +75,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
           ),
 
 
-          textInput(ns("forbid_select"), h4("Enter Line Letter & Column number,
+          shiny::textInput(ns("forbid_select"), shiny::h4("Enter Line Letter & Column number,
                                             each box separated by commas without spaces."),
                     value = NULL,
                     placeholder = "Ex: A1,B2,C3")
@@ -83,33 +83,33 @@ plateSpecUI <- function(id, label = "Plate specifications") {
       #-------------------------------------------------------------------------
 
       #-------------------------------------------------------------------------
-      box(status="warning",
+      shinydashboard::box(status="warning",
           width = 12,
           solidHeader = TRUE,
-          title=h3("4 - Blanks"),
-          fluidRow(
-            column(width = 10,
-                   h4("How to place Blanks on the plate")
+          title = shiny::h3("4 - Blanks"),
+          shiny::fluidRow(
+            shiny::column(width = 10,
+                          shiny::h4("How to place Blanks on the plate")
             ),
-            column(width = 2,
+            shiny::column(width = 2,
                    align = "right",
-                   dropdownButton(
-                     tags$h4("What are blanks?"),
-                     div("By blanks we mean a preparation without a biological sample in it.",
+                   shinyWidgets::dropdownButton(
+                     shiny::tags$h4("What are blanks?"),
+                     shiny::div("By blanks we mean a preparation without a biological sample in it.",
                          br(),
                          "You can place them in line or column. In these two cases
                          there will be blanks every other line/column."),
-                     icon = icon("info-circle"),
-                     tooltip = tooltipOptions(title = "Help"),
+                     icon = shiny::icon("info-circle"),
+                     tooltip = shinyWidgets::tooltipOptions(title = "Help"),
                      status = "warning",
                      size = "sm",
                      width = "350px"
                    ))
           ),
 
-          fluidRow(
-            column(width = 5,
-                   awesomeRadio(inputId = ns("blank_mode"),
+          shiny::fluidRow(
+            shiny::column(width = 5,
+                          shinyWidgets::awesomeRadio(inputId = ns("blank_mode"),
                                 label = NULL,
                                 choices = c("No blanks" = "none",
                                             "Per line" = "by_row",
@@ -122,18 +122,18 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 
                    )
                    ),
-            column(width = 7,
-                   conditionalPanel(condition = "input.blank_mode == 'by_row' | input.blank_mode == 'by_column'",
-                                    awesomeRadio(inputId = ns("start_blank"),
-                                                 label = h4("starting placing in:"),
+            shiny::column(width = 7,
+                   shiny::conditionalPanel(condition = "input.blank_mode == 'by_row' | input.blank_mode == 'by_column'",
+                                           shinyWidgets::awesomeRadio(inputId = ns("start_blank"),
+                                                 label = shiny::h4("starting placing in:"),
                                                  choices = c("even" = "even",
                                                              "odd" = "odd"),
                                                  selected = NULL,
                                                  status = "warning"),
                                     ns = ns),
-                   conditionalPanel(condition = "input.blank_mode == 'by_hand'",
-                                    textInput(ns("hand_select"),
-                                              h4("Enter Line Letter & Column number, each
+                   shiny::conditionalPanel(condition = "input.blank_mode == 'by_hand'",
+                                    shiny::textInput(ns("hand_select"),
+                                              shiny::h4("Enter Line Letter & Column number, each
                               box separated by commas without spaces.
                               \n The wells already filled as forbidden
                               will not be drawn as 'Blank'."),
@@ -145,18 +145,18 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 
 
 
-          hr(),
-          fluidRow(
-            column(width = 10,
-                   h4("Neighborhood contraints")
+          shiny::hr(),
+          shiny::fluidRow(
+            shiny::column(width = 10,
+                          shiny::h4("Neighborhood contraints")
             ),
-            column(width = 2,
+            shiny::column(width = 2,
                    align = "right",
-                   dropdownButton(
-                     tags$h4("What are neighborhood constraints?"),
-                     div(""),
-                     icon = icon("info-circle"),
-                     tooltip = tooltipOptions(title = "Help"),
+                   shinyWidgets::dropdownButton(
+                     shiny::tags$h4("What are neighborhood constraints?"),
+                     shiny::div(""),
+                     icon = shiny::icon("info-circle"),
+                     tooltip = shinyWidgets::tooltipOptions(title = "Help"),
                      status = "warning",
                      size = "sm",
                      width = "350px"
@@ -165,8 +165,8 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 
 
 
-          conditionalPanel(condition = "input.blank_mode == 'by_row'",
-                           awesomeRadio(inputId = ns("constraint_row"),
+          shiny::conditionalPanel(condition = "input.blank_mode == 'by_row'",
+                                  shinyWidgets::awesomeRadio(inputId = ns("constraint_row"),
                                         label = NULL,
                                         choices = c(
                                                     "West-East" = "WE",
@@ -176,8 +176,8 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 
                            ),
                            ns = ns),
-          conditionalPanel(condition = "input.blank_mode == 'by_column'",
-                           awesomeRadio(inputId = ns("constraint_column"),
+          shiny::conditionalPanel(condition = "input.blank_mode == 'by_column'",
+                                  shinyWidgets::awesomeRadio(inputId = ns("constraint_column"),
                                         label = NULL,
                                         choices = c("North-South" = "NS",
                                                     "None" = "none"),
@@ -189,8 +189,8 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 
 
 
-          conditionalPanel(condition = "input.blank_mode == 'none' & output.nb_gps > 3",
-                           awesomeRadio(inputId = ns("constraint_none_sup3"),
+          shiny::conditionalPanel(condition = "input.blank_mode == 'none' & output.nb_gps > 3",
+                           shinyWidgets::awesomeRadio(inputId = ns("constraint_none_sup3"),
                                         label = NULL,
                                         choices = c("North-South" = "NS",
                                                    "West-East" = "WE",
@@ -202,8 +202,8 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                            ),
                            ns = ns),
 
-          conditionalPanel(condition = "input.blank_mode == 'none' & output.nb_gps <= 3",
-                           awesomeRadio(inputId = ns("constraint_none_inf3"),
+          shiny::conditionalPanel(condition = "input.blank_mode == 'none' & output.nb_gps <= 3",
+                           shinyWidgets::awesomeRadio(inputId = ns("constraint_none_inf3"),
                                         label = NULL,
                                         choices = c("North-South" = "NS",
                                                     "West-East" = "WE",
@@ -216,8 +216,8 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 
 
 
-          conditionalPanel(condition = "input.blank_mode == 'by_hand' & output.nb_gps > 3",
-                           awesomeRadio(inputId = ns("constraint_by_hand_sup3"),
+          shiny::conditionalPanel(condition = "input.blank_mode == 'by_hand' & output.nb_gps > 3",
+                           shinyWidgets::awesomeRadio(inputId = ns("constraint_by_hand_sup3"),
                                         label = NULL,
                                         choices = c("North-South" = "NS",
                                                     "West-East" = "WE",
@@ -230,8 +230,8 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                            ns = ns),
 
 
-          conditionalPanel(condition = "input.blank_mode == 'by_hand' & output.nb_gps <= 3",
-                           awesomeRadio(inputId = ns("constraint_by_hand_inf3"),
+          shiny::conditionalPanel(condition = "input.blank_mode == 'by_hand' & output.nb_gps <= 3",
+                           shinyWidgets::awesomeRadio(inputId = ns("constraint_by_hand_inf3"),
                                         label = NULL,
                                         choices = c("North-South" = "NS",
                                                     "West-East" = "WE",
@@ -242,10 +242,10 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                            ),
                            ns = ns),
 
-          conditionalPanel(condition = "input.blank_mode == 'checkerboard'",
-                           div(
-                             HTML(paste("You have selected the ",
-                                        tags$span(style="color:red", "Checkerboard"),
+          shiny::conditionalPanel(condition = "input.blank_mode == 'checkerboard'",
+                                  shiny::div(
+                                    shiny::HTML(paste("You have selected the ",
+                                                      shiny::tags$span(style="color:red", "Checkerboard"),
                                         "mode, therefore there are no available neighborhood constraints.",
                                         sep = " ")
                              )
@@ -255,14 +255,14 @@ plateSpecUI <- function(id, label = "Plate specifications") {
       #-------------------------------------------------------------------------
 
       #-------------------------------------------------------------------------
-      box(status="warning",
+      shinydashboard::box(status="warning",
           width = 12,
           solidHeader = TRUE,
-          title = h3("5 - Not randomized Wells"),
+          title = shiny::h3("5 - Not randomized Wells"),
           p("These samples will not be used for the backtracking algorithm.
               They correspond to Quality controls or Standards.")
           ,
-          textInput(ns("notRandom_select"), h4("Enter Line Letter & Column number,
+          shiny::textInput(ns("notRandom_select"), shiny::h4("Enter Line Letter & Column number,
                                             each box separated by commas without spaces.\n
                                             The wells already filled as forbidden
                                             will not be drawn as 'Not Random'."),
@@ -274,13 +274,13 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 
     #-------------------------------------------------------------------------
     # Plate specification outputs
-    column(width = 6,
-           fluidRow(infoBoxOutput(ns("warning_plate"), width = 12)),
-           fluidRow(valueBoxOutput(ns("total_nb_wells"), width = 6),
-                    valueBoxOutput(ns("nb_plates_to_fill"), width = 6)
+    shiny::column(width = 6,
+           shiny::fluidRow(shinydashboard::infoBoxOutput(ns("warning_plate"), width = 12)),
+           shiny::fluidRow(shinydashboard::valueBoxOutput(ns("total_nb_wells"), width = 6),
+                           shinydashboard::valueBoxOutput(ns("nb_plates_to_fill"), width = 6)
                     ),
-           withLoader(
-             plotOutput(ns("plotOut"), height = 500),
+           shinycustomloader::withLoader(
+             shiny::plotOutput(ns("plotOut"), height = 500),
              type = "html",
              loader = "loader7"
            )
@@ -293,7 +293,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
 # Module server function
 plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_name, nb_samples) {
 
-  toReturn <- reactiveValues(
+  toReturn <- shiny::reactiveValues(
     nb_lines = NULL,
     nb_cols = NULL,
     nb_plates = NULL,
@@ -302,7 +302,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
   )
 
 
-  p_lines <- reactive({
+  p_lines <- shiny::reactive({
     switch (input$plate_size,
             NULL = {nb <- 0},
             "s6" = {nb <- 2},
@@ -316,7 +316,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
     return(nb)
   })
 
-  p_cols <- reactive({
+  p_cols <- shiny::reactive({
     switch (input$plate_size,
             NULL = {nb <- 0},
             "s6" = {nb <- 3},
@@ -330,7 +330,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
     return(nb)
   })
 
-  nb_p <- reactive({
+  nb_p <- shiny::reactive({
     if(is.na(input$no_plates)){
       return(0)
     }else{
@@ -338,48 +338,48 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
     }
   })
 
-  totalNbWells <- reactive({
+  totalNbWells <- shiny::reactive({
     tNbW <- p_lines()*p_cols()*nb_p()
     logging::loginfo("totalNbWells = %d", tNbW, logger = "plate_spec")
     return(tNbW)
     })
 
-  output$total_nb_wells <- renderValueBox({
-    valueBox(value=totalNbWells(),
+  output$total_nb_wells <- shinydashboard::renderValueBox({
+    shinydashboard::valueBox(value=totalNbWells(),
              subtitle = "Number of fillable wells",
              icon = icon("vials"),
              color="teal")
   })
 
-  output$nb_plates_to_fill <- renderValueBox({
-    valueBox(value=as.numeric(nb_p()),
+  output$nb_plates_to_fill <- shinydashboard::renderValueBox({
+    shinydashboard::valueBox(value=as.numeric(nb_p()),
              subtitle = "Number of plates to fill",
-             icon = icon("dice-four"),
+             icon = shiny::icon("dice-four"),
              color="teal")
   })
 
-  output$warning_plate <- renderInfoBox({
-    infoBox(title=HTML(paste("We assume that all the plates to be filled have the same dimensions.",
+  output$warning_plate <- shinydashboard::renderInfoBox({
+    shinydashboard::infoBox(title = shiny::HTML(paste("We assume that all the plates to be filled have the same dimensions.",
                        br(),
                        "Also, when you want to generate more than 1 plate,",
                        br(),
                        "WPM uses balanced group workforces to distribute the samples within the plates."
                          )),
-            icon = icon("exclamation-triangle"),
+            icon = shiny::icon("exclamation-triangle"),
             color = "red",
             fill=TRUE)
   })
 
 
-  output$nb_gps <- reactive({
+  output$nb_gps <- shiny::reactive({
     return(nb_samp_gps())
   })
 
-  outputOptions(output, "nb_gps", suspendWhenHidden = FALSE)
+  shiny::outputOptions(output, "nb_gps", suspendWhenHidden = FALSE)
 
 
 
-  forbid_wells <- reactive({
+  forbid_wells <- shiny::reactive({
     # si des cases interdites on été saisies, alors on transforme en un df compatible
     # avec la suite du code
     if(input$forbid_select != ""){
@@ -392,10 +392,10 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
   })
 
 
-  blank_wells <- reactive({
+  blank_wells <- shiny::reactive({
 
-    validate(
-      need((p_lines() > 0 & p_cols() > 0), "requires a plate with positive dimensions.")
+    shiny::validate(
+      shiny::need((p_lines() > 0 & p_cols() > 0), "requires a plate with positive dimensions.")
     )
     if(input$blank_mode != "by_hand"){
       defineBlankCoords(p_lines(),
@@ -411,9 +411,9 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
   })
 
 
-  notRandom_wells <- reactive({
-    validate(
-      need((p_lines() > 0 & p_cols() > 0), "requires a plate with positive dimensions.")
+  notRandom_wells <- shiny::reactive({
+    shiny::validate(
+      shiny::need((p_lines() > 0 & p_cols() > 0), "requires a plate with positive dimensions.")
     )
     if(input$notRandom_select != ""){
       fw <- as.vector(unlist(base::strsplit(as.character(input$notRandom_select),
@@ -427,7 +427,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
 
 
 
-  wells_to_plot <- reactive({
+  wells_to_plot <- shiny::reactive({
     ret <- NULL
 
     if(is.null(forbid_wells())){
@@ -452,8 +452,8 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
       nb_nR <- nrow(notRandom_wells())
     }
 
-    validate(
-      need(nb_samples() <= (totalNbWells()),
+    shiny::validate(
+      shiny::need(nb_samples() <= (totalNbWells()),
            "The dimensions of the plate are not compatible with the number of samples to be placed.
            Please increase the number of plates to fill or provide a dataset with fewer samples.")
     )
@@ -465,8 +465,8 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
       if(!is.null(blank_wells())){
         # si NotRandom
         if(!is.null(notRandom_wells())){
-          validate(
-            need(nb_samples() <= (totalNbWells() - (nb_b*nb_p()) - (nb_f*nb_p()) - (nb_nR*nb_p())),
+          shiny::validate(
+            shiny::need(nb_samples() <= (totalNbWells() - (nb_b*nb_p()) - (nb_f*nb_p()) - (nb_nR*nb_p())),
                  "The dimensions of the plate are not compatible with the number of samples to be placed.
                  Maybe are you specifying to many forbidden/blanks/notRandom wells.")
           )
@@ -476,8 +476,8 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
           ret <- result
         # si pas de NotRandom
         }else{
-          validate(
-            need(nb_samples() <= (totalNbWells() - (nb_b*nb_p()) - (nb_f*nb_p())),
+          shiny::validate(
+            shiny::need(nb_samples() <= (totalNbWells() - (nb_b*nb_p()) - (nb_f*nb_p())),
                  "The blank mode and/or forbidden wells selected are not compatible with the plate's dimensions and the number of samples to be placed.
                  If you want to keep this blank mode, please increase the number of plates to fill or provide a dataset with fewer samples.
                  Otherwise, please change the blank mode.")
@@ -491,8 +491,8 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
       }else{
         # si NotRandom
         if(!is.null(notRandom_wells())){
-          validate(
-            need(nb_samples() <= (totalNbWells() - (nb_f*nb_p()) - (nb_nR*nb_p()) ),
+          shiny::validate(
+            shiny::need(nb_samples() <= (totalNbWells() - (nb_f*nb_p()) - (nb_nR*nb_p()) ),
                  "The dimensions of the plate are not compatible with the number of samples to be placed.
                  Maybe are you specifying to many forbidden/notRandom wells."
             )
@@ -502,8 +502,8 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
           ret <- result
         # si pas de NotRandom
         }else{
-          validate(
-            need(nb_samples() <= (totalNbWells() - (nb_f*nb_p())),
+          shiny::validate(
+            shiny::need(nb_samples() <= (totalNbWells() - (nb_f*nb_p())),
                  "The forbidden wells selected are not compatible with the plate's dimensions and the number of samples to be placed.
                  To solve this issue, please:
                  - decrease the number of forbidden wells
@@ -520,8 +520,8 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
       if(!is.null(blank_wells())){
         # si NotRandom
         if(!is.null(notRandom_wells())){
-          validate(
-            need(nb_samples() <= ( totalNbWells() - (nb_b*nb_p()) - (nb_nR*nb_p()) ),
+          shiny::validate(
+            shiny::need(nb_samples() <= ( totalNbWells() - (nb_b*nb_p()) - (nb_nR*nb_p()) ),
                    "The dimensions of the plate are not compatible with the number of samples to be placed.
                  Maybe are you specifying to many blanks/notRandom wells."
                    )
@@ -531,8 +531,8 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
           ret <- result
           # si pas de NotRandom
         }else{
-          validate(
-            need(nb_samples() <= (totalNbWells() - (nb_b*nb_p())),
+          shiny::validate(
+            shiny::need(nb_samples() <= (totalNbWells() - (nb_b*nb_p())),
                  "The blank mode selected is not compatible with the plate's dimensions and the number of samples to be placed.
                  If you want to keep this blank mode, please increase the number of plates to fill or provide a dataset with fewer samples.
                  Otherwise, please change the blank mode.")
@@ -543,8 +543,8 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
       }else{
         # si NotRandom
         if(!is.null(notRandom_wells())){
-          validate(
-            need(nb_samples() <= totalNbWells() - (nb_nR*nb_p()),
+          shiny::validate(
+            shiny::need(nb_samples() <= totalNbWells() - (nb_nR*nb_p()),
               "The dimensions of the plate are not compatible with the number of samples to be placed.
                  Maybe are you specifying to many notRandom wells."
             )
@@ -561,7 +561,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
   })
 
 
-  output$plotOut <- renderPlot({
+  output$plotOut <- shiny::renderPlot({
     # pour que la fonction drawMap fonctionne, il faut donner un nombre de
     # lignes et de colonnes > 0 et au minimum un dataframe vide avec les bons
     # noms de colonne
@@ -591,7 +591,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
     }
   })
 
-  nbh_mod <- reactive({
+  nbh_mod <- shiny::reactive({
     nbh_mod <- NULL
     if(input$blank_mode == "by_row"){
       nbh_mod <- input$constraint_row
@@ -620,7 +620,7 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
     return(nbh_mod)
   })
 
-  observe({
+  shiny::observe({
     toReturn$nb_lines <- p_lines()
     toReturn$nb_cols <- p_cols()
     toReturn$nb_plates <- nb_p()

@@ -1,11 +1,3 @@
-# # Libraries import
-library(shiny)
-library(shinydashboard)
-library(shinyWidgets)
-library(shinycustomloader)
-library(ggplot2)
-
-
 
 logging::basicConfig()
 

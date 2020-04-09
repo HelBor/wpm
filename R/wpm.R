@@ -8,7 +8,6 @@
 ##' @export
 
 wpm <- function(){
-  require(shiny)
   if (interactive()){
     options(shiny.maxRequestSize=1024^3)
     a=shiny::runApp(system.file("wpmApp",package="wpm"),

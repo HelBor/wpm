@@ -10,11 +10,11 @@ Description: This is a shiny application for creating well-plate plans.
     on specfic neighborhood constraints.
 Depends: R (>= 3.6.0)
 Imports:
+    DT,
     shiny,
     shinydashboard,
     shinyWidgets,
     shinycustomloader,
-    DT,
     RColorBrewer,
     dplyr,
     stringr,
