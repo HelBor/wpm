@@ -31,7 +31,7 @@
 
 ### Pre-requisites
 `R version > 3.4`
-OS platforms tested: `Windows`
+OS tested : `Windows`, `Fedora`, `Ubuntu`,`MacOS`
 But the app should work also on the others.
 
 WPM R package dependencies:
