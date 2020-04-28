@@ -1,11 +1,11 @@
-importFrom("stats", "na.omit")
+importFrom("DT", "renderDataTable", "datatable", "dataTableOutput")
 import("shiny")
 import("shinydashboard")
 import("shinyWidgets")
 import("shinycustomloader")
 import("RColorBrewer")
+importFrom("dplyr", "mutate_if","bind_rows","distinct","mutate","group_by")
 importFrom("stringr","str_extract","str_remove")
-importFrom("dplyr", "mutate_if","bind_rows","distinct","mutate","group_by","%>%")
 import("ggplot2")
 import("logging")
 
