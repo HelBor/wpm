@@ -19,7 +19,7 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
     df <- data.frame(matrix(ncol = ncol(grouped)))
     names(df) <- names(grouped)
 
-    for (g in seq_len(length(workforces)) ) {
+    for (g in seq_along(workforces) ) {
       if ( nrow(test[[g]]) < w[g]) {
         df <- rbind(df, as.data.frame(test[[g]]))
 
