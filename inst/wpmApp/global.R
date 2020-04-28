@@ -1,9 +1,9 @@
-
+## Print useful informations in the console during a shiny session
 logging::basicConfig()
 
 
 
-# # import modules
+## import modules
 source(file.path(".", "modules/data_import.R"), local = TRUE)$value
 source(file.path(".","modules/plate_spec.R"), local = TRUE)$value
 source(file.path(".","modules/backtracking.R"), local = TRUE)$value
@@ -16,3 +16,5 @@ source(file.path(".", "modules/balanced_distribution.R"), local = TRUE)$value
 source(file.path(".", "modules/blank_coord.R"), local = TRUE)$value
 source(file.path(".", "modules/conversion.R"), local = TRUE)$value
 source(file.path(".", "modules/draw_map.R"), local = TRUE)$value
+
+

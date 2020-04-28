@@ -41,7 +41,9 @@ backtrackUI <- function(id, label = NULL) {
 # columns : integer - plate's number of columns
 # constraint : character - neighborhood spatial constraint mode
 #' @importFrom DT renderDataTable datatable
-backtrack <- function(input, output, session, df, max_iter, forbidden_wells, distinct_sample_gps, gp_levels, rows, columns, nb_plates, constraint, project_name) {
+backtrack <- function(input, output, session, df, max_iter, forbidden_wells,
+                      distinct_sample_gps, gp_levels, rows, columns, nb_plates,
+                      constraint, project_name) {
 
   toReturn <- shiny::reactiveValues(
     final_df = NULL,
@@ -59,8 +61,8 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
   })
 
 
-  # map is a dataframe containing: user data + blanks + forbidden wells, ready to
-  #                   be plotted or/and downloaded)
+  ## map is a dataframe containing: user data + blanks + forbidden wells, ready
+  ## to be plotted or/and downloaded
   map <- shiny::reactive({
 
     progress <- shiny::Progress$new()
@@ -73,7 +75,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
         value <- progress$getValue()
       }
       progress$set(value = value, detail = detail)
-      progress$inc(amount = 1/max_iter)
+      progress$inc(amount = 1 / max_iter)
     }
 
     final_df <- data.frame("Sample" = as.character(NA),
@@ -87,18 +89,23 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
 
     final_df <- dplyr::mutate_if(final_df, is.factor, as.character)
 
-    if(nb_plates() > 1){
-      # loginfo("on est dans le if nb_plate > 1")
-      if(is.null(forbidden_wells())){
+    if (nb_plates() > 1) {
+      if (is.null(forbidden_wells())) {
         nb_forbid <- 0
       }else{
         nb_forbid <- nrow(forbidden_wells())
       }
 
-      logging::loginfo("nb_forbid:%s", nb_forbid, logger = "backtrack/map")
-      logging::loginfo("nombre de puits disponibles pour une plaque: %s",(rows()*columns()) - nb_forbid, logger = "backtrack/map")
-      logging::loginfo("nombre maximum d'échantillons plaçable sur une plaque : %s", ceiling(nrow(user_data())/nb_plates()), logger = "backtrack/map")
-      nb_max <- ceiling(nrow(user_data())/nb_plates())
+      logging::loginfo("nb_forbid:%s",
+                       nb_forbid,
+                       logger = "backtrack/map")
+      logging::loginfo("number of wells available for a plate: %s",
+                       (rows()*columns()) - nb_forbid,
+                       logger = "backtrack/map")
+      logging::loginfo("maximum number of samples that can be placed on a plate : %s",
+                       ceiling(nrow(user_data())/nb_plates()),
+                       logger = "backtrack/map")
+      nb_max <- ceiling(nrow(user_data()) / nb_plates())
       res <- balancedGrpDistrib(d = user_data(),
                               nb_p = nb_plates(),
                               df_max_size = nb_max
@@ -108,13 +115,12 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
       res <- list("p1" = user_data())
     }
 
-    for(c in res){
+    for (c in res) {
       logging::loginfo("nrow(c): %s", nrow(c), logger = "backtrack/map")
-
     }
 
     p <- 1
-    for(current_p in res){
+    for (current_p in res) {
       new_df <- NULL
       logging::loginfo("plate n°%s", p)
 
@@ -126,51 +132,39 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
                                  max_it = max_iter,
                                  updateProgress
                                 )
-      logging::loginfo("class(new_df): %s",class(new_df), logger = "backtracking")
+      logging::loginfo("class(new_df): %s",
+                       class(new_df),
+                       logger = "backtracking")
 
-      if(is.null(new_df)){
+      if (is.null(new_df)) {
         return(new_df)
       }else{
-        if(class(new_df) == "data.frame"){
+        if (is(new_df, "data.frame")) {
           new_df$Plate <- p
           final_df <- dplyr::bind_rows(final_df, new_df)
-        }else if(new_df == 0){
+        }else if (new_df == 0) {
           stop("ERROR, number of available cells is less than number of samples to place.")
         }
       }
-
-      # if(class(new_df) == "data.frame"){
-      #   new_df$Plate <- p
-      #
-      #   final_df <- dplyr::bind_rows(final_df, new_df)
-      #
-      # }else if(new_df == 0){
-      #   stop("ERROR, number of available cells is less than number of samples to place.")
-      # }else if(is.null(new_df)){
-      #   return(NULL)
-      # }
       p <- p + 1
 
     }
 
-
-    final_df <- final_df[!is.na(final_df$Status),]
+    final_df <- final_df[!is.na(final_df$Status), ]
     final_df$Status <- NULL
-
-
 
     return(final_df)
   })
 
-  #-----------------------------------------------------------------------------
-  # Dataframe export
+  ##----------------------------------------------------------------------------
+  ## Dataframe export
 
   output$data_export <- shiny::renderUI({
     shiny::column(width = 12,
            DT::renderDataTable(DT::datatable({map()}, rownames = FALSE)),
            shiny::downloadHandler(
              filename = function() {
-               paste("data-", Sys.Date(), ".csv", sep="")
+               paste("data-", Sys.Date(), ".csv", sep = "")
              },
              content = function(file) {
                write.csv2(map(), file, row.names = FALSE, quote = FALSE)
@@ -181,12 +175,13 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
 
   })
 
-  #-----------------------------------------------------------------------------
-  # Plots export
+  ##----------------------------------------------------------------------------
+  ## Plots export
+  ##
   map_plot <- shiny::reactive({
-    if(!is.null(map())){
+    if (!is.null(map())) {
       toPlot = list()
-      toPlot <- lapply(X = 1:nb_plates(),
+      toPlot <- lapply(X = seq_len(nb_plates()),
                        function(x) drawMap(df = map()[which(map()$Plate == x),],
                                                 sample_gps = distinct_sample_gps(),
                                                 gp_levels = gp_levels(),
@@ -208,7 +203,7 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
         shiny::renderPlot({map_plot()[[i]]}),
         shiny::downloadHandler(
           filename = function() {
-            paste("plot", i, ".png", sep="")
+            paste("plot", i, ".png", sep = "")
           },
           content = function(file) {
             ggplot2::ggsave(filename = file,
@@ -222,12 +217,13 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
       )
 
     }
-    )# fin lapply
+    )# end lapply
   })
-  #-----------------------------------------------------------------------------
 
+  ##----------------------------------------------------------------------------
+  ## update objects to return to the server part
   shiny::observe({
-    if(is.null(map())){
+    if (is.null(map())) {
       logging::loginfo("map is null so we return errors")
       toReturn$final_df <- "error"
       toReturn$final_map <- NULL
@@ -242,3 +238,5 @@ backtrack <- function(input, output, session, df, max_iter, forbidden_wells, dis
   return(toReturn)
 
 }
+
+

@@ -8,22 +8,23 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
 
   LETTERS702 <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))
 
-  if(length(forbidden_wells)>0){
-
-
+  if (length(forbidden_wells) > 0) {
     check_columns <- as.numeric(stringr::str_extract(forbidden_wells, "[0-9]+"))
-    check_rows <- (stringr::str_extract(forbidden_wells, "[aA-zZ]+"))
+    check_rows <- stringr::str_extract(forbidden_wells, "[aA-zZ]+")
 
-    # actually simulates if user hasn't finished typing everything
-    if(any(is.na(as.numeric(match(toupper(check_rows), LETTERS702)))) | any(is.na(check_columns))){
+    rows_indices <- as.numeric(match(toupper(check_rows), LETTERS702))
+
+    ## actually simulates if user hasn't finished typing everything
+    if (anyNA(rows_indices) | anyNA(check_columns)) {
       return("oh oh... there is a problem")
-    }else if((max(as.numeric(match(toupper(check_rows), LETTERS702))) > max_Row) | (max(check_columns) > max_Col) ){
+    }else if ((max(rows_indices) > max_Row) | (max(check_columns) > max_Col) ) {
 
       # depending on the plate sizes that have been provided
       result <- NULL
     }else{
       # put the forbidden wells into the df
-      forbidden <- data.frame(lapply(c(NA, NA, NA, NA, NA, NA, NA), function(...) character(length(forbidden_wells))),
+      forbidden <- data.frame(lapply(c(NA, NA, NA, NA, NA, NA, NA),
+                                     function(...) character(length(forbidden_wells))),
                        stringsAsFactors = FALSE)
       colnames(forbidden) <- c("Sample", "Group", "ID", "Well", "Status", "Row", "Column")
       forbidden$Sample <- as.character(NA)
@@ -37,7 +38,7 @@ convertVector2Df <- function(forbidden_wells, max_Row, max_Col, status){
       # converts Well names to Row / Column coordinates as this is what is used
       # to calculate the backtracking step.
       forbidden <- dplyr::mutate(forbidden,
-                          Row = as.numeric(match(toupper(check_rows), LETTERS702)),
+                          Row = rows_indices,
                           Column = check_columns)
       #erase all duplicated rows
       result <- dplyr::distinct(forbidden, .data$Row, .data$Column, .keep_all = TRUE)

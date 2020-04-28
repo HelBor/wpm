@@ -1,6 +1,6 @@
-# Module UI function
+## Module UI function
 csvFileInput <- function(id, label = "CSV file") {
-  # Create a namespace function using the provided id
+  ## Create a namespace function using the provided id
   ns <- shiny::NS(id)
 
   shiny::tagList(
@@ -18,7 +18,7 @@ csvFileInput <- function(id, label = "CSV file") {
       right = TRUE
     ),
     shiny::hr(),
-    # Input: Select quotes
+    ## Input: Select quotes
     shiny::fluidRow(
       shiny::column(width = 10,
              shiny::h4("Please select the appropriate quote")
@@ -30,7 +30,8 @@ csvFileInput <- function(id, label = "CSV file") {
           shiny::div("Character strings in a file can be quoted, meaning they are
           surrounded by quotes (Eg: \"string\" or  \'string\') ",
               br(),
-              "If you don't see your data on the right side (number of samples to zero), you need to change the quote option"),
+              "If you don't see your data on the right side (number of samples
+              to zero), you need to change the quote option"),
           icon = shiny::icon("info-circle"),
           tooltip = shinyWidgets::tooltipOptions(title = "Help"),
           status = "warning",
@@ -48,7 +49,7 @@ csvFileInput <- function(id, label = "CSV file") {
                   ),
                 selected = NULL),
     shiny::hr(),
-    # Input: Select separator
+    ## Input: Select separator
     shiny::h4("Please select the appropriate separator"),
     shinyWidgets::awesomeRadio(inputId = ns("sep_input"),
                  label = NULL,
@@ -62,22 +63,24 @@ csvFileInput <- function(id, label = "CSV file") {
   )
 }
 
-# Module server function
+## Module server function
 csvFile <- function(input, output, session, stringsAsFactors) {
-  # The selected file, if any
+  ## The selected file, if any
   userFile <- shiny::reactive({
-    # If no file is selected, don't do anything
+    ## If no file is selected, don't do anything
     shiny::validate(
       shiny::need(input$file, message = FALSE)
       )
     input$file
   })
   shiny::observe({
-    logging::loginfo("File %s was uploaded", userFile()$name, logger = "data_import")
+    logging::loginfo("File %s was uploaded",
+                     userFile()$name,
+                     logger = "data_import")
 
   })
 
-  # The user's data, parsed into a data frame
+  ## The user's data, parsed into a data frame
   dataframe <- shiny::reactive({
     df <- read.csv2(userFile()$datapath,
              header = input$heading,
@@ -85,8 +88,8 @@ csvFile <- function(input, output, session, stringsAsFactors) {
              sep = input$sep_input,
              stringsAsFactors = stringsAsFactors)
 
-    #check if file contains groups or not
-    if(length(colnames(df)) == 1){
+    ## check if file contains groups or not
+    if (length(colnames(df)) == 1) {
       colnames(df) <- "Sample"
       df$Group <- as.factor(1)
     }else{
@@ -98,6 +101,6 @@ csvFile <- function(input, output, session, stringsAsFactors) {
 
     return(df)
   })
-  # Return the reactive that yields the data frame
+  ## Return the reactive that yields the data frame
   return(dataframe)
 }

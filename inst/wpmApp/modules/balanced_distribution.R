@@ -2,7 +2,7 @@
 # d: the user dataframe
 # nb_p: the number of plates to fill
 # df_max_size : the maximum number of samples that can be placed on the current plate
-#' @importFrom rlang .data
+##' @importFrom rlang .data
 balancedGrpDistrib <- function(d, nb_p, df_max_size){
 
   grouped <- dplyr::group_by(d, .data$Group)
@@ -15,12 +15,12 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
   toReturn <- list()
   missing <- rep(list(0), times = nb_p)
 
-  for(p in 1:nb_p){
-    df = data.frame(matrix(ncol = ncol(grouped)))
+  for (p in seq_len(nb_p) ) {
+    df <- data.frame(matrix(ncol = ncol(grouped)))
     names(df) <- names(grouped)
 
-    for(g in 1:length(workforces)){
-      if(nrow(test[[g]]) < w[g]){
+    for (g in seq_len(length(workforces)) ) {
+      if ( nrow(test[[g]]) < w[g]) {
         df <- rbind(df, as.data.frame(test[[g]]))
 
         missing[[p]] <- missing[[p]] + as.numeric(w[g] - nrow(test[[g]]))
@@ -29,14 +29,14 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
                                 "Column" = NA)
       }else{
         selected <- resample(test[[g]]$ID, size = w[g])
-        wg <- as.data.frame(test[[g]][test[[g]]$ID %in% selected,])
-        test[[g]] <- test[[g]][!test[[g]]$ID %in% selected,]
-        df <- rbind(df,wg)
+        wg <- as.data.frame(test[[g]][test[[g]]$ID %in% selected, ])
+        test[[g]] <- test[[g]][!test[[g]]$ID %in% selected, ]
+        df <- rbind(df, wg)
       }
 
 
     }
-    df <- df[!is.na(df$ID),]
+    df <- df[!is.na(df$ID), ]
     df$Group <- as.factor(df$Group)
     df$Status <- as.factor(df$Status)
 
@@ -44,38 +44,38 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
   }
 
   m <- dplyr::bind_rows(test)
-  m <- m[!is.na(m$ID),]
+  m <- m[!is.na(m$ID), ]
 
-  # as long as samples remain unassigned to a plate.
-  while(nrow(m) !=0){
+  ## as long as samples remain unassigned to a plate.
+  while (nrow(m) != 0) {
 
-    # they are assigned to the plate with the lowest number of employees without
-    #exceeding the maximum authorized number of samples per plate.
+    ## they are assigned to the plate with the lowest number of employees without
+    ## exceeding the maximum authorized number of samples per plate.
     incomplete_plate <- which.min(unlist(lapply(toReturn, function(x) nrow(x))))
 
     incomplete_size <- nrow(toReturn[[incomplete_plate]])
 
-    if(incomplete_size < df_max_size){
-      if(df_max_size-incomplete_size > nrow(m)){
+    if (incomplete_size < df_max_size) {
+      if ( (df_max_size - incomplete_size) > nrow(m)) {
         nb_to_pick <- nrow(m)
       }else{
-        nb_to_pick <- df_max_size-incomplete_size
+        nb_to_pick <- df_max_size - incomplete_size
       }
       toTake <- resample(m$ID, size = (nb_to_pick))
-      totake_df <- m[which(m$ID %in% toTake),]
+      totake_df <- m[which(m$ID %in% toTake), ]
       toReturn[[incomplete_plate]] <- rbind(toReturn[[incomplete_plate]], totake_df)
       m <- subset(m, !(m$ID %in% toTake))
-    }else if(incomplete_size >= df_max_size){
+    }else if (incomplete_size >= df_max_size) {
       maxi <- which.max(unlist(lapply(toReturn, function(x) nrow(x))))
 
-      if(incomplete_size < nrow(toReturn[[maxi]])){
-        toTake <- resample(m$ID, size = (nrow(toReturn[[maxi]])-incomplete_size))
-        totake_df <- m[which(m$ID %in% toTake),]
+      if (incomplete_size < nrow(toReturn[[maxi]])) {
+        toTake <- resample(m$ID, size = (nrow(toReturn[[maxi]]) - incomplete_size))
+        totake_df <- m[which(m$ID %in% toTake), ]
         toReturn[[incomplete_plate]] <- rbind(toReturn[[incomplete_plate]], totake_df)
         m <- subset(m, !(m$ID %in% toTake))
-      }else if(incomplete_size == nrow(toReturn[[maxi]])){
+      }else if (incomplete_size == nrow(toReturn[[maxi]])) {
         toReturn[[incomplete_plate]] <- rbind(toReturn[[incomplete_plate]], m)
-        m <- m[!m$ID,]
+        m <- m[!m$ID, ]
       }
 
     }

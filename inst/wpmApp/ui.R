@@ -1,12 +1,12 @@
 
-# Header elements for the visualization
-header <- shinydashboard::dashboardHeader(title="Well-Plate Maker",
+## Header elements for the visualization
+header <- shinydashboard::dashboardHeader(title = "Well-Plate Maker",
                           titleWidth = 200
 )
 
 
 
-# Sidebar elements for the search visualizations
+## Sidebar elements for the search visualizations
 sidebar <- shinydashboard::dashboardSidebar(
   width = 200,
   shinydashboard::sidebarMenu(
@@ -27,8 +27,8 @@ sidebar <- shinydashboard::dashboardSidebar(
 
 
 
-#' Body elements for the search visualizations.
-#' @importFrom DT dataTableOutput
+##' Body elements for the search visualizations.
+##' @importFrom DT dataTableOutput
 body <- shinydashboard::dashboardBody(
   shiny::tags$head(
     shiny::tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
@@ -37,9 +37,9 @@ body <- shinydashboard::dashboardBody(
     shinydashboard::tabItem(tabName = "home",
 
             shiny::fluidRow(
-              shiny::div(img(src='images/wpm_logo.png', width = 300),
+              shiny::div(img(src = 'images/wpm_logo.png', width = 300),
                          style = "text-align:center;"),
-              shiny::div(img(src='images/wpm_name.png', width = 300),
+              shiny::div(img(src = 'images/wpm_name.png', width = 300),
                          style = "text-align:center;")
             ),
 
@@ -90,11 +90,12 @@ body <- shinydashboard::dashboardBody(
               ) # end column 2
             ), # end fluidRow 1
             shiny::fluidRow(
-              shiny::column(width =9,
+              shiny::column(width = 9,
                             shinydashboard::box(width = 12,
                                                 status = "warning",
                                                 shiny::h1("Citing our work"),
-                                                shiny::div("If you use it, please cite the following reference:",
+                                                shiny::div("If you use it,
+                                                           please cite the following reference:",
                                                     style = "font-size:18px"
                                                     )
                                                 )
@@ -105,8 +106,8 @@ body <- shinydashboard::dashboardBody(
             shiny::h1("Parameters"),
             # Input File section
             shiny::fluidRow(
-              shiny::column(width=6,
-                            shinydashboard::box(status="warning",
+              shiny::column(width = 6,
+                            shinydashboard::box(status = "warning",
                     width = 12,
                     solidHeader = TRUE,
                     title = shiny::h3("1 - Upload dataset"),
@@ -116,18 +117,16 @@ body <- shinydashboard::dashboardBody(
                     csvFileInput("datafile"
                                  ),
 
-                    #-------------------------------------------------------------------------
+                    #-----------------------------------------------------------
                     shiny::hr(),
                     shiny::h4("Please choose a Project name"),
                     shiny::textInput(inputId = "project_title",
                               label = NULL,
                               value = "",
                               placeholder = "my project title")
-
-                    #-------------------------------------------------------------------------
                 )
               ),
-              shiny::column(width=6,
+              shiny::column(width = 6,
                 shiny::fluidRow(
                   shinydashboard::box(title = shiny::h3("Your dataset"),
                       solidHeader = TRUE,
@@ -136,18 +135,18 @@ body <- shinydashboard::dashboardBody(
                       status = "warning",
                       DT::dataTableOutput("table")
                   ),
-                  shinydashboard::valueBoxOutput("nb_ech", width=3),
-                  shinydashboard::valueBoxOutput("nb_gp", width=3)
+                  shinydashboard::valueBoxOutput("nb_ech", width = 3),
+                  shinydashboard::valueBoxOutput("nb_gp", width = 3)
                   )
               )
             ), # end of fluidRow 1: input file
 
-            # plate specification inputs & outputs
+            ## plate specification inputs & outputs
             plateSpecUI("plate"),
 
             shiny::fluidRow(
-              shiny::column(width=6,
-                            shinydashboard::box(status="warning",
+              shiny::column(width = 6,
+                            shinydashboard::box(status = "warning",
                                                 width = 12,
                                                 solidHeader = TRUE,
                                                 title = shiny::h3("6 - Number of iterations"),
@@ -168,7 +167,7 @@ body <- shinydashboard::dashboardBody(
                          shiny::div(
                            shinyWidgets::useSweetAlert(),
 
-                           shinyWidgets::actionBttn(inputId="start_WPM_Btn",
+                           shinyWidgets::actionBttn(inputId = "start_WPM_Btn",
                                       label = "Start WPM",
                                       icon = shiny::icon("play"),
                                       color = "warning",
@@ -218,8 +217,5 @@ body <- shinydashboard::dashboardBody(
     ) # end of tabItem 4
   ) # end of tabItems
 )
-
-
-
 
 ui <- shinydashboard::dashboardPage(header, sidebar, body, skin = "yellow")
