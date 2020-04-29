@@ -1,31 +1,16 @@
 <p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/inst/wpmApp/www/images/wpm_logo.png"></p>
 <p align="center"><img width=70% src="https://github.com/HelBor/wpm/blob/master/inst/wpmApp/www/images/wpm_name.png"></p>
 
-
 ![R](https://img.shields.io/badge/R-v3.4+-blue?style=flat-square)
 [![GitHub issues](https://img.shields.io/github/issues/HelBor/wpm?style=flat-square)](https://github.com/HelBor/wpm/blob/issues)
 ![Release](https://img.shields.io/badge/release-alpha-orange?style=flat-square)
 ![GitHub license](https://img.shields.io/github/license/HelBor/wpm?style=flat-square)
-
 
 ## Brief introduction
 
 > WPM is a shiny application deployed in the form of an R package.
 > Its objective is to allow a user to generate a well plate plan in order to perform his experiments by controlling batch effects (in particular preventing plate edge effects).
 > The algorithm for placing the samples is inspired by the backtracking algorithm.
-
-## Table of content
- * [Getting started](https://github.com/HelBor/wpm#getting-started)
-   - [Pre-requisites](https://github.com/HelBor/wpm#pre-requisites)
-   - [How to install](https://github.com/HelBor/wpm#how-to-install)
-   - [Launch WPM](https://github.com/HelBor/wpm#launch-wpm)
- * [How to use WPM](https://github.com/HelBor/wpm#how-to-use-wpm)
-   - [Provide parameters](https://github.com/HelBor/wpm#provide-parameters)
-   - [Check your Results](https://github.com/HelBor/wpm#check-your-results)
- * [Pending Features](https://github.com/HelBor/wpm#pending-features)
- * [Documentation](https://github.com/HelBor/wpm#documentation)
-   - [Citing Our work](https://github.com/HelBor/wpm#citing-our-work)
-
 
 ## Getting started
 
@@ -36,14 +21,14 @@ But the app should work also on the others.
 
 WPM R package dependencies:
 
-`shiny`, `shinydashboard`, `shinyWidgets`, `shinycustomloader`, `DT`, 
+`shiny`, `shinydashboard`, `shinyWidgets`, `shinycustomloader`, `DT`,
 `RColorBrewer`, `logging`, `dplyr`, `stringr`, `ggplot2`
 
 ### How to install
 
 From GitHub
 ```R
-devtools::install_github(repo = "HelBor/wpm", dependencies = TRUE)
+devtools::install_github(repo = "HelBor/wpm")
 ```
 
 ### Launch WPM
@@ -58,7 +43,7 @@ A new window will open in your default browser.
 
 ## How to use WPM
 
-Since WPM is a GUI, the idea is to just provide a minimum of parameters to the application. 
+Since WPM is a GUI, the idea is to just provide a minimum of parameters to the application.
 No programming skills are required. WPM supports multiple plates and places samples in a balanced way among the plates.
 
 WPM has 4 main panels:
@@ -92,7 +77,5 @@ This Panel allows you to look after the final dataset containing the wells chose
 ## Pending Features
 * For proteomics, add the option to generate serialization of samples.
 
-## Documentation
-
-### Citing Our work
+## Citing Our work
 > The published article of the project will be linked here.
