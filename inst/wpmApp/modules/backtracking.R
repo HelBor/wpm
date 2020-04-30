@@ -158,15 +158,18 @@ distinct_sample_gps, gp_levels, rows, columns, nb_plates, constraint, project_na
         return(final_df)
     })
 
-    ##----------------------------------------------------------------------------
+    ##--------------------------------------------------------------------------
     ## Dataframe export
 
     output$data_export <- shiny::renderUI({
+        project <- stringr::str_replace_all(string=project_name(),
+                                            pattern = " ",
+                                            repl = "")
         shiny::column(width = 12,
             DT::renderDataTable(DT::datatable({map()}, rownames = FALSE)),
             shiny::downloadHandler(
                 filename = function() {
-                    paste("data-", Sys.Date(), ".csv", sep = "")
+                    paste("data-", Sys.Date(), "-", project, ".csv", sep = "")
                 },
                 content = function(file) {
                     write.csv2(map(), file, row.names = FALSE, quote = FALSE)
@@ -175,7 +178,7 @@ distinct_sample_gps, gp_levels, rows, columns, nb_plates, constraint, project_na
         )
     })
 
-    ##----------------------------------------------------------------------------
+    ##--------------------------------------------------------------------------
     ## Plots export
     ##
     map_plot <- shiny::reactive({
@@ -222,7 +225,7 @@ distinct_sample_gps, gp_levels, rows, columns, nb_plates, constraint, project_na
         })# end lapply
     })
 
-    ##----------------------------------------------------------------------------
+    ##--------------------------------------------------------------------------
     ## update objects to return to the server part
     shiny::observe({
         if (is.null(map())) {
