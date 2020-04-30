@@ -213,6 +213,7 @@ body <- shinydashboard::dashboardBody(
                         shinydashboard::valueBox(
                             value = "New issue",
                             subtitle = "https://github.com/HelBor/wpm/issues",
+                            href = "https://github.com/HelBor/wpm/issues",
                             width = 12,
                             color = "teal",
                             icon = shiny::icon("github")
