@@ -9,7 +9,9 @@ header <- shinydashboard::dashboardHeader(title = "Well-Plate Maker",
 ## Sidebar elements for the search visualizations
 sidebar <- shinydashboard::dashboardSidebar(
     width = 200,
+
     shinydashboard::sidebarMenu(
+        style = "position: fixed; overflow: visible;width: 200px;",
         shinydashboard::menuItem("Home",
                                  tabName = "home",
                                  icon = shiny::icon("home")),
