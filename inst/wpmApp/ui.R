@@ -199,7 +199,9 @@ body <- shinydashboard::dashboardBody(
                     status = "warning",
                     shiny::h1("Contact"),
                     shiny::div("A vignette is available in the package explaining
-                               how to use WPM in detail.",
+                               how to use WPM in detail. Simply enter",
+                               shiny::code("browseVignettes(\"wpm\")"),
+                               "in the console.",
                                style = "font-size:18px"),
                     shiny::div("Please contact me if you need any help, or if you
                                want to report a bug or if you wish to make
