@@ -96,7 +96,6 @@ server <- function(input, output, session) {
     ## backtracking module part
     ## launched only if start button is clicked and required parameters are validated
     ##****************************************************************************
-
     shiny::observeEvent(input$start_WPM_Btn,{
 
         ## requires that the dimensions of the plate be greater than 0
@@ -153,4 +152,6 @@ server <- function(input, output, session) {
             }
         })
     })
+
+
 }
