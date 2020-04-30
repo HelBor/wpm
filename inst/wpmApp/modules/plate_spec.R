@@ -411,8 +411,8 @@ plateSpec <- function(input, output, session, nb_samp_gps, gp_levels, project_na
                                       1 plate,", br(), "WPM uses balanced group
                                       workforces to distribute the samples
                                       within the plates.")),
-            icon = shiny::icon("exclamation-triangle"),
-            color = "red",
+            icon = shiny::icon("info-circle"),
+            color = "yellow",
             fill = TRUE)
     })
 
