@@ -40,9 +40,9 @@ body <- shinydashboard::dashboardBody(
             tabName = "home",
 
             shiny::fluidRow(
-              shiny::div(img(src = 'images/wpm_logo.png', width = 300),
+              shiny::div(shiny::img(src = 'images/wpm_logo.png', width = 300),
                          style = "text-align:center;"),
-              shiny::div(img(src = 'images/wpm_name.png', width = 300),
+              shiny::div(shiny::img(src = 'images/wpm_name.png', width = 300),
                          style = "text-align:center;")
             ),
 
@@ -56,7 +56,8 @@ body <- shinydashboard::dashboardBody(
                         shiny::h1("Welcome to Well Plate Maker!"),
                         shiny::div("WPM is a shiny application (web-based UI)
                         allowing you to create a plan of well-plate for your
-                        experiments by controlling batch effects.",br(),br(),
+                        experiments by controlling batch effects.",
+                        shiny::br(), shiny::br(),
                         "Indeed, the placement of samples on a plate can raise
                         questions when we want to take into account batch effects
                         (because a placement on a plate is a technical source of
@@ -66,7 +67,7 @@ body <- shinydashboard::dashboardBody(
                         groups (here, we speak of a group to define a category
                         of the factor to be studied. Eg: different treatments to
                          compare, different stages of development, etc.)",
-                        br(),br(),
+                        shiny::br(), shiny::br(),
                         "The plate plan is built using a backtracking-inspired
                         algorithm with some specific spatial constraints which
                         can be chosen by the user. The plate is filled randomly
