@@ -9,7 +9,7 @@ server <- function(input, output, session) {
     ##****************************************************************************
     ## Input file part
     ##****************************************************************************
-    datafile <- callModule(csvFile, "datafile", stringsAsFactors = FALSE)
+    datafile <- shiny::callModule(csvFile, "datafile", stringsAsFactors = FALSE)
 
     output$table <- DT::renderDataTable(DT::datatable({
         if (!is.null(datafile())) {
@@ -32,7 +32,7 @@ server <- function(input, output, session) {
             shinydashboard::valueBox(
                 value = nrow(datafile()) ,
                 subtitle = "Total number of samples to place",
-                icon = icon("list"),
+                icon = shiny::icon("list"),
                 color = "teal")
         }
     })
@@ -83,7 +83,7 @@ server <- function(input, output, session) {
     ## the prohibited wells, the spatial constraints of the plate
     ##****************************************************************************
 
-    plate_specs <- callModule(
+    plate_specs <- shiny::callModule(
         plateSpec,
         "plate",
         nb_samp_gps = distinct_gps,
@@ -112,7 +112,7 @@ server <- function(input, output, session) {
 
         logging::loginfo("distinct_gps :%s", distinct_gps())
         logging::loginfo("gp_levels :%s", gp_levels())
-        data_export <- callModule(
+        data_export <- shiny::callModule(
             module = backtrack,
             id = "backtrack",
             df = datafile(),
