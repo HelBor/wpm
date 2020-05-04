@@ -32,7 +32,7 @@ csvFileInput <- function(id, label = "CSV file") {
                     shiny::tags$h4("What are quotes?"),
                     shiny::div("Character strings in a file can be quoted,
                         meaning they are surrounded by quotes (Eg: \"string\" or
-                        \'string\') ", br(),
+                        \'string\') ", shiny::br(),
                         "If you don't see your data on the right side (number
                         of samples to zero), you need to change the quote option"),
                     icon = shiny::icon("info-circle"),

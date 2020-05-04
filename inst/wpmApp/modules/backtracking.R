@@ -126,11 +126,11 @@ distinct_sample_gps, gp_levels, rows, columns, nb_plates, constraint, project_na
 
             new_df <- generateMap(
                 user_df = current_p,
-                nb_rows = rows(),
-                nb_cols = columns(),
+                nb_rows = shiny::isolate(rows()),
+                nb_cols = shiny::isolate(columns()),
                 df_forbidden = shiny::isolate(forbidden_wells()),
                 mod = shiny::isolate(constraint()),
-                max_it = max_iter,
+                max_it = shiny::isolate(max_iter),
                 updateProgress
             )
             logging::loginfo("class(new_df): %s",

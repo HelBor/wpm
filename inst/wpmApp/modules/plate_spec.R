@@ -77,7 +77,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                             tags$h4("What does \"forbidden\" mean?"),
                             shiny::div("Forbidden means that the wells in
                             question will not be filled at all in the final
-                            plate plan.",br(),
+                            plate plan.", shiny::br(),
                             "Consequently, during the experiment, these will be
                             completely empty wells"),
                             icon = shiny::icon("info-circle"),
@@ -116,7 +116,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                         shinyWidgets::dropdownButton(
                             shiny::tags$h4("What are blanks?"),
                             shiny::div("By blanks we mean a preparation without
-                                       a biological sample in it.", br(),
+                                       a biological sample in it.", shiny::br(),
                                        "You can place them in line or column.
                                        In these two cases there will be blanks
                                        every other line/column."),
@@ -293,7 +293,7 @@ plateSpecUI <- function(id, label = "Plate specifications") {
                 width = 12,
                 solidHeader = TRUE,
                 title = shiny::h3("5 - Not randomized Wells"),
-                p("These samples will not be used for the backtracking algorithm.
+                shiny::p("These samples will not be used for the backtracking algorithm.
                 They correspond to Quality controls or Standards."),
                 shiny::textInput(
                     ns("notRandom_select"),
