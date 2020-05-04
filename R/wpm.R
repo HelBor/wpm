@@ -8,10 +8,11 @@
 ##' @export
 
 wpm <- function() {
-  if (interactive()) {
-    options(shiny.maxRequestSize = 1024^3)
-    a <- shiny::runApp(system.file("wpmApp", package = "wpm"), launch.browser = TRUE)
-    return(invisible(a))
-  }
-  return(NULL)
+    if (interactive()) {
+        options(shiny.maxRequestSize = 1024^3)
+        a <- shiny::runApp(system.file("wpmApp", package = "wpm"),
+            launch.browser = TRUE)
+        return(invisible(a))
+    }
+    return(NULL)
 }
