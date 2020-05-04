@@ -1,23 +1,23 @@
 ---
 title: How to use Well Plate Maker
 author:
-- name: Hélène Borges
-  affiliation: Université Grenoble Alpes
-  email: borges.helene.sophie@gmail.com
+- name: Helene Borges
+affiliation: Universite Grenoble Alpes
+email: borges.helene.sophie@gmail.com
 abstract: >
-  WPM is a shiny application deployed in the form of an R package. Its 
-  objective is to allow a user to generate a well plate plan in order to 
-  perform his experiments by controlling __batch effects__ (in particular 
-  preventing plate edge effects). The algorithm for placing the samples is 
-  inspired by the backtracking algorithm.
+    WPM is a shiny application deployed in the form of an R package. Its 
+    objective is to allow a user to generate a well plate plan in order to 
+    perform his experiments by controlling __batch effects__ (in particular 
+    preventing plate edge effects). The algorithm for placing the samples is 
+    inspired by the backtracking algorithm.
 vignette: >
-  %\VignetteIndexEntry{How to use Well Plate Maker}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    %\VignetteIndexEntry{How to use Well Plate Maker}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
 output: 
-  BiocStyle::html_document:
-    toc: yes
-    toc_float: true
+    BiocStyle::html_document:
+        toc: yes
+        toc_float: true
 
 ---
 
@@ -26,34 +26,34 @@ output:
 This tutorial explains how to use the Well Plate Maker shiny application.
 Make sure you are using the R 3.6.0 version.
 Also, check that you have these packages installed (with their dependencies):
-`r CRANpkg("shiny")`, `r CRANpkg("shinydashboard")`, `r CRANpkg("shinyWidgets")`,
-`r CRANpkg("shinycustomloader")`, `r CRANpkg("DT")`, `r CRANpkg("RColorBrewer")`
-`r CRANpkg("logging")`, `r CRANpkg("dplyr")`, `r CRANpkg("stringr")`, `r CRANpkg("ggplot2")`
+`r CRANpkg("shiny")`, `r CRANpkg("shinydashboard")`, `r CRANpkg("shinyWidgets")`
+, `r CRANpkg("shinycustomloader")`, `r CRANpkg("DT")`,
+`r CRANpkg("RColorBrewer")`, `r CRANpkg("logging")`, `r CRANpkg("dplyr")`, 
+`r CRANpkg("stringr")`, `r CRANpkg("ggplot2")`
 
-## How to install
-From __GitHub__ (if you have devtools installed):
-```{r install from github, eval=FALSE}
-> devtools::install_github(repo = "HelBor/wpm", )
-```
+## Installation
 
 From __BioConductor__:
 ```{r install from BioConductor, eval=FALSE}
-> if (!requireNamespace("BiocManager", quietly = TRUE))
+if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 
-> BiocManager::install("wpm")
+BiocManager::install("wpm")
 ```
 
 
 ## Launch WPM
 
-Whether you use RStudio or simply work with an R console, the procedure remains the same:
+Whether you use RStudio or simply work with an R console, the procedure remains 
+the same:
 
-```{r launch wpm, eval=FALSE}
-> library(wpm)
-> wpm()
+```{r launch wpm, eval = FALSE}
+library(wpm)
+wpm()
 ```
-If everything is in order, a new window will open in your default browser
+If everything is in order, a new window will open in your default browser.
+If not, find a line written in the R console (eg. 
+`Listening on http://127.0.0.1:4028`), and paste the URL in your web browser.
 
 # How to use WPM
 
@@ -77,24 +77,27 @@ This page is divided into 6 main steps, detailed below:
 Here you must provide a __CSV__ file containing at least one kind of 
 information: the sample names.
 ```{r, echo=FALSE}
-knitr::kable(
-  data.frame("Sample" = c("s1","s2","s3","s4"))
-)
+knitr::kable(data.frame("Sample" = c("s1","s2","s3","s4")))
 ```
 If your samples belong to different groups that you want to distinguish, then 
 you must provide the additional column "Group".
 ```{r, echo=FALSE}
 knitr::kable(
-  data.frame("Sample" = c("s1","s2","s3","s4"), 
-             "Group" = c("A","A","B","C"))
+    data.frame("Sample" = c("s1","s2","s3","s4"), "Group" = c("A","A","B","C"))
 )
 ```
 
+__IMPORTANT__ Please respect this order of columns for the data in the CSV file:
+[Sample, Group]
+
+The names you give to columns do not matter, because WPM will change them into
+_"Sample"_ and _"Group"_.
 
 ### Plate(s) dimensions
 
 Specify the plate dimensions and their number (the user can choose between 6,24,
-48, 96, 386, 1534 and custom) (WPM checks that all the given settings arecompatible).
+48, 96, 386, 1534 and custom) (WPM checks that all the given settings are 
+compatible).
 
 ### Forbidden wells
 Specify the __Forbidden well__: These wells will not be filled with any kind of 
@@ -108,8 +111,8 @@ Provide the neighborhood constraints, which depend on the "Blank" mode chosen.
 
 ### Not Randomized wells
 
-Specify the __Not Randomized samples__: correspond to Quality Control samples or 
-standards.
+Specify the __Not Randomized samples__: correspond to Quality Control samples 
+or standards.
 
 ### Number of iterations
 
