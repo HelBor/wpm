@@ -11,13 +11,25 @@ csvFileInput <- function(id, label = "CSV file") {
             "text/comma-separated-values,text/plain",
             ".csv")
         ),
-        shinyWidgets::materialSwitch(
-            inputId = ns("heading"),
-            label = "Header",
-            value = FALSE,
-            status = "warning",
-            right = TRUE
+        shiny::fluidRow(
+            shiny::column(
+                width = 5,
+                shiny::h4("Does have the dataset a Header?")
+            ),
+            shiny::column(
+                width = 5,
+                shinyWidgets::switchInput(
+                    inputId = ns("heading"),
+                    label = NULL,
+                    value = FALSE,
+                    onLabel = "Yes",
+                    offLabel = "No",
+                    onStatus = "success",
+                    offStatus = "danger"
+                )
+            )
         ),
+
         shiny::hr(),
         ## Input: Select quotes
         shiny::fluidRow(
