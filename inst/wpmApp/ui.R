@@ -118,9 +118,27 @@ body <- shinydashboard::dashboardBody(
                         width = 12,
                         solidHeader = TRUE,
                         title = shiny::h3("1 - Upload dataset"),
-                        shiny::h4("Please use .csv format. \n File must contain
-                        2 columns: samples in the first one, and group number
-                                  in the second one."),
+                        shiny::fluidRow(
+                            shiny::column(
+                                width = 10,
+                                shiny::h4("Please use CSV format.")),
+                            shiny::column(
+                                width = 2,
+                                align = "right",
+                                shinyWidgets::dropdownButton(
+                                    shiny::tags$h4("File format"),
+                                    shiny::div("File must be in CSV format. It must contain at least the field samples names.
+                                    If samples pertain to different groups, you can specify a second column containing the group names.
+                                               See the vignette for more details."),
+                                    icon = shiny::icon("info-circle"),
+                                    tooltip = shinyWidgets::tooltipOptions(
+                                        title = "Help"),
+                                    status = "warning",
+                                    size = "sm",
+                                    width = "350px"
+                                )
+                            )
+                        ),
                         csvFileInput("datafile"),
                         #-----------------------------------------------------------
                         shiny::hr(),
