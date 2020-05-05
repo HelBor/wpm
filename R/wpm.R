@@ -1,5 +1,6 @@
 ##' Well-Plate Maker : a GUI for building well-plates plans.
-##'
+##' For more details on how to use WPM, please see the vignette using
+##' browseVignette("wpm")
 ##' @title wpm
 ##' @return launches the WPM app in a new window in the default browser
 ##' @author Helene  Borges
