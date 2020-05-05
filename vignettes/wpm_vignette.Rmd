@@ -6,10 +6,9 @@ affiliation: Universite Grenoble Alpes
 email: borges.helene.sophie@gmail.com
 abstract: >
     WPM is a shiny application deployed in the form of an R package. Its 
-    objective is to allow a user to generate a well plate plan in order to 
-    perform his experiments by controlling __batch effects__ (in particular 
-    preventing plate edge effects). The algorithm for placing the samples is 
-    inspired by the backtracking algorithm.
+    objective is to allow the user to create one (or more) plate plans in order 
+    to perform his experiments by controlling __batch effects__ (in particular 
+    preventing plate edge effects) without programming skills.
 vignette: >
     %\VignetteIndexEntry{How to use Well Plate Maker}
     %\VignetteEngine{knitr::rmarkdown}
@@ -21,10 +20,25 @@ output:
 
 ---
 
+
+# Introduction
+
+The `wpm` package contains one unique function for the user that runs a shiny 
+application. The user does not need to write an R command line or have any 
+programming skills.
+
+To generate plate plans, WPM uses an algorithm inspired from the backtracking 
+algorithm. In other words, WPM will gradually fill the plate by randomly 
+traversing it. At each well chosen (randomly), WPM will randomly choose a 
+sample which satisfies all the constraints specified during the configuration 
+step.
+
 # Getting started
+
 ## Prerequisites
+
 This tutorial explains how to use the Well Plate Maker shiny application.
-Make sure you are using the R 3.6.0 version.
+Make sure you are using the R 4.0.0 version.
 Also, check that you have these packages installed (with their dependencies):
 `r CRANpkg("shiny")`, `r CRANpkg("shinydashboard")`, `r CRANpkg("shinyWidgets")`
 , `r CRANpkg("shinycustomloader")`, `r CRANpkg("DT")`,
@@ -68,9 +82,21 @@ WPM has 4 main panels: __Home__, __Parameters__, __Results__ and __Help__.
 This page briefly presents the aim of the app, shows the last package version 
 and explains how to cite us to support our work.
 
+![The Home page when wpm is started](images/home.PNG)
+
 ## The __Parameters__ Panel
 
-This page is divided into 6 main steps, detailed below:
+Overall the page is organized in two sections. The one on the left contains all 
+the configuration steps. The one on the right summarizes the parameters entered 
+as well as the plate plan which will be used by WPM. The right section is 
+automatically updated each time a parameter is changed in the left section.
+
+![Parameters Panel](images/parametersPanel.PNG)
+
+The section 1 is divided into 6 main steps, detailed below. This part is the most 
+important to understand and master because it is here that we will specify all 
+the constraints for generating the desired plate planes.
+
 
 ### Upload dataset
 
@@ -87,50 +113,218 @@ knitr::kable(
 )
 ```
 
-__IMPORTANT__ Please respect this order of columns for the data in the CSV file:
+__IMPORTANT__ Please respect this ORDER of columns for the data in the CSV file:
 [Sample, Group]
 
 The names you give to columns do not matter, because WPM will change them into
 _"Sample"_ and _"Group"_.
 
+After uploading the CSV file, these 3 next sub-steps are important:
+
+* check if your file does have a __header__.
+* select the right type of __quotes__. Default is none, meaning that there is 
+no __*"*__ or __*'*__ characters in your file.
+* select the appropriate __separator__ field. Default is semicolon (__*";"*__)
+
+You will see your dataset on the right side of the window, with a new column 
+added: "ID".
+Each sample is assigned a unique ID, which will be used to assign the samples 
+to plate plans (for more details on the ID see the 
+[Results section](#results_panel) ).
+
+![Dataset vizualisation](images/toy2rightpanel.PNG)
+
+__IMPORTANT__ Be careful and please ensure that the dataset is correctly 
+displayed in the right window and that the number of samples / groups is 
+correct.
+If you see that the total number of samples is wrong, this 
+means that you have not chosen the appropriate options among those described 
+above and you need to set the correct ones.
+
+The last sub-step *Choose a Project name* is optionnal. If you provide one, it 
+will be used in the plots titles and in the name of the final dataset.
+
+
 ### Plate(s) dimensions
 
-Specify the plate dimensions and their number (the user can choose between 6,24,
-48, 96, 386, 1534 and custom) (WPM checks that all the given settings are 
-compatible).
+Here you have to specify the plate dimensions and their number. Currently, WPM 
+supports plate dimensions of 6,24, 48, 96, 386, 1534 wells and a custom option 
+(where you specify the number of lines and columns by hand).
 
-### Forbidden wells
-Specify the __Forbidden well__: These wells will not be filled with any kind of 
-sample. We simply do not want to fill them (e.g. the coins of the plate), or in 
+To the right of step 2 you can see an information box, warning you that WPM 
+will distribute the samples in a balanced manner within the plates (if there 
+are several).
+
+![balanced way message](images/balanceInfobox.PNG)
+
+If you select a plate size compatible with the total number of samples, you 
+will see two blues boxes and a plate plan appear on the right summarizing all 
+of your configuration.
+In the example below, we selected the pre-defined dimension of 96 wells and only
+one plate:
+
+![plate dimensions example](images/platedimensions.PNG)
+
+The right side of the panel will summarize all these parameters:
+
+![parameters summary](images/parametersCheck.PNG)
+
+This plot updates with each modification of the parameters, thus making it 
+possible to see if one has made an error.
+
+__IMPORTANT__: If WPM detects a problem or incompatibility between parameters, you 
+will see an error message instead of the plate plan, explaining you what could 
+be the problem.
+
+![Example of error message](images/exErrorMsg.PNG)
+
+
+### Forbidden wells {#forbidden_wells}
+
+In this step are listed the __Forbidden wells__ if any (this is optionnal of 
+course): 
+
+> A __Forbidden well__ will not be filled with any kind of sample. 
+We simply do not want to fill them (*e.g.* the coins of the plate), or in 
 case of dirty wells, broken pipettes, etc.
 
+You fill the text input with a combination of letters and numbers like in the 
+example below:
+
+![Example of forbidden wells listed in the text input](images/forbiddenEx1.PNG)
+
+You will see the plot updated in the right section:
+
+![Updated plot with forbidden wells](images/forbiddenEx2.PNG)
+
+The wells filled with forbidden wells will have the *"forbidden"* ID in the 
+final dataset.
+
+
 ### Blanks
-Specify the __Blanks__: correspond to solution without biological sample in it. 
-Provide the neighborhood constraints, which depend on the "Blank" mode chosen. 
-(Shouldn't samples from the same group be found side by side?)
+At this stage you can specify the wells which correspond to blanks, if there 
+are any. 
+
+> A __Blank well__ corresponds to wells filled in with solution but without 
+biological material (*e.g.* to avoid cross-contamination).
+
+Five modes are available for placing the blanks:
+
+**1)** *no blanks*: there will be no blank on the plate(s).
+
+**2)** *Per line*: Automatically places blanks every other line. 
+You can choose to start placing in even or odd line.
+
+![Per line mode example with even option](images/blankLine.PNG)
+
+**3)** *Per column*: Automatically places blanks every other column. 
+You can choose to start placing in even or odd column.
+
+![Per Column mode example with even option](images/blankColumn.PNG)
+
+**4)** *Checkerboard*: Automatically places blanks like a checkerboard.
+
+![Checkerboard mode](images/blankCheckerboard.PNG)
+
+**5)** *Choose by hand*: It is the same procedure as for specifying forbidden 
+wells.
+
+__Specify the neighborhood constraints__
+
+These are the spatial constraints that WPM needs to create the plates.
+Currently, there are 4 types proposed. Note that the modes are available only if 
+they are compatible with the chosen blank mode.
+The question here is: Should samples from the same group be found side by side?
+
+Schematically, the spatial constraints can be summarized as follows (the blue
+well is the current well evaluated by WPM; The wells in green are those 
+assessed for compliance with the chosen constraint. The blue well therefore has 
+the possibility (but not the obligation since the filling of the plate is done 
+randomly) to be filled with a sample belonging to the same group as the samples 
+in the wells evaluated.
+
+![No constraint](images/NCnone.PNG){width=50%}
+
+![North-South constraint](images/NCns.PNG){width=50%} 
+
+![East-West constraint](images/NCew.PNG){width=50%}
+
+![North-South-East-West constraint](images/NCnsew.PNG){width=50%}
+
+The wells filled with blank wells will have the *"blank"* ID in the 
+final dataset.
 
 ### Not Randomized wells
 
-Specify the __Not Randomized samples__: correspond to Quality Control samples 
-or standards.
+At this stage you can specify the wells which correspond to not randomized 
+wells, if there are any. 
+
+> A __Not Randomized well__ corresponds to quality control samples or standards,
+the precise location of which must be controlled by the experimenter.
+
+This step works in exactly the same way as the 
+[forbidden well](#forbidden_wells) step. The only difference is that the not 
+randomized will appear in **black** on the plot.
+
+The wells filled with not randomized wells will have the *"notRandom"* ID in the 
+final dataset.
 
 ### Number of iterations
 
-Choose a maximum number of iterations that WPM can do to find a solution,then 
-start WPM. If the samples do not have a group, then the samples will be placed 
-completely randomly on the plates. If there are groups, wpm will use an 
-algorithm inspired by the backtracking algorithm (in order to place the samples 
-in the wells while respecting the specified constraints.).
+Here you choose a maximum number of iterations that WPM can do to find a 
+solution, then start WPM by clincking the **"start WPM"** button. 
+The default value is 20, but if your configuration is somewhat complex, then 
+it is advisable to increase this number.
+An *iteration* corresponds to an attempt by WPM to find a solution. The 
+algorithm used is not a "full" backtracking: WPM stops as soon as there are no 
+more possibilities to finalize the current solution, and starts from scratch 
+the plate plan, until providing a solution that complements all the constraints.
+With this approach, not all possible combinations are explored, but it does 
+reduce execution time. A more "complete" version of backtracking could possibly 
+be an improvement to bring in the future.
 
+When you start WPM, a progress bar shows which iteration WPM is at.
 
-## The __Results__ Panel
+If WPM finds a solution, you will see this pop in the browser, inviting you to 
+go to the [Result Panel](#results_panel):
+
+![WPM succeeded](images/wpmSuccess.PNG)
+
+If WPM fails, an error message will appear, prompting you to try again: 
+
+![WPM failed](images/wpmFailed.PNG)
+
+__IMPORTANT__ We recommend to refresh the web session by using `Ctrl + F5` 
+before changing the parameters. It will completely restart the parameters panel 
+but will avoid a known issue, we are currently trying to fix. 
+
+## The __Results__ Panel {#results_panel}
 
 This Panel allows you to look after the final dataset containing the wells 
-chosen for each sample and a plot of your final well-plate map. Dataframe and 
-plots are downloadable separately.
+chosen for each sample:
+
+![Final dataframe](images/final_dataset.PNG)
+
+The dataframe contains 7 columns giving all the information needed to run the 
+experiment: The sample name with its corresponding group; its ID for the plot; 
+the well chosen; the row and the column to which the well corresponds and the 
+number of the plate on which the sample must be placed during the experiment.
+
+This Panel also shows you the generated plot(s) of your final well-plate map(s).
+One color corresponds to one group level. The numbers are the IDs used in 
+place of the sample names which could be too long and make the plot unreadable.
+
+Below is an example of 80 samples distributed in 10 groups and placed on a 
+96 well-plate, with the North-South-East-West neighborhood constraint:
+
+![Plate map](images/plot1.png)
+
+Dataframe and plots are downloadable separately.
 
 ## The __Help__ Panel
 
+In this panel you will find the email of contact, how to open a new issue for 
+the project and how to find this vignette.
 
 # Citing Our work
 > The published article of the project will be linked here.
