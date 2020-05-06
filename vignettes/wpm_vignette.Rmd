@@ -93,9 +93,9 @@ automatically updated each time a parameter is changed in the left section.
 
 ![Parameters Panel](images/parametersPanel.PNG)
 
-The section 1 is divided into 6 main steps, detailed below. This part is the most 
-important to understand and master because it is here that we will specify all 
-the constraints for generating the desired plate planes.
+The section 1 is divided into 6 main steps, detailed below. This part is the 
+most important to understand and master because it is here that we will 
+specify all the constraints for generating the desired plate planes.
 
 
 ### Upload dataset
@@ -172,9 +172,9 @@ The right side of the panel will summarize all these parameters:
 This plot updates with each modification of the parameters, thus making it 
 possible to see if one has made an error.
 
-__IMPORTANT__: If WPM detects a problem or incompatibility between parameters, you 
-will see an error message instead of the plate plan, explaining you what could 
-be the problem.
+__IMPORTANT__: If WPM detects a problem or incompatibility between parameters, 
+you will see an error message instead of the plate plan, explaining you what 
+could be the problem.
 
 ![Example of error message](images/exErrorMsg.PNG)
 
@@ -232,8 +232,8 @@ wells.
 __Specify the neighborhood constraints__
 
 These are the spatial constraints that WPM needs to create the plates.
-Currently, there are 4 types proposed. Note that the modes are available only if 
-they are compatible with the chosen blank mode.
+Currently, there are 4 types proposed. Note that the modes are available only 
+if they are compatible with the chosen blank mode.
 The question here is: Should samples from the same group be found side by side?
 
 Schematically, the spatial constraints can be summarized as follows (the blue
@@ -266,8 +266,8 @@ This step works in exactly the same way as the
 [forbidden well](#forbidden_wells) step. The only difference is that the not 
 randomized will appear in **black** on the plot.
 
-The wells filled with not randomized wells will have the *"notRandom"* ID in the 
-final dataset.
+The wells filled with not randomized wells will have the *"notRandom"* ID in 
+the final dataset.
 
 ### Number of iterations
 
