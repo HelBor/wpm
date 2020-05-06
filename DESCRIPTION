@@ -3,10 +3,10 @@ Type: Package
 Title: Well Plate Maker
 Version: 0.99.0
 Date: 2020-03-02
-Author: person(given = "Helene", family = "Borges",
-	            email = "borges.helene.sophie@gmail.com",
- 		    role = c("aut","cre"))
-Maintainer: Hélène Borges <borges.helene.sophie@gmail.com>
+Authors@R: c(person(given = "Hélène", family = "Borges", role = c("aut","cre"),
+                    email = "borges.helene.sophie@gmail.com"),
+            person(given = "Thomas", family ="Burger", role = "aut",
+                    email = "thomas.burger@cea.fr"))
 biocViews: GUI, Proteomics, MassSpectrometry, BatchEffect, ExperimentalDesign
 Description: This is a shiny application for creating well-plate plans.
     It uses a backtracking-inspired algorithm to place samples on plates based
@@ -29,3 +29,4 @@ LazyData: false
 RoxygenNote: 7.1.0
 VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
+NeedsCompilation: no
