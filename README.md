@@ -15,7 +15,7 @@
 ## Getting started
 
 ### Pre-requisites
-`R version > 3.4`
+`R version >= 4.0.0`
 OS tested : `Windows`, `Fedora`, `Ubuntu`,`MacOS`
 But the app should work also on the others.
 
@@ -45,6 +45,11 @@ A new window will open in your default browser.
 
 Since WPM is a GUI, the idea is to just provide a minimum of parameters to the application.
 No programming skills are required. WPM supports multiple plates and places samples in a balanced way among the plates.
+
+To see a complete Tutorial, please see the Vignette of the package. 
+```R
+browseVignettes("wpm")
+```
 
 WPM has 4 main panels:
 
