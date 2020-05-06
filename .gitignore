@@ -30,3 +30,4 @@ unsrturl.bst
 *.tm_properties
 *.Rproj.user
 *.Rhistory
+.Rproj.user
