@@ -1,6 +1,7 @@
 *.renviron
 *.rprofile
 *.rproj
+*.Rproj
 *.rproj.user
 *.rhistory
 *.rapp.history
