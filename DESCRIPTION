@@ -1,32 +1,40 @@
 Package: wpm
 Type: Package
 Title: Well Plate Maker
-Version: 0.99.1
-Date: 2020-03-02
-Authors@R: c(person(given = "Hélène", family = "Borges", role = c("aut","cre"),
-                    email = "borges.helene.sophie@gmail.com"),
-            person(given = "Thomas", family ="Burger", role = "aut",
-                    email = "thomas.burger@cea.fr"))
+Version: 0.99.3
+Authors@R: c(person('Hélène', 'Borges', role = c('aut', 'cre'), 
+                    email = 'borges.helene.sophie@gmail.com'),
+            person('Thomas', 'Burger', role = 'aut',
+                    email = 'thomas.burger@cea.fr'))
+Description: This is a shiny application for creating well-plate plans. 
+    It uses a backtracking-inspired algorithm to place samples on plates 
+    based on specific neighborhood constraints.
+License: Artistic-2.0
 biocViews: GUI, Proteomics, MassSpectrometry, BatchEffect, ExperimentalDesign
-Description: This is a shiny application for creating well-plate plans.
-    It uses a backtracking-inspired algorithm to place samples on plates based
-    on specfic neighborhood constraints.
 Depends: R (>= 4.0.0)
 Imports:
-    DT,
+    utils,
+    methods,
+    config,
+    golem,
     shiny,
+    DT,
+    ggplot2,
+    dplyr,
+    rlang,
+    stringr,
     shinydashboard,
     shinyWidgets,
     shinycustomloader,
     RColorBrewer,
-    dplyr,
-    stringr,
-    ggplot2,
     logging
-License: Artistic-2.0
 Encoding: UTF-8
 LazyData: false
 RoxygenNote: 7.1.0
+Suggests:
+    testthat,
+    BiocStyle,
+    knitr,
+    rmarkdown
 VignetteBuilder: knitr
-Suggests: BiocStyle, knitr, rmarkdown
 NeedsCompilation: no

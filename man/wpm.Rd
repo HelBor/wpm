@@ -2,21 +2,19 @@
 % Please edit documentation in R/wpm.R
 \name{wpm}
 \alias{wpm}
-\title{wpm}
+\title{Run the Shiny Application of Well Plate Maker}
 \usage{
-wpm()
+wpm(...)
+}
+\arguments{
+\item{...}{A series of options to be used inside the app.}
 }
 \value{
-launches the WPM app in a new window in the default browser
+a shiny application object with golem options
 }
 \description{
-Well-Plate Maker : a GUI for building well-plates plans.
-For more details on how to use WPM, please see the vignette using
-browseVignette("wpm")
+Run the Shiny Application of Well Plate Maker
 }
 \examples{
 wpm()
-}
-\author{
-Helene  Borges
 }

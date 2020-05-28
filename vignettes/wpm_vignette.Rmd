@@ -8,7 +8,8 @@ abstract: >
     WPM is a shiny application deployed in the form of an R package. Its 
     objective is to allow the user to create one (or more) plate plans in order 
     to perform his experiments by controlling __batch effects__ (in particular 
-    preventing plate edge effects) without programming skills.
+    preventing plate edge effects) without programming skills. However, R 
+    functions are available for users who want to work with their own R scripts.
 vignette: >
     %\VignetteIndexEntry{How to use Well Plate Maker}
     %\VignetteEngine{knitr::rmarkdown}
@@ -23,7 +24,13 @@ output:
 
 # Introduction
 
-The `wpm` package contains one unique function for the user that runs a shiny 
+There are two ways using the `wpm` package:
+
+* throught a shiny application for users who don't have any skill in R 
+programming.
+* using R commands for users who want to work with their own R scripts. 
+
+The `wpm` package contains one function for the user that runs a shiny 
 application. The user does not need to write an R command line or have any 
 programming skills.
 
@@ -59,7 +66,7 @@ BiocManager::install("wpm")
 ## Launch WPM
 
 Whether you use RStudio or simply work with an R console, the procedure remains 
-the same:
+the same to launch the shiny app:
 
 ```{r launch wpm, eval = FALSE}
 library(wpm)
@@ -71,9 +78,9 @@ If not, find a line written in the R console (eg.
 
 # How to use WPM
 
-Since WPM is a GUI, the idea is to just provide a minimum of parameters to the 
-application. No programming skills are required. WPM supports multiple plates 
-and places samples in a balanced way among the plates.
+Since WPM proposes a GUI, the idea is to just provide a minimum of parameters 
+to the application. No programming skills are required. WPM supports multiple 
+plates and places samples in a balanced way among the plates.
 
 WPM has 4 main panels: __Home__, __Parameters__, __Results__ and __Help__.
 

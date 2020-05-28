@@ -1,19 +1,17 @@
-##' Well-Plate Maker : a GUI for building well-plates plans.
-##' For more details on how to use WPM, please see the vignette using
-##' browseVignette("wpm")
-##' @title wpm
-##' @return launches the WPM app in a new window in the default browser
-##' @author Helene  Borges
-##' @examples
-##' wpm()
-##' @export
-
-wpm <- function() {
-    if (interactive()) {
-        options(shiny.maxRequestSize = 1024^3)
-        a <- shiny::runApp(system.file("wpmApp", package = "wpm"),
-            launch.browser = TRUE)
-        return(invisible(a))
-    }
-    return(NULL)
+#' Run the Shiny Application of Well Plate Maker
+#'
+#' @param ... A series of options to be used inside the app.
+#' @return a shiny application object with golem options
+#' @export
+#' @examples
+#' wpm()
+wpm <- function(...) {
+    golem::with_golem_options(
+        app = shiny::shinyApp(
+            ui = app_ui, 
+            server = app_server
+        ), 
+        golem_opts = list(...)
+    )
 }
+ 
