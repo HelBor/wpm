@@ -51,4 +51,5 @@ drawMap(df = user_data, sample_gps = 3, gp_levels = gp_lvl, plate_lines = 3,
 # also works when giving a plate with more wells than the number of samples to place.
 drawMap(df = user_data, sample_gps = 3, gp_levels = gp_lvl, plate_lines = 8,
         plate_cols = 12, project_title = p)
+
 }

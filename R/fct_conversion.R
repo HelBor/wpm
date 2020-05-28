@@ -14,6 +14,7 @@
 ##'
 ##' # supports uppercase / lowercase letters
 ##' convertVector2Df("a1,C2,A3,b12,C42",3,42,"specify_status")
+##'
 ##' @export
 convertVector2Df <- function(chr_wells, max_Row, max_Col, status = NA){
 

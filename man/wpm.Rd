@@ -16,5 +16,5 @@ a shiny application object with golem options
 Run the Shiny Application of Well Plate Maker
 }
 \examples{
-wpm()
+if(interactive()) {wpm()}
 }

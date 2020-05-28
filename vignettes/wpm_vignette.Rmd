@@ -30,10 +30,6 @@ There are two ways using the `wpm` package:
 programming.
 * using R commands for users who want to work with their own R scripts. 
 
-The `wpm` package contains one function for the user that runs a shiny 
-application. The user does not need to write an R command line or have any 
-programming skills.
-
 To generate plate plans, WPM uses an algorithm inspired from the backtracking 
 algorithm. In other words, WPM will gradually fill the plate by randomly 
 traversing it. At each well chosen (randomly), WPM will randomly choose a 

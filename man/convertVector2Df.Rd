@@ -28,4 +28,5 @@ convertVector2Df("A1,C2,A3,B12,C42",3,42,"specify_status")
 
 # supports uppercase / lowercase letters
 convertVector2Df("a1,C2,A3,b12,C42",3,42,"specify_status")
+
 }
