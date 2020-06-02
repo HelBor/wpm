@@ -24,3 +24,10 @@
 * Added the wrapper function allowing to use wpm in command line
 * Added support for eSet and MSnSet objects as input of the wrapper function.
 * Added unit tests for import functions
+
+
+# changes in version 0.99.6 (2020-06-02)
+* Added function checkWpmInputs to control the correct use of the wrapperWpm 
+function (command line use).
+* Updated the README file and the tutorial vignette explaining how to use WPM 
+using command line.
