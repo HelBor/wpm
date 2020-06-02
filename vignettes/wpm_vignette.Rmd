@@ -58,8 +58,13 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("wpm")
 ```
 
+# How to use the WPM shiny application
 
-## Launch WPM
+Since WPM proposes a GUI, the idea is to just provide a minimum of parameters 
+to the application. No programming skills are required. WPM supports multiple 
+plates and places samples in a balanced way among the plates.
+
+## Launch the shiny application
 
 Whether you use RStudio or simply work with an R console, the procedure remains 
 the same to launch the shiny app:
@@ -72,18 +77,12 @@ If everything is in order, a new window will open in your default browser.
 If not, find a line written in the R console (eg. 
 `Listening on http://127.0.0.1:4028`), and paste the URL in your web browser.
 
-# How to use WPM
-
-Since WPM proposes a GUI, the idea is to just provide a minimum of parameters 
-to the application. No programming skills are required. WPM supports multiple 
-plates and places samples in a balanced way among the plates.
-
-WPM has 4 main panels: __Home__, __Parameters__, __Results__ and __Help__.
+WPM has 3 main panels: __Home__, __Parameters__ and __Results__.
 
 ## The __Home__ Panel
 
-This page briefly presents the aim of the app, shows the last package version 
-and explains how to cite us to support our work.
+This page briefly presents the aim of the app, shows the last package version, 
+explains how to cite us to support our work and gives the contact information.
 
 ![The Home page when wpm is started](images/home.PNG)
 
@@ -124,7 +123,7 @@ _"Sample"_ and _"Group"_.
 
 After uploading the CSV file, these 3 next sub-steps are important:
 
-* check if your file does have a __header__.
+* check if your file does have a __header__ and __row names__.
 * select the right type of __quotes__. Default is none, meaning that there is 
 no __*"*__ or __*'*__ characters in your file.
 * select the appropriate __separator__ field. Default is semicolon (__*";"*__)
@@ -144,11 +143,11 @@ If you see that the total number of samples is wrong, this
 means that you have not chosen the appropriate options among those described 
 above and you need to set the correct ones.
 
-The last sub-step *Choose a Project name* is optionnal. If you provide one, it 
+The last sub-step *Choose a Project name* is optional. If you provide one, it 
 will be used in the plots titles and in the name of the final dataset.
 
 
-### Plate(s) dimensions
+### Plate(s) dimensions {#plate-dims}
 
 Here you have to specify the plate dimensions and their number. Currently, WPM 
 supports plate dimensions of 6,24, 48, 96, 386, 1534 wells and a custom option 
@@ -184,7 +183,7 @@ could be the problem.
 
 ### Forbidden wells {#forbidden_wells}
 
-In this step are listed the __Forbidden wells__ if any (this is optionnal of 
+In this step are listed the __Forbidden wells__ if any (this is optional of 
 course): 
 
 > A __Forbidden well__ will not be filled with any kind of sample. 
@@ -204,7 +203,7 @@ The wells filled with forbidden wells will have the *"forbidden"* ID in the
 final dataset.
 
 
-### Blanks
+### Blanks {#blanks}
 At this stage you can specify the wells which correspond to blanks, if there 
 are any. 
 
@@ -232,7 +231,7 @@ You can choose to start placing in even or odd column.
 **5)** *Choose by hand*: It is the same procedure as for specifying forbidden 
 wells.
 
-__Specify the neighborhood constraints__
+#### Specify the neighborhood constraints {#neighborhood}
 
 These are the spatial constraints that WPM needs to create the plates.
 Currently, there are 4 types proposed. Note that the modes are available only 
@@ -257,7 +256,7 @@ in the wells evaluated.
 The wells filled with blank wells will have the *"blank"* ID in the 
 final dataset.
 
-### Not Randomized wells
+### Not Randomized wells {#notRandom_wells}
 
 At this stage you can specify the wells which correspond to not randomized 
 wells, if there are any. 
@@ -324,10 +323,102 @@ Below is an example of 80 samples distributed in 10 groups and placed on a
 
 Dataframe and plots are downloadable separately.
 
-## The __Help__ Panel
+# How to use WPM using command lines
 
-In this panel you will find the email of contact, how to open a new issue for 
-the project and how to find this vignette.
+As explained before, WPM can also be used through R command lines by following these steps:
+
+1. Create the dataset for WPM
+2. Run WPM
+3. Visualize the final plate plan(s)
+
+## Prepare the dataset
+The user can work with CSV files, `ExpressionSet` objects or `MSnSet` objects.
+The first step is to create a dataframe containing all the data needed by wpm 
+to work properly. To do so:
+
+If it is a CSV file, then run:
+```{r convert CSV file, eval = FALSE}
+df <- wpm::convertCSV("path-to-CSV-file")
+```
+If it is an ExpressionSet or MSnSet object
+```{r create an MSnSet object}
+sample_names <- c("s1","s2","s3","s4", "s5")
+M <- matrix(NA, nrow = 4, ncol = 5)
+colnames(M) <- sample_names
+rownames(M) <- paste0("id", LETTERS[1:4])
+pd <- data.frame(Environment = rep_len(LETTERS[1:3], 5),
+                 Category = rep_len(1:2, 5), row.names = sample_names)
+rownames(pd) <- colnames(M)
+my_MSnSet_object <- MSnbase::MSnSet(exprs = M,pData =  pd)
+```
+
+then run `convertESet` by specifying the object and the variable to use as 
+grouping factor for samples:
+```{r convert ESet/MSnSet object}
+df <- wpm::convertESet(my_MSnSet_object, "Environment")
+```
+
+## Run WPM
+
+The next step is to run the wpm wrapper function by giving it all the parameters
+needed. For more details on the parameters, please see the sections about
+[plate dimensions](#plate-dims), [forbidden wells](#forbidden_wells), 
+[Blanks](#blanks), [Quality Control wells](#notRandom_wells) and 
+[Spatial constraints](#neighborhood).
+
+In this toy example, we do not specify any blank well.
+
+```{r run wpm}
+wpm_result <- wpm::wrapperWPM(user_df = df,
+            plate_dims = list(8,12),
+            nb_plates = 1,
+            forbidden_wells = "A1,A2,A3",
+            QC_wells = "B1,B2",
+            spatial_constraint = "NS")
+```
+
+## Plate map visualization
+The last step is to plot the plate plan(s) using:
+```{r visualize plate plan}
+drawned_map <- wpm::drawMap(df = wpm_result,
+        sample_gps = length(levels(as.factor(pd$Environment))),
+        gp_levels = gp_lvl <- levels(as.factor(pd$Environment)),
+        plate_lines = 8,
+        plate_cols = 12,
+        project_title = "my Project Title")
+```
+
+```{r see the map}
+drawned_map
+```
+
+
+Plots can be saved with:
+```{r save plan plot, eval=FALSE}
+ggplot2::ggsave(
+    filename = "my file name",
+    plot = drawned_map,
+    width = 10,
+    height = 7,
+    units = "in"
+)
+```
+
+__IMPORTANT__ If multiple plates where specified, then `wpm_result` will be a 
+list containing a dataframe **for each generated plate**. That means, if we 
+generate 2 plates, we access a specific plate with 
+`wpm_result[[numberOfThePlate]]`:
+```{r, eval = FALSE}
+numberOfThePlate <- 1
+drawned_map <- wpm::drawMap(df = wpm_result[[numberOfThePlate]],
+        sample_gps = length(levels(as.factor(pd$Environment))),
+        gp_levels = gp_lvl <- levels(as.factor(pd$Environment)),
+        plate_lines = 8,
+        plate_cols = 12,
+        project_title = "my Project Title")
+```
+
+
 
 # Citing Our work
 > The published article of the project will be linked here.

@@ -31,20 +31,67 @@ From GitHub
 devtools::install_github(repo = "HelBor/wpm")
 ```
 
-### Launch WPM
-
-#### in RStudio or R console
-
-```R
-library(wpm)
-wpm()
-```
-A new window will open in your default browser.
 
 ## How to use WPM
 
-Since WPM is a GUI, the idea is to just provide a minimum of parameters to the application.
-No programming skills are required. WPM supports multiple plates and places samples in a balanced way among the plates.
+There are two ways to use WPM:
+* on the command line with the appropriate functions, for users wishing to work
+on the command line or integrate wpm into their R scripts.
+* via a shiny application (web interface), for users with no R programming 
+skills.
+
+### Load the library
+
+```R
+library(wpm)
+```
+
+### Using WPM from the command line
+
+In command line there a some steps to process in the right order:
+#### Prepare dataset
+You can work with CSV files, `ExpressionSet` objects or `MSnSet` objects.
+The first step is to create a dataframe containing all the data needed by wpm 
+to work properly. To do so:
+```R
+# if you have a CSV file
+df <- convertCSV("path-to-your-CSV")
+# if you have an ExpressionSet or an MSnSet
+df <- convertESet(myExpressionSet) # or convertESet(myMSnSet)
+```
+ 
+#### Run WPM
+
+The next step is to run the wpm wrapper function by giving it all the parameters
+needed.
+
+```R
+wrapperWPM(user_df = df,
+            plate_dims = list(8,12),
+            nb_plates = 1,
+            forbidden_wells = "A1,A2,A3",
+            QC_wells = "B1,B2",
+            spatial_constraint = "NS")
+```
+
+#### Plate map visualization
+
+
+1. Create the valid dataframe from a CSV file (with `importCSV()`) or from an ExpresssionSet or 
+MSnSet object with `importCSV` or `importESet`
+2. Use the 
+
+
+### Use WPM in web interface
+
+Since WPM provides also a GUI, the idea is to just provide a minimum of 
+parameters to the application. No programming skills are required.
+Simply write in the console:
+```R
+wpm()
+```
+
+
 
 To see a complete Tutorial, please see the Vignette of the package. 
 ```R
@@ -56,7 +103,6 @@ WPM has 4 main panels:
 * __Home__
 * __Parameters__
 * __Results__
-* __Help__
 
 
 ### Provide parameters

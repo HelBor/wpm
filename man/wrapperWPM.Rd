@@ -19,13 +19,13 @@ wrapperWPM(
 \item{user_df}{dataframe containing user data obtained with the
 `convertCSV()` or `convertESet()` functions.}
 
-\item{plate_dims}{vector, containing 2 values: the first is the number of
+\item{plate_dims}{list, containing 2 values: the first is the number of
 plate's lines and second is the number of plate's columns.}
 
 \item{nb_plates}{numeric, corresponds to the number of plates to fill}
 
 \item{forbidden_wells}{character, the wells that will not be used at all
-for the experiment. This argument nedds to be a character string giving the
+for the experiment. This argument needs to be a character string giving the
  wells coordinates of the form "LetterNumber" (eg. "A1" for the well
  positionned in the first row/ first column of the plate).}
 
@@ -66,7 +66,7 @@ x <- MSnbase::MSnSet(exprs = M,pData =  pd)
 # convert it to a valid dataframe for wpm
 df <- convertESet(x, "Environment")
 # run wpm on the toy example
-wrapperWPM(user_df = df, plate_dims = c(8,12), nb_plates = 1,
+wrapperWPM(user_df = df, plate_dims = list(8,12), nb_plates = 1,
            forbidden_wells = "A1,A2,A3", QC_wells = "B1,B2",
            spatial_constraint = "NS")
 }
