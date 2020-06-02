@@ -12,5 +12,15 @@
     * mod_data_export, a specific module for data export
     * mod_plate_dimensions
     * mod_special_wells, mainly to avoid code redundancy and gain readability
-* added unit test for the convertVector2Df function
-* added Rd examples for convertVector2Df and drawMap functions
+* Added unit test for the convertVector2Df function
+* Added Rd examples for convertVector2Df and drawMap functions
+
+
+# changes in version 0.99.4 (2020-05-28)
+* Fix the TIMEOUT error during R CMD CHECK
+
+# changes in version 0.99.5 (2020-06-02)
+* Added functions for importing CSV files and ExpressionSet / MSnSet objects.
+* Added the wrapper function allowing to use wpm in command line
+* Added support for eSet and MSnSet objects as input of the wrapper function.
+* Added unit tests for import functions

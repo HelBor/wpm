@@ -1,7 +1,7 @@
 Package: wpm
 Type: Package
 Title: Well Plate Maker
-Version: 0.99.4
+Version: 0.99.5
 Authors@R: c(person('Hélène', 'Borges', role = c('aut', 'cre'), 
                     email = 'borges.helene.sophie@gmail.com'),
             person('Thomas', 'Burger', role = 'aut',
@@ -15,6 +15,7 @@ Depends: R (>= 4.0.0)
 Imports:
     utils,
     methods,
+    Biobase,
     config,
     golem,
     shiny,
@@ -32,6 +33,7 @@ Encoding: UTF-8
 LazyData: false
 RoxygenNote: 7.1.0
 Suggests:
+    MSnbase,
     testthat,
     BiocStyle,
     knitr,

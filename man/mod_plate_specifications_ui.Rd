@@ -13,6 +13,6 @@ mod_plate_specifications_ui(id)
 a Fuild Page layout
 }
 \description{
-A shiny Module allowing to process the parameters specified 
+A shiny Module allowing to process the parameters specified
 by the user in order to generate the plate plans afterwards.
 }

@@ -23,7 +23,7 @@ mod_plate_dimensions_ui <- function(id){
                     ),
                     selected = NULL
                 ),
-                
+
                 shiny::conditionalPanel(
                     condition = "input.plate_size == 'custom'",
                     shiny::h4("How many lines on your plate?"),
@@ -75,14 +75,14 @@ mod_plate_dimensions_ui <- function(id){
 }
 
 mod_plate_dimensions_server <- function(input, output, session){
-    
+
     toReturn <- shiny::reactiveValues(
         nb_lines = NULL,
         nb_cols = NULL,
         nb_plates = NULL
     )
-    
-    
+
+
     p_lines <- shiny::reactive({
         switch(input$plate_size,
                NULL = {nb <- 0},
@@ -96,7 +96,7 @@ mod_plate_dimensions_server <- function(input, output, session){
         )
         return(nb)
     })
-    
+
     p_cols <- shiny::reactive({
         switch(input$plate_size,
                NULL = {nb <- 0},
@@ -110,7 +110,7 @@ mod_plate_dimensions_server <- function(input, output, session){
         )
         return(nb)
     })
-    
+
     nb_p <- shiny::reactive({
         if (is.na(input$no_plates)) {
             return(0)
@@ -118,13 +118,12 @@ mod_plate_dimensions_server <- function(input, output, session){
             return(input$no_plates)
         }
     })
-    
+
     totalNbWells <- shiny::reactive({
         tNbW <- p_lines() * p_cols() * nb_p()
-        logging::loginfo("totalNbWells = %d", tNbW, logger = "plate_spec")
         return(tNbW)
     })
-    
+
     output$total_nb_wells <- shinydashboard::renderValueBox({
         shinydashboard::valueBox(
             value = totalNbWells(),
@@ -132,7 +131,7 @@ mod_plate_dimensions_server <- function(input, output, session){
             icon = shiny::icon("vials"),
             color = "teal")
     })
-    
+
     output$nb_plates_to_fill <- shinydashboard::renderValueBox({
         shinydashboard::valueBox(
             value = as.numeric(nb_p()),
@@ -140,25 +139,25 @@ mod_plate_dimensions_server <- function(input, output, session){
             icon = shiny::icon("dice-four"),
             color = "teal")
     })
-    
+
     output$warning_plate <- shinydashboard::renderInfoBox({
         shinydashboard::infoBox(
-            title = shiny::HTML( 
-                paste("We assume that all the plates to be filled have the same 
+            title = shiny::HTML(
+                paste("We assume that all the plates to be filled have the same
                   dimensions.", shiny::br(), "Also, when you want to generate more
-                  than 1 plate,", shiny::br(), "WPM uses balanced group workforces 
+                  than 1 plate,", shiny::br(), "WPM uses balanced group workforces
                   to distribute the samples within the plates.")),
             icon = shiny::icon("info-circle"),
             color = "yellow",
             fill = TRUE)
     })
-    
+
     shiny::observe({
         toReturn$nb_lines <- p_lines()
         toReturn$nb_cols <- p_cols()
         toReturn$nb_plates <- nb_p()
     })
-    
+
     return(toReturn)
-    
+
 }

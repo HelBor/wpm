@@ -18,7 +18,7 @@ mod_data_export_ui <- function(id){
                                     type = "html",
                                     loader = "loader7"
                                 )
-                                
+
             )
         ),
         shiny::fluidRow(
@@ -37,10 +37,10 @@ mod_data_export_ui <- function(id){
 }
 
 ##' Data export Server Function
-##' 
-##' @description Server part of the shiny Module to make final outputs 
+##'
+##' @description Server part of the shiny Module to make final outputs
 ##' downloadable
-##' 
+##'
 ##' @param input,output,session internal shiny parameters
 ##' @param df dataframe of user's data
 ##' @param max_iter integer, the maximal number of iterations to do
@@ -48,8 +48,8 @@ mod_data_export_ui <- function(id){
 ##' @param gp_levels the different group levels names
 ##' @param plate_opts reactiveValues object containing all the plate options.
 ##' @param project_name the user's project title
-##' 
-##' @return toReturn a ReactiveValues object containing the final dataframe 
+##'
+##' @return toReturn a ReactiveValues object containing the final dataframe
 ##' and the ggplot object(s) corresponding to the plate plan(s).
 ##' @noRd
 mod_data_export_server <- function(input, output, session, df, distinct_sample_gps,
@@ -60,26 +60,26 @@ mod_data_export_server <- function(input, output, session, df, distinct_sample_g
                                             pattern = " ",
                                             repl = "")
         shiny::column(width = 12,
-                      DT::renderDataTable(DT::datatable({df()}, rownames = FALSE)),
+                      DT::renderDataTable(DT::datatable({df}, rownames = FALSE)),
                       shiny::downloadHandler(
                           filename = function() {
                               paste("data-", Sys.Date(), "-", project, ".csv", sep = "")
                           },
                           content = function(file) {
-                              utils::write.csv2(df(), file, row.names = FALSE,
+                              utils::write.csv2(df, file, row.names = FALSE,
                                                 quote = FALSE)
                           }
                       )
         )
     })
-    
+
     ## Plots export
     map_plot <- shiny::reactive({
-        if (!is.null(df())) {
+        if (!is.null(df)) {
             toPlot = list()
             toPlot <- lapply(X = seq_len(plate_opts$nb_plates),
                              function(x) drawMap(
-                                 df = df()[which(df()$Plate == x),],
+                                 df = df[which(df$Plate == x),],
                                  sample_gps = distinct_sample_gps(),
                                  gp_levels = gp_levels(),
                                  plate_lines = plate_opts$nb_lines,
@@ -90,7 +90,7 @@ mod_data_export_server <- function(input, output, session, df, distinct_sample_g
             return(toPlot)
         }
     })
-    
+
     output$mapPlot <- shiny::renderUI({
         lapply(seq_along(map_plot()), function(i){
             shinydashboard::box(
@@ -112,7 +112,7 @@ mod_data_export_server <- function(input, output, session, df, distinct_sample_g
                     }
                 )
             )
-            
+
         })# end lapply
     })
 }

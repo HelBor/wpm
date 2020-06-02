@@ -5,8 +5,8 @@
 ##'
 ##' @param df dataframe containing user data and special wells if any.
 ##' @param sample_gps number of distinct groups in the file before adding the
-##' forbidden wells to df
-##' @param gp_levels is Group column levels before adding the forbidden wells to df
+##' special wells to df
+##' @param gp_levels is Group column levels before adding the special wells to df
 ##' @param plate_lines integer, number of plate's lines
 ##' @param plate_cols integer, number of plate's columns
 ##' @param project_title character, the user's project title

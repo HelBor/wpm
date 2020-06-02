@@ -10,9 +10,9 @@ drawMap(df, sample_gps, gp_levels, plate_lines, plate_cols, project_title)
 \item{df}{dataframe containing user data and special wells if any.}
 
 \item{sample_gps}{number of distinct groups in the file before adding the
-forbidden wells to df}
+special wells to df}
 
-\item{gp_levels}{is Group column levels before adding the forbidden wells to df}
+\item{gp_levels}{is Group column levels before adding the special wells to df}
 
 \item{plate_lines}{integer, number of plate's lines}
 

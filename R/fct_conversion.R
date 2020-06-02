@@ -44,7 +44,7 @@ convertVector2Df <- function(chr_wells, max_Row, max_Col, status = NA){
 
         ## actually simulates if user hasn't finished typing everything
         if (anyNA(rows_indices) | anyNA(check_columns)) {
-            return("oh oh... you did not type a correct string")
+            return(NULL)
         }else if ((max(rows_indices) > max_Row)
                   | (max(check_columns) > max_Col) ) {
             # depending on the plate sizes that have been provided

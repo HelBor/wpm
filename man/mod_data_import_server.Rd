@@ -4,12 +4,10 @@
 \alias{mod_data_import_server}
 \title{data_import Server Function}
 \usage{
-mod_data_import_server(input, output, session, stringsAsFactors)
+mod_data_import_server(input, output, session)
 }
 \arguments{
 \item{input, output, session}{Internal shiny parameters}
-
-\item{stringsAsFactors}{Boolean, argument passed to the function `read.csv2`}
 }
 \value{
 dataframe containing the data to place on the plates plan(s).

@@ -39,19 +39,19 @@ backtracking <- function(max_iter = 20, user_data, wells, rows, columns,
         }
 
         logging::loginfo("nb_forbid:%s",
-                         nb_forbid,
-                         logger = "backtrack/map")
+                        nb_forbid,
+                        logger = "backtrack/map")
         logging::loginfo("number of wells available for a plate: %s",
-                         (rows*columns) - nb_forbid,
-                         logger = "backtrack/map")
+                        (rows*columns) - nb_forbid,
+                        logger = "backtrack/map")
         logging::loginfo("maximum number of samples that can be placed on a
-                         plate: %s",
-                         ceiling(nrow(user_data)/nb_plates),
-                         logger = "backtrack/map")
+                        plate: %s",
+                        ceiling(nrow(user_data)/nb_plates),
+                        logger = "backtrack/map")
         nb_max <- ceiling(nrow(user_data) / nb_plates)
         res <- balancedGrpDistrib(d = user_data,
-                                  nb_p = nb_plates,
-                                  df_max_size = nb_max
+                                nb_p = nb_plates,
+                                df_max_size = nb_max
         )
 
     }else{
@@ -77,8 +77,8 @@ backtracking <- function(max_iter = 20, user_data, wells, rows, columns,
             prog
         )
         logging::loginfo("class(new_df): %s",
-                         class(new_df),
-                         logger = "backtracking")
+                        class(new_df),
+                        logger = "backtracking")
 
         if (is.null(new_df)) {
             return(new_df)
@@ -88,7 +88,7 @@ backtracking <- function(max_iter = 20, user_data, wells, rows, columns,
                 final_df <- dplyr::bind_rows(final_df, new_df)
             }else if (new_df == 0) {
                 stop("ERROR, number of available cells is less than number
-                         of samples to place.")
+                    of samples to place.")
             }
         }
         p <- p + 1
