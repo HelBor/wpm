@@ -79,6 +79,3 @@ convertVector2Df <- function(chr_wells, max_Row, max_Col, status = NA){
     }
     return(result)
 }
-
-
-

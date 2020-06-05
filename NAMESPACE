@@ -2,6 +2,7 @@
 
 export(convertCSV)
 export(convertESet)
+export(convertSE)
 export(convertVector2Df)
 export(drawMap)
 export(wpm)

@@ -2,13 +2,13 @@
 % Please edit documentation in R/fct_imports.R
 \name{convertESet}
 \alias{convertESet}
-\title{Convert an ExpressionSet or MsnSet into a dataframe}
+\title{Convert the phenotype data of an ExpressionSet or MsnSet into a dataframe 
+for WPM}
 \usage{
 convertESet(eSet_obj, gp_field = NULL)
 }
 \arguments{
-\item{eSet_obj}{an ExpressionSet/MsnSet object contaning at least the
-phenotype Data}
+\item{eSet_obj}{an ExpressionSet/MsnSet object contaning the phenotype data}
 
 \item{gp_field}{character, corresponding to the phenotype data used to
 categorize samples into distinct groups if any}

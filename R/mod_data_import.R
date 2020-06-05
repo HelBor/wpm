@@ -20,36 +20,7 @@ mod_data_import_ui <- function(id){
                     status = "warning",
                     width = 12,
                     solidHeader = TRUE,
-                    title = shiny::h3("1 - Upload dataset"),
-                    shiny::fluidRow(
-                        shiny::column(
-                            width = 10,
-                            shiny::h4("Please use CSV format.")),
-                        shiny::column(
-                            width = 2,
-                            align = "right",
-                            shinyWidgets::dropdownButton(
-                                shiny::h4("File format"),
-                                shiny::div("File must be in CSV format.
-                                    It must contain at least the field samples names.
-                                    If samples pertain to different groups, you can specify
-                                    a second column containing the group names.
-                                    See the vignette for more details."),
-                                icon = shiny::icon("info-circle"),
-                                tooltip = shinyWidgets::tooltipOptions(
-                                    title = "Help"),
-                                status = "warning",
-                                size = "sm",
-                                width = "350px"
-                            ))
-                    ),
-                    shiny::fileInput(ns("file"),
-                                     label = NULL,
-                                     accept = c(
-                                        "text/csv",
-                                        "text/comma-separated-values,text/plain",
-                                        ".csv")
-                    ),
+                    title = shiny::h3("Upload dataset"),
                     shiny::fluidRow(
                         shiny::column(
                             width = 5,
@@ -68,6 +39,7 @@ mod_data_import_ui <- function(id){
                             )
                         )
                     ),
+                    #***********************************************************
                     shiny::fluidRow(
                         shiny::column(
                             width = 5,
@@ -86,6 +58,18 @@ mod_data_import_ui <- function(id){
                             )
                         )
                     ),
+                    #***********************************************************
+                    shiny::hr(),
+                    ## Input: Select separator
+                    shiny::h4("Please select the appropriate separator"),
+                    shinyWidgets::awesomeRadio(
+                        inputId = ns("sep_input"),
+                        label = NULL,
+                        choices = c("Semicolon" = ";", "Comma" = ",", "Tab" = "\t"),
+                        selected = ";",
+                        status = "warning"
+                    ),
+                    #***********************************************************
                     shiny::hr(),
                     ## Input: Select quotes
                     shiny::fluidRow(
@@ -116,22 +100,44 @@ mod_data_import_ui <- function(id){
                         c("None" = "None", "Single quote" = "'", "Double quote" = "\""),
                         selected = NULL
                     ),
-                    shiny::hr(),
-                    ## Input: Select separator
-                    shiny::h4("Please select the appropriate separator"),
-                    shinyWidgets::awesomeRadio(
-                        inputId = ns("sep_input"),
-                        label = NULL,
-                        choices = c("Semicolon" = ";", "Comma" = ",", "Tab" = "\t"),
-                        selected = ";",
-                        status = "warning"
+                    #***********************************************************
+                    shiny::fluidRow(
+                        shiny::column(
+                            width = 10,
+                            shiny::h4("Please use CSV format.")),
+                        shiny::column(
+                            width = 2,
+                            align = "right",
+                            shinyWidgets::dropdownButton(
+                                shiny::h4("File format"),
+                                shiny::div("File must be in CSV format.
+                                    It must contain at least the field samples names.
+                                    If samples pertain to different groups, you can specify
+                                    a second column containing the group names.
+                                    See the vignette for more details."),
+                                icon = shiny::icon("info-circle"),
+                                tooltip = shinyWidgets::tooltipOptions(
+                                    title = "Help"),
+                                status = "warning",
+                                size = "sm",
+                                width = "350px"
+                            ))
                     ),
+                    shiny::fileInput(ns("file"),
+                                     label = NULL,
+                                     accept = c(
+                                         "text/csv",
+                                         "text/comma-separated-values,text/plain",
+                                         ".csv")
+                    ),
+                    #***********************************************************
                     shiny::hr(),
-                    shiny::h4("Please choose a Project name"),
-                    shiny::textInput(inputId = "project_title",
-                                    label = NULL,
-                                    value = "",
-                                    placeholder = "my project title")
+                    shiny::h4("Please select the grouping variable"),
+                    shinyWidgets::pickerInput(
+                        inputId = ns("GroupPicker"),
+                        choices = NULL,
+                        selected = NULL
+                    )
                 ) # end of box upload dataset
             ), # end column 1
             shiny::column(
@@ -175,21 +181,39 @@ mod_data_import_server <- function(input, output, session){
         )
         input$file
     })
-    shiny::observe({
-        logging::loginfo("File %s was uploaded",
-                        userFile()$name,
-                        logger = "data_import"
+
+    shiny::observeEvent({
+        input$file
+        input$heading
+        input$quote
+        input$sep_input
+        }, {
+        df <- utils::read.csv2(userFile()$datapath,
+                               header = input$heading, quote = input$quote,
+                               sep = input$sep_input, stringsAsFactors = FALSE,
+                               nrows = 1)
+        shinyWidgets::updatePickerInput(session = session, "GroupPicker",
+                                        choices = c("none",colnames(df)))
+    })
+    ## The user's data, reshaped into a valid data frame for WPM
+    dataframe <- shiny::eventReactive(input$GroupPicker, {
+        df <- utils::read.csv2(userFile()$datapath,
+                               header = input$heading, quote = input$quote,
+                               sep = input$sep_input, stringsAsFactors = FALSE,
+                               nrows = 1)
+        shiny::validate(
+            shiny::need(input$GroupPicker %in% c("none",colnames(df)),
+                        "The picker provided is not a valid column name.")
         )
+        df <- convertCSV(
+            userFile()$datapath, row_names = input$rnames,
+            gp_field = input$GroupPicker, header = input$heading,
+            quote = input$quote, sep = input$sep_input,
+            stringsAsFactors = FALSE)
+        return(df)
     })
 
-    ## The user's data, parsed into a data frame
-    dataframe <- shiny::reactive({
-        csv_f <- convertCSV(dt_path = userFile()$datapath,
-                            head = input$heading, qt = input$quote,
-                            sep = input$sep_input,
-                            row_names = input$rnames)
-        return(csv_f)
-    })
+
 
     output$table <- DT::renderDataTable(DT::datatable({
         if (!is.null(dataframe())) {

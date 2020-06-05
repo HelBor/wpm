@@ -5,15 +5,16 @@
 ##' @noRd
 app_server <- function(input, output, session ) {
     ##*************************************************************************
+    ## Home panel module
+    shiny::callModule(mod_home_server, id = "home")
+    ##*************************************************************************
     ## Input file part
-    ##
     datafile <- shiny::callModule(mod_data_import_server,
                                 id = "data_import",
                                 session = session)
 
     ##*************************************************************************
     ## Plate specification part
-    ##
     plate_dimensions <- shiny::callModule(
         mod_plate_dimensions_server,
         id = "p_dim"
@@ -47,7 +48,6 @@ app_server <- function(input, output, session ) {
 
     ##*************************************************************************
     ## backtracking module part
-
     shiny::observeEvent(input$start_WPM_Btn,{
 
         ## requires that the dimensions of the plate be greater than 0
@@ -71,7 +71,6 @@ app_server <- function(input, output, session ) {
             max_iter = input$nb_iter,
             plate_options = plate_specs
         )
-
 
         shiny::observeEvent(data_export$final_df,{
             logging::loginfo(

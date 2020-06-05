@@ -1,14 +1,13 @@
+##' @noRd
 mod_plate_dimensions_ui <- function(id){
     ns <- shiny::NS(id)
     shiny::fluidRow(
-        shiny::column(
-            width = 6,
-            ##------------------------------------------------------------------
+        shiny::column(width = 6,
             shinydashboard::box(
                 status = "warning",
                 width = 12,
                 solidHeader = TRUE,
-                title = shiny::h3("2 - Plate dimensions"),
+                title = shiny::h3("Plate dimensions"),
                 shiny::selectInput(
                     ns("plate_size"),
                     label = NULL,
@@ -21,9 +20,7 @@ mod_plate_dimensions_ui <- function(id){
                         "1536" = "s1536",
                         "custom" = "custom"
                     ),
-                    selected = NULL
-                ),
-
+                    selected = NULL),
                 shiny::conditionalPanel(
                     condition = "input.plate_size == 'custom'",
                     shiny::h4("How many lines on your plate?"),
@@ -48,13 +45,10 @@ mod_plate_dimensions_ui <- function(id){
                     label = NULL,
                     value = 1,
                     min = 1,
-                    width = "80px"
-                )
+                    width = "80px")
             )
         ),
-
-        shiny::column(
-            width = 6,
+        shiny::column(width = 6,
             shiny::fluidRow(
                 shinydashboard::infoBoxOutput(
                     ns("warning_plate"),
@@ -63,17 +57,16 @@ mod_plate_dimensions_ui <- function(id){
             shiny::fluidRow(
                 shinydashboard::valueBoxOutput(
                     ns("total_nb_wells"),
-                    width = 6
-                ),
+                    width = 6),
                 shinydashboard::valueBoxOutput(
                     ns("nb_plates_to_fill"),
-                    width = 6
-                )
+                    width = 6)
             )
         ) # end of column 2
     )
 }
 
+##' @noRd
 mod_plate_dimensions_server <- function(input, output, session){
 
     toReturn <- shiny::reactiveValues(
@@ -81,8 +74,7 @@ mod_plate_dimensions_server <- function(input, output, session){
         nb_cols = NULL,
         nb_plates = NULL
     )
-
-
+    
     p_lines <- shiny::reactive({
         switch(input$plate_size,
                NULL = {nb <- 0},
@@ -157,7 +149,5 @@ mod_plate_dimensions_server <- function(input, output, session){
         toReturn$nb_cols <- p_cols()
         toReturn$nb_plates <- nb_p()
     })
-
     return(toReturn)
-
 }

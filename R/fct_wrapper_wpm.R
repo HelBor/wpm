@@ -14,7 +14,7 @@ checkWpmInputs <- function(user_df, plate_dims, nb_plates, spatial_constraint,
         stop("wrong user_df parameter: Please provide a valid dataframe as 
             obtained with the convertCSv or convertESet function.",
              call. = FALSE)
-    }else if(!all(c("Sample", "Group", "ID") %in% colnames(user_df))){
+    }else if (!all(c("Sample", "Group", "ID") %in% colnames(user_df))) {
         stop("wrong the user_df parameter: Please provide a valid dataframe
         as obtained with the convertCSv or convertESet function.", call. = FALSE)
     }
@@ -22,22 +22,22 @@ checkWpmInputs <- function(user_df, plate_dims, nb_plates, spatial_constraint,
         stop("wrong plate_dims parameter: Please give a list containing 2 
             numbers.", call. = FALSE)
     }else{
-        if(!methods::is(plate_dims[[1]], "numeric")
-           | !methods::is(plate_dims[[2]], "numeric")){
+        if (!methods::is(plate_dims[[1]], "numeric")
+           | !methods::is(plate_dims[[2]], "numeric")) {
             stop("wrong plate_dims parameter: Please give a list containing 2 
             numbers.", call. = FALSE)
         }
     }
-    if(!methods::is(nb_plates, "numeric")){
+    if (!methods::is(nb_plates, "numeric")) {
         stop("wrong nb_plates parameter: invalid argument, please provide 
             a number.", call. = FALSE)
     }
-    if(!spatial_constraint %in% c("none","NEWS","NS","WE")){
+    if (!spatial_constraint %in% c("none","NEWS","NS","WE")) {
         stop("wrong spatial_constraint parameter: wrong mode selected. 
             Please choose a valid mod between 'none', 'NEWS', 'WE' or 'NS' ",
             call. = FALSE)
     }
-    if(!methods::is(max_iteration, "numeric")){
+    if (!methods::is(max_iteration, "numeric")) {
         stop("wrong max_iteration parameter: please give a number.",
             call. = FALSE)
     }
@@ -103,7 +103,7 @@ wrapperWPM <- function(user_df, plate_dims, nb_plates, forbidden_wells = NULL,
 
     ## Convert special wells into valid dataframes
     if (!is.null(forbidden_wells)) {
-        if(!methods::is(forbidden_wells, "character")){
+        if (!methods::is(forbidden_wells, "character")) {
             stop("wrong forbidden_wells parameter: please provide a character 
                 string.", call. = FALSE)
         }
@@ -113,7 +113,7 @@ wrapperWPM <- function(user_df, plate_dims, nb_plates, forbidden_wells = NULL,
         fw <- NULL
     }
     if (!is.null(blank_wells)) {
-        if(!methods::is(blank_wells, "character")){
+        if (!methods::is(blank_wells, "character")) {
             stop("wrong blank_wells parameter: please provide a character 
                 string.", call. = FALSE)
         }
@@ -123,7 +123,7 @@ wrapperWPM <- function(user_df, plate_dims, nb_plates, forbidden_wells = NULL,
         bw <- NULL
     }
     if (!is.null(QC_wells)) {
-        if(!methods::is(QC_wells, "character")){
+        if (!methods::is(QC_wells, "character")) {
             stop("wrong QC_wells parameter: please provide a character string.",
                 call. = FALSE)
         }

@@ -1,4 +1,4 @@
-#' Access files in the current app
+#' Access files in the current app inside the inst/ folder
 #'
 #' @param ... Character vector specifying directory and or file to
 #'     point to inside the current package.

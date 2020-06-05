@@ -39,10 +39,9 @@ mod_special_wells_ui <- function(id){
 
 ##' @noRd
 mod_special_wells_server <- function(input, output, session, status, p_dimensions){
-
     if (status == "forbidden") {
         output$status <- shiny::renderText({
-            "3 - Forbidden Wells"
+            "Forbidden Wells"
         })
         output$help <- shiny::renderText({
             "Forbidden means that the wells in question will not be filled at 
@@ -52,7 +51,7 @@ mod_special_wells_server <- function(input, output, session, status, p_dimension
         
     }else if (status == "notRandom") {
         output$status <- shiny::renderText({
-            "5 - Not randomized Wells"
+            "Not randomized Wells"
         })
         
         output$help <- shiny::renderText({

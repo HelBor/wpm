@@ -4,9 +4,9 @@ testthat::test_that(
         test <- data.frame("Sample" = c("s1","s2","s3","s4"),
                             "Group" = c("A","A","B", "C"))
         tf <- tempfile()
-        write.csv2(test, tf, row.names = FALSE)
+        write.csv2(test, tf)
         testthat::expect_s3_class(
-            convertCSV(tf, head = TRUE, sep = ";"),
+            convertCSV(tf, header = TRUE, sep = ";", gp_field = "Group"),
             "data.frame")
     }
 )
@@ -29,6 +29,21 @@ testthat::test_that(
 )
 
 
-
+# check that the function returns a dataframe when giving a 
+# SummarizedExperiment
+testthat::test_that(
+    "SummarizedExperiment conversion dataframe expectations", {
+        nrows <- 200
+        ncols <- 6
+        counts <- matrix(runif(nrows * ncols, 1, 1e4), nrows)
+        colData <- data.frame(Treatment = rep(c("ChIP", "Input"), 3), 
+                            row.names = LETTERS[1:6])
+        se <- SummarizedExperiment::SummarizedExperiment(assays = list(counts = counts),
+                                   colData = colData)
+        testthat::expect_s3_class(convertSE(se, "Treatment"), "data.frame")
+        # check that returns an error when giving a wrong gp_field parameter
+        testthat::expect_error(convertSE(se, "wrong_column_name"))
+    }
+)
 
 

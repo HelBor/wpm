@@ -245,7 +245,7 @@ ns <- shiny::NS(id)
 
 
     nb_g <- shiny::reactive({
-        if(is.null(nb_samp_gps())){
+        if (is.null(nb_samp_gps())) {
             nb_g <- 0
         }else{
             nb_g <- nb_samp_gps()
@@ -275,12 +275,13 @@ ns <- shiny::NS(id)
     })
 
     wells_to_plot <- shiny::reactive({
-        w2p <- joinDataframes(forbidden_w = forbid_wells(),
-        blank_w = blank_wells(),
-        notRandom_w = notRandom_wells(),
-        nb_samples = nb_samples(),
-        totalNbWells = totalNbWells(),
-        nb_p = nb_p())
+        w2p <- joinDataframes(
+            forbidden_w = forbid_wells(),
+            blank_w = blank_wells(),
+            notRandom_w = notRandom_wells(),
+            nb_samples = nb_samples(),
+            totalNbWells = totalNbWells(),
+            nb_p = nb_p())
         shiny::validate(
             shiny::need(methods::is(w2p, "data.frame") | is.null(w2p), w2p)
         )

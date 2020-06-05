@@ -25,19 +25,15 @@ mod_backtracking_server <- function(input, output, session, df, max_iter, plate_
         df$Status <- as.factor("toRandom")
         df$Row <- as.numeric(NA)
         df$Column <- as.numeric(NA)
-
         return(df)
     })
 
     ## map is a list of dataframes containing: user data + special wells, ready
     ## to be plotted or/and exported
     map <- shiny::reactive({
-
         progress <- shiny::Progress$new()
         progress$set(message = "WPM running...", value = 0)
-
         on.exit(progress$close())
-
         updateProgress <- function(value = NULL, detail = NULL) {
             if (is.null(value)) {
                 value <- progress$getValue()

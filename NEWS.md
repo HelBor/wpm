@@ -31,3 +31,18 @@
 function (command line use).
 * Updated the README file and the tutorial vignette explaining how to use WPM 
 using command line.
+
+# changes in version 0.99.7 (2020-06-05)
+* Added the convertSE function to manage SummarizedExperiments objects in 
+command line verison
+* Added the grouping factor option for data import (managed for both shiny app 
+and command line). Now the user can specify the column name corresponding to the
+grouping factor wpm has to use for backtracking.
+* Modified app_ui structure regarding the project title input
+* Updated the tutorial vignette's content.
+* Updated README file
+* Revised unit tests for import functions
+* The WPM package version output in Home panel is now obtained with 
+packageVersion()
+* Created a new module for the integration of markdown files in the shiny 
+application.

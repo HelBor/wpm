@@ -1,5 +1,5 @@
-<p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/inst/wpmApp/www/images/wpm_logo.png"></p>
-<p align="center"><img width=70% src="https://github.com/HelBor/wpm/blob/master/inst/wpmApp/www/images/wpm_name.png"></p>
+<p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/inst/app/www/images/wpm_logo.png"></p>
+<p align="center"><img width=70% src="https://github.com/HelBor/wpm/blob/master/inst/app/www/images/wpm_name.png"></p>
 
 ![R](https://img.shields.io/badge/R-v4.0+-blue?style=flat-square)
 [![GitHub issues](https://img.shields.io/github/issues/HelBor/wpm?style=flat-square)](https://github.com/HelBor/wpm/blob/issues)
@@ -8,9 +8,11 @@
 
 ## Brief introduction
 
-> WPM is a shiny application deployed in the form of an R package.
-> Its objective is to allow a user to generate a well plate plan in order to perform his experiments by controlling batch effects (in particular preventing plate edge effects).
-> The algorithm for placing the samples is inspired by the backtracking algorithm.
+> WPM is a shiny application deployed in the form of an R package. Functions for
+a command-line/script use are also available. Its objective is to allow a user to
+generate a well plate plan in order to perform his experiments by controlling 
+batch effects (in particular preventing plate edge effects). The algorithm for 
+placing the samples is inspired by the backtracking algorithm.
 
 ## Getting started
 
@@ -20,8 +22,8 @@ OS tested : `Windows`, `Fedora`, `Ubuntu`,`MacOS`
 But the app should work also on the others.
 
 WPM R package dependencies:
-
-`shiny`, `shinydashboard`, `shinyWidgets`, `shinycustomloader`, `DT`,
+`utils`, `methods`, `Biobase`, `SummarizedExperiment`, `config`, `golem`, 
+`rlang`, `shiny`, `shinydashboard`, `shinyWidgets`, `shinycustomloader`, `DT`, 
 `RColorBrewer`, `logging`, `dplyr`, `stringr`, `ggplot2`
 
 ### How to install
@@ -35,10 +37,20 @@ devtools::install_github(repo = "HelBor/wpm")
 ## How to use WPM
 
 There are two ways to use WPM:
+
 * on the command line with the appropriate functions, for users wishing to work
 on the command line or integrate wpm into their R scripts.
 * via a shiny application (web interface), for users with no R programming 
 skills.
+
+### Supported input formats
+
+| Input Format          | Command line | WPM app |
+| --------------------- |:------------:| :------:|
+| CSV                   | yes          | yes     |
+| ExpressionSet         | yes          | no      |
+| SummarizedExperiment  | yes          | no      |
+| MSnSet                | yes          | no      |
 
 ### Load the library
 
@@ -49,24 +61,35 @@ library(wpm)
 ### Using WPM from the command line
 
 In command line there a some steps to process in the right order:
+
 #### Prepare dataset
-You can work with CSV files, `ExpressionSet` objects or `MSnSet` objects.
+
+You can work with CSV files, or `ExpressionSet`, `MSnSet`, 
+`SummarizedExperiment` objects.
 The first step is to create a dataframe containing all the data needed by wpm 
-to work properly. To do so:
+to work properly. To do so, you need to specify which column in the CSV 
+corresponds to the grouping factor if any. 
 ```R
 # if you have a CSV file
-df <- convertCSV("path-to-your-CSV")
+df <- convertCSV("path-to-your-CSV", "grouping_factor")
 # if you have an ExpressionSet or an MSnSet
-df <- convertESet(myExpressionSet) # or convertESet(myMSnSet)
+df <- convertESet(myExpressionSet, "grouping_factor") # or convertESet(myMSnSet)
+# if you have a SummarizedExperiment
+df <- convertSE(mySummarizedExperiment, "grouping_factor")
 ```
  
 #### Run WPM
 
 The next step is to run the wpm wrapper function by giving it all the parameters
-needed.
+needed: the dataframe, the plate dimensions, the number of plates to fill, the 
+forbidden wells (wells that must not be filled at all for the experiment), blank
+wells (wells where there will be solution without sample in it), Quality Control
+wells, the spatial constraint to place the samples and the maximal number of 
+attemps for WPM to find a valid solution.
 
 ```R
-wrapperWPM(user_df = df,
+# example where we do not specify blanks
+wpm_res <- wrapperWPM(user_df = df,
             plate_dims = list(8,12),
             nb_plates = 1,
             forbidden_wells = "A1,A2,A3",
@@ -76,36 +99,41 @@ wrapperWPM(user_df = df,
 
 #### Plate map visualization
 
+The last step is to plot the plate plan(s) using the `drawMap()` function :
 
-1. Create the valid dataframe from a CSV file (with `importCSV()`) or from an ExpresssionSet or 
-MSnSet object with `importCSV` or `importESet`
-2. Use the 
+```R
+drawned_map <- wpm::drawMap(df = wpm_result,
+        sample_gps = length(levels(as.factor(pd$Environment))),
+        gp_levels = gp_lvl <- levels(as.factor(pd$Environment)),
+        plate_lines = 8,
+        plate_cols = 12,
+        project_title = "my Project Title")
+        
+drawned_map
+```
 
-
-### Use WPM in web interface
+### Using WPM in web interface
 
 Since WPM provides also a GUI, the idea is to just provide a minimum of 
 parameters to the application. No programming skills are required.
-Simply write in the console:
+Simply run in the console:
 ```R
 wpm()
 ```
-
-
 
 To see a complete Tutorial, please see the Vignette of the package. 
 ```R
 browseVignettes("wpm")
 ```
 
-WPM has 4 main panels:
+WPM has 3 main panels:
 
 * __Home__
 * __Parameters__
 * __Results__
 
 
-### Provide parameters
+#### Provide parameters
 
 - **1)** Provide a CSV file containing the sample names and respective groups if any.
 
@@ -120,7 +148,7 @@ WPM has 4 main panels:
 - **6)** Choose a maximum number of iterations that WPM can do to find a solution,then start WPM. If the samples do not have a group, then the samples will be placedcompletely randomly on the plates. If there are groups, wpm will use an algorithminspired by the backtracking algorithm (in order to place the samples in the wellswhile respecting the specified constraints.).
 
 
-### Check your Results
+#### Check your Results
 
 This Panel allows you to look after the final dataset containing the wells chosen for each sample and a plot of your final well-plate map. Dataframe and plots are downloadable separately.
 

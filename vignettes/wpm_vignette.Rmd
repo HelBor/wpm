@@ -24,23 +24,40 @@ output:
 
 # Introduction
 
-There are two ways using the `wpm` package:
-
-* throught a shiny application for users who don't have any skill in R 
-programming.
-* using R commands for users who want to work with their own R scripts. 
-
 To generate plate plans, WPM uses an algorithm inspired from the backtracking 
 algorithm. In other words, WPM will gradually fill the plate by randomly 
 traversing it. At each well chosen (randomly), WPM will randomly choose a 
 sample which satisfies all the constraints specified during the configuration 
 step.
 
+
+There are two ways using the `wpm` package:
+
+* throught a [shiny application](#shiny_app) for users who don't have any skill in R 
+programming.
+* using [R commands](#R_commands) for users who want to work with their own R scripts. 
+
+__Important:__ Even if you plan to use WPM only from the command line, we 
+strongly recommend the user to read the section about the 
+[shiny app section](#shiny_app), as this is where all terms and concepts are 
+explained in detail.
+
+
+## Supported input formats
+
+| Input Format          | Command line | WPM app |
+| --------------------- |:------------:| :------:|
+| CSV                   | yes          | yes     |
+| ExpressionSet         | yes          | no      |
+| SummarizedExperiment  | yes          | no      |
+| MSnSet                | yes          | no      |
+
+
 # Getting started
 
 ## Prerequisites
 
-This tutorial explains how to use the Well Plate Maker shiny application.
+This tutorial explains how to use the Well Plate Maker package.
 Make sure you are using the R 4.0.0 version.
 Also, check that you have these packages installed (with their dependencies):
 `r CRANpkg("shiny")`, `r CRANpkg("shinydashboard")`, `r CRANpkg("shinyWidgets")`
@@ -58,7 +75,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("wpm")
 ```
 
-# How to use the WPM shiny application
+# How to use the WPM shiny application {#shiny_app}
 
 Since WPM proposes a GUI, the idea is to just provide a minimum of parameters 
 to the application. No programming skills are required. WPM supports multiple 
@@ -101,32 +118,33 @@ specify all the constraints for generating the desired plate planes.
 
 
 ### Upload dataset
-
-Here you must provide a __CSV__ file containing at least one kind of 
-information: the sample names.
-```{r, echo=FALSE}
-knitr::kable(data.frame("Sample" = c("s1","s2","s3","s4")))
-```
-If your samples belong to different groups that you want to distinguish, then 
-you must provide the additional column "Group".
-```{r, echo=FALSE}
-knitr::kable(
-    data.frame("Sample" = c("s1","s2","s3","s4"), "Group" = c("A","A","B","C"))
-)
-```
-
-__IMPORTANT__ Please respect this ORDER of columns for the data in the CSV file:
-[Sample, Group]
-
-The names you give to columns do not matter, because WPM will change them into
-_"Sample"_ and _"Group"_.
-
-After uploading the CSV file, these 3 next sub-steps are important:
+Before uploading the CSV file, these 3 next sub-steps are important:
 
 * check if your file does have a __header__ and __row names__.
 * select the right type of __quotes__. Default is none, meaning that there is 
 no __*"*__ or __*'*__ characters in your file.
 * select the appropriate __separator__ field. Default is semicolon (__*";"*__)
+
+Then you must provide a __CSV__ file containing at least one kind of 
+information: the sample names.
+```{r, echo=FALSE}
+knitr::kable(data.frame("Sample" = c("s1","s2","s3","s4")))
+```
+But if there are different variables available in the CSV file describing the 
+data, you can select one of them that you want to use as the grouping factor for
+WPM. This column will be renamed "Group" in the final dataset.
+```{r, echo=FALSE}
+knitr::kable(
+    data.frame("Sample" = c("s1","s2","s3","s4"), "Type" = c("A","A","B","C"),
+               "Treatment" = c("trt1","tr1","Ctrl","Ctrl"))
+)
+```
+
+__IMPORTANT__ Please respect this ORDER of columns for the data in the CSV file:
+Sample names in the __first__ column, and other variables in the other columns.
+
+The names you give to columns in your CSV do not matter, because WPM will change
+them into _"Sample"_ and _"Group"_.
 
 You will see your dataset on the right side of the window, with a new column 
 added: "ID".
@@ -143,8 +161,9 @@ If you see that the total number of samples is wrong, this
 means that you have not chosen the appropriate options among those described 
 above and you need to set the correct ones.
 
-The last sub-step *Choose a Project name* is optional. If you provide one, it 
-will be used in the plots titles and in the name of the final dataset.
+### Choose a Porject name
+This step is optional. If you provide one, it will be used in the plots titles 
+and in the name of the final dataset.
 
 
 ### Plate(s) dimensions {#plate-dims}
@@ -323,7 +342,7 @@ Below is an example of 80 samples distributed in 10 groups and placed on a
 
 Dataframe and plots are downloadable separately.
 
-# How to use WPM using command lines
+# How to use WPM using command lines {#R_commands}
 
 As explained before, WPM can also be used through R command lines by following these steps:
 
@@ -332,15 +351,16 @@ As explained before, WPM can also be used through R command lines by following t
 3. Visualize the final plate plan(s)
 
 ## Prepare the dataset
-The user can work with CSV files, `ExpressionSet` objects or `MSnSet` objects.
+The user can work with CSV files, `ExpressionSet`, `MSnSet` or 
+`SummarizedExperiment`objects.
 The first step is to create a dataframe containing all the data needed by wpm 
 to work properly. To do so:
 
-If it is a CSV file, then run:
+### Starting from a CSV file, then run:
 ```{r convert CSV file, eval = FALSE}
 df <- wpm::convertCSV("path-to-CSV-file")
 ```
-If it is an ExpressionSet or MSnSet object
+### Starting from an `ExpressionSet` or `MSnSet` object
 ```{r create an MSnSet object}
 sample_names <- c("s1","s2","s3","s4", "s5")
 M <- matrix(NA, nrow = 4, ncol = 5)
@@ -357,6 +377,9 @@ grouping factor for samples:
 ```{r convert ESet/MSnSet object}
 df <- wpm::convertESet(my_MSnSet_object, "Environment")
 ```
+
+### Starting from a `SummarizedExperiment`
+
 
 ## Run WPM
 

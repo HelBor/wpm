@@ -2,23 +2,20 @@
 % Please edit documentation in R/fct_imports.R
 \name{convertCSV}
 \alias{convertCSV}
-\title{Convert a CSV File into a dataframe}
+\title{Convert a CSV File into a valid dataframe for WPM}
 \usage{
-convertCSV(dt_path, head = FALSE, qt = "", sep = "", row_names = FALSE)
+convertCSV(dt_path, row_names = FALSE, gp_field = NULL, ...)
 }
 \arguments{
 \item{dt_path}{file path.}
 
-\item{head}{logical value, indicates if the file has a header on it's first
-line.}
+\item{row_names}{logical value, indicates if the file has rownames or not.}
 
-\item{qt}{character, the set of quoting characters. To disable quoting
-altogether, use quote = "".}
+\item{gp_field}{the column name indicating the grouping factor for the 
+samples in the csv. If there is no grouping factor, then gp_field must be 
+set to NULL or "none".}
 
-\item{sep}{character, the field separator character. Values on each line
-of the file are separated by this character.}
-
-\item{row_names}{logical value, does the file have rownames?}
+\item{...}{parameters to give to read.csv2 function}
 }
 \value{
 a dataframe containing 3 fields: Sample, Group and ID.
@@ -26,16 +23,22 @@ a dataframe containing 3 fields: Sample, Group and ID.
 \description{
 This function converts a CSV into a dataframe to make it
 usable by the shiny application of wpm as well as by the wrapper function
-(version of wpm in command line)
+(version of wpm in command line). Be sure that the first column of the CSV 
+file corresponds to samples names.
 }
 \examples{
 test <- data.frame("Sample" = c("s1","s2","s3","s4"),
                    "Group" = c("A","A","B", "C"))
 tf <- tempfile()
 write.csv2(test, tf, row.names = FALSE)
-convertCSV(tf, head = TRUE, sep = ";")
+convertCSV(tf, gp_field = "Group", header = TRUE, sep = ";")
 
 # if there are row names in the CSV file
 write.csv2(test, tf)
-convertCSV(tf, head = TRUE, sep = ";", row_names = TRUE)
+convertCSV(tf, row_names = TRUE, gp_field="Group", header = TRUE, sep = ";")
+
+# if there is no grouping factor in the CSV file
+convertCSV(tf, row_names = TRUE, gp_field ="none", header = TRUE, sep = ";")
+# gives the same output as the previous example
+convertCSV(tf, row_names = TRUE, header = TRUE, sep = ";")
 }

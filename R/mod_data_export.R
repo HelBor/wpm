@@ -16,9 +16,7 @@ mod_data_export_ui <- function(id){
                                 shinycustomloader::withLoader(
                                     shiny::uiOutput(ns("data_export")),
                                     type = "html",
-                                    loader = "loader7"
-                                )
-
+                                    loader = "loader7")
             )
         ),
         shiny::fluidRow(
@@ -29,8 +27,7 @@ mod_data_export_ui <- function(id){
                 shinycustomloader::withLoader(
                     shiny::uiOutput(ns("mapPlot")),
                     type = "html",
-                    loader = "loader7"
-                )
+                    loader = "loader7")
             )
         )
     )
@@ -57,19 +54,18 @@ mod_data_export_server <- function(input, output, session, df, distinct_sample_g
     ## Dataframe export
     output$data_export <- shiny::renderUI({
         project <- stringr::str_replace_all(string = project_name(),
-                                            pattern = " ",
-                                            repl = "")
+                                            pattern = " ", replacement = "")
         shiny::column(width = 12,
-                      DT::renderDataTable(DT::datatable({df}, rownames = FALSE)),
-                      shiny::downloadHandler(
-                          filename = function() {
-                              paste("data-", Sys.Date(), "-", project, ".csv", sep = "")
-                          },
-                          content = function(file) {
-                              utils::write.csv2(df, file, row.names = FALSE,
-                                                quote = FALSE)
-                          }
-                      )
+            DT::renderDataTable(DT::datatable({df}, rownames = FALSE)),
+            shiny::downloadHandler(
+                filename = function() {
+                    paste("data-", Sys.Date(), "-", project, ".csv", sep = "")
+                },
+                content = function(file) {
+                    utils::write.csv2(df, file, row.names = FALSE,
+                    quote = FALSE)
+                }
+            )
         )
     })
 
@@ -107,8 +103,7 @@ mod_data_export_server <- function(input, output, session, df, distinct_sample_g
                             plot = map_plot()[[i]],
                             width = 10,
                             height = 7,
-                            units = "in"
-                        )
+                            units = "in")
                     }
                 )
             )
