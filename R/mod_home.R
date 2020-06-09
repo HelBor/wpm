@@ -14,37 +14,45 @@ mod_home_ui <- function(id){
             shiny::div(shiny::img(src = 'www/images/wpm_name.png', width = 300),
                        style = "text-align:center;")
         ),
-        shiny::fluidRow(
-            shiny::column(width = 9,
+        shiny::column(width = 9,
+            shiny::fluidRow(
                 shinydashboard::box(width = 12, status = "warning",
                     mod_insert_md_ui(ns("homeMd"))
                 )# end of box
-            ),# end column 1
-            shiny::column(width = 3,
-                shinydashboard::valueBoxOutput(ns("wpmVersion"), width = 12)
-            ) # end column 2
-        ), # end fluidRow 2
-        shiny::fluidRow(
-            shiny::column(width = 9,
-                shinydashboard::box(width = 12, status = "warning",
-                    mod_insert_md_ui(ns("citeUsMd"))
+            ),
+            shiny::fluidRow(
+                shinydashboard::box(
+                  width = 12, status = "warning",
+                  mod_insert_md_ui(ns("citeUsMd"))
                 )
-            ) # end column 1
-        ), # end fluidRow 3
-        shiny::fluidRow(
-            shiny::column(width = 9,
-                shinydashboard::box(width = 12, status = "warning",
+            )
+        ),
+        shiny::column(width = 3,
+            shiny::fluidRow(
+              shinydashboard::valueBoxOutput(ns("wpmVersion"), width = 12)
+            ),
+            shiny::fluidRow(
+                shinydashboard::box(
+                    width = 12, status = "warning",
                     mod_insert_md_ui(ns("contactMd")),
-                    shiny::column(width = 6,
+                    shiny::fluidRow(
                         shinydashboard::valueBoxOutput(ns("newIssue"),
                                                        width = 12)
                     ),
-                    shiny::column(width = 6,
-                        shinydashboard::valueBoxOutput(ns("email"), width = 12)
+                    shiny::fluidRow(
+                        shinydashboard::valueBoxOutput(ns("email"),
+                                                       width = 12)
                     )
-                ) # end of box
-            ) # end column
-        ) # end of fluiRow 4
+                )
+            )
+
+        ),
+        shiny::fluidRow(
+            shiny::column(width = 12,
+                        shinydashboard::box(width = 12, status = "warning",
+                                        mod_insert_md_ui(ns("vignette"))
+                        ))
+        )
     )
 }
 
@@ -52,9 +60,10 @@ mod_home_ui <- function(id){
 ##' @description Server part of a shiny Module to build the Home page application
 ##' @noRd
 mod_home_server <- function(input,output, session){
-    
+
     # to add the welcome message
     shiny::callModule(mod_insert_md_server, "homeMd", "app/md/home.md")
+    shiny::callModule(mod_insert_md_server, "vignette", "vignettes/wpm_vignette.Rmd")
     shiny::callModule(mod_insert_md_server, "citeUsMd", "app/md/cite_us.md")
     # to add the contact text
     shiny::callModule(mod_insert_md_server, "contactMd", "app/md/contact.md")

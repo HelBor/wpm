@@ -6,7 +6,7 @@ affiliation: Universite Grenoble Alpes
 email: borges.helene.sophie@gmail.com
 abstract: >
     WPM is a shiny application deployed in the form of an R package. Its 
-    objective is to allow the user to create one (or more) plate plans in order 
+    objective is to allow the user to create one (or more) plate maps in order 
     to perform his experiments by controlling __batch effects__ (in particular 
     preventing plate edge effects) without programming skills. However, R 
     functions are available for users who want to work with their own R scripts.
@@ -24,7 +24,7 @@ output:
 
 # Introduction
 
-To generate plate plans, WPM uses an algorithm inspired from the backtracking 
+To generate plate maps, WPM uses an algorithm inspired from the backtracking 
 algorithm. In other words, WPM will gradually fill the plate by randomly 
 traversing it. At each well chosen (randomly), WPM will randomly choose a 
 sample which satisfies all the constraints specified during the configuration 
@@ -33,7 +33,7 @@ step.
 
 There are two ways using the `wpm` package:
 
-* throught a [shiny application](#shiny_app) for users who don't have any skill in R 
+* through a [shiny application](#shiny_app) for users who don't have any skill in R 
 programming.
 * using [R commands](#R_commands) for users who want to work with their own R scripts. 
 
@@ -94,16 +94,16 @@ If everything is in order, a new window will open in your default browser.
 If not, find a line written in the R console (eg. 
 `Listening on http://127.0.0.1:4028`), and paste the URL in your web browser.
 
-WPM has 3 main panels: __Home__, __Parameters__ and __Results__.
+WPM has 3 main tabs: __Home__, __Parameters__ and __Results__.
 
-## The __Home__ Panel
+## The __Home__ tab
 
-This page briefly presents the aim of the app, shows the last package version, 
+Briefly presents the aim of the app, shows the last package version, 
 explains how to cite us to support our work and gives the contact information.
 
 ![The Home page when wpm is started](images/home.PNG)
 
-## The __Parameters__ Panel
+## The __Parameters__ tab
 
 Overall the page is organized in two sections. The one on the left contains all 
 the configuration steps. The one on the right summarizes the parameters entered 
@@ -114,7 +114,7 @@ automatically updated each time a parameter is changed in the left section.
 
 The section 1 is divided into 6 main steps, detailed below. This part is the 
 most important to understand and master because it is here that we will 
-specify all the constraints for generating the desired plate planes.
+specify all the constraints for generating the desired plate maps.
 
 
 ### Upload dataset
@@ -149,7 +149,7 @@ them into _"Sample"_ and _"Group"_.
 You will see your dataset on the right side of the window, with a new column 
 added: "ID".
 Each sample is assigned a unique ID, which will be used to assign the samples 
-to plate plans (for more details on the ID see the 
+to plate maps (for more details on the ID see the 
 [Results section](#results_panel) ).
 
 ![Dataset vizualisation](images/toy2rightpanel.PNG)
@@ -161,7 +161,7 @@ If you see that the total number of samples is wrong, this
 means that you have not chosen the appropriate options among those described 
 above and you need to set the correct ones.
 
-### Choose a Porject name
+### Choose a Project name
 This step is optional. If you provide one, it will be used in the plots titles 
 and in the name of the final dataset.
 
@@ -194,7 +194,7 @@ This plot updates with each modification of the parameters, thus making it
 possible to see if one has made an error.
 
 __IMPORTANT__: If WPM detects a problem or incompatibility between parameters, 
-you will see an error message instead of the plate plan, explaining you what 
+you will see an error message instead of the plate map, explaining you what 
 could be the problem.
 
 ![Example of error message](images/exErrorMsg.PNG)
@@ -229,7 +229,7 @@ are any.
 > A __Blank well__ corresponds to wells filled in with solution but without 
 biological material (*e.g.* to avoid cross-contamination).
 
-Five modes are available for placing the blanks:
+Five patterns are available for placing the blanks:
 
 **1)** *no blanks*: there will be no blank on the plate(s).
 
@@ -253,8 +253,8 @@ wells.
 #### Specify the neighborhood constraints {#neighborhood}
 
 These are the spatial constraints that WPM needs to create the plates.
-Currently, there are 4 types proposed. Note that the modes are available only 
-if they are compatible with the chosen blank mode.
+Currently, there are 4 types proposed. Note that the patterns are available only 
+if they are compatible with the chosen blank pattern.
 The question here is: Should samples from the same group be found side by side?
 
 Schematically, the spatial constraints can be summarized as follows (the blue
@@ -299,7 +299,7 @@ it is advisable to increase this number.
 An *iteration* corresponds to an attempt by WPM to find a solution. The 
 algorithm used is not a "full" backtracking: WPM stops as soon as there are no 
 more possibilities to finalize the current solution, and starts from scratch 
-the plate plan, until providing a solution that complements all the constraints.
+the plate map, until providing a solution that complements all the constraints.
 With this approach, not all possible combinations are explored, but it does 
 reduce execution time. A more "complete" version of backtracking could possibly 
 be an improvement to bring in the future.
@@ -315,23 +315,22 @@ If WPM fails, an error message will appear, prompting you to try again:
 
 ![WPM failed](images/wpmFailed.PNG)
 
-__IMPORTANT__ We recommend to refresh the web session by using `Ctrl + F5` 
-before changing the parameters. It will completely restart the parameters panel 
-but will avoid a known issue, we are currently trying to fix. 
+__IMPORTANT__ If you want to create a new plate plan for another project, 
+press `ctrl + f5`, this will reset the application.
 
-## The __Results__ Panel {#results_panel}
+## The __Results__ tab {#results_panel}
 
-This Panel allows you to look after the final dataset containing the wells 
+This tab allows you to look after the final dataset containing the wells 
 chosen for each sample:
 
 ![Final dataframe](images/final_dataset.PNG)
 
-The dataframe contains 7 columns giving all the information needed to run the 
+The dataset contains 7 columns giving all the information needed to run the 
 experiment: The sample name with its corresponding group; its ID for the plot; 
 the well chosen; the row and the column to which the well corresponds and the 
 number of the plate on which the sample must be placed during the experiment.
 
-This Panel also shows you the generated plot(s) of your final well-plate map(s).
+This tab also shows you the generated plot(s) of your final well-plate map(s).
 One color corresponds to one group level. The numbers are the IDs used in 
 place of the sample names which could be too long and make the plot unreadable.
 
@@ -340,7 +339,7 @@ Below is an example of 80 samples distributed in 10 groups and placed on a
 
 ![Plate map](images/plot1.png)
 
-Dataframe and plots are downloadable separately.
+Dataset and plots are downloadable separately.
 
 # How to use WPM using command lines {#R_commands}
 
@@ -380,6 +379,16 @@ df <- wpm::convertESet(my_MSnSet_object, "Environment")
 
 ### Starting from a `SummarizedExperiment`
 
+```{r convert SummarizedExperiment object}
+nrows <- 200
+ncols <- 6
+counts <- matrix(runif(nrows * ncols, 1, 1e4), nrows)
+colData <- data.frame(Treatment=rep(c("ChIP", "Input"), 3),
+                      row.names=LETTERS[1:6])
+se <- SummarizedExperiment::SummarizedExperiment(assays=list(counts=counts),
+                                                 colData=colData)
+df <- wpm::convertSE(se, "Treatment")
+```
 
 ## Run WPM
 
@@ -401,8 +410,8 @@ wpm_result <- wpm::wrapperWPM(user_df = df,
 ```
 
 ## Plate map visualization
-The last step is to plot the plate plan(s) using:
-```{r visualize plate plan}
+The last step is to plot the plate map(s) using:
+```{r visualize plate map}
 drawned_map <- wpm::drawMap(df = wpm_result,
         sample_gps = length(levels(as.factor(pd$Environment))),
         gp_levels = gp_lvl <- levels(as.factor(pd$Environment)),
@@ -417,7 +426,7 @@ drawned_map
 
 
 Plots can be saved with:
-```{r save plan plot, eval=FALSE}
+```{r save map plot, eval=FALSE}
 ggplot2::ggsave(
     filename = "my file name",
     plot = drawned_map,
@@ -428,7 +437,7 @@ ggplot2::ggsave(
 ```
 
 __IMPORTANT__ If multiple plates where specified, then `wpm_result` will be a 
-list containing a dataframe **for each generated plate**. That means, if we 
+list containing a dataset **for each generated plate**. That means, if we 
 generate 2 plates, we access a specific plate with 
 `wpm_result[[numberOfThePlate]]`:
 ```{r, eval = FALSE}
