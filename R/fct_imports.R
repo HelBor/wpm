@@ -2,13 +2,13 @@
 ##'
 ##' @description This function converts a CSV into a dataframe to make it
 ##' usable by the shiny application of wpm as well as by the wrapper function
-##' (version of wpm in command line). Be sure that the first column of the CSV 
+##' (version of wpm in command line). Be sure that the first column of the CSV
 ##' file corresponds to samples names.
 ##'
 ##' @param dt_path file path.
 ##' @param row_names logical value, indicates if the file has rownames or not.
-##' @param gp_field the column name indicating the grouping factor for the 
-##' samples in the csv. If there is no grouping factor, then gp_field must be 
+##' @param gp_field the column name indicating the grouping factor for the
+##' samples in the csv. If there is no grouping factor, then gp_field must be
 ##' set to NULL or "none".
 ##' @param ... parameters to give to read.csv2 function
 ##' @return a dataframe containing 3 fields: Sample, Group and ID.
@@ -23,7 +23,7 @@
 ##' # if there are row names in the CSV file
 ##' write.csv2(test, tf)
 ##' convertCSV(tf, row_names = TRUE, gp_field="Group", header = TRUE, sep = ";")
-##' 
+##'
 ##' # if there is no grouping factor in the CSV file
 ##' convertCSV(tf, row_names = TRUE, gp_field ="none", header = TRUE, sep = ";")
 ##' # gives the same output as the previous example
@@ -35,7 +35,7 @@ convertCSV <- function(dt_path, row_names = FALSE, gp_field = NULL, ...){
     }else{
         df <- utils::read.csv2(dt_path, ...)
     }
-    
+
     if (is.null(gp_field)) {
         df <- data.frame(Sample = df[,1], Group = as.factor(1))
     }else if (gp_field == "none") {
@@ -46,7 +46,7 @@ convertCSV <- function(dt_path, row_names = FALSE, gp_field = NULL, ...){
             df <- data.frame(Sample = df[,1],
                              Group = as.factor(df[[gp_field]]))
         }else{
-            stop("The group field must be an existing column name for the 
+            stop("The group field must be an existing column name for the
                 phenotype Data", call. = FALSE)
         }
     }
@@ -58,7 +58,7 @@ convertCSV <- function(dt_path, row_names = FALSE, gp_field = NULL, ...){
 
 ##' Reshape a phenotype dataframe for WPM
 ##' @param pD_df a dataframe containing the phenotype data
-##' @param gp_field the column name indicating the grouping factor for the 
+##' @param gp_field the column name indicating the grouping factor for the
 ##' samples
 ##' @return a dataframe containing 3 fields: Sample, Group and ID.
 ##'
@@ -72,7 +72,7 @@ reshapeDataframe <- function(pD_df, gp_field){
             df <- data.frame(Sample = rownames(pD_df),
                              Group = as.factor(pD_df[[gp_field]]))
         }else{
-            stop("The group field must be an existing column name for the 
+            stop("The group field must be an existing column name for the
                 phenotype Data", call. = FALSE)
         }
     }
@@ -83,7 +83,7 @@ reshapeDataframe <- function(pD_df, gp_field){
 
 
 
-##' Convert the phenotype data of an ExpressionSet or MsnSet into a dataframe 
+##' Convert the phenotype data of an ExpressionSet or MsnSet into a dataframe
 ##' for WPM
 ##'
 ##' @description This function converts an ExpressionSet/MsnSet object into a
@@ -122,7 +122,7 @@ convertESet <- function(eSet_obj, gp_field = NULL){
 ##' @param gp_field character, corresponding to the phenotype data used to
 ##' categorize samples into distinct groups if any
 ##' @return a dataframe containing 3 fields: Sample, Group and ID.
-##' @examples 
+##' @examples
 ##' nrows <- 200
 ##' ncols <- 6
 ##' counts <- matrix(runif(nrows * ncols, 1, 1e4), nrows)

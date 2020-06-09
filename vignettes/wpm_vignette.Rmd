@@ -413,8 +413,8 @@ wpm_result <- wpm::wrapperWPM(user_df = df,
 The last step is to plot the plate map(s) using:
 ```{r visualize plate map}
 drawned_map <- wpm::drawMap(df = wpm_result,
-        sample_gps = length(levels(as.factor(pd$Environment))),
-        gp_levels = gp_lvl <- levels(as.factor(pd$Environment)),
+        sample_gps = length(levels(as.factor(colData$Treatment))),
+        gp_levels = gp_lvl <- levels(as.factor(colData$Treatment)),
         plate_lines = 8,
         plate_cols = 12,
         project_title = "my Project Title")
