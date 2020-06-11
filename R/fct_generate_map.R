@@ -8,7 +8,7 @@
 ##' @param nb_rows numeric, number of lines on the plate
 ##' @param nb_cols numeric, number of columns on the plate
 ##' @param df_forbidden dataframe with the same structure than user_df, but for
-##' the forbidden, blank and Not randomized wells.
+##' the forbidden, buffer solutions and Not randomized wells.
 ##' @param mod character, neighborhood spatial constraint
 ##' @param max_it numeric, maximum number of attempts to generate a plate plan
 ##' before returning a failure.

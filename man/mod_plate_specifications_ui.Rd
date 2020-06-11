@@ -10,7 +10,7 @@ mod_plate_specifications_ui(id)
 \item{id}{Internal parameters for {shiny}.}
 }
 \value{
-a Fuild Page layout
+a Build Page layout
 }
 \description{
 A shiny Module allowing to process the parameters specified

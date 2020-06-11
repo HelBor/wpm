@@ -11,6 +11,13 @@ mod_special_wells_ui <- function(id){
                 title = shiny::h3(shiny::textOutput(ns("status"))),
                 shiny::fluidRow(
                     shiny::column(
+                        width = 10,
+                        shiny::h4("Enter Line Letter & Column number, each box 
+                          separated by commas without spaces.\n The wells 
+                          already filled as forbidden will not be drawn as 
+                          'Not Random'.")
+                    ),
+                    shiny::column(
                         width = 2,
                         align = "right",
                         shinyWidgets::dropdownButton(
@@ -25,10 +32,7 @@ mod_special_wells_ui <- function(id){
                 ),
                 shiny::textInput(
                     ns("special_select"),
-                    shiny::h4("Enter Line Letter & Column number, each box 
-                          separated by commas without spaces.\n The wells 
-                          already filled as forbidden will not be drawn as 
-                          'Not Random'."),
+                    label = NULL,
                     value = NULL,
                     placeholder = "Ex: A1,B2,C3")
             ) # end of box
@@ -49,14 +53,16 @@ mod_special_wells_server <- function(input, output, session, status, p_dimension
             the experiment, these will be completely empty wells."
         })
         
-    }else if (status == "notRandom") {
+    }else if (status == "fixed") {
         output$status <- shiny::renderText({
             "Not randomized Wells"
         })
         
         output$help <- shiny::renderText({
             "These samples will not be used for the backtracking algorithm.
-            They correspond to Quality controls or Standards."
+            They correspond to Quality controls or Standards. Knowing that the 
+            forbidden status has priority over the non-randomized status, the 
+            wells will remain red. "
         })
     }
     

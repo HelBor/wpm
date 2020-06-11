@@ -9,8 +9,8 @@ wrapperWPM(
   plate_dims,
   nb_plates,
   forbidden_wells = NULL,
-  blank_wells = NULL,
-  QC_wells = NULL,
+  buffer_wells = NULL,
+  fixed_wells = NULL,
   spatial_constraint = "none",
   max_iteration = 20
 )
@@ -29,12 +29,12 @@ for the experiment. This argument needs to be a character string giving the
  wells coordinates of the form "LetterNumber" (eg. "A1" for the well
  positionned in the first row/ first column of the plate).}
 
-\item{blank_wells}{character, the wells that will be used during
+\item{buffer_wells}{character, the wells that will be used during
 experiment but without biological sample in it. Same input structure as for
 forbidden_wells parameter.}
 
-\item{QC_wells}{character, the wells that will be used for Quality Control
-samples during the Experiment. Same input structure as for forbidden_wells
+\item{fixed_wells}{character, the wells that will be used for Quality Control
+samples or standards during the Experiment. Same input structure as for forbidden_wells
 parameter.}
 
 \item{spatial_constraint}{character, is the spatial constraint used to
@@ -67,6 +67,6 @@ x <- MSnbase::MSnSet(exprs = M,pData =  pd)
 df <- convertESet(x, "Environment")
 # run wpm on the toy example
 wrapperWPM(user_df = df, plate_dims = list(8,12), nb_plates = 1,
-           forbidden_wells = "A1,A2,A3", QC_wells = "B1,B2",
+           forbidden_wells = "A1,A2,A3", fixed_wells = "B1,B2",
            spatial_constraint = "NS")
 }

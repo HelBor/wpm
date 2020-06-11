@@ -4,7 +4,7 @@
 ##' by the user in order to generate the plate plans afterwards.
 ##'
 ##' @param id Internal parameters for {shiny}.
-##' @return a Fuild Page layout
+##' @return a Build Page layout
 mod_plate_specifications_ui <- function(id){
 ns <- shiny::NS(id)
     shiny::fluidRow(
@@ -14,21 +14,21 @@ ns <- shiny::NS(id)
                 status = "warning",
                 width = 12,
                 solidHeader = TRUE,
-                title = shiny::h3("4 - Blanks"),
+                title = shiny::h3("Buffer solutions"),
                 shiny::fluidRow(
                     shiny::column(
                         width = 10,
-                        shiny::h4("How to place Blanks on the plate")
+                        shiny::h4("How to place buffers on the plate")
                     ),
                     shiny::column(
                         width = 2,
                         align = "right",
                         shinyWidgets::dropdownButton(
-                            shiny::h4("What are blanks?"),
-                            shiny::div("By blanks we mean a preparation without
+                            shiny::h4("What are buffers?"),
+                            shiny::div("By buffer we mean a preparation without
                             a biological sample in it.", shiny::br(), "You can
                             place them in line or column. In these two cases
-                            there will be blanks every other line/column."),
+                            there will be buffers every other line/column."),
                             icon = shiny::icon("info-circle"),
                             tooltip = shinyWidgets::tooltipOptions(title = "Help"),
                             status = "warning",
@@ -42,9 +42,9 @@ ns <- shiny::NS(id)
                     shiny::column(
                         width = 5,
                         shinyWidgets::awesomeRadio(
-                            inputId = ns("blank_mode"),
+                            inputId = ns("buffer_mode"),
                             label = NULL,
-                            choices = c("No blanks" = "none",
+                            choices = c("No buffers" = "none",
                                         "Per line" = "by_row",
                                         "Per column" = "by_column",
                                         "Checkerboard" = "checkerboard",
@@ -55,22 +55,22 @@ ns <- shiny::NS(id)
                     shiny::column(
                         width = 7,
                         shiny::conditionalPanel(
-                            condition = "input.blank_mode == 'by_row' | input.blank_mode == 'by_column'",
+                            condition = "input.buffer_mode == 'by_row' | input.buffer_mode == 'by_column'",
                             shinyWidgets::awesomeRadio(
-                                inputId = ns("start_blank"),
+                                inputId = ns("start_buffer"),
                                 label = shiny::h4("starting placing in:"),
                                 choices = c("even" = "even", "odd" = "odd"),
                                 selected = NULL,
                                 status = "warning"),
                             ns = ns),
                         shiny::conditionalPanel(
-                            condition = "input.blank_mode == 'by_hand'",
+                            condition = "input.buffer_mode == 'by_hand'",
                             shiny::textInput(
                                 ns("hand_select"),
                                 shiny::h4("Enter Line Letter & Column number,
                                 each box separated by commas without spaces. \n
                                 The wells already filled as forbidden will not
-                                be drawn as 'Blank'."),
+                                be drawn as 'buffer'."),
                                 value = NULL,
                                 placeholder = "Ex: A1,B2,C3"),
                             ns = ns)
@@ -98,7 +98,7 @@ ns <- shiny::NS(id)
                 ),
 
                 shiny::conditionalPanel(
-                    condition = "input.blank_mode == 'by_row'",
+                    condition = "input.buffer_mode == 'by_row'",
                     shinyWidgets::awesomeRadio(
                     inputId = ns("constraint_row"),
                     label = NULL,
@@ -108,7 +108,7 @@ ns <- shiny::NS(id)
                     ns = ns),
 
                 shiny::conditionalPanel(
-                    condition = "input.blank_mode == 'by_column'",
+                    condition = "input.buffer_mode == 'by_column'",
                     shinyWidgets::awesomeRadio(
                         inputId = ns("constraint_column"),
                         label = NULL,
@@ -118,7 +118,7 @@ ns <- shiny::NS(id)
                     ns = ns),
 
                 shiny::conditionalPanel(
-                    condition = "input.blank_mode == 'none' & output.nb_gps > 3",
+                    condition = "input.buffer_mode == 'none' & output.nb_gps > 3",
                     shinyWidgets::awesomeRadio(
                         inputId = ns("constraint_none_sup3"),
                         label = NULL,
@@ -131,7 +131,7 @@ ns <- shiny::NS(id)
                     ns = ns),
 
                     shiny::conditionalPanel(
-                    condition = "input.blank_mode == 'none' & output.nb_gps <= 3",
+                    condition = "input.buffer_mode == 'none' & output.nb_gps <= 3",
                     shinyWidgets::awesomeRadio(
                         inputId = ns("constraint_none_inf3"),
                         label = NULL,
@@ -143,7 +143,7 @@ ns <- shiny::NS(id)
                     ns = ns),
 
                 shiny::conditionalPanel(
-                    condition = "input.blank_mode == 'by_hand' & output.nb_gps > 3",
+                    condition = "input.buffer_mode == 'by_hand' & output.nb_gps > 3",
                     shinyWidgets::awesomeRadio(
                         inputId = ns("constraint_by_hand_sup3"),
                         label = NULL,
@@ -157,7 +157,7 @@ ns <- shiny::NS(id)
 
 
                 shiny::conditionalPanel(
-                    condition = "input.blank_mode == 'by_hand' & output.nb_gps <= 3",
+                    condition = "input.buffer_mode == 'by_hand' & output.nb_gps <= 3",
                     shinyWidgets::awesomeRadio(
                         inputId = ns("constraint_by_hand_inf3"),
                         label = NULL,
@@ -169,7 +169,7 @@ ns <- shiny::NS(id)
                     ns = ns),
 
                 shiny::conditionalPanel(
-                    condition = "input.blank_mode == 'checkerboard'",
+                    condition = "input.buffer_mode == 'checkerboard'",
                     shiny::div(
                         shiny::HTML(
                             paste("You have selected the ",
@@ -207,19 +207,19 @@ ns <- shiny::NS(id)
 ##' @param p_dimensions reactive shiny object containing the number of lines and
 ##' number of columns for a given plate and the number of plates to fill.
 ##' @param forbid_wells reactive shiny object containing the forbidden wells
-##' @param notRandom_wells reactive shiny object containing the notRandom wells
+##' @param fixed_wells reactive shiny object containing the fixed wells
 ##' @importFrom rlang .data
 ##' @return toReturn, `ReactiveValues` object containing:
 ##' * nb_lines: the number of lines of the plate to be filled
 ##' * nb_cols: the number of columns of the plate to be filled
 ##' * nb_plates: the number of plates to fill
-##' * special_wells: dataframe containing the wells for forbidden, blank and
-##'   not Random wells.
+##' * special_wells: dataframe containing the wells for forbidden, buffer 
+##' solutions and not Random wells.
 ##' * neighborhood_mod: Character string specifying the spatial constraint.
 ##' @noRd
     mod_plate_specifications_server <- function(
     input, output, session, nb_samp_gps, gp_levels, project_name, nb_samples,
-    p_dimensions, forbid_wells, notRandom_wells){
+    p_dimensions, forbid_wells, fixed_wells){
 
     toReturn <- shiny::reactiveValues(
         nb_lines = NULL,
@@ -259,17 +259,17 @@ ns <- shiny::NS(id)
 
     shiny::outputOptions(output, "nb_gps", suspendWhenHidden = FALSE)
 
-    blank_wells <- shiny::reactive({
+    buffer_wells <- shiny::reactive({
         shiny::validate(
             shiny::need((p_lines() > 0 & p_cols() > 0),
                         "requires a plate with positive dimensions.")
         )
-        if (input$blank_mode != "by_hand") {
-            defineBlankCoords(p_lines(), p_cols(),
-                            as.character(input$blank_mode), input$start_blank)
+        if (input$buffer_mode != "by_hand") {
+            defineBufferCoords(p_lines(), p_cols(),
+                            as.character(input$buffer_mode), input$start_buffer)
         }else{
             return(convertVector2Df(input$hand_select, p_lines(), p_cols(),
-                                    status = "blank"))
+                                    status = "buffer"))
         }
 
     })
@@ -277,8 +277,8 @@ ns <- shiny::NS(id)
     wells_to_plot <- shiny::reactive({
         w2p <- joinDataframes(
             forbidden_w = forbid_wells(),
-            blank_w = blank_wells(),
-            notRandom_w = notRandom_wells(),
+            buffer_w = buffer_wells(),
+            fixed_w = fixed_wells(),
             nb_samples = nb_samples(),
             totalNbWells = totalNbWells(),
             nb_p = nb_p())
@@ -319,23 +319,23 @@ ns <- shiny::NS(id)
 
     nbh_mod <- shiny::reactive({
         nbh_mod <- NULL
-        if (input$blank_mode == "by_row") {
+        if (input$buffer_mode == "by_row") {
             nbh_mod <- input$constraint_row
-        }else if (input$blank_mode == "by_column") {
+        }else if (input$buffer_mode == "by_column") {
             nbh_mod <- input$constraint_column
-        }else if (input$blank_mode == "by_hand") {
+        }else if (input$buffer_mode == "by_hand") {
             if (nb_g() > 3) {
                 nbh_mod <- input$constraint_by_hand_sup3
             }else{
                 nbh_mod <- input$constraint_by_hand_inf3
             }
-        }else if (input$blank_mode == "none") {
+        }else if (input$buffer_mode == "none") {
             if (nb_g() > 3) {
                 nbh_mod <- input$constraint_none_sup3
             }else{
                 nbh_mod <- input$constraint_none_inf3
             }
-        }else if (input$blank_mode == "checkerboard") {
+        }else if (input$buffer_mode == "checkerboard") {
             nbh_mod <- "none"
         }
 
@@ -346,7 +346,7 @@ ns <- shiny::NS(id)
         toReturn$nb_lines <- p_lines()
         toReturn$nb_cols <- p_cols()
         toReturn$nb_plates <- nb_p()
-        # dataframe which contains the blanks and forbidden wells
+        # dataframe which contains the buffers and forbidden wells
         toReturn$special_wells <- wells_to_plot()
         toReturn$neighborhood_mod <- nbh_mod()
     })

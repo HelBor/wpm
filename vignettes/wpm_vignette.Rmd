@@ -130,9 +130,8 @@ information: the sample names.
 ```{r, echo=FALSE}
 knitr::kable(data.frame("Sample" = c("s1","s2","s3","s4")))
 ```
-But if there are different variables available in the CSV file describing the 
-data, you can select one of them that you want to use as the grouping factor for
-WPM. This column will be renamed "Group" in the final dataset.
+It is also possible to provide a CSV containing several variables describing
+the data as in the example below:
 ```{r, echo=FALSE}
 knitr::kable(
     data.frame("Sample" = c("s1","s2","s3","s4"), "Type" = c("A","A","B","C"),
@@ -142,6 +141,12 @@ knitr::kable(
 
 __IMPORTANT__ Please respect this ORDER of columns for the data in the CSV file:
 Sample names in the __first__ column, and other variables in the other columns.
+
+You can select one of the variables that you want to use as the grouping
+factor for WPM. This column will be renamed "Group" in the final dataset.
+
+![Choose the grouping factor](images/groupVariable.PNG)
+
 
 The names you give to columns in your CSV do not matter, because WPM will change
 them into _"Sample"_ and _"Group"_.
@@ -154,7 +159,7 @@ to plate maps (for more details on the ID see the
 
 ![Dataset vizualisation](images/toy2rightpanel.PNG)
 
-__IMPORTANT__ Be careful and please ensure that the dataset is correctly 
+__IMPORTANT__ Please ensure that the dataset is correctly 
 displayed in the right window and that the number of samples / groups is 
 correct.
 If you see that the total number of samples is wrong, this 
@@ -222,30 +227,30 @@ The wells filled with forbidden wells will have the *"forbidden"* ID in the
 final dataset.
 
 
-### Blanks {#blanks}
-At this stage you can specify the wells which correspond to blanks, if there 
+### Buffers {#buffers}
+At this stage you can specify the wells which correspond to buffers, if there 
 are any. 
 
-> A __Blank well__ corresponds to wells filled in with solution but without 
+> A __buffer well__ corresponds to wells filled in with solution but without 
 biological material (*e.g.* to avoid cross-contamination).
 
-Five patterns are available for placing the blanks:
+Five patterns are available for placing the buffers:
 
-**1)** *no blanks*: there will be no blank on the plate(s).
+**1)** *no buffers*: there will be no buffer on the plate(s).
 
-**2)** *Per line*: Automatically places blanks every other line. 
+**2)** *Per line*: Automatically places buffers every other line. 
 You can choose to start placing in even or odd line.
 
-![Per line mode example with even option](images/blankLine.PNG)
+![Per line mode example with even option](images/bufferLine.PNG)
 
-**3)** *Per column*: Automatically places blanks every other column. 
+**3)** *Per column*: Automatically places buffers every other column. 
 You can choose to start placing in even or odd column.
 
-![Per Column mode example with even option](images/blankColumn.PNG)
+![Per Column mode example with even option](images/bufferColumn.PNG)
 
-**4)** *Checkerboard*: Automatically places blanks like a checkerboard.
+**4)** *Checkerboard*: Automatically places buffers like a checkerboard.
 
-![Checkerboard mode](images/blankCheckerboard.PNG)
+![Checkerboard mode](images/bufferCheckerboard.PNG)
 
 **5)** *Choose by hand*: It is the same procedure as for specifying forbidden 
 wells.
@@ -254,7 +259,7 @@ wells.
 
 These are the spatial constraints that WPM needs to create the plates.
 Currently, there are 4 types proposed. Note that the patterns are available only 
-if they are compatible with the chosen blank pattern.
+if they are compatible with the chosen buffer pattern.
 The question here is: Should samples from the same group be found side by side?
 
 Schematically, the spatial constraints can be summarized as follows (the blue
@@ -264,36 +269,36 @@ the possibility (but not the obligation since the filling of the plate is done
 randomly) to be filled with a sample belonging to the same group as the samples 
 in the wells evaluated.
 
-![No constraint](images/NCnone.PNG){width=50%}
+![No constraint](images/NCnone.PNG)
 
-![North-South constraint](images/NCns.PNG){width=50%} 
+![North-South constraint](images/NCns.PNG) 
 
-![East-West constraint](images/NCew.PNG){width=50%}
+![East-West constraint](images/NCew.PNG)
 
-![North-South-East-West constraint](images/NCnsew.PNG){width=50%}
+![North-South-East-West constraint](images/NCnsew.PNG)
 
-The wells filled with blank wells will have the *"blank"* ID in the 
+The wells filled with buffer wells will have the *"buffer"* ID in the 
 final dataset.
 
-### Not Randomized wells {#notRandom_wells}
+### Fixed wells {#fixed_wells}
 
-At this stage you can specify the wells which correspond to not randomized 
+At this stage you can specify the wells which correspond to fixed 
 wells, if there are any. 
 
-> A __Not Randomized well__ corresponds to quality control samples or standards,
+> A __fixed well__ corresponds to quality control samples or standards,
 the precise location of which must be controlled by the experimenter.
 
 This step works in exactly the same way as the 
-[forbidden well](#forbidden_wells) step. The only difference is that the not 
-randomized will appear in **black** on the plot.
+[forbidden well](#forbidden_wells) step. The only difference is that the fixed 
+will appear in **black** on the plot.
 
-The wells filled with not randomized wells will have the *"notRandom"* ID in 
+The wells filled with fixed wells will have the *"fixed"* ID in 
 the final dataset.
 
 ### Number of iterations
 
 Here you choose a maximum number of iterations that WPM can do to find a 
-solution, then start WPM by clincking the **"start WPM"** button. 
+solution, then start WPM by clicking the **"start WPM"** button. 
 The default value is 20, but if your configuration is somewhat complex, then 
 it is advisable to increase this number.
 An *iteration* corresponds to an attempt by WPM to find a solution. The 
@@ -395,17 +400,17 @@ df <- wpm::convertSE(se, "Treatment")
 The next step is to run the wpm wrapper function by giving it all the parameters
 needed. For more details on the parameters, please see the sections about
 [plate dimensions](#plate-dims), [forbidden wells](#forbidden_wells), 
-[Blanks](#blanks), [Quality Control wells](#notRandom_wells) and 
+[buffers](#buffers), [Quality Control wells](#fixed_wells) and 
 [Spatial constraints](#neighborhood).
 
-In this toy example, we do not specify any blank well.
+In this toy example, we do not specify any buffer well.
 
 ```{r run wpm}
 wpm_result <- wpm::wrapperWPM(user_df = df,
             plate_dims = list(8,12),
             nb_plates = 1,
             forbidden_wells = "A1,A2,A3",
-            QC_wells = "B1,B2",
+            fixed_wells = "B1,B2",
             spatial_constraint = "NS")
 ```
 

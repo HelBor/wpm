@@ -14,18 +14,18 @@
 ##' @importFrom rlang .data
 ##' @examples
 ##' # example of data containing 5 biological samples, 2 forbidden wells,
-##' # 2 blanks and 3 not random wells
+##' # 2 buffers and 3 not random wells
 ##' user_data <- data.frame("Sample" = c(as.character(seq_len(5)), rep_len(NA, 7)),
 ##'                         "Group" = c(c("A","B","C","A","B"),
 ##'                                     rep_len("forbidden", 2),
-##'                                     rep_len("blank", 2),
-##'                                     rep_len("notRandom", 3)),
+##'                                     rep_len("buffer", 2),
+##'                                     rep_len("fixed", 3)),
 ##'                         "ID" = c(seq_len(5),rep_len(NA,7)),
 ##'                         "Well" = c("A2","B3","C3","B4","A3","A1","A4","B2","C2","B1","C1","C4"),
 ##'                         "Status" = c(rep_len("toRandom", 5),
 ##'                                      rep_len("forbidden", 2),
-##'                                      rep_len("blank", 2),
-##'                                      rep_len("notRandom", 3)),
+##'                                      rep_len("buffer", 2),
+##'                                      rep_len("fixed", 3)),
 ##'                         "Row" = c(1,2,3,2,1,1,1,2,3,2,3,3),
 ##'                         "Column" = c(2,3,3,4,3,1,4,2,2,1,1,4))
 ##' p <- "My Project"
@@ -48,12 +48,12 @@ drawMap <- function(df, sample_gps, gp_levels, plate_lines, plate_cols, project_
         df$Group <- as.factor(1)
     }
 
-    # this palette allows coloring depending on whether it is a blank, a
-    # prohibited well, a Not Randomized sample or a randomized sample
+    # this palette allows coloring depending on whether it is a buffer solution,
+    # a prohibited well, a Not Randomized sample or a randomized sample
 
-    palette_strains <- c("blank" = "#8B8378",
+    palette_strains <- c("buffer" = "#8B8378",
                          "forbidden" = "red",
-                         "notRandom" = "black")
+                         "fixed" = "black")
 
     # control the number of colors to pick according to the number of groups
     if (sample_gps <= 1) {

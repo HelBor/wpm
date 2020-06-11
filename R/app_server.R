@@ -26,10 +26,10 @@ app_server <- function(input, output, session ) {
         status = "forbidden",
         p_dimensions = shiny::reactive(plate_dimensions)
     )
-    not_random_w <- shiny::callModule(
+    fixed_w <- shiny::callModule(
         mod_special_wells_server,
         id = "special2",
-        status = "notRandom",
+        status = "fixed",
         p_dimensions = shiny::reactive(plate_dimensions)
     )
 
@@ -42,7 +42,7 @@ app_server <- function(input, output, session ) {
         nb_samples = shiny::reactive(datafile$nb_samples),
         p_dimensions = shiny::reactive(plate_dimensions),
         forbid_wells = forbidden_w,
-        notRandom_wells = not_random_w
+        fixed_wells = fixed_w
     )
 
 
@@ -109,4 +109,7 @@ app_server <- function(input, output, session ) {
             project_name = shiny::reactive(input$project_title)
         )
     })
+    
+    ## Help panel module
+    shiny::callModule(mod_help_server, id = "help")
 }

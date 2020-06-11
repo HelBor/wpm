@@ -6,8 +6,8 @@
 \usage{
 joinDataframes(
   forbidden_w = NULL,
-  blank_w = NULL,
-  notRandom_w = NULL,
+  buffer_w = NULL,
+  fixed_w = NULL,
   nb_samples,
   totalNbWells,
   nb_p
@@ -16,9 +16,9 @@ joinDataframes(
 \arguments{
 \item{forbidden_w}{dataframe, the forbidden wells}
 
-\item{blank_w}{datarame, the blank wells}
+\item{buffer_w}{datarame, the buffer wells}
 
-\item{notRandom_w}{dataframe, the quality control wells}
+\item{fixed_w}{dataframe, the quality control wells}
 
 \item{nb_samples}{numeric, the number of samples to place using the
 backtracking algorithm.}

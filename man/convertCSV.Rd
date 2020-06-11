@@ -11,8 +11,8 @@ convertCSV(dt_path, row_names = FALSE, gp_field = NULL, ...)
 
 \item{row_names}{logical value, indicates if the file has rownames or not.}
 
-\item{gp_field}{the column name indicating the grouping factor for the 
-samples in the csv. If there is no grouping factor, then gp_field must be 
+\item{gp_field}{the column name indicating the grouping factor for the
+samples in the csv. If there is no grouping factor, then gp_field must be
 set to NULL or "none".}
 
 \item{...}{parameters to give to read.csv2 function}
@@ -23,7 +23,7 @@ a dataframe containing 3 fields: Sample, Group and ID.
 \description{
 This function converts a CSV into a dataframe to make it
 usable by the shiny application of wpm as well as by the wrapper function
-(version of wpm in command line). Be sure that the first column of the CSV 
+(version of wpm in command line). Be sure that the first column of the CSV
 file corresponds to samples names.
 }
 \examples{

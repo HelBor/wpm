@@ -58,11 +58,11 @@ checkWpmInputs <- function(user_df, plate_dims, nb_plates, spatial_constraint,
 ##' for the experiment. This argument needs to be a character string giving the
 ##'  wells coordinates of the form "LetterNumber" (eg. "A1" for the well
 ##'  positionned in the first row/ first column of the plate).
-##' @param blank_wells character, the wells that will be used during
+##' @param buffer_wells character, the wells that will be used during
 ##'  experiment but without biological sample in it. Same input structure as for
 ##'  forbidden_wells parameter.
-##' @param QC_wells character, the wells that will be used for Quality Control
-##'  samples during the Experiment. Same input structure as for forbidden_wells
+##' @param fixed_wells character, the wells that will be used for Quality Control
+##'  samples or standards during the Experiment. Same input structure as for forbidden_wells
 ##'  parameter.
 ##' @param spatial_constraint character, is the spatial constraint used to
 ##' place the samples on the plate. It can also be called neighborhood
@@ -85,11 +85,11 @@ checkWpmInputs <- function(user_df, plate_dims, nb_plates, spatial_constraint,
 ##' df <- convertESet(x, "Environment")
 ##' # run wpm on the toy example
 ##' wrapperWPM(user_df = df, plate_dims = list(8,12), nb_plates = 1,
-##'            forbidden_wells = "A1,A2,A3", QC_wells = "B1,B2",
+##'            forbidden_wells = "A1,A2,A3", fixed_wells = "B1,B2",
 ##'            spatial_constraint = "NS")
 ##' @export
 wrapperWPM <- function(user_df, plate_dims, nb_plates, forbidden_wells = NULL,
-                       blank_wells = NULL, QC_wells = NULL,
+                       buffer_wells = NULL, fixed_wells = NULL,
                        spatial_constraint = "none", max_iteration = 20){
 
     checkWpmInputs(user_df, plate_dims, nb_plates,
@@ -112,31 +112,31 @@ wrapperWPM <- function(user_df, plate_dims, nb_plates, forbidden_wells = NULL,
     }else{
         fw <- NULL
     }
-    if (!is.null(blank_wells)) {
-        if (!methods::is(blank_wells, "character")) {
-            stop("wrong blank_wells parameter: please provide a character 
+    if (!is.null(buffer_wells)) {
+        if (!methods::is(buffer_wells, "character")) {
+            stop("wrong buffer_wells parameter: please provide a character 
                 string.", call. = FALSE)
         }
-        bw <- convertVector2Df(blank_wells, plate_dims[[1]], 
-                               plate_dims[[2]],"blank")
+        bw <- convertVector2Df(buffer_wells, plate_dims[[1]], 
+                               plate_dims[[2]],"buffer")
     }else{
         bw <- NULL
     }
-    if (!is.null(QC_wells)) {
-        if (!methods::is(QC_wells, "character")) {
-            stop("wrong QC_wells parameter: please provide a character string.",
+    if (!is.null(fixed_wells)) {
+        if (!methods::is(fixed_wells, "character")) {
+            stop("wrong fixed_wells parameter: please provide a character string.",
                 call. = FALSE)
         }
-        QCw <- convertVector2Df(QC_wells, plate_dims[[1]], 
-                                plate_dims[[2]],"notRandom")
+        fixedw <- convertVector2Df(fixed_wells, plate_dims[[1]], 
+                                plate_dims[[2]],"fixed")
     }else{
-        QCw <- NULL
+        fixedw <- NULL
     }
 
     tNbW <- plate_dims[[1]] * plate_dims[[2]] * nb_plates
     ## Balanced Distribution
     special_wells <- joinDataframes(
-        forbidden_w = fw, blank_w = bw, notRandom_w = QCw,
+        forbidden_w = fw, buffer_w = bw, fixed_w = fixedw,
         nb_samples = nrow(user_df), totalNbWells = tNbW, nb_p = nb_plates)
     if (methods::is(special_wells, "data.frame")) {
         ## Backtracking part

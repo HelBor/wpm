@@ -16,7 +16,9 @@ sidebar <- shinydashboard::dashboardSidebar(
         shinydashboard::menuItem(
             "Parameters", tabName = "parameters", icon = shiny::icon("cogs")),
         shinydashboard::menuItem(
-            "Results", tabName = "results", icon = shiny::icon("chart-bar"))
+            "Results", tabName = "results", icon = shiny::icon("chart-bar")),
+        shinydashboard::menuItem(
+            "Help", tabName = "help", icon = shiny::icon("info-circle"))
     )
 )
 
@@ -107,7 +109,11 @@ app_ui <- function(request) {
                         tabName = "results",
                         shiny::h1("Your results"),
                         mod_data_export_ui("data_export")
-                    )# end of tabItem 3
+                    ), # end of tabItem 3
+                    shinydashboard::tabItem(
+                        tabName = "help",
+                        mod_help_ui("help")
+                    )# end of tabItem 4
                 ) # end of tabItems
             ),
             skin = "yellow"))

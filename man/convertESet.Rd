@@ -2,7 +2,7 @@
 % Please edit documentation in R/fct_imports.R
 \name{convertESet}
 \alias{convertESet}
-\title{Convert the phenotype data of an ExpressionSet or MsnSet into a dataframe 
+\title{Convert the phenotype data of an ExpressionSet or MsnSet into a dataframe
 for WPM}
 \usage{
 convertESet(eSet_obj, gp_field = NULL)

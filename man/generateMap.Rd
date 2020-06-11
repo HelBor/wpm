@@ -23,7 +23,7 @@ Sample.name, Well, Status, Row, Column, Plate}
 \item{nb_cols}{numeric, number of columns on the plate}
 
 \item{df_forbidden}{dataframe with the same structure than user_df, but for
-the forbidden, blank and Not randomized wells.}
+the forbidden, buffer solutions and Not randomized wells.}
 
 \item{mod}{character, neighborhood spatial constraint}
 
