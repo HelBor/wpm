@@ -214,7 +214,7 @@ ns <- shiny::NS(id)
 ##' * nb_cols: the number of columns of the plate to be filled
 ##' * nb_plates: the number of plates to fill
 ##' * special_wells: dataframe containing the wells for forbidden, buffer 
-##' solutions and not Random wells.
+##' solutions and fixed wells.
 ##' * neighborhood_mod: Character string specifying the spatial constraint.
 ##' @noRd
     mod_plate_specifications_server <- function(

@@ -13,9 +13,7 @@ mod_special_wells_ui <- function(id){
                     shiny::column(
                         width = 10,
                         shiny::h4("Enter Line Letter & Column number, each box 
-                          separated by commas without spaces.\n The wells 
-                          already filled as forbidden will not be drawn as 
-                          'Not Random'.")
+                          separated by commas without spaces.")
                     ),
                     shiny::column(
                         width = 2,
@@ -48,21 +46,22 @@ mod_special_wells_server <- function(input, output, session, status, p_dimension
             "Forbidden Wells"
         })
         output$help <- shiny::renderText({
-            "Forbidden means that the wells in question will not be filled at 
+            "'Forbidden' means that the wells in question will not be filled at 
             all in the final plate plan. Consequently, during 
-            the experiment, these will be completely empty wells."
+            the experiment, these will be completely empty wells. WPM color 
+            them in red on the plots."
         })
         
     }else if (status == "fixed") {
         output$status <- shiny::renderText({
-            "Not randomized Wells"
+            "Fixed Wells"
         })
         
         output$help <- shiny::renderText({
             "These samples will not be used for the backtracking algorithm.
-            They correspond to Quality controls or Standards. Knowing that the 
-            forbidden status has priority over the non-randomized status, the 
-            wells will remain red. "
+            They correspond to Quality controls or Standards. The 
+            'forbidden' status has priority over the 'fixed' status, the 
+            wells already filled as 'forbidden' will remain red. "
         })
     }
     
