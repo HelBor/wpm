@@ -259,8 +259,8 @@ wells, if there are any.
 the precise location of which must be controlled by the experimenter.
 
 This step works in exactly the same way as the
-[forbidden well](#forbiddenWells) step. The only difference is that the not
-randomized will appear in **black** on the plot.
+[forbidden well](#forbiddenWells) step. The only difference is that the fixed 
+    wells will appear in **black**. on the plot.
 
 The wells filled with fixed wells will have the *"fixed"* ID in
 the final dataset.
@@ -274,7 +274,7 @@ solution, then start WPM by clicking the **"start WPM"** button.
 The default value is 20, but if your configuration is somewhat complex, then
 it is advisable to increase this number.  
 An *iteration* corresponds to an attempt by WPM to find a solution. The
-algorithm used is not a "full" backtracking: WPM stops as soon as there are no
+algorithm used is not a "full" backtracking: WPM stops as soon as there are no  
 more possibilities to finalize the current solution, and starts from scratch
 the plate map, until providing a solution that complements all the constraints.  
 With this approach, not all possible combinations are explored, but it does
