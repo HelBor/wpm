@@ -33,7 +33,7 @@ joinDataframes <- function(forbidden_w = NULL, buffer_w = NULL,
         nb_nR <- nrow(fixed_w)
     }
 
-    if (nb_samples >= (totalNbWells)) {
+    if (nb_samples > (totalNbWells)) {
         ret <- "The dimensions of the plate are not compatible with the number
         of samples to be placed. Please increase the number of plates to fill
         or provide a dataset with fewer samples."
@@ -46,7 +46,7 @@ joinDataframes <- function(forbidden_w = NULL, buffer_w = NULL,
         if (!is.null(buffer_w)) {
             ## if there are fixed wells
             if (!is.null(fixed_w)) {
-                if (nb_samples >= (totalNbWells - (nb_b * nb_p) - (nb_f * nb_p) - (nb_nR * nb_p))) {
+                if (nb_samples > (totalNbWells - (nb_b * nb_p) - (nb_f * nb_p) - (nb_nR * nb_p))) {
                     ret <- "The dimensions of the plate are not compatible with
                     the number of samples to be placed. Maybe are you specifying
                     to many forbidden/buffers/fixed wells."
@@ -62,7 +62,7 @@ joinDataframes <- function(forbidden_w = NULL, buffer_w = NULL,
                 }
             ## If there is no fixed wells
             }else{
-                if (nb_samples >= (totalNbWells - (nb_b * nb_p) - (nb_f * nb_p))) {
+                if (nb_samples > (totalNbWells - (nb_b * nb_p) - (nb_f * nb_p))) {
                     ret <- "The buffer mode and/or forbidden wells selected are
                     not compatible with the plate's dimensions and the number of
                     samples to be placed. If you want to keep this buffer mode,
@@ -83,7 +83,7 @@ joinDataframes <- function(forbidden_w = NULL, buffer_w = NULL,
             ## if there is fixed well
             if (!is.null(fixed_w)) {
 
-                if (nb_samples >= (totalNbWells - (nb_f * nb_p) - (nb_nR * nb_p) )) {
+                if (nb_samples > (totalNbWells - (nb_f * nb_p) - (nb_nR * nb_p) )) {
                     ret <- "The dimensions of the plate are not compatible with
                     the number of samples to be placed. Maybe are you specifying
                     to many forbidden/fixed wells."
@@ -95,7 +95,7 @@ joinDataframes <- function(forbidden_w = NULL, buffer_w = NULL,
                 }
             ## if there is no fixed well
             }else{
-                if (nb_samples >= (totalNbWells - (nb_f * nb_p))) {
+                if (nb_samples > (totalNbWells - (nb_f * nb_p))) {
                     ret <- "The forbidden wells selected are not compatible with
                     the plate's dimensions and the number of samples to be
                     placed. To solve this issue, please:
@@ -112,7 +112,7 @@ joinDataframes <- function(forbidden_w = NULL, buffer_w = NULL,
         if (!is.null(buffer_w)) {
             ## if there are fixed wells
             if (!is.null(fixed_w)) {
-                if (nb_samples >= (totalNbWells - (nb_b * nb_p) - (nb_nR * nb_p) )) {
+                if (nb_samples > (totalNbWells - (nb_b * nb_p) - (nb_nR * nb_p) )) {
                     ret <- "The dimensions of the plate are not compatible with
                     the number of samples to be placed. Maybe are you specifying
                     to many buffers/fixed wells."
@@ -124,7 +124,7 @@ joinDataframes <- function(forbidden_w = NULL, buffer_w = NULL,
                 }
             ## if there is no fixed well
             }else{
-                if (nb_samples >= (totalNbWells - (nb_b*nb_p))) {
+                if (nb_samples > (totalNbWells - (nb_b*nb_p))) {
                     ret <- "The buffer mode selected is not compatible with the
                     plate's dimensions and the number of samples to be placed.
                     If you want to keep this buffer mode, please increase the
@@ -138,7 +138,7 @@ joinDataframes <- function(forbidden_w = NULL, buffer_w = NULL,
         }else{
             ## if there are fixed wells
             if (!is.null(fixed_w)) {
-                if (nb_samples >= totalNbWells - (nb_nR*nb_p)) {
+                if (nb_samples > totalNbWells - (nb_nR*nb_p)) {
                     ret <- "The dimensions of the plate are not compatible with
                     the number of samples to be placed. Maybe are you specifying
                     to many fixed wells."
