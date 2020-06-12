@@ -4,7 +4,7 @@
 ![R](https://img.shields.io/badge/R-v4.0+-blue?style=flat-square)
 [![GitHub issues](https://img.shields.io/github/issues/HelBor/wpm?style=flat-square)](https://github.com/HelBor/wpm/blob/issues)
 ![Release](https://img.shields.io/badge/release-alpha-orange?style=flat-square)
-![GitHub license](https://img.shields.io/github/license/HelBor/wpm?style=flat-square)
+![GitHub license](https://img.shields.io/badge/license-Artistic--2.0-green?style=flat-square)
 
 ## Brief introduction
 
@@ -87,18 +87,18 @@ df <- convertSE(mySummarizedExperiment, "grouping_factor")
 
 The next step is to run the wpm wrapper function by giving it all the parameters
 needed: the dataframe, the plate dimensions, the number of plates to fill, the 
-forbidden wells (wells that must not be filled at all for the experiment), blank
-wells (wells where there will be solution without sample in it), Quality Control
+forbidden wells (wells that must not be filled at all for the experiment), buffer
+wells (wells where there will be solution without sample in it), fixed
 wells, the spatial constraint to place the samples and the maximal number of 
 attemps for WPM to find a valid solution.
 
 ```R
-# example where we do not specify blanks
+# example where we do not specify buffers
 wpm_res <- wrapperWPM(user_df = df,
             plate_dims = list(8,12),
             nb_plates = 1,
             forbidden_wells = "A1,A2,A3",
-            QC_wells = "B1,B2",
+            fixed_wells = "B1,B2",
             spatial_constraint = "NS")
 ```
 
@@ -149,7 +149,7 @@ plate), or in case of dirty wells, broken pipettes, etc.
 sample in it. Provide the neighborhood constraints, which depend on the "Buffer"
 mode chosen. (Shouldn't samples from the same group be found side by side?)
 
-- **5)** Specify the __Not Randomized samples__: correspond to Quality Control samples or standards.
+- **5)** Specify the __Fixed samples__: correspond to Quality Control samples or standards.
 
 - **6)** Choose a maximum number of iterations that WPM can do to find a 
 solution,then start WPM. If the samples do not have a group, then the samples 
@@ -163,6 +163,15 @@ samples in the wellswhile respecting the specified constraints.).
 This Panel allows you to look after the final dataset containing the wells 
 chosen for each sample and a plot of your final well-plate map. Dataframe and 
 plots are downloadable separately.
+
+Example fo final dataset:
+<p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/vignettes/images/final_dataset.PNG"></p>
+
+
+Example of final plot for a 96 well-plate with 80 samples divided into 10 groups: 
+
+<p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/vignettes/images/plot1.png"></p>
+
 
 
 ## Pending Features
