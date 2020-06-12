@@ -58,6 +58,11 @@ skills.
 library(wpm)
 ```
 
+To see a complete Tutorial, please see the Vignette of the package. 
+```R
+browseVignettes("wpm")
+```
+
 ### Using WPM from the command line
 
 In command line there a some steps to process in the right order:
@@ -121,39 +126,47 @@ Simply run in the console:
 wpm()
 ```
 
-To see a complete Tutorial, please see the Vignette of the package. 
-```R
-browseVignettes("wpm")
-```
-
-WPM has 3 main panels:
+WPM has 4 main panels:
 
 * __Home__
 * __Parameters__
 * __Results__
-
+* __Help__
 
 #### Provide parameters
 
-- **1)** Provide a CSV file containing the sample names and respective groups if any.
+- **1)** Provide a CSV file containing the sample names and variable factors if any.
 
-- **2)** Specify the plate dimensions and their number (the user can choose between 6,24,  48,  96,  386,  1534  and  custom)  (WPM  checks  that  all  the  given  settings  arecompatible)
+- **2)** Specify the plate dimensions and their number (the user can choose 
+between 6, 24, 48, 96, 386, 1534 and custom). WPM checks that all the given 
+settings  arecompatible)
 
-- **3)** Specify the __Forbidden well__: These  wells  will  not  be  filled  with  any  kind  of  sample. We simply do not want to fill them (e.g. the coins of the plate), or in case of dirty wells, broken pipettes, etc.
+- **3)** Specify the __Forbidden well__: These wells will not be filled with 
+any kind of sample. We simply do not want to fill them (e.g. the coins of the 
+plate), or in case of dirty wells, broken pipettes, etc.
 
-- **4)** Specify the __Blanks__: correspond to solution without biological sample in it. Provide the neighborhood constraints, which depend on the "Blank" mode chosen. (Shouldn't samples from the same group be found side by side?)
+- **4)** Specify the __Buffers__: correspond to solution without biological 
+sample in it. Provide the neighborhood constraints, which depend on the "Buffer"
+mode chosen. (Shouldn't samples from the same group be found side by side?)
 
 - **5)** Specify the __Not Randomized samples__: correspond to Quality Control samples or standards.
 
-- **6)** Choose a maximum number of iterations that WPM can do to find a solution,then start WPM. If the samples do not have a group, then the samples will be placedcompletely randomly on the plates. If there are groups, wpm will use an algorithminspired by the backtracking algorithm (in order to place the samples in the wellswhile respecting the specified constraints.).
+- **6)** Choose a maximum number of iterations that WPM can do to find a 
+solution,then start WPM. If the samples do not have a group, then the samples 
+will be placedcompletely randomly on the plates. If there are groups, wpm will 
+use an algorithminspired by the backtracking algorithm (in order to place the 
+samples in the wellswhile respecting the specified constraints.).
 
 
 #### Check your Results
 
-This Panel allows you to look after the final dataset containing the wells chosen for each sample and a plot of your final well-plate map. Dataframe and plots are downloadable separately.
+This Panel allows you to look after the final dataset containing the wells 
+chosen for each sample and a plot of your final well-plate map. Dataframe and 
+plots are downloadable separately.
 
 
 ## Pending Features
+* Manage multiple grouping factors when importing the data
 * For proteomics, add the option to generate serialization of samples.
 
 ## Citing Our work
