@@ -21,6 +21,37 @@ mod_data_import_ui <- function(id){
                     width = 12,
                     solidHeader = TRUE,
                     title = shiny::h3("Upload dataset"),
+                    #***********************************************************
+                    shiny::fluidRow(
+                        shiny::column(
+                            width = 10,
+                            shiny::h4("Please use CSV format.")),
+                        shiny::column(
+                            width = 2,
+                            align = "right",
+                            shinyWidgets::dropdownButton(
+                                shiny::h4("File format"),
+                                shiny::div("File must be in CSV format.
+                                    It must contain at least the field samples names.
+                                    If samples pertain to different groups, you can specify
+                                    a second column containing the group names.
+                                    See the vignette for more details."),
+                                icon = shiny::icon("info-circle"),
+                                tooltip = shinyWidgets::tooltipOptions(
+                                    title = "Help"),
+                                status = "warning",
+                                size = "sm",
+                                width = "350px"
+                            ))
+                    ),
+                    shiny::fileInput(ns("file"),
+                                     label = NULL,
+                                     accept = c(
+                                         "text/csv",
+                                         "text/comma-separated-values,text/plain",
+                                         ".csv")
+                    ),
+                    #***********************************************************
                     shiny::fluidRow(
                         shiny::column(
                             width = 5,
@@ -101,36 +132,6 @@ mod_data_import_ui <- function(id){
                         selected = NULL
                     ),
                     #***********************************************************
-                    shiny::fluidRow(
-                        shiny::column(
-                            width = 10,
-                            shiny::h4("Please use CSV format.")),
-                        shiny::column(
-                            width = 2,
-                            align = "right",
-                            shinyWidgets::dropdownButton(
-                                shiny::h4("File format"),
-                                shiny::div("File must be in CSV format.
-                                    It must contain at least the field samples names.
-                                    If samples pertain to different groups, you can specify
-                                    a second column containing the group names.
-                                    See the vignette for more details."),
-                                icon = shiny::icon("info-circle"),
-                                tooltip = shinyWidgets::tooltipOptions(
-                                    title = "Help"),
-                                status = "warning",
-                                size = "sm",
-                                width = "350px"
-                            ))
-                    ),
-                    shiny::fileInput(ns("file"),
-                                     label = NULL,
-                                     accept = c(
-                                         "text/csv",
-                                         "text/comma-separated-values,text/plain",
-                                         ".csv")
-                    ),
-                    #***********************************************************
                     shiny::hr(),
                     shiny::h4("Please select the grouping variable"),
                     shinyWidgets::pickerInput(
@@ -196,7 +197,25 @@ mod_data_import_server <- function(input, output, session){
                                         choices = c("none",colnames(df)))
     })
     ## The user's data, reshaped into a valid data frame for WPM
-    dataframe <- shiny::eventReactive(input$GroupPicker, {
+    # dataframe <- shiny::eventReactive(input$GroupPicker, {
+    #     df <- utils::read.csv2(userFile()$datapath,
+    #                            header = input$heading, quote = input$quote,
+    #                            sep = input$sep_input, stringsAsFactors = FALSE,
+    #                            nrows = 1)
+    #     shiny::validate(
+    #         shiny::need(input$GroupPicker %in% c("none",colnames(df)),
+    #                     "The picker provided is not a valid column name.")
+    #     )
+    #     df <- convertCSV(
+    #         userFile()$datapath, row_names = input$rnames,
+    #         gp_field = input$GroupPicker, header = input$heading,
+    #         quote = input$quote, sep = input$sep_input,
+    #         stringsAsFactors = FALSE)
+    #     return(df)
+    # })
+
+
+    dataframe <- shiny::reactive({
         df <- utils::read.csv2(userFile()$datapath,
                                header = input$heading, quote = input$quote,
                                sep = input$sep_input, stringsAsFactors = FALSE,
@@ -212,6 +231,8 @@ mod_data_import_server <- function(input, output, session){
             stringsAsFactors = FALSE)
         return(df)
     })
+
+
 
 
 
