@@ -1,13 +1,13 @@
-# check that the function returns a dataframe when giving a CSV file
+# check that the function returns a list when giving a CSV file
 testthat::test_that(
     "CSV conversion dataframe expectation", {
         test <- data.frame("Sample" = c("s1","s2","s3","s4"),
                             "Group" = c("A","A","B", "C"))
         tf <- tempfile()
         write.csv2(test, tf)
-        testthat::expect_s3_class(
+        testthat::expect_type(
             convertCSV(tf, header = TRUE, sep = ";", gp_field = "Group"),
-            "data.frame")
+            "list")
     }
 )
 
@@ -29,14 +29,14 @@ testthat::test_that(
 )
 
 
-# check that the function returns a dataframe when giving a 
+# check that the function returns a dataframe when giving a
 # SummarizedExperiment
 testthat::test_that(
     "SummarizedExperiment conversion dataframe expectations", {
         nrows <- 200
         ncols <- 6
         counts <- matrix(runif(nrows * ncols, 1, 1e4), nrows)
-        colData <- data.frame(Treatment = rep(c("ChIP", "Input"), 3), 
+        colData <- data.frame(Treatment = rep(c("ChIP", "Input"), 3),
                             row.names = LETTERS[1:6])
         se <- SummarizedExperiment::SummarizedExperiment(assays = list(counts = counts),
                                    colData = colData)
