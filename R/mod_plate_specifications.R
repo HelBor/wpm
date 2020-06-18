@@ -29,7 +29,8 @@ ns <- shiny::NS(id)
                             shiny::div("By buffer we mean a preparation without
                             a biological sample in it.", shiny::br(), "You can
                             place them in line or column. In these two cases
-                            there will be buffers every other line/column."),
+                            there will be buffers every other line/column.
+                            They are colored in grey on the plots."),
                             icon = shiny::icon("info-circle"),
                             tooltip = shinyWidgets::tooltipOptions(title = "Help"),
                             status = "warning",
@@ -89,7 +90,12 @@ ns <- shiny::NS(id)
                         align = "right",
                         shinyWidgets::dropdownButton(
                             shiny::h4("What are neighborhood constraints?"),
-                            shiny::div(""),
+                            shiny::div("These are spatial constraints.
+                                Can 2 samples belonging to the same group be
+                                placed side by side on the plate? West
+                                corresponds to the left, East to the right,
+                                North at the top and South at the bottom on the
+                                map."),
                             icon = shiny::icon("info-circle"),
                             tooltip = shinyWidgets::tooltipOptions(title = "Help"),
                             status = "warning",

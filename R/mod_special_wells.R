@@ -60,9 +60,10 @@ mod_special_wells_server <- function(input, output, session, status, p_dimension
 
         output$help <- shiny::renderText({
             "These samples will not be used for the backtracking algorithm.
-            They correspond to Quality controls or Standards. The
-            'forbidden' status has priority over the 'fixed' status, the
-            wells already filled as 'forbidden' will remain red. "
+            They correspond to Quality controls or Standards. These wells are
+            colored black on the plate map. Note that the 'forbidden' status
+            has priority over the 'fixed' status, the wells already filled as
+            'forbidden' will remain red. "
         })
     }
 
