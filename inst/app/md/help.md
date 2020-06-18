@@ -62,16 +62,9 @@ specify all the constraints for generating the desired plate maps.
 ---
 
 ### 3.1 Upload dataset
-Before uploading the CSV file, these 3 next sub-steps are important:
 
-* check if your file does have a __header__ and __row names__.
-* select the right type of __quotes__. Default is none, meaning that there is
-no __*"*__ or __*'*__ characters in your file.
-* select the appropriate __separator__ field. Default is semicolon (__*";"*__)
-
-Then you must provide a __CSV__ file containing at least one kind of
+First, you must upload the CSV file. This file contains at least one kind of
 information: the sample names.
-
 | Sample |
 |--------|
 | s1     |
@@ -92,18 +85,26 @@ the data as in the example below:
 __IMPORTANT__ Please respect this ORDER of columns for the data in the CSV file:
 Sample names in the __first__ column, and other variables in the other columns.
 
-You can select one of the variables that you want to use as the grouping
+Second, you have to specify if there are quotes in your file or not. 
+The Default is none, meaning that there is no __*"*__ or __*'*__ characters in your file.
+If you select the appropriate quote, then you will be able to check these 
+parameters:
+
+* check if your file does have a __header__ and __row names__.
+* select the appropriate __separator__ field. Default is semicolon (__*";"*__)
+
+Then you can select one of the variables that you want to use as the grouping
 factor for WPM.  
 This column will be renamed "Group" in the final dataset.
 
 ![Choose the grouping factor](../../../vignettes/images/groupVariable.PNG)
 
 
-The names you give to columns in your CSV do not matter, because WPM will change
-them into _"Sample"_ and _"Group"_.
+The names you give to columns in your CSV do not matter, because WPM will create
+a new dataset having 3 fields: _"Sample"_ , _"Group"_ and _"ID"_.
 
-You will see your dataset on the right side of the window, with a new column
-added: "ID".  
+You will see your dataset on the right side of the window, and another dataset 
+which will be used by WPM to generate the map(s).   
 Each sample is assigned a unique ID, which will be used to assign the samples
 to plate maps (for more details on the ID see the
 [Results section](#results) ).

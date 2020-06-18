@@ -94,7 +94,7 @@ If everything is in order, a new window will open in your default browser.
 If not, find a line written in the R console (eg. 
 `Listening on http://127.0.0.1:4028`), and paste the URL in your web browser.
 
-WPM has 3 main tabs: __Home__, __Parameters__ and __Results__.
+WPM has 4 main tabs: __Home__, __Parameters__, __Results__ ans __Help__.
 
 ## The __Home__ tab
 
@@ -118,14 +118,8 @@ specify all the constraints for generating the desired plate maps.
 
 
 ### Upload dataset
-Before uploading the CSV file, these 3 next sub-steps are important:
 
-* check if your file does have a __header__ and __row names__.
-* select the right type of __quotes__. Default is none, meaning that there is 
-no __*"*__ or __*'*__ characters in your file.
-* select the appropriate __separator__ field. Default is semicolon (__*";"*__)
-
-Then you must provide a __CSV__ file containing at least one kind of 
+First, you must upload the CSV file. This file contains at least one kind of
 information: the sample names.
 ```{r, echo=FALSE}
 knitr::kable(data.frame("Sample" = c("s1","s2","s3","s4")))
@@ -142,29 +136,34 @@ knitr::kable(
 __IMPORTANT__ Please respect this ORDER of columns for the data in the CSV file:
 Sample names in the __first__ column, and other variables in the other columns.
 
-You can select one of the variables that you want to use as the grouping
-factor for WPM. This column will be renamed "Group" in the final dataset.
+Second, you have to specify if there are quotes in your file or not. 
+The Default is none, meaning that there is no __*"*__ or __*'*__ characters in your file.
+If you select the appropriate quote, then you will be able to check these 
+parameters:
+
+* check if your file does have a __header__ and __row names__.
+* select the appropriate __separator__ field. Default is semicolon (__*";"*__)
+
+Then you can select one of the variables that you want to use as the grouping
+factor for WPM.  
+This column will be renamed "Group" in the final dataset.
 
 ![Choose the grouping factor](images/groupVariable.PNG)
 
+The names you give to columns in your CSV do not matter, because WPM will create
+a new dataset having 3 fields: _"Sample"_ , _"Group"_ and _"ID"_.
 
-The names you give to columns in your CSV do not matter, because WPM will change
-them into _"Sample"_ and _"Group"_.
-
-You will see your dataset on the right side of the window, with a new column 
-added: "ID".
-Each sample is assigned a unique ID, which will be used to assign the samples 
-to plate maps (for more details on the ID see the 
-[Results section](#results_panel) ).
+You will see your dataset on the right side of the window, and another dataset 
+which will be used by WPM to generate the map(s).   
+Each sample is assigned a unique ID, which will be used to assign the samples
+to plate maps (for more details on the ID see the [Results section](#results_panel) ).
 
 ![Dataset vizualisation](images/toy2rightpanel.PNG)
 
-__IMPORTANT__ Please ensure that the dataset is correctly 
-displayed in the right window and that the number of samples / groups is 
-correct.
-If you see that the total number of samples is wrong, this 
-means that you have not chosen the appropriate options among those described 
-above and you need to set the correct ones.
+__IMPORTANT__ Please ensure that the dataset is correctly displayed in the right window and that the number of samples / groups is correct.    
+If you see that the total number of samples is wrong, this means that you have
+not chosen the appropriate options among those described above and you need to
+set the correct ones.
 
 ### Choose a Project name
 This step is optional. If you provide one, it will be used in the plots titles 

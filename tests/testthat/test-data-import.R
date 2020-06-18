@@ -5,9 +5,10 @@ testthat::test_that(
                             "Group" = c("A","A","B", "C"))
         tf <- tempfile()
         write.csv2(test, tf)
-        testthat::expect_type(
-            convertCSV(tf, header = TRUE, sep = ";", gp_field = "Group"),
-            "list")
+        imported_file <- convertCSV(tf, header = TRUE, sep = ";", gp_field = "Group")
+        testthat::expect_type(imported_file, "list")
+        testthat::expect_s3_class(imported_file$df_csv, "data.frame")
+        testthat::expect_s3_class(imported_file$df_wpm, "data.frame")
     }
 )
 

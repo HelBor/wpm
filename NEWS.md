@@ -65,3 +65,9 @@ application.
 * some upload parameters are now available only if the CSV file is correctly 
 imported
 * added preview of CSV file when importing in the UI.
+
+# changes in version 0.99.10
+* corrected unit tests for CSV import
+* corrected README R commands for convertCSV section
+* corrected Help tab for the upload file section
+* corrected the Parameters section in the Vignette
