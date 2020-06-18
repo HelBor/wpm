@@ -11,7 +11,9 @@
 ##' samples in the csv. If there is no grouping factor, then gp_field must be
 ##' set to NULL or "none".
 ##' @param ... parameters to give to read.csv2 function
-##' @return a dataframe containing 3 fields: Sample, Group and ID.
+##' @return a list containing a dataframe containing the data of the imported
+##' CSV and a dataframe containing 3 fields (Sample, Group and ID) which will be
+##'  used by WPM. Or NULL if there is an error when giving wrong parameters.
 ##'
 ##' @examples
 ##' test <- data.frame("Sample" = c("s1","s2","s3","s4"),
@@ -31,29 +33,91 @@
 ##' @export
 convertCSV <- function(dt_path, row_names = FALSE, gp_field = NULL, ...){
     if (row_names) {
-        df <- utils::read.csv2(dt_path, row.names = 1, ...)
+        df_csv <- tryCatch({
+            utils::read.csv2(dt_path, row.names = 1, ...)
+            },
+            error=function(cond) {
+                message(cond)
+                return(NULL)
+            },
+            warning=function(cond) {
+                message(cond)
+                return(NULL)
+            })
     }else{
-        df <- utils::read.csv2(dt_path, ...)
+        df_csv <- tryCatch({
+            utils::read.csv2(dt_path, ...)
+            },
+            error=function(cond) {
+                message(cond)
+                return(NULL)
+            },
+            warning=function(cond) {
+                message(cond)
+                return(NULL)
+            })
+
+    }
+    # if the given parameters (wrong rownames parameter) lead to a wrong
+    # structure of dataframe
+    if(length(colnames(df_csv)) == 0){
+        return(NULL)
     }
 
+    logging::loginfo("gp_fiels: %s, class: %s",gp_field,class(gp_field))
     if (is.null(gp_field)) {
-        df <- data.frame(Sample = df[,1], Group = as.factor(1))
+        df_wpm <- tryCatch({
+            data.frame(Sample = df_csv[,1], Group = as.factor(1))
+            },
+            error=function(cond) {
+                message(cond)
+                return(NULL)
+            },
+            warning=function(cond) {
+                message(cond)
+                return(NULL)
+            })
     }else if (gp_field == "none") {
-        df <- data.frame(Sample = df[,1], Group = as.factor(1))
+        df_wpm <- tryCatch({
+            data.frame(Sample = df_csv[,1], Group = as.factor(1))
+        },
+        error=function(cond) {
+            message(cond)
+            return(NULL)
+        },
+        warning=function(cond) {
+            message(cond)
+            return(NULL)
+        })
     }else{
         # check if user enter an existing field
-        if (gp_field %in% colnames(df)) {
-            df <- data.frame(Sample = df[,1],
-                             Group = as.factor(df[[gp_field]]))
+        if (gp_field %in% colnames(df_csv)) {
+            df_wpm <- tryCatch({
+                data.frame(Sample = df_csv[,1],
+                           Group = as.factor(df_csv[[gp_field]]))
+            },
+            error=function(cond) {
+                message(cond)
+                return(NULL)
+            },
+            warning=function(cond) {
+                message(cond)
+                return(NULL)
+            })
         }else{
-            stop("The group field must be an existing column name for the
+            message("The group field must be an existing column name for the
                 phenotype Data", call. = FALSE)
+            return(NULL)
         }
     }
-    df$Sample <- as.character(df$Sample)
-    ## a unique ID for each sample which will be used by the drawMap function
-    df$ID <- seq_len(nrow(df))
-    return(df)
+
+    if(!is.null(df_wpm)){
+        df_wpm$Sample <- as.character(df_wpm$Sample)
+        ## a unique ID for each sample which will be used by the drawMap function
+        df_wpm$ID <- seq_len(nrow(df_csv))
+        toReturn <- list("df_csv" = df_csv, "df_wpm" = df_wpm)
+    }
+    return(toReturn)
 }
 
 ##' Reshape a phenotype dataframe for WPM

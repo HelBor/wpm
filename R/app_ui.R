@@ -53,6 +53,7 @@ app_ui <- function(request) {
                                 shinydashboard::box(
                                     status = "warning",
                                     width = 12,
+                                    collapsible = TRUE,
                                     solidHeader = TRUE,
                                     title = shiny::h3("Please choose a Project name"),
                                     shiny::textInput(inputId = "project_title",
@@ -60,9 +61,7 @@ app_ui <- function(request) {
                                                      value = "",
                                                      placeholder = "my project title")
                                 )
-
                             )
-
                         ),
                         mod_plate_dimensions_ui("p_dim"),
                         mod_special_wells_ui("special1"), # forbidden wells
@@ -70,38 +69,17 @@ app_ui <- function(request) {
                         mod_special_wells_ui("special2"), # not randomized wells
                         shiny::fluidRow(
                             shiny::column(
-                                width = 6,
-                                shinydashboard::box(
-                                    status = "warning",
-                                    width = 12,
-                                    solidHeader = TRUE,
-                                    title = shiny::h3("Number of iterations"),
-                                    shiny::h4(
-                                    "Please specify the maximum number of iterations
-                                    that WPM can perform. Default value is 20."),
-                                    shinyWidgets::knobInput(
-                                        inputId = "nb_iter",
-                                        label = NULL,
-                                        value = 20,
-                                        min = 0,
-                                        width = 80,
-                                        height = 80,
-                                        displayPrevious = TRUE,
-                                        lineCap = "round",
-                                        fgColor = "#f0ad4e",
-                                        inputColor = "#f0ad4e"
-                                    ),
-                                    shiny::div(
-                                        shinyWidgets::useSweetAlert(),
-                                        shinyWidgets::actionBttn(
-                                            inputId = "start_WPM_Btn",
-                                            label = "Start WPM",
-                                            icon = shiny::icon("play"),
-                                            color = "warning",
-                                            style = "unite"
-                                        )
-                                    )
-                                ) # end of box
+                                width = 12,
+                                mod_iteration_number_ui("max_iter"),
+                                shinyWidgets::useSweetAlert(),
+                                shinyWidgets::actionBttn(
+                                    inputId = "start_WPM_Btn",
+                                    label = "Start WPM",
+                                    icon = shiny::icon("play"),
+                                    color = "warning",
+                                    style = "unite"
+                                )
+
                             )# end of column
                         ) # end of fluiRow 3
                     ),# end of tabItem 2

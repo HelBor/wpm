@@ -7,12 +7,13 @@ mod_special_wells_ui <- function(id){
             shinydashboard::box(
                 status = "warning",
                 width = 12,
+                collapsible = TRUE,
                 solidHeader = TRUE,
                 title = shiny::h3(shiny::textOutput(ns("status"))),
                 shiny::fluidRow(
                     shiny::column(
                         width = 10,
-                        shiny::h4("Enter Line Letter & Column number, each box 
+                        shiny::h4("Enter Line Letter & Column number, each box
                           separated by commas without spaces.")
                     ),
                     shiny::column(
@@ -46,33 +47,33 @@ mod_special_wells_server <- function(input, output, session, status, p_dimension
             "Forbidden Wells"
         })
         output$help <- shiny::renderText({
-            "'Forbidden' means that the wells in question will not be filled at 
-            all in the final plate plan. Consequently, during 
-            the experiment, these will be completely empty wells. WPM color 
+            "'Forbidden' means that the wells in question will not be filled at
+            all in the final plate plan. Consequently, during
+            the experiment, these will be completely empty wells. WPM color
             them in red on the plots."
         })
-        
+
     }else if (status == "fixed") {
         output$status <- shiny::renderText({
             "Fixed Wells"
         })
-        
+
         output$help <- shiny::renderText({
             "These samples will not be used for the backtracking algorithm.
-            They correspond to Quality controls or Standards. The 
-            'forbidden' status has priority over the 'fixed' status, the 
+            They correspond to Quality controls or Standards. The
+            'forbidden' status has priority over the 'fixed' status, the
             wells already filled as 'forbidden' will remain red. "
         })
     }
-    
+
     p_lines <- shiny::reactive({
         return(p_dimensions()$nb_lines)
     })
-    
+
     p_cols <- shiny::reactive({
         return(p_dimensions()$nb_cols)
     })
-    
+
     special_wells <- shiny::reactive({
         ## if special wells have been entered, then we transform into a dataframe
         ## compatible with the rest of the code

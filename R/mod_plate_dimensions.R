@@ -6,6 +6,7 @@ mod_plate_dimensions_ui <- function(id){
             shinydashboard::box(
                 status = "warning",
                 width = 12,
+                collapsible = TRUE,
                 solidHeader = TRUE,
                 title = shiny::h3("Plate dimensions"),
                 shiny::selectInput(
@@ -74,7 +75,7 @@ mod_plate_dimensions_server <- function(input, output, session){
         nb_cols = NULL,
         nb_plates = NULL
     )
-    
+
     p_lines <- shiny::reactive({
         switch(input$plate_size,
                NULL = {nb <- 0},

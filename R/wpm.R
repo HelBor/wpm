@@ -8,7 +8,8 @@
 ##' @export
 wpm <- function(...) {
     golem::with_golem_options(
-        app = shiny::shinyApp(ui = app_ui, server = app_server),
+        app = shiny::shinyApp(ui = app_ui, server = app_server,
+                              options = list("port" = 8000)),
         golem_opts = list(...)
     )
 }

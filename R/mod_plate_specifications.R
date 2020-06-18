@@ -13,6 +13,7 @@ ns <- shiny::NS(id)
             shinydashboard::box(
                 status = "warning",
                 width = 12,
+                collapsible = TRUE,
                 solidHeader = TRUE,
                 title = shiny::h3("Buffer solutions"),
                 shiny::fluidRow(
@@ -213,11 +214,11 @@ ns <- shiny::NS(id)
 ##' * nb_lines: the number of lines of the plate to be filled
 ##' * nb_cols: the number of columns of the plate to be filled
 ##' * nb_plates: the number of plates to fill
-##' * special_wells: dataframe containing the wells for forbidden, buffer 
+##' * special_wells: dataframe containing the wells for forbidden, buffer
 ##' solutions and fixed wells.
 ##' * neighborhood_mod: Character string specifying the spatial constraint.
 ##' @noRd
-    mod_plate_specifications_server <- function(
+mod_plate_specifications_server <- function(
     input, output, session, nb_samp_gps, gp_levels, project_name, nb_samples,
     p_dimensions, forbid_wells, fixed_wells){
 
@@ -225,6 +226,7 @@ ns <- shiny::NS(id)
         nb_lines = NULL,
         nb_cols = NULL,
         nb_plates = NULL,
+        total_nb_wells = NULL,
         special_wells = NULL,
         neighborhood_mod = NULL
     )
@@ -271,7 +273,6 @@ ns <- shiny::NS(id)
             return(convertVector2Df(input$hand_select, p_lines(), p_cols(),
                                     status = "buffer"))
         }
-
     })
 
     wells_to_plot <- shiny::reactive({
@@ -346,6 +347,7 @@ ns <- shiny::NS(id)
         toReturn$nb_lines <- p_lines()
         toReturn$nb_cols <- p_cols()
         toReturn$nb_plates <- nb_p()
+        toReturn$total_nb_wells <- totalNbWells()
         # dataframe which contains the buffers and forbidden wells
         toReturn$special_wells <- wells_to_plot()
         toReturn$neighborhood_mod <- nbh_mod()

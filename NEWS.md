@@ -55,3 +55,13 @@ application.
 * Changed the "blank" word to "buffer" throughout the package.
 * Changed the "not random" term to "fixed" throughout the package.
 * Updated images and text in the tutorial vignette.
+
+# changes in version 0.99.9 (2020-06-18)
+* Resolved crashes regarding bad settings when importing CSV
+* Parameter sections are now collapsible
+* created module for number of iterations
+* defined the launch for the browser on port 8000.
+* changed the order of CSV import section in the parameters Panel
+* some upload parameters are now available only if the CSV file is correctly 
+imported
+* added preview of CSV file when importing in the UI.

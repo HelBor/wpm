@@ -18,7 +18,9 @@ set to NULL or "none".}
 \item{...}{parameters to give to read.csv2 function}
 }
 \value{
-a dataframe containing 3 fields: Sample, Group and ID.
+a list containing a dataframe containing the data of the imported
+CSV and a dataframe containing 3 fields (Sample, Group and ID) which will be
+ used by WPM. Or NULL if there is an error when giving wrong parameters.
 }
 \description{
 This function converts a CSV into a dataframe to make it

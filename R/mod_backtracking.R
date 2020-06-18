@@ -6,18 +6,14 @@
 ##' @param input,output,session internal shiny parameters
 ##' @param df dataframe of user's data
 ##' @param max_iter integer, the maximal number of iterations to do
-##' @param special_wells dataframe, contains the special wells not to place
-##' randomly on the plate(s)
-##' @param rows numeric, number of lines on the plate(s)
-##' @param columns numeric, number of columns on the plate(s)
-##' @param nb_plates numeric, number of plates
-##' @param constraint character, spatial mode
+##' @param plate_options reactive object which contains the special wells not
+##' to place randomly on the plate(s), the number of lines on the plate(s),
+##' the number of columns on the plate(s), the number plates and the spatial pattern.
 ##' @return reactiveValues object containing the final dataframe to export
 ##' @noRd
 mod_backtracking_server <- function(input, output, session, df, max_iter, plate_options){
-    toReturn <- shiny::reactiveValues(
-        final_df = NULL
-    )
+
+    toReturn <- shiny::reactiveValues(d = NULL)
 
     user_data <- shiny::reactive({
         df$Group <- as.factor(df$Group)
@@ -54,11 +50,13 @@ mod_backtracking_server <- function(input, output, session, df, max_iter, plate_
     ## update objects to return to the server part
     shiny::observe({
         if (is.null(map())) {
-            logging::loginfo("map is null so we return errors")
-            toReturn$final_df <- "error"
+            logging::loginfo("map is null so we return NULL")
+            # toReturn$final_df <- NULL
+            toReturn$d <- NULL
         }else{
             logging::loginfo("map isn't null so we return map")
-            toReturn$final_df <- map()
+            # toReturn$final_df <- map()
+            toReturn$d <- map()
         }
     })
     return(toReturn)
