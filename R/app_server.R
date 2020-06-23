@@ -4,6 +4,7 @@
 ##'
 ##' @noRd
 app_server <- function(input, output, session ) {
+
     ##*************************************************************************
     ## Home panel module
     shiny::callModule(mod_home_server, id = "home")
@@ -24,13 +25,13 @@ app_server <- function(input, output, session ) {
         mod_special_wells_server,
         id = "special1",
         status = "forbidden",
-        p_dimensions = shiny::reactive(plate_dimensions)
+        p_dimensions = plate_dimensions
     )
     fixed_w <- shiny::callModule(
         mod_special_wells_server,
         id = "special2",
         status = "fixed",
-        p_dimensions = shiny::reactive(plate_dimensions)
+        p_dimensions = plate_dimensions
     )
 
     plate_specs <- shiny::callModule(
@@ -41,16 +42,14 @@ app_server <- function(input, output, session ) {
         project_name = shiny::reactive(input$project_title),
         nb_samples = shiny::reactive(datafile$nb_samples),
         p_dimensions = shiny::reactive(plate_dimensions),
-        forbid_wells = forbidden_w,
-        fixed_wells = fixed_w
+        forbid_wells = shiny::reactive(forbidden_w),
+        fixed_wells = shiny::reactive(fixed_w)
     )
-
-    shiny::observe({
-        logging::loginfo("button status: %s", input$start_WPM_Btn)
-    })
 
     ##*************************************************************************
     ## backtracking module part
+    ##
+    ##
     ##
     shiny::observeEvent(input$start_WPM_Btn,{
         logging::logwarn("button status dans l'observeEvent %s", input$start_WPM_Btn)
@@ -105,10 +104,10 @@ app_server <- function(input, output, session ) {
                     module = mod_data_export_server,
                     id = "data_export",
                     df = final_data$d,
-                    distinct_sample_gps = shiny::reactive(datafile$distinct_gps),
-                    gp_levels = shiny::reactive(datafile$gp_levels),
+                    distinct_sample_gps = datafile$distinct_gps,
+                    gp_levels = datafile$gp_levels,
                     plate_opts = plate_specs,
-                    project_name = shiny::reactive(input$project_title)
+                    project_name = input$project_title
                 )
             }else{
                 shinyWidgets::sendSweetAlert(
@@ -123,6 +122,8 @@ app_server <- function(input, output, session ) {
         })
 
     })
+
+
     ## Help panel module
     shiny::callModule(mod_help_server, id = "help")
 }

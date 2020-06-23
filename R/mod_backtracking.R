@@ -12,9 +12,7 @@
 ##' @return reactiveValues object containing the final dataframe to export
 ##' @noRd
 mod_backtracking_server <- function(input, output, session, df, max_iter, plate_options){
-
     toReturn <- shiny::reactiveValues(d = NULL)
-
     user_data <- shiny::reactive({
         df$Group <- as.factor(df$Group)
         df$Well <- as.character(NA)
@@ -45,7 +43,10 @@ mod_backtracking_server <- function(input, output, session, df, max_iter, plate_
                             constraint = plate_options$neighborhood_mod,
                             prog = updateProgress)
         )
+
     })
+
+
 
     ## update objects to return to the server part
     shiny::observe({

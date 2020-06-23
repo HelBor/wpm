@@ -42,6 +42,9 @@ mod_special_wells_ui <- function(id){
 
 ##' @noRd
 mod_special_wells_server <- function(input, output, session, status, p_dimensions){
+    toReturn <- shiny::reactiveValues(
+        wells = NULL
+    )
     if (status == "forbidden") {
         output$status <- shiny::renderText({
             "Forbidden Wells"
@@ -68,11 +71,11 @@ mod_special_wells_server <- function(input, output, session, status, p_dimension
     }
 
     p_lines <- shiny::reactive({
-        return(p_dimensions()$nb_lines)
+        return(p_dimensions$nb_lines)
     })
 
     p_cols <- shiny::reactive({
-        return(p_dimensions()$nb_cols)
+        return(p_dimensions$nb_cols)
     })
 
     special_wells <- shiny::reactive({
@@ -88,5 +91,9 @@ mod_special_wells_server <- function(input, output, session, status, p_dimension
         }
     })
 
-    return(special_wells)
+    shiny::observe({
+        toReturn$wells <- special_wells()
+    })
+
+    return(toReturn)
 }

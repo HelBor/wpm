@@ -87,8 +87,9 @@ backtracking <- function(max_iter = 20, user_data, wells, rows, columns,
                 new_df$Plate <- p
                 final_df <- dplyr::bind_rows(final_df, new_df)
             }else if (new_df == 0) {
-                stop("ERROR, number of available cells is less than number
+                message("WARNING, number of available cells is less than number
                     of samples to place.")
+                return(NULL)
             }
         }
         p <- p + 1

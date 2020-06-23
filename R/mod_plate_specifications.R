@@ -283,9 +283,9 @@ mod_plate_specifications_server <- function(
 
     wells_to_plot <- shiny::reactive({
         w2p <- joinDataframes(
-            forbidden_w = forbid_wells(),
+            forbidden_w = forbid_wells()$wells,
             buffer_w = buffer_wells(),
-            fixed_w = fixed_wells(),
+            fixed_w = fixed_wells()$wells,
             nb_samples = nb_samples(),
             totalNbWells = totalNbWells(),
             nb_p = nb_p())

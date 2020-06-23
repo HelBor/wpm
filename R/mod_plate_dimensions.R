@@ -77,6 +77,7 @@ mod_plate_dimensions_server <- function(input, output, session){
     )
 
     p_lines <- shiny::reactive({
+        nb <- NULL
         switch(input$plate_size,
                NULL = {nb <- 0},
                "s6" = {nb <- 2},
@@ -91,6 +92,7 @@ mod_plate_dimensions_server <- function(input, output, session){
     })
 
     p_cols <- shiny::reactive({
+        nb <- NULL
         switch(input$plate_size,
                NULL = {nb <- 0},
                "s6" = {nb <- 3},
