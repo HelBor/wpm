@@ -4,6 +4,7 @@
 ##'
 ##' @noRd
 app_server <- function(input, output, session ) {
+    toto <- shiny::reactiveValues(to = NULL, flag = NULL)
 
     ##*************************************************************************
     ## Home panel module
@@ -49,9 +50,7 @@ app_server <- function(input, output, session ) {
     ##*************************************************************************
     ## backtracking module part
     ##
-    ##
-    ##
-    shiny::observeEvent(input$start_WPM_Btn,{
+    final_data <- shiny::eventReactive(input$start_WPM_Btn, {
         logging::logwarn("button status dans l'observeEvent %s", input$start_WPM_Btn)
         logging::loginfo("class(plate_specs$special_wells) = %s", class(plate_specs$special_wells))
         logging::loginfo("nrow(plate_specs$special_wells) = %s", nrow(plate_specs$special_wells))
@@ -81,48 +80,67 @@ app_server <- function(input, output, session ) {
         logging::loginfo("distinct_gps :%s", datafile$distinct_gps)
         logging::loginfo("gp_levels :%s", datafile$gp_levels)
         logging::loginfo("nb max iter: %s", input$nb_iter)
-        final_data <- shiny::callModule(
+        return(shiny::callModule(
             module = mod_backtracking_server,
             id = "backtrack",
             df = datafile$df,
             max_iter = input$nb_iter,
-            plate_options = plate_specs)
-
-
-        shiny::observeEvent(final_data, {
-            if (methods::is(final_data$d, "data.frame")) {
-                shinyWidgets::sendSweetAlert(
-                    session = session,
-                    title = "Success !!",
-                    text = "All in order, you can check your results in the
-        Results Panel",
-                    type = "success"
-                )
-                # *********************************************************************
-                # export module part
-                shiny::callModule(
-                    module = mod_data_export_server,
-                    id = "data_export",
-                    df = final_data$d,
-                    distinct_sample_gps = datafile$distinct_gps,
-                    gp_levels = datafile$gp_levels,
-                    plate_opts = plate_specs,
-                    project_name = input$project_title
-                )
-            }else{
-                shinyWidgets::sendSweetAlert(
-                    session = session,
-                    title = "WPM failed...",
-                    text = "Seems that we reeched the maximal number of
-        iterations without any result... Try again by increasing
-        the number of iterations. ",
-                    type = "error"
-                )
-            }
-        })
+            plate_options = plate_specs))
 
     })
 
+    shiny::observe({
+        input$start_WPM_Btn
+
+        logging::loginfo("class(final_data()$d): %s",class(final_data()$d))
+        if(!is.null(final_data()$d)){
+            toto$to <- final_data()$d
+            logging::loginfo("class(toto$to): %s", class(toto$to))
+            toto$flag <- 1
+        }else{
+            toto$flag <- 0
+        }
+
+
+
+    })
+
+
+    # *********************************************************************
+    # export module part
+    #
+    #
+    shiny::observeEvent(toto$flag, {
+        logging::loginfo("flag: %s",toto$flag)
+        if(toto$flag == 1){
+            shinyWidgets::sendSweetAlert(
+                session = session,
+                title = "Success !!",
+                text = "All in order, you can check your results in the
+Results Panel",
+                type = "success"
+            )
+            shiny::callModule(
+                module = mod_data_export_server,
+                id = "data_export",
+                df = toto$to,
+                distinct_sample_gps = datafile$distinct_gps,
+                gp_levels = datafile$gp_levels,
+                plate_opts = plate_specs,
+                project_name = input$project_title
+            )
+        }else if(toto$flag == 0){
+            shinyWidgets::sendSweetAlert(
+                session = session,
+                title = "WPM failed...",
+                text = "Seems that we reeched the maximal number of
+iterations without any result... Try again by increasing
+the number of iterations. ",
+                type = "error"
+            )
+        }
+
+    })
 
     ## Help panel module
     shiny::callModule(mod_help_server, id = "help")
