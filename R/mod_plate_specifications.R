@@ -192,11 +192,20 @@ ns <- shiny::NS(id)
         ## Plate specification outputs
         shiny::column(
             width = 6,
-            shinycustomloader::withLoader(
-                shiny::plotOutput(ns("plotOut"), height = 500),
-                type = "html",
-                loader = "loader7"
+            shiny::fluidRow(
+                shinydashboard::valueBoxOutput(
+                    ns("available_wells"),
+                    width = 6)
+            ),
+            shiny::fluidRow(
+                shinycustomloader::withLoader(
+                    shiny::plotOutput(ns("plotOut"), height = 500),
+                    type = "html",
+                    loader = "loader7"
+                )
             )
+
+
         ) # end of column 2
     )
 }
@@ -295,6 +304,32 @@ mod_plate_specifications_server <- function(
         return(w2p)
     })
 
+
+    output$available_wells <- shinydashboard::renderValueBox({
+        if(is.null(wells_to_plot())){
+            available <- totalNbWells() - 0
+        }else if(methods::is(totalNbWells(), "numeric")
+                 & methods::is(wells_to_plot(), "data.frame")){
+            available <- totalNbWells() - nb_p()*nrow(wells_to_plot())
+        }
+
+        logging::loginfo("class available = %s", class(available))
+        if(available < nb_samples()){
+            shinydashboard::valueBox(
+                value = available,
+                subtitle = "Number of wells available for randomized samples.",
+                icon = shiny::icon("times"),
+                color = "red")
+        }else{
+            shinydashboard::valueBox(
+                value = available,
+                subtitle = "Number of wells available for randomized samples.",
+                icon = shiny::icon("check-circle"),
+                color = "green")
+        }
+
+    })
+
     output$plotOut <- shiny::renderPlot({
         ## for the drawMap function to work properly, we must give a number of rows
         ## and columns greater than 0 and give at least an empty dataframe with the
@@ -361,10 +396,3 @@ mod_plate_specifications_server <- function(
 
     return(toReturn)
 }
-
-## To be copied in the UI
-# mod_plate_specifications_ui("plate_specifications_ui_1")
-
-## To be copied in the server
-# callModule(mod_plate_specifications_server, "plate_specifications_ui_1")
-

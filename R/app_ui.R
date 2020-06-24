@@ -66,7 +66,7 @@ app_ui <- function(request) {
                         mod_plate_dimensions_ui("p_dim"),
                         mod_special_wells_ui("special1"), # forbidden wells
                         mod_plate_specifications_ui("plate"),
-                        mod_special_wells_ui("special2"), # not randomized wells
+                        mod_special_wells_ui("special2"), # fixed wells
                         shiny::fluidRow(
                             shiny::column(
                                 width = 12,
