@@ -71,3 +71,9 @@ imported
 * corrected README R commands for convertCSV section
 * corrected Help tab for the upload file section
 * corrected the Parameters section in the Vignette
+
+# changes in version 0.99.11
+* fixed issue #10
+* fixed issue #22
+* changed the display of the datatable in the Results tab
+* updated Vignette and Help page about toy dataset (CSV section)

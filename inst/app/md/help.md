@@ -63,8 +63,9 @@ specify all the constraints for generating the desired plate maps.
 
 ### 3.1 Upload dataset
 
-First, you must upload the CSV file. This file contains at least one kind of
-information: the sample names.
+First, you must upload the *__Comma-separated values__* (CSV) file. This file contains
+at least one kind of information: the sample names.
+
 | Sample |
 |--------|
 | s1     |
@@ -83,7 +84,15 @@ the data as in the example below:
 | s4     | C    | Ctrl      | ... |
 
 __IMPORTANT__ Please respect this ORDER of columns for the data in the CSV file:
-Sample names in the __first__ column, and other variables in the other columns.
+Sample names in the __first__ column, and other variables in the other columns, 
+like the example below (if there are rownames, then the Samples' Column must be 
+the second in the file.):
+
+    Sample;Type;Treatment
+    s1;A;trt1
+    s2;A;trt1
+    s3;B;Ctrl
+    s4;C;Ctrl
 
 Second, you have to specify if there are quotes in your file or not. 
 The Default is none, meaning that there is no __*"*__ or __*'*__ characters in your file.
@@ -294,8 +303,12 @@ If WPM fails, an error message will appear, prompting you to try again:
 
 ![WPM failed](../../../vignettes/images/wpmFailed.PNG)
 
-__IMPORTANT__ If you want to create a new plate plan for another project,
+
+> __IMPORTANT__ If after launching WPM and generating the results, you realize that one or more parameters do not work, you can always return to the "Parameters" tab and modify them. The data displayed in the "Results" tab will not be automatically changed, you will have to click again on the "start WPM" button to take into account the new changes.
+
+> __NOTE__ If you want to create a new plate plan for another project,
 press `ctrl + f5`, this will reset the application.
+
 
 ---
 
