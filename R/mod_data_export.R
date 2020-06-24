@@ -52,23 +52,24 @@ mod_data_export_server <- function(input, output, session, df, distinct_sample_g
                                    gp_levels, plate_opts, project_name){
     output$data_export <- shiny::renderUI({
         shiny::isolate({
-            # logging::loginfo("plate_opts$nb_plates: %s", params()$plate_opts$nb_plates)
-            # logging::loginfo("plate_opts$nb_lines: %s", params()$plate_opts$nb_lines)
-            # logging::loginfo("plates_opts$nb_cols: %s", params()$plate_opts$nb_cols)
             if(!is.null(df)){
                 project <- stringr::str_replace_all(string = project_name,
                                                     pattern = " ", replacement = "")
-                shiny::column(width = 12,
-                              DT::renderDataTable(DT::datatable({df}, rownames = FALSE)),
-                              shiny::downloadHandler(
-                                  filename = function() {
-                                      paste("data-", Sys.Date(), "-", project, ".csv", sep = "")
-                                  },
-                                  content = function(file) {
-                                      utils::write.csv2(df, file, row.names = FALSE,
-                                                        quote = FALSE)
-                                  }
-                              )
+                shiny::column(
+                    width = 12,
+                    DT::renderDataTable(
+                        DT::datatable({df}, rownames = FALSE, options = list(
+                            columnDefs = list(list(className = 'dt-center', targets ="_all"))))
+                    ),
+                    shiny::downloadHandler(
+                      filename = function() {
+                          paste("data-", Sys.Date(), "-", project, ".csv", sep = "")
+                      },
+                      content = function(file) {
+                          utils::write.csv2(df, file, row.names = FALSE,
+                                            quote = FALSE)
+                      }
+                    )
                 )
             }
         })
