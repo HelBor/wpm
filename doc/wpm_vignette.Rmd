@@ -60,10 +60,8 @@ explained in detail.
 This tutorial explains how to use the Well Plate Maker package.
 Make sure you are using the R 4.0.0 version.
 Also, check that you have these packages installed (with their dependencies):
-`r CRANpkg("shiny")`, `r CRANpkg("shinydashboard")`, `r CRANpkg("shinyWidgets")`
-, `r CRANpkg("shinycustomloader")`, `r CRANpkg("DT")`,
-`r CRANpkg("RColorBrewer")`, `r CRANpkg("logging")`, `r CRANpkg("dplyr")`, 
-`r CRANpkg("stringr")`, `r CRANpkg("ggplot2")`
+`shiny`, `shinydashboard`, `shinyWidgets`, `shinycustomloader`, `DT`,
+`RColorBrewer`, `logging`, `dplyr`, `stringr`, `ggplot2`
 
 ## Installation
 

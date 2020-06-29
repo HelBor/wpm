@@ -53,7 +53,7 @@ as well as the plate plan which will be used by WPM.
 The right section is
 automatically updated each time a parameter is changed in the left section.
 
-![Parameters tab](../../../vignettes/images/parametersPanel.PNG)
+![Parameters tab](../www/images/parametersPanel.PNG)
 
 The section 1 is divided into 6 main steps, detailed below. This part is the
 most important to understand and master because it is here that we will
@@ -106,7 +106,7 @@ Then you can select one of the variables that you want to use as the grouping
 factor for WPM.  
 This column will be renamed "Group" in the final dataset.
 
-![Choose the grouping factor](../../../vignettes/images/groupVariable.PNG)
+![Choose the grouping factor](../www/images/groupVariable.PNG)
 
 
 The names you give to columns in your CSV do not matter, because WPM will create
@@ -118,7 +118,7 @@ Each sample is assigned a unique ID, which will be used to assign the samples
 to plate maps (for more details on the ID see the
 [Results section](#results) ).
 
-![Dataset vizualisation](../../../vignettes/images/toy2rightpanel.PNG)
+![Dataset vizualisation](../www/images/toy2rightpanel.PNG)
 
 __IMPORTANT__ Please ensure that the dataset is correctly
 displayed in the right window and that the number of samples / groups is
@@ -145,7 +145,7 @@ To the right of step 2 you can see an information box, warning you that WPM
 will distribute the samples in a balanced manner within the plates (if there
 are several).
 
-![balanced way message](../../../vignettes/images/balanceInfobox.PNG)
+![balanced way message](../www/images/balanceInfobox.PNG)
 
 If you select a plate size compatible with the total number of samples, you
 will see two blues boxes and a plate plan appear on the right summarizing all
@@ -153,11 +153,11 @@ of your configuration.
 In the example below, we selected the pre-defined dimension of 96 wells and only
 one plate:
 
-![plate dimensions example](../../../vignettes/images/platedimensions.PNG)
+![plate dimensions example](../www/images/platedimensions.PNG)
 
 The right side of the tab will summarize all these parameters:
 
-![parameters summary](../../../vignettes/images/parametersCheck.PNG)
+![parameters summary](../www/images/parametersCheck.PNG)
 
 This plot updates with each modification of the parameters, thus making it
 possible to see if one has made an error.
@@ -166,7 +166,7 @@ __IMPORTANT__: If WPM detects a problem or incompatibility between parameters,
 you will see an error message instead of the plate map, explaining you what
 could be the problem.
 
-![Example of error message](../../../vignettes/images/exErrorMsg.PNG)
+![Example of error message](../www/images/exErrorMsg.PNG)
 
 ---
 
@@ -182,11 +182,11 @@ case of dirty wells, broken pipettes, etc.
 You fill the text input with a combination of letters and numbers like in the
 example below:
 
-![Example of forbidden wells listed in the text input](../../../vignettes/images/forbiddenEx1.PNG)
+![Example of forbidden wells listed in the text input](../www/images/forbiddenEx1.PNG)
 
 You will see the plot updated in the right section:
 
-![Updated plot with forbidden wells](../../../vignettes/images/forbiddenEx2.PNG)
+![Updated plot with forbidden wells](../www/images/forbiddenEx2.PNG)
 
 The wells filled with forbidden wells will have the *"forbidden"* ID in the
 final dataset.
@@ -209,16 +209,16 @@ Five patterns are available for placing the buffers:
 **2)** *Per line*: Automatically places buffers every other line.  
 You can choose to start placing in even or odd line.
 
-![Per line mode example with even option](../../../vignettes/images/bufferLine.PNG)
+![Per line mode example with even option](../www/images/bufferLine.PNG)
 
 **3)** *Per column*: Automatically places buffers every other column.  
 You can choose to start placing in even or odd column.
 
-![Per Column mode example with even option](../../../vignettes/images/bufferColumn.PNG)
+![Per Column mode example with even option](../www/images/bufferColumn.PNG)
 
 **4)** *Checkerboard*: Automatically places buffers like a checkerboard.
 
-![Checkerboard mode](../../../vignettes/images/bufferCheckerboard.PNG)
+![Checkerboard mode](../www/images/bufferCheckerboard.PNG)
 
 **5)** *Choose by hand*: It is the same procedure as for specifying forbidden
 wells.
@@ -244,19 +244,19 @@ the same group as the samples in the wells evaluated.
 
 **No constraint**
 
-![No constraint](../../../vignettes/images/NCnone.PNG)
+![No constraint](../www/images/NCnone.PNG)
 
 **North-South constraint**
 
-![North-South constraint](../../../vignettes/images/NCns.PNG)
+![North-South constraint](../www/images/NCns.PNG)
 
 **East-West constraint**
 
-![East-West constraint](../../../vignettes/images/NCew.PNG)
+![East-West constraint](../www/images/NCew.PNG)
 
 **North-South-East-West constraint**
 
-![North-South-East-West constraint](../../../vignettes/images/NCnsew.PNG)
+![North-South-East-West constraint](../www/images/NCnsew.PNG)
 
 ---
 
@@ -297,11 +297,11 @@ When you start WPM, a progress bar shows which iteration WPM is at.
 If WPM finds a solution, you will see this pop in the browser, inviting you to
 go to the [Result tab](#results):
 
-![WPM succeeded](../../../vignettes/images/wpmSuccess.PNG)
+![WPM succeeded](../www/images/wpmSuccess.PNG)
 
 If WPM fails, an error message will appear, prompting you to try again:
 
-![WPM failed](../../../vignettes/images/wpmFailed.PNG)
+![WPM failed](../www/images/wpmFailed.PNG)
 
 
 > __IMPORTANT__ If after launching WPM and generating the results, you realize that one or more parameters do not work, you can always return to the "Parameters" tab and modify them. The data displayed in the "Results" tab will not be automatically changed, you will have to click again on the "start WPM" button to take into account the new changes.
@@ -317,7 +317,7 @@ press `ctrl + f5`, this will reset the application.
 This tab allows you to look after the final dataset containing the wells
 chosen for each sample:
 
-![Final dataframe](../../../vignettes/images/final_dataset.PNG)
+![Final dataframe](../www/images/final_dataset.PNG)
 
 The dataset contains 7 columns giving all the information needed to run the
 experiment: The sample name with its corresponding group; its ID for the plot;
@@ -331,6 +331,6 @@ place of the sample names which could be too long and make the plot unreadable.
 Below is an example of 80 samples distributed in 10 groups and placed on a
 96 well-plate, with the North-South-East-West neighborhood constraint:
 
-![Plate map](../../../vignettes/images/plot1.png)
+![Plate map](../www/images/plot1.png)
 
 Dataset and plots are downloadable separately.
