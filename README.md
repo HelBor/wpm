@@ -30,7 +30,7 @@ WPM R package dependencies:
 
 From GitHub
 ```R
-devtools::install_github(repo = "HelBor/wpm")
+devtools::install_github("HelBor/wpm", build_vignettes=TRUE)
 ```
 
 
