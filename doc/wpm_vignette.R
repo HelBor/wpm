@@ -18,7 +18,7 @@ knitr::kable(
 )
 
 ## ----convert CSV file, eval = FALSE-------------------------------------------
-#  df <- wpm::convertCSV("path-to-CSV-file")
+#  imported_csv <- wpm::convertCSV("path-to-CSV-file")
 
 ## ----create an MSnSet object--------------------------------------------------
 sample_names <- c("s1","s2","s3","s4", "s5")
@@ -42,6 +42,14 @@ colData <- data.frame(Treatment=rep(c("ChIP", "Input"), 3),
 se <- SummarizedExperiment::SummarizedExperiment(assays=list(counts=counts),
                                                  colData=colData)
 df <- wpm::convertSE(se, "Treatment")
+
+## ----run wpm with a CSV file, eval=FALSE--------------------------------------
+#  wpm_result <- wpm::wrapperWPM(user_df = imported_csv$df_wpm,
+#              plate_dims = list(8,12),
+#              nb_plates = 1,
+#              forbidden_wells = "A1,A2,A3",
+#              fixed_wells = "B1,B2",
+#              spatial_constraint = "NS")
 
 ## ----run wpm------------------------------------------------------------------
 wpm_result <- wpm::wrapperWPM(user_df = df,

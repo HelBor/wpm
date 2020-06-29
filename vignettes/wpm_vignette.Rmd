@@ -58,12 +58,9 @@ explained in detail.
 ## Prerequisites
 
 This tutorial explains how to use the Well Plate Maker package.
-Make sure you are using the R 4.0.0 version.
-Also, check that you have these packages installed (with their dependencies):
-`r CRANpkg("shiny")`, `r CRANpkg("shinydashboard")`, `r CRANpkg("shinyWidgets")`
-, `r CRANpkg("shinycustomloader")`, `r CRANpkg("DT")`,
-`r CRANpkg("RColorBrewer")`, `r CRANpkg("logging")`, `r CRANpkg("dplyr")`, 
-`r CRANpkg("stringr")`, `r CRANpkg("ggplot2")`
+Make sure you are using the R 4.0.0 version or later.
+For Windows users, we recommend using the Chrome browser rather than Internet 
+Explorer.
 
 ## Installation
 
@@ -373,7 +370,7 @@ to work properly. To do so:
 
 ### Starting from a CSV file, then run:
 ```{r convert CSV file, eval = FALSE}
-df <- wpm::convertCSV("path-to-CSV-file")
+imported_csv <- wpm::convertCSV("path-to-CSV-file")
 ```
 ### Starting from an `ExpressionSet` or `MSnSet` object
 ```{r create an MSnSet object}
@@ -416,6 +413,18 @@ needed. For more details on the parameters, please see the sections about
 
 In this toy example, we do not specify any buffer well.
 
+### After importing a CSV file
+
+```{r run wpm with a CSV file, eval=FALSE}
+wpm_result <- wpm::wrapperWPM(user_df = imported_csv$df_wpm,
+            plate_dims = list(8,12),
+            nb_plates = 1,
+            forbidden_wells = "A1,A2,A3",
+            fixed_wells = "B1,B2",
+            spatial_constraint = "NS")
+```
+
+### after importing an `ExpressionSet`, `MSnSet` or `SummarizedExperiment`
 ```{r run wpm}
 wpm_result <- wpm::wrapperWPM(user_df = df,
             plate_dims = list(8,12),
