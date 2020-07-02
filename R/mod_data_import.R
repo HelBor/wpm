@@ -21,17 +21,17 @@ mod_data_import_ui <- function(id){
                     shiny::fluidRow(
                         shiny::column(
                             width = 10,
-                            shiny::h4("Please use CSV format.")),
+                            shiny::h4("Please use txt or CSV format.")),
                         shiny::column(
                             width = 2,
                             align = "right",
                             shinyWidgets::dropdownButton(
                                 shiny::h4("File format"),
-                                shiny::div("File must be in CSV format.
+                                shiny::div("File must be in CSV or Text format.
                                     It must contain at least the field samples names.
                                     If samples pertain to different groups, you can specify
                                     a second column containing the group names.
-                                    See the vignette for more details."),
+                                    See the Help tab for more details."),
                                 icon = shiny::icon("info-circle"),
                                 tooltip = shinyWidgets::tooltipOptions(
                                     title = "Help"),
@@ -76,8 +76,8 @@ mod_data_import_ui <- function(id){
                     shiny::selectInput(
                         ns("quote"),
                         label = NULL,
-                        c("None" = "None", "Single quote" = "'", "Double quote" = "\""),
-                        selected = NULL
+                        c("None" = "none", "Single quote" = "single", "Double quote" = "double"),
+                        selected = "None"
                     ),
 
 
@@ -210,8 +210,15 @@ mod_data_import_server <- function(input, output, session){
         input$quote
         input$sep_input
         }, {
+        if(input$quote == "none"){
+            q_input <- ""
+        }else if(input$quote == "single"){
+            q_input <- "'"
+        }else{
+            q_input <- "\""
+        }
         df <- utils::read.csv2(userFile()$datapath,
-                               header = input$heading, quote = input$quote,
+                               header = input$heading, quote = q_input,
                                sep = input$sep_input, stringsAsFactors = FALSE,
                                nrows = 1)
         shinyWidgets::updatePickerInput(session = session, "GroupPicker",
@@ -219,12 +226,20 @@ mod_data_import_server <- function(input, output, session){
     })
     ## The user's data, reshaped into a valid data frame for WPM
     dataframe <- shiny::reactive({
+        if(input$quote == "none"){
+            q_input <- ""
+        }else if(input$quote == "single"){
+            q_input <- "'"
+        }else{
+            q_input <- "\""
+        }
         df <- tryCatch(
             {
-                message("Trying to read the CSV file with the specified parameters...")
+
+                message("Trying to read the file with the specified parameters...")
                 utils::read.csv2(
                     userFile()$datapath, header = input$heading,
-                    quote = input$quote, sep = input$sep_input,
+                    quote = q_input, sep = input$sep_input,
                     stringsAsFactors = FALSE, nrows = 1)
             },
             error=function(cond) {
@@ -248,7 +263,7 @@ mod_data_import_server <- function(input, output, session){
             df <- convertCSV(
                 userFile()$datapath, row_names = input$rnames,
                 gp_field = input$GroupPicker, header = input$heading,
-                quote = input$quote, sep = input$sep_input,
+                quote = q_input, sep = input$sep_input,
                 stringsAsFactors = FALSE)
         }
         return(df)
@@ -350,10 +365,3 @@ mod_data_import_server <- function(input, output, session){
     ## Return the reactive that yields the data frame
     return(toReturn)
 }
-
-## To be copied in the UI
-# mod_data_import_ui("data_import_ui_1")
-
-## To be copied in the server
-# callModule(mod_data_import_server, "data_import_ui_1")
-

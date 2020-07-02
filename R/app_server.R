@@ -19,7 +19,8 @@ app_server <- function(input, output, session ) {
     ## Plate specification part
     plate_dimensions <- shiny::callModule(
         mod_plate_dimensions_server,
-        id = "p_dim"
+        id = "p_dim",
+        nb_samples = shiny::reactive(datafile$nb_samples)
     )
 
     forbidden_w <- shiny::callModule(

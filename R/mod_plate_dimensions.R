@@ -62,13 +62,16 @@ mod_plate_dimensions_ui <- function(id){
                 shinydashboard::valueBoxOutput(
                     ns("nb_plates_to_fill"),
                     width = 6)
+            ),
+            shiny::fluidRow(
+                shiny::uiOutput(ns("dim_check"))
             )
         ) # end of column 2
     )
 }
 
 ##' @noRd
-mod_plate_dimensions_server <- function(input, output, session){
+mod_plate_dimensions_server <- function(input, output, session, nb_samples){
 
     toReturn <- shiny::reactiveValues(
         nb_lines = NULL,
@@ -146,6 +149,27 @@ mod_plate_dimensions_server <- function(input, output, session){
             color = "yellow",
             fill = TRUE)
     })
+
+    output$dim_check <- shiny::renderUI({
+        logging::loginfo("nb_samples %s", nb_samples())
+        if(nb_samples() > totalNbWells()){
+            shinydashboard::infoBox(
+                title = "selected dimensions are not compatible with the number of samples.",
+                color = "red",
+                width = 12,
+                icon = shiny::icon("times")
+            )
+        }else{
+            shinydashboard::infoBox(
+                title = "Plate compatible with samples.",
+                color = "green",
+                width = 12,
+                icon = shiny::icon("check-circle")
+            )
+        }
+    })
+
+
 
     shiny::observe({
         toReturn$nb_lines <- p_lines()

@@ -1,14 +1,14 @@
 
 ## Header elements for the visualization
 header <- shinydashboard::dashboardHeader(title = "Well-Plate Maker",
-    titleWidth = 200
+    titleWidth = 215
 )
 
 
 
 ## Sidebar elements for the search visualizations
 sidebar <- shinydashboard::dashboardSidebar(
-    width = 200,
+    width = 215,
     shinydashboard::sidebarMenu(
         style = "position: fixed; overflow: visible;width: 200px;",
         shinydashboard::menuItem(
