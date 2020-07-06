@@ -6,9 +6,8 @@ affiliation: Universite Grenoble Alpes
 email: borges.helene.sophie@gmail.com
 abstract: >
     WPM is a shiny application deployed in the form of an R package. Its 
-    objective is to allow the user to create one (or more) plate maps in order 
-    to perform his experiments by controlling __batch effects__ (in particular 
-    preventing plate edge effects) without programming skills. However, R 
+    objective is to allow the user to create one (or more) randomized plate maps in order 
+    to perform his experiments by controlling batch effects without programming skills. However, R 
     functions are available for users who want to work with their own R scripts.
 vignette: >
     %\VignetteIndexEntry{How to use Well Plate Maker}
@@ -25,20 +24,21 @@ output:
 # Introduction
 
 To generate plate maps, WPM uses an algorithm inspired from the backtracking 
-algorithm. In other words, WPM will gradually fill the plate by randomly 
-traversing it. At each well chosen (randomly), WPM will randomly choose a 
-sample which satisfies all the constraints specified during the configuration 
-step.
+algorithm. More precisely, WPM loops on the following actions until all of the 
+samples are given a correct location:
 
+1. randomly choose a well on the plate
+2. Randomly selects a sample;
+3. Check whether all the specified location constraints are met. If yes, place the sample accordingly.
+
+This process allows for an experimental design by block randomization.
 
 There are two ways using the `wpm` package:
 
-* through a [shiny application](#shiny_app) for users who don't have any skill in R 
-programming.
+* through a [shiny application](#shiny_app) for users who do not have sufficient  R programming skills.
 * using [R commands](#R_commands) for users who want to work with their own R scripts. 
 
-__Important:__ Even if you plan to use WPM only from the command line, we 
-strongly recommend the user to read the section about the 
+__Important:__ Even in case of command line use, we strongly recommend to read the section about the 
 [shiny app section](#shiny_app), as this is where all terms and concepts are 
 explained in detail.
 
@@ -58,13 +58,11 @@ explained in detail.
 ## Prerequisites
 
 This tutorial explains how to use the Well Plate Maker package.
-Make sure you are using the R 4.0.0 version or later.
-For Windows users, we recommend using the Chrome browser rather than Internet 
-Explorer.
+Make sure you are using a recent R version ($\geq 4.0.0$).
+For Windows users who do not have the Edge browser, we recommend using the 
+Chrome browser rather than Internet Explorer.
 
-## Installation
-
-From __BioConductor__:
+## Installation from __BioConductor__:
 ```{r install from BioConductor, eval=FALSE}
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
@@ -73,10 +71,6 @@ BiocManager::install("wpm")
 ```
 
 # How to use the WPM shiny application {#shiny_app}
-
-Since WPM proposes a GUI, the idea is to just provide a minimum of parameters 
-to the application. No programming skills are required. WPM supports multiple 
-plates and places samples in a balanced way among the plates.
 
 ## Launch the shiny application
 
@@ -88,8 +82,7 @@ library(wpm)
 wpm()
 ```
 If everything is in order, a new window will open in your default browser.
-If not, find a line written in the R console (eg. 
-`Listening on http://127.0.0.1:4028`), and paste the URL in your web browser.
+If not, find the line written in the R console: `Listening on http://127.0.0.1:8000`, and paste the URL in your web browser.
 
 WPM has 4 main tabs: __Home__, __Parameters__, __Results__ ans __Help__.
 
@@ -102,27 +95,26 @@ explains how to cite us to support our work and gives the contact information.
 
 ## The __Parameters__ tab
 
-Overall the page is organized in two sections. The one on the left contains all 
-the configuration steps. The one on the right summarizes the parameters entered 
-as well as the plate plan which will be used by WPM. The right section is 
+Overall the page is organized in two sections.
+
+The one on the left contains all the configuration steps. It is divided into 6 main steps, detailed below. It is of the utmost importance to correctly specify all the constraints for generating the desired plate maps.
+
+The one on the right summarizes the input parameters (tuned along the 6 steps of the left panel)
+as well as the chosen (empty) plate layout. The right section is 
 automatically updated each time a parameter is changed in the left section.
 
 ![Parameters Panel](images/parametersPanel.PNG)
 
-The section 1 is divided into 6 main steps, detailed below. This part is the 
-most important to understand and master because it is here that we will 
-specify all the constraints for generating the desired plate maps.
-
 
 ### Upload dataset
 
-First, you must upload the *__Comma-separated values__* CSV file. 
+First, you must upload a *__Comma-separated values__* (.CSV) or a text (.txt) file. 
 This file contains at least one kind of information: the sample names.
 ```{r, echo=FALSE}
 knitr::kable(data.frame("Sample" = c("s1","s2","s3","s4")))
 ```
-It is also possible to provide a CSV containing several variables describing
-the data as in the example below:
+It is also possible to provide a file containing several variables describing
+the data, as in the example below:
 ```{r, echo=FALSE}
 knitr::kable(
     data.frame("Sample" = c("s1","s2","s3","s4"), "Type" = c("A","A","B","C"),
@@ -143,8 +135,7 @@ the second in the file.):
 
 Second, you have to specify if there are quotes in your file or not. 
 The Default is none, meaning that there is no __*"*__ or __*'*__ characters in your file.
-If you select the appropriate quote, then you will be able to check these 
-parameters:
+If you select the appropriate quote, then you will be able to:
 
 * check if your file does have a __header__ and __row names__.
 * select the appropriate __separator__ field. Default is semicolon (__*";"*__)
@@ -160,8 +151,8 @@ a new dataset having 3 fields: _"Sample"_ , _"Group"_ and _"ID"_.
 
 You will see your dataset on the right side of the window, and another dataset 
 which will be used by WPM to generate the map(s).   
-Each sample is assigned a unique ID, which will be used to assign the samples
-to plate maps (for more details on the ID see the [Results section](#results_panel) ).
+Each sample is assigned a unique ID, which will be used to name the samples
+onto the plate maps (for more details on the ID see the [Results section](#results_panel) ).
 
 ![Dataset vizualisation](images/toy2rightpanel.PNG)
 
@@ -211,15 +202,13 @@ could be the problem.
 
 ### Forbidden wells {#forbidden_wells}
 
-In this step are listed the __Forbidden wells__ if any (this is optional of 
-course): 
+In this step are listed the __Forbidden wells__ if any (optional): 
 
 > A __Forbidden well__ will not be filled with any kind of sample. 
 We simply do not want to fill them (*e.g.* the coins of the plate), or in 
 case of dirty wells, broken pipettes, etc.
 
-You fill the text input with a combination of letters and numbers like in the 
-example below:
+You fill the text input with the coordinates of the wells (a combination of letters and numbers like in the example below):
 
 ![Example of forbidden wells listed in the text input](images/forbiddenEx1.PNG)
 
@@ -262,7 +251,7 @@ wells.
 #### Specify the neighborhood constraints {#neighborhood}
 
 These are the spatial constraints that WPM needs to create the plates.
-Currently, there are 4 types proposed. Note that the patterns are available only 
+Currently, 4 types of them are proposed. Note that the patterns are available only 
 if they are compatible with the chosen buffer pattern.
 The question here is: Should samples from the same group be found side by side?
 
@@ -301,17 +290,16 @@ the final dataset.
 
 ### Number of iterations
 
-Here you choose a maximum number of iterations that WPM can do to find a 
-solution, then start WPM by clicking the **"start WPM"** button. 
-The default value is 20, but if your configuration is somewhat complex, then 
-it is advisable to increase this number.
+Here you choose a maximum number of iterations that WPM is authorized to find a 
+solution (the default value is 20, but if your configuration is somewhat complex, then 
+it is advisable to increase this number).
+Afterwards, start WPM by clicking the **"start WPM"** button.
 An *iteration* corresponds to an attempt by WPM to find a solution. The 
-algorithm used is not a "full" backtracking: WPM stops as soon as there are no 
+algorithm used is not "fully" backtracked: WPM stops as soon as there are no 
 more possibilities to finalize the current solution, and starts from scratch 
 the plate map, until providing a solution that complements all the constraints.
 With this approach, not all possible combinations are explored, but it does 
-reduce execution time. A more "complete" version of backtracking could possibly 
-be an improvement to bring in the future.
+reduce execution time.
 
 When you start WPM, a progress bar shows which iteration WPM is at.
 
@@ -325,9 +313,9 @@ If WPM fails, an error message will appear, prompting you to try again:
 ![WPM failed](images/wpmFailed.PNG)
 
 
-> __`IMPORTANT`__ If after launching WPM and generating the results, you realize that one or more parameters do not work, you can always return to the "Parameters" tab and modify them. The data displayed in the "Results" tab will not be automatically changed, you will have to click again on the "start WPM" button to take into account the new changes.
+__IMPORTANT__ If after launching WPM and generating the results, you realize that one or more parameters do not work, you can always return to the "Parameters" tab and modify them. The data displayed in the "Results" tab will not be automatically changed, you will have to click again on the "start WPM" button to take into account the new changes.
 
-> __`NOTE`__ If you want to create a new plate plan for another project, press `ctrl + f5`, this will reset the application.
+__NOTE__ If you want to create a new plate plan for another project, press `ctrl + f5`, this will reset the application.
 
 ---
 
@@ -462,9 +450,8 @@ ggplot2::ggsave(
 ```
 
 __IMPORTANT__ If multiple plates where specified, then `wpm_result` will be a 
-list containing a dataset **for each generated plate**. That means, if we 
-generate 2 plates, we access a specific plate with 
-`wpm_result[[numberOfThePlate]]`:
+list containing a dataset **for each generated plate**. Concretely, if 2 plates 
+are generated, each of them can be accessed with `wpm_result[[numberOfThePlate]]`:
 ```{r, eval = FALSE}
 numberOfThePlate <- 1
 drawned_map <- wpm::drawMap(df = wpm_result[[numberOfThePlate]],
