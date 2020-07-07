@@ -18,6 +18,6 @@ A vector containing the North and South neighbors of the element
 (i,j) of the matrix being processed.
 }
 \description{
-Function for spatial constraint that only looks for North and
-South
+Function for spatial constraint that only looks for North (top)
+and South (bottom) neighbors of the current element (i,j) of the matrix m.
 }

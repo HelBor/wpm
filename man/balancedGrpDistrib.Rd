@@ -25,5 +25,5 @@ filled, then 50% of each group will be assigned to each plate. More
 generally, all the plates are assigned the same number of elements. When
 the numbers do not allow it (in particular when the total number of
 elements to be allocated is not a multiple of the number of plates),
-there will be a slight difference in the number of plates.
+there will be a slight difference in the number of samples on the plates.
 }

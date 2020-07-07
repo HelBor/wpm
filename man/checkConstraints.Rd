@@ -21,6 +21,6 @@ matrix m.
 }
 \description{
 Finds the neighbors of the current element (row, col) in the
-matrix m, depending on the constraint mode chosen. Currently, there are
-only 3 valid modes (NS, WE and NEWS)
+matrix m, depending on the chosen constraint pattern. Currently, there are
+only 3 valid patterns (NS, WE and NEWS)
 }

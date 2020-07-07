@@ -27,6 +27,6 @@ checkWpmInputs(
 returns an error message if a problem is found with some parameter.
 }
 \description{
-Checks if all the inputs given to the function WrapperWPM are 
+Checks if all the inputs given to the function WrapperWPM are
 correct and intercompatible.
 }

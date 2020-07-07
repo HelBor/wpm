@@ -21,7 +21,7 @@ positioned on the odd rows.}
 a dataframe containing the buffer wells with their coordinates.
 }
 \description{
-function to place the buffer solutions on the plate according 
+function to place the buffer solutions on the plate according
 to the selected mode: it generates a dataframe containing the row and column
 coordinates for each buffer solution.
 }

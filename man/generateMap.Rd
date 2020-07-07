@@ -16,7 +16,7 @@ generateMap(
 }
 \arguments{
 \item{user_df}{dataframe containing 9 features: Sample, ID, Group,
-Sample.name, Well, Status, Row, Column, Plate}
+Sample.name, Well, Status, Row, Column, Plate. See details.}
 
 \item{nb_rows}{numeric, number of lines on the plate}
 
@@ -36,10 +36,16 @@ before returning a failure.}
 Returns a dataframe containing all the data of the plate map(s)
 }
 \description{
-Returns a dataframe or NUL or 0 obtained by applying the backatracking
-algorithm on the matrix.
+This function generates a plate map using a backtracking
+algorithm and returns a dataframe if success. If it fails to find a
+solution, returns NULL. If there are not enough wells to place all the
+samples, returns 0.
 }
 \details{
+The dataframe is generated using dedicated functions of the {wpm}
+package: `convertCSV()`, `convertESet()` or `convertSE()`. But the user can
+also generate it by hand.
+
 A number of attempts is allowed. Consequently, if the maximal
 number if attempts is reeched and no solution was found with the
 backtracking (i.e. the randomWalk does not return a dataframe), this

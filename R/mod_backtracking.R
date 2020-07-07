@@ -6,9 +6,14 @@
 ##' @param input,output,session internal shiny parameters
 ##' @param df dataframe of user's data
 ##' @param max_iter integer, the maximal number of iterations to do
-##' @param plate_options reactive object which contains the special wells not
-##' to place randomly on the plate(s), the number of lines on the plate(s),
-##' the number of columns on the plate(s), the number plates and the spatial pattern.
+##' @param plate_options reactiveValues object which contains the following fields:
+##' - **special_wells**: the special wells not to place randomly on the plate(s)
+##' - **nb_lines**: the number of lines on the plate(s)
+##' - **nb_cols**: the number of columns on the plate(s)
+##' - **nb_plates**: the number plates.
+##' - **total_nb_wells**: the total number of wells
+##' - **neighborhood_mod**: the spatial constraint.
+##'
 ##' @return reactiveValues object containing the final dataframe to export
 ##' @noRd
 mod_backtracking_server <- function(input, output, session, df, max_iter, plate_options){

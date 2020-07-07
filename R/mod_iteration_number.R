@@ -1,4 +1,4 @@
-##' maximum number of iterations UI Function
+##' UI part for module maximum number of iterations
 ##'
 ##' @description A shiny Module for the number of iterations parameter
 ##' @param id Internal parameter for {shiny}.
@@ -36,7 +36,7 @@ mod_iteration_number_ui <- function(id){
     )
 }
 
-##'  maximum number of iterations Server Function
+##'  Server part for module maximum number of iterations
 ##'
 ##' @description server part of the number of iterations module.
 ##' @param input,output,session Internal shiny parameters

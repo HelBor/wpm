@@ -1,3 +1,7 @@
+##'  UI part for module special wells
+##'
+##' @description UI part of the number of iterations module.
+##' @param id internal parameter for {shiny}
 ##' @noRd
 mod_special_wells_ui <- function(id){
     ns <- shiny::NS(id)
@@ -40,6 +44,16 @@ mod_special_wells_ui <- function(id){
 }
 
 
+##'  Server part for module special wells
+##'
+##' @description server part of the number of iterations module. Converts the
+##' character strings of special wells into a dataframe usable by the
+##' backtracking algorithm
+##'
+##' @param input,output,session Internal {shiny} parameters
+##' @param p_dimensions a reactiveValues object contianing the number of lines
+##' (nb_lines) and number of columns (nb_cols)
+##' @return a `reactiveValues` object containing a datarfmae of special wells.
 ##' @noRd
 mod_special_wells_server <- function(input, output, session, status, p_dimensions){
     toReturn <- shiny::reactiveValues(

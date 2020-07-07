@@ -1,6 +1,6 @@
 ##' Determines buffer wells coordinates on a plate
 ##'
-##' @description function to place the buffer solutions on the plate according 
+##' @description function to place the buffer solutions on the plate according
 ##' to the selected mode: it generates a dataframe containing the row and column
 ##' coordinates for each buffer solution.
 ##'
@@ -17,7 +17,7 @@ defineBufferCoords <- function(p_lines, p_cols, mod = "none", start_buffer){
     p_cols <- as.numeric(p_cols)
 
     if (!(mod %in% c("none","by_row","by_column","checkerboard"))) {
-        return("wrong mod provided. Choose between 'none', 'by_row',
+        return("wrong pattern provided. Choose between 'none', 'by_row',
                'by_column' or 'checkerboard'")
     }
     if (mod == "none") {

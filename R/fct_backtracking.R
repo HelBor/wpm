@@ -63,6 +63,7 @@ backtracking <- function(max_iter = 20, user_data, wells, rows, columns,
     }
 
     p <- 1
+    # We generate a map for each plate
     for (current_p in res) {
         new_df <- NULL
         logging::loginfo("plate number %s", p)

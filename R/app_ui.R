@@ -1,9 +1,7 @@
-
 ## Header elements for the visualization
 header <- shinydashboard::dashboardHeader(title = "Well-Plate Maker",
     titleWidth = 215
 )
-
 
 
 ## Sidebar elements for the search visualizations
@@ -26,7 +24,7 @@ sidebar <- shinydashboard::dashboardSidebar(
 ##' The application User-Interface
 ##'
 ##' @param request Internal parameter for `{shiny}`.
-##'     DO NOT REMOVE.
+##'
 ##' @noRd
 app_ui <- function(request) {
     shiny::tagList(
@@ -99,7 +97,7 @@ app_ui <- function(request) {
 
 ##' Add external Resources to the Application
 ##'
-##' This function is internally used to add external
+##' @description This function is internally used to add external
 ##' resources inside the Shiny application.
 ##'
 ##' @noRd

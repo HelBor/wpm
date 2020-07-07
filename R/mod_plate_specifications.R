@@ -5,6 +5,7 @@
 ##'
 ##' @param id Internal parameters for {shiny}.
 ##' @return a Build Page layout
+##' @noRd
 mod_plate_specifications_ui <- function(id){
 ns <- shiny::NS(id)
     shiny::fluidRow(
@@ -226,12 +227,14 @@ ns <- shiny::NS(id)
 ##' @param fixed_wells reactive shiny object containing the fixed wells
 ##' @importFrom rlang .data
 ##' @return toReturn, `ReactiveValues` object containing:
+##'
 ##' * nb_lines: the number of lines of the plate to be filled
 ##' * nb_cols: the number of columns of the plate to be filled
 ##' * nb_plates: the number of plates to fill
 ##' * special_wells: dataframe containing the wells for forbidden, buffer
 ##' solutions and fixed wells.
 ##' * neighborhood_mod: Character string specifying the spatial constraint.
+##'
 ##' @noRd
 mod_plate_specifications_server <- function(
     input, output, session, nb_samp_gps, gp_levels, project_name, nb_samples,
@@ -359,6 +362,7 @@ mod_plate_specifications_server <- function(
         }
     })
 
+    # the neighborhood pattern
     nbh_mod <- shiny::reactive({
         nbh_mod <- NULL
         if (input$buffer_mode == "by_row") {

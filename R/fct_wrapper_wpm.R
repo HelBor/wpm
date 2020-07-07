@@ -1,6 +1,6 @@
 ##' Check the inputs for the wrapper function
-##' 
-##' @description Checks if all the inputs given to the function WrapperWPM are 
+##'
+##' @description Checks if all the inputs given to the function WrapperWPM are
 ##' correct and intercompatible.
 ##' @param user_df expected dataframe, returns adapted message error
 ##' @param plate_dims expected list of plate dimensions (rows and columns)
@@ -11,29 +11,29 @@
 checkWpmInputs <- function(user_df, plate_dims, nb_plates, spatial_constraint,
                            max_iteration){
     if (!methods::is(user_df, "data.frame")) {
-        stop("wrong user_df parameter: Please provide a valid dataframe as 
+        stop("wrong user_df parameter: Please provide a valid dataframe as
             obtained with the convertCSv or convertESet function.",
              call. = FALSE)
     }else if (!all(c("Sample", "Group", "ID") %in% colnames(user_df))) {
-        stop("wrong the user_df parameter: Please provide a valid dataframe
+        stop("wrong user_df parameter: Please provide a valid dataframe
         as obtained with the convertCSv or convertESet function.", call. = FALSE)
     }
     if (!methods::is(plate_dims, "list")) {
-        stop("wrong plate_dims parameter: Please give a list containing 2 
+        stop("wrong plate_dims parameter: Please give a list containing 2
             numbers.", call. = FALSE)
     }else{
         if (!methods::is(plate_dims[[1]], "numeric")
            | !methods::is(plate_dims[[2]], "numeric")) {
-            stop("wrong plate_dims parameter: Please give a list containing 2 
+            stop("wrong plate_dims parameter: Please give a list containing 2
             numbers.", call. = FALSE)
         }
     }
     if (!methods::is(nb_plates, "numeric")) {
-        stop("wrong nb_plates parameter: invalid argument, please provide 
+        stop("wrong nb_plates parameter: invalid argument, please provide
             a number.", call. = FALSE)
     }
     if (!spatial_constraint %in% c("none","NEWS","NS","WE")) {
-        stop("wrong spatial_constraint parameter: wrong mode selected. 
+        stop("wrong spatial_constraint parameter: wrong mode selected.
             Please choose a valid mod between 'none', 'NEWS', 'WE' or 'NS' ",
             call. = FALSE)
     }
@@ -41,7 +41,7 @@ checkWpmInputs <- function(user_df, plate_dims, nb_plates, spatial_constraint,
         stop("wrong max_iteration parameter: please give a number.",
             call. = FALSE)
     }
-} 
+}
 
 
 ##' Generate plate plans in a single step
@@ -104,20 +104,20 @@ wrapperWPM <- function(user_df, plate_dims, nb_plates, forbidden_wells = NULL,
     ## Convert special wells into valid dataframes
     if (!is.null(forbidden_wells)) {
         if (!methods::is(forbidden_wells, "character")) {
-            stop("wrong forbidden_wells parameter: please provide a character 
+            stop("wrong forbidden_wells parameter: please provide a character
                 string.", call. = FALSE)
         }
-        fw <- convertVector2Df(forbidden_wells, plate_dims[[1]], 
+        fw <- convertVector2Df(forbidden_wells, plate_dims[[1]],
                                plate_dims[[2]],"forbidden")
     }else{
         fw <- NULL
     }
     if (!is.null(buffer_wells)) {
         if (!methods::is(buffer_wells, "character")) {
-            stop("wrong buffer_wells parameter: please provide a character 
+            stop("wrong buffer_wells parameter: please provide a character
                 string.", call. = FALSE)
         }
-        bw <- convertVector2Df(buffer_wells, plate_dims[[1]], 
+        bw <- convertVector2Df(buffer_wells, plate_dims[[1]],
                                plate_dims[[2]],"buffer")
     }else{
         bw <- NULL
@@ -127,7 +127,7 @@ wrapperWPM <- function(user_df, plate_dims, nb_plates, forbidden_wells = NULL,
             stop("wrong fixed_wells parameter: please provide a character string.",
                 call. = FALSE)
         }
-        fixedw <- convertVector2Df(fixed_wells, plate_dims[[1]], 
+        fixedw <- convertVector2Df(fixed_wells, plate_dims[[1]],
                                 plate_dims[[2]],"fixed")
     }else{
         fixedw <- NULL
@@ -145,7 +145,7 @@ wrapperWPM <- function(user_df, plate_dims, nb_plates, forbidden_wells = NULL,
         output <- backtracking(
             max_iter = max_iteration, user_data = user_df,
             wells = special_wells, rows = plate_dims[[1]],
-            columns = plate_dims[[2]], nb_plates = nb_plates, 
+            columns = plate_dims[[2]], nb_plates = nb_plates,
             constraint = spatial_constraint, prog = NULL)
     }else{
         output <- special_wells

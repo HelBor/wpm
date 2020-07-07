@@ -1,3 +1,9 @@
+##' plate_dimensions UI Function
+##'
+##' @description A shiny Module allowing to specify the plate dimensions  and
+##' number
+##'
+##' @param id Internal parameters for {shiny}.
 ##' @noRd
 mod_plate_dimensions_ui <- function(id){
     ns <- shiny::NS(id)
@@ -70,6 +76,16 @@ mod_plate_dimensions_ui <- function(id){
     )
 }
 
+
+##' plate_dimensions Server Function
+##'
+##' @description Server part of the plate_dimensions module. Allows the
+##' user to specify the plate dimensions and their number.
+##'
+##' @param input,output,session internal parameters of shiny
+##' @param nb_samples a reactive object corresponding to the total number of
+##' samples
+##'
 ##' @noRd
 mod_plate_dimensions_server <- function(input, output, session, nb_samples){
 

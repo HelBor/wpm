@@ -19,5 +19,5 @@ the element (i,j) of the matrix being processed.
 }
 \description{
 Function for spatial contraints: the North, East, West and
-South neighbors for the visited wells
+South neighbors of the current element (i,j) of the matrix m.
 }

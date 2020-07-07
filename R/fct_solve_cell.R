@@ -11,7 +11,7 @@
 ##' @param constraint Character. Corresponds to the neighborhood constraint mode.
 ##' @return If there is no possibility to find a valid sample, the function
 ##' returns an error value (1).
-##' If a sample is chosen, then This function returns two objects:
+##' If a sample is chosen, then this function returns two objects:
 ##' * __m__ The matrix updated with the new added sample.
 ##' * __already_drawn__ The vector of already placed samples updated.
 solveCell <- function(m, d, i, j, already_drawn, constraint){

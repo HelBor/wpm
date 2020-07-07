@@ -1,6 +1,6 @@
 # wpm changes in version 0.99.2
 
-* Added a `NEWS.md` file to track changes to the package.
+* Added a `NEWS.md` file to track changes to the package
 * Modified code and files structure of the package
 * Added Roxygen comments to functions
 
@@ -20,9 +20,9 @@
 * Fix the TIMEOUT error during R CMD CHECK
 
 # changes in version 0.99.5 (2020-06-02)
-* Added functions for importing CSV files and ExpressionSet / MSnSet objects.
+* Added functions for importing CSV files and ExpressionSet / MSnSet objects
 * Added the wrapper function allowing to use wpm in command line
-* Added support for eSet and MSnSet objects as input of the wrapper function.
+* Added support for eSet and MSnSet objects as input of the wrapper function
 * Added unit tests for import functions
 
 
@@ -39,7 +39,7 @@ command line version
 and command line). Now the user can specify the column name corresponding to the
 grouping factor wpm has to use for backtracking.
 * Modified app_ui structure regarding the project title input
-* Updated the tutorial vignette's content.
+* Updated the tutorial vignette's content
 * Updated README file
 * Revised unit tests for import functions
 * The WPM package version output in Home panel is now obtained with
@@ -60,11 +60,11 @@ application.
 * Resolved crashes regarding bad settings when importing CSV
 * Parameter sections are now collapsible
 * created module for number of iterations
-* defined the launch for the browser on port 8000.
+* defined the launch for the browser on port 8000
 * changed the order of CSV import section in the parameters Panel
 * some upload parameters are now available only if the CSV file is correctly 
 imported
-* added preview of CSV file when importing in the UI.
+* added preview of CSV file when importing in the UI
 
 # changes in version 0.99.10
 * corrected unit tests for CSV import
@@ -81,4 +81,11 @@ imported
 #changes in version 0.99.12
 * fixed the lack of display of images in the help tab
 * fixed inconsistencies regarding the setting of quotes when importing data
-* added an infobox for plate dimensions compatibility with the number of samples 
+* added an infobox for plate dimensions compatibility with the number of samples
+
+# changes in version 0.99.13
+* Added a zzz.R file for the welcome message when loading the package in an R 
+session
+* Corrections in package vignette and Help tab of the shiny app
+* Revised all documentation of functions
+

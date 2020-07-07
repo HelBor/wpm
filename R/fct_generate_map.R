@@ -1,10 +1,12 @@
 ##' Generate a plate map according to the input parameters
 ##'
-##' @description Returns a dataframe or NUL or 0 obtained by applying the backatracking
-##' algorithm on the matrix.
+##' @description This function generates a plate map using a backtracking
+##' algorithm and returns a dataframe if success. If it fails to find a
+##' solution, returns NULL. If there are not enough wells to place all the
+##' samples, returns 0.
 ##'
 ##' @param user_df dataframe containing 9 features: Sample, ID, Group,
-##' Sample.name, Well, Status, Row, Column, Plate
+##' Sample.name, Well, Status, Row, Column, Plate. See details.
 ##' @param nb_rows numeric, number of lines on the plate
 ##' @param nb_cols numeric, number of columns on the plate
 ##' @param df_forbidden dataframe with the same structure than user_df, but for
@@ -13,7 +15,11 @@
 ##' @param max_it numeric, maximum number of attempts to generate a plate plan
 ##' before returning a failure.
 ##' @param updateProgress shiny object, reports progress to the user.
-##' @details A number of attempts is allowed. Consequently, if the maximal
+##' @details The dataframe is generated using dedicated functions of the {wpm}
+##' package: `convertCSV()`, `convertESet()` or `convertSE()`. But the user can
+##' also generate it by hand.
+##'
+##' A number of attempts is allowed. Consequently, if the maximal
 ##' number if attempts is reeched and no solution was found with the
 ##' backtracking (i.e. the randomWalk does not return a dataframe), this
 ##' function prints a warning message and returns NULL. If a solution is
@@ -48,7 +54,7 @@ generateMap <- function(user_df, nb_rows, nb_cols, df_forbidden, mod, max_it,
         if (!is.null(df_forbidden$Well)) {
             toVisit <- toVisit[!toVisit %in% df_forbidden$Well]
         }
-
+        # if there are not enough free wells to place all the samples returns 0
         if (length(toVisit) < nrow(user_df)) {
             return(0)
         }

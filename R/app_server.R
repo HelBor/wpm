@@ -4,7 +4,7 @@
 ##'
 ##' @noRd
 app_server <- function(input, output, session ) {
-    toto <- shiny::reactiveValues(to = NULL, flag = NULL)
+    launch_wpm <- shiny::reactiveValues(dt = NULL, flag = NULL)
 
     ##*************************************************************************
     ## Home panel module
@@ -16,7 +16,7 @@ app_server <- function(input, output, session ) {
                                 session = session)
 
     ##*************************************************************************
-    ## Plate specification part
+    ## Plate specifications part
     plate_dimensions <- shiny::callModule(
         mod_plate_dimensions_server,
         id = "p_dim",
@@ -52,7 +52,6 @@ app_server <- function(input, output, session ) {
     ## backtracking module part
     ##
     final_data <- shiny::eventReactive(input$start_WPM_Btn, {
-        logging::logwarn("button status dans l'observeEvent %s", input$start_WPM_Btn)
         logging::loginfo("class(plate_specs$special_wells) = %s", class(plate_specs$special_wells))
         logging::loginfo("nrow(plate_specs$special_wells) = %s", nrow(plate_specs$special_wells))
 
@@ -89,60 +88,55 @@ app_server <- function(input, output, session ) {
             plate_options = plate_specs))
 
     })
-
+    # to control when to activate sendSweetAlert
     shiny::observe({
         input$start_WPM_Btn
 
-        logging::loginfo("class(final_data()$d): %s",class(final_data()$d))
         if(!is.null(final_data()$d)){
-            toto$to <- final_data()$d
-            logging::loginfo("class(toto$to): %s", class(toto$to))
-            toto$flag <- 1
+            launch_wpm$dt <- final_data()$d
+            launch_wpm$flag <- 1
         }else{
-            toto$flag <- 0
+            launch_wpm$flag <- 0
         }
-
-
-
     })
 
 
     # *********************************************************************
     # export module part
     #
-    #
-    shiny::observeEvent(toto$flag, {
-        logging::loginfo("flag: %s",toto$flag)
-        if(toto$flag == 1){
+    shiny::observeEvent(launch_wpm$flag, {
+        logging::loginfo("flag: %s",launch_wpm$flag)
+        if(launch_wpm$flag == 1){
             shinyWidgets::sendSweetAlert(
                 session = session,
                 title = "Success !!",
                 text = "All in order, you can check your results in the
-Results Panel",
+                Results Panel",
                 type = "success"
             )
             shiny::callModule(
                 module = mod_data_export_server,
                 id = "data_export",
-                df = toto$to,
+                df = launch_wpm$dt,
                 distinct_sample_gps = datafile$distinct_gps,
                 gp_levels = datafile$gp_levels,
                 plate_opts = plate_specs,
                 project_name = input$project_title
             )
-        }else if(toto$flag == 0){
+        }else if(launch_wpm$flag == 0){
             shinyWidgets::sendSweetAlert(
                 session = session,
                 title = "WPM failed...",
-                text = "Seems that we reeched the maximal number of
-iterations without any result... Try again by increasing
-the number of iterations. ",
+                text = "Seems that we reeched the maximal number of iterations
+                without any result... Try again by changing some parameters
+                and/or increasing the number of iterations. ",
                 type = "error"
             )
         }
 
     })
 
+    # *********************************************************************
     ## Help panel module
     shiny::callModule(mod_help_server, id = "help")
 }

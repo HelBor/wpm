@@ -39,6 +39,14 @@
 ##'
 ##' @export
 drawMap <- function(df, sample_gps, gp_levels, plate_lines, plate_cols, project_title){
+    # checks that the plate dimensions are compatible with the number of samples
+    #  to be placed.
+    if(plate_lines*plate_cols < nrow(df)){
+        message("The plate dimensions are not compatible with the number of
+                samples. Please increase plate size or number of samples.")
+    }
+
+
     LETTERS702 <- c(LETTERS, vapply(LETTERS,
                                     FUN.VALUE = as.character(seq_len(26)),
                                     function(x) paste0(x, LETTERS)))
@@ -49,7 +57,7 @@ drawMap <- function(df, sample_gps, gp_levels, plate_lines, plate_cols, project_
     }
 
     # this palette allows coloring depending on whether it is a buffer solution,
-    # a prohibited well, a Not Randomized sample or a randomized sample
+    # a forbidden well, a fixed sample or a randomized sample
 
     palette_strains <- c("buffer" = "#8B8378",
                          "forbidden" = "red",

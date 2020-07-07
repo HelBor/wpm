@@ -1,6 +1,7 @@
 ##' Data export UI Function
 ##'
 ##' @description A shiny Module to make final ouptuts visible and downloadable
+##' in the Results tab
 ##'
 ##' @param id Internal parameters for shiny.
 ##'
@@ -36,7 +37,7 @@ mod_data_export_ui <- function(id){
 ##' Data export Server Function
 ##'
 ##' @description Server part of the shiny Module to make final outputs
-##' downloadable
+##' downloadable in the Results tab
 ##'
 ##' @param input,output,session internal shiny parameters
 ##' @param df dataframe of user's data
@@ -76,7 +77,7 @@ mod_data_export_server <- function(input, output, session, df, distinct_sample_g
 
     })
 
-    ## Plots export
+    ## map_plot is a list containing the dataframes for each generated plate.
     map_plot <- shiny::reactive({
         shiny::isolate({
             if (!is.null(df) & plate_opts$nb_lines != 0 & plate_opts$nb_cols != 0) {

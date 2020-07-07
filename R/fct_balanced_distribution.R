@@ -7,7 +7,7 @@
 ##' generally, all the plates are assigned the same number of elements. When
 ##' the numbers do not allow it (in particular when the total number of
 ##' elements to be allocated is not a multiple of the number of plates),
-##' there will be a slight difference in the number of plates.
+##' there will be a slight difference in the number of samples on the plates.
 ##'
 ##' @param d the user dataframe
 ##' @param nb_p the number of plates to fill
@@ -19,10 +19,10 @@
 balancedGrpDistrib <- function(d, nb_p, df_max_size){
 
     grouped <- dplyr::group_by(d, .data$Group)
-    # vecteur contenant les effectifs pour chaque groupe
+    # vector containing the workforce for each group
     workforces <- dplyr::group_size(grouped)
     test <- dplyr::group_split(grouped)
-    # effectifs par groupe pour chaque plaque
+    # staff per group for each plate
     w <- round(workforces/nb_p)
 
     toReturn <- list()
@@ -57,10 +57,10 @@ balancedGrpDistrib <- function(d, nb_p, df_max_size){
     m <- dplyr::bind_rows(test)
     m <- m[!is.na(m$ID), ]
 
-    ## as long as samples remain unassigned to a plate.
+    ## as long as samples remain unassigned to a plate...
     while (nrow(m) != 0) {
 
-        ## they are assigned to the plate with the lowest number of employees
+        ## ... they are assigned to the plate with the smallest number of samples
         ## without exceeding the maximum authorized number of samples per plate.
         incomplete_plate <- which.min(
             unlist(lapply(toReturn, function(x) nrow(x))))

@@ -1,7 +1,7 @@
-##' data_import UI Function
+##' data_import module UI Function
 ##'
-##' @description A shiny Module.
-##' @param id,input,output,session Internal parameters for {shiny}.
+##' @description A shiny Module.for data import
+##' @param id Internal parameters for {shiny}.
 ##' @noRd
 mod_data_import_ui <- function(id){
     ## Create a namespace function using the provided id
@@ -27,7 +27,7 @@ mod_data_import_ui <- function(id){
                             align = "right",
                             shinyWidgets::dropdownButton(
                                 shiny::h4("File format"),
-                                shiny::div("File must be in CSV or Text format.
+                                shiny::div("File must be in CSV (comma/semi-colon separator), TSV (tabulation separator) or Text format.
                                     It must contain at least the field samples names.
                                     If samples pertain to different groups, you can specify
                                     a second column containing the group names.
@@ -177,7 +177,7 @@ mod_data_import_ui <- function(id){
     )
 }
 
-##' data_import Server Function
+##' data_import module Server Function
 ##'
 ##' @description server part of the data import module. Allows to browse a file
 ##' in CSV, text or TSV format, create a dataframe and set the column names.
@@ -202,23 +202,28 @@ mod_data_import_server <- function(input, output, session){
         input$file
     })
 
+    q_input <- shiny::reactive({
+        if(input$quote == "none"){
+            q <- ""
+        }else if(input$quote == "single"){
+            q <- "'"
+        }else{
+            q <- "\""
+        }
+        return(q)
+    })
+
     # this part updates the picker input when the user gives a file and modifies
-    #  some other parameters
+    #  some other parameters. This picker input allows the user to specify the
+    #  grouping variable
     shiny::observeEvent({
         input$file
         input$heading
         input$quote
         input$sep_input
         }, {
-        if(input$quote == "none"){
-            q_input <- ""
-        }else if(input$quote == "single"){
-            q_input <- "'"
-        }else{
-            q_input <- "\""
-        }
         df <- utils::read.csv2(userFile()$datapath,
-                               header = input$heading, quote = q_input,
+                               header = input$heading, quote = q_input(),
                                sep = input$sep_input, stringsAsFactors = FALSE,
                                nrows = 1)
         shinyWidgets::updatePickerInput(session = session, "GroupPicker",
@@ -226,20 +231,12 @@ mod_data_import_server <- function(input, output, session){
     })
     ## The user's data, reshaped into a valid data frame for WPM
     dataframe <- shiny::reactive({
-        if(input$quote == "none"){
-            q_input <- ""
-        }else if(input$quote == "single"){
-            q_input <- "'"
-        }else{
-            q_input <- "\""
-        }
         df <- tryCatch(
             {
-
                 message("Trying to read the file with the specified parameters...")
                 utils::read.csv2(
                     userFile()$datapath, header = input$heading,
-                    quote = q_input, sep = input$sep_input,
+                    quote = q_input(), sep = input$sep_input,
                     stringsAsFactors = FALSE, nrows = 1)
             },
             error=function(cond) {
@@ -263,7 +260,7 @@ mod_data_import_server <- function(input, output, session){
             df <- convertCSV(
                 userFile()$datapath, row_names = input$rnames,
                 gp_field = input$GroupPicker, header = input$heading,
-                quote = q_input, sep = input$sep_input,
+                quote = q_input(), sep = input$sep_input,
                 stringsAsFactors = FALSE)
         }
         return(df)
@@ -276,24 +273,31 @@ mod_data_import_server <- function(input, output, session){
     })
     shiny::outputOptions(output, "panel", suspendWhenHidden = FALSE)
 
-    output$csv_table <- DT::renderDataTable(DT::datatable({
-        shiny::validate(
-            shiny::need(!is.null(dataframe()$df_csv), "Wrong set of parameters, we can
-            not read your file... Please correct those that have been misinformed")
-        )
-        dataframe()$df_csv
-    }, rownames = FALSE)
+    output$csv_table <- DT::renderDataTable(
+        DT::datatable({
+            shiny::validate(
+                shiny::need(!is.null(dataframe()$df_csv), "Wrong set of parameters, we can
+                not read your file... Please correct those that have been misinformed")
+            )
+            dataframe()$df_csv
+        },
+        rownames = FALSE,
+        options = list(columnDefs = list(list(className = 'dt-center', targets ="_all")),
+                       pageLength = 5))
     )
 
-    output$wpm_table <- DT::renderDataTable(DT::datatable({
-        shiny::validate(
-            shiny::need(!is.null(dataframe()$df_wpm), "Wrong set of parameters, we can
-            not read your file... Please correct those that have been misinformed")
-        )
-        dataframe()$df_wpm
-    }, rownames = FALSE)
+    output$wpm_table <- DT::renderDataTable(
+        DT::datatable({
+            shiny::validate(
+                shiny::need(!is.null(dataframe()$df_wpm), "Wrong set of parameters, we can
+                not read your file... Please correct those that have been misinformed")
+            )
+            dataframe()$df_wpm
+        },
+        rownames = FALSE,
+        options = list(columnDefs = list(list(className = 'dt-center', targets ="_all")),
+                       pageLength = 5))
     )
-
 
 
     output$nb_ech <- shinydashboard::renderValueBox({

@@ -18,6 +18,6 @@ A vector containing the West and East neighbors of the element
 (i,j) of the matrix being processed
 }
 \description{
-Function for spatial constraint that only looks for West and
-East neighbors of the current element (i,j) of the matrix.
+Function for spatial constraint that only looks for West (left)
+ and East (right) neighbors of the current element (i,j) of the matrix m.
 }

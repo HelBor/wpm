@@ -1,7 +1,7 @@
 ##' Find the 4 cardinal neighbors of an element of a matrix
 ##'
 ##' @description Function for spatial contraints: the North, East, West and
-##' South neighbors for the visited wells
+##' South neighbors of the current element (i,j) of the matrix m.
 ##'
 ##' @param m, matrix
 ##' @param i, integer, line index in the matrix
@@ -47,8 +47,8 @@ findNEWSneighbors <- function(m, i, j){
 
 ##' Find the top and bottom neighbors of an element of a matrix
 ##'
-##' @description Function for spatial constraint that only looks for North and
-##' South
+##' @description Function for spatial constraint that only looks for North (top)
+##' and South (bottom) neighbors of the current element (i,j) of the matrix m.
 ##'
 ##' @param m, matrix
 ##' @param i, integer, line index in the matrix
@@ -80,8 +80,8 @@ findNSneighbors <- function(m, i, j){
 
 ##' Find the left and right neighbors of an element of a matrix
 ##'
-##' @description Function for spatial constraint that only looks for West and
-##' East neighbors of the current element (i,j) of the matrix.
+##' @description Function for spatial constraint that only looks for West (left)
+##'  and East (right) neighbors of the current element (i,j) of the matrix m.
 ##'
 ##' @param m, matrix
 ##' @param i, integer, line index in the matrix
@@ -115,8 +115,8 @@ findWEneighbors <- function(m, i, j){
 ##' Check for spatial constraints
 ##'
 ##' @description Finds the neighbors of the current element (row, col) in the
-##' matrix m, depending on the constraint mode chosen. Currently, there are
-##' only 3 valid modes (NS, WE and NEWS)
+##' matrix m, depending on the chosen constraint pattern. Currently, there are
+##' only 3 valid patterns (NS, WE and NEWS)
 ##'
 ##' @param m matrix
 ##' @param row current selected row in the matrix m

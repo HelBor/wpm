@@ -52,7 +52,7 @@ convertVector2Df <- function(chr_wells, max_Row, max_Col, status = NA){
                              the wells.")
             result <- NULL
         }else{
-            # transform the wells into a df
+            # transform the wells into a dataframe
             df <- data.frame(
                 lapply(c(NA, NA, NA, NA, NA, NA, NA),
                        function(...) character(length(wells))),
