@@ -78,7 +78,7 @@ imported
 * changed the display of the datatable in the Results tab
 * updated Vignette and Help page about toy dataset (CSV section)
 
-#changes in version 0.99.12
+# changes in version 0.99.12
 * fixed the lack of display of images in the help tab
 * fixed inconsistencies regarding the setting of quotes when importing data
 * added an infobox for plate dimensions compatibility with the number of samples
@@ -89,3 +89,5 @@ session
 * Corrections in package vignette and Help tab of the shiny app
 * Revised all documentation of functions
 
+# changes in version 0.99.14
+* corrections for Biocondutor release
