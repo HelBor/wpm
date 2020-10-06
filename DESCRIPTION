@@ -2,7 +2,7 @@ Package: wpm
 Type: Package
 Title: Well Plate Maker
 Version: 0.99.14
-Authors@R: c(person('Hélène', 'Borges', role = c('aut', 'cre'), 
+Authors@R: c(person('Helene', 'Borges', role = c('aut', 'cre'), 
                     email = 'borges.helene.sophie@gmail.com'),
             person('Thomas', 'Burger', role = 'aut',
                     email = 'thomas.burger@cea.fr'))

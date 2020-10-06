@@ -90,4 +90,4 @@ session
 * Revised all documentation of functions
 
 # changes in version 0.99.14
-* corrections for Biocondutor release
+* corrections for Biocondutor release version 3.11
