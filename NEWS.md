@@ -90,4 +90,7 @@ session
 * Revised all documentation of functions
 
 # changes in version 0.99.14
-* corrections for Biocondutor release version 3.11
+* corrections for Bioconductor release version 3.11
+
+# changes in version 1.1.1
+* add URL and BugReports tags in DESCRIPTION file

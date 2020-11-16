@@ -1,7 +1,7 @@
 Package: wpm
 Type: Package
 Title: Well Plate Maker
-Version: 1.1.0
+Version: 1.1.1
 Authors@R: c(person('Helene', 'Borges', role = c('aut', 'cre'), 
                     email = 'borges.helene.sophie@gmail.com'),
             person('Thomas', 'Burger', role = 'aut',
@@ -33,7 +33,7 @@ Imports:
     logging
 Encoding: UTF-8
 LazyData: false
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Suggests:
     MSnbase,
     testthat,
@@ -42,3 +42,5 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no
+URL: https://github.com/HelBor/wpm
+BugReports: https://github.com/HelBor/wpm/issues
