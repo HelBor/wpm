@@ -94,3 +94,7 @@ session
 
 # changes in version 1.1.1
 * add URLs and BugReports tags in DESCRIPTION file
+
+# changes in version 1.1.2
+* delete the port option set to default 8000 in `wpm` function. Now uses the 
+random port used by the `runApp` function to avoid port conflicts with other applications.
