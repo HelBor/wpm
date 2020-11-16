@@ -84,7 +84,7 @@ ns <- shiny::NS(id)
                 shiny::fluidRow(
                     shiny::column(
                         width = 10,
-                        shiny::h4("Neighborhood contraints")
+                        shiny::h4("Neighborhood constraints")
                     ),
                     shiny::column(
                         width = 2,

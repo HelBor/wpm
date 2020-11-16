@@ -98,3 +98,6 @@ session
 # changes in version 1.1.2
 * delete the port option set to default 8000 in `wpm` function. Now uses the 
 random port used by the `runApp` function to avoid port conflicts with other applications.
+
+# changes in version 1.1.3
+* fix typo in Parameters panel of shiny app.

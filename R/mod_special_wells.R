@@ -72,7 +72,7 @@ mod_special_wells_server <- function(input, output, session, status, p_dimension
 
     }else if (status == "fixed") {
         output$status <- shiny::renderText({
-            "Fixed Wells"
+            "Fixed Samples"
         })
 
         output$help <- shiny::renderText({
