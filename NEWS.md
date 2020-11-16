@@ -93,4 +93,4 @@ session
 * corrections for Bioconductor release version 3.11
 
 # changes in version 1.1.1
-* add URL and BugReports tags in DESCRIPTION file
+* add URLs and BugReports tags in DESCRIPTION file

@@ -42,5 +42,5 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no
-URL: https://github.com/HelBor/wpm
+URL: https://github.com/HelBor/wpm, https://bioconductor.org/packages/release/bioc/html/wpm.html
 BugReports: https://github.com/HelBor/wpm/issues
