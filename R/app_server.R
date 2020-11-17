@@ -14,6 +14,12 @@ app_server <- function(input, output, session ) {
     datafile <- shiny::callModule(mod_data_import_server,
                                 id = "data_import",
                                 session = session)
+    
+    
+    project_title <- shiny::callModule(mod_project_title_server,
+                                       id = "project_title",
+                                       session = session)
+    
 
     ##*************************************************************************
     ## Plate specifications part
@@ -41,7 +47,7 @@ app_server <- function(input, output, session ) {
         "plate",
         nb_samp_gps = shiny::reactive(datafile$distinct_gps),
         gp_levels = shiny::reactive(datafile$gp_levels),
-        project_name = shiny::reactive(input$project_title),
+        project_name = shiny::reactive(project_title()),
         nb_samples = shiny::reactive(datafile$nb_samples),
         p_dimensions = shiny::reactive(plate_dimensions),
         forbid_wells = shiny::reactive(forbidden_w),
@@ -59,6 +65,7 @@ app_server <- function(input, output, session ) {
         shiny::validate(
             shiny::need(!is.null(datafile$df),
                         "requires a user data file"),
+            shiny::need(!is.null(project_title()), "requires a project title"),
             shiny::need(datafile$nb_samples > 1,
                         "requires a non empty data file"),
             if(is.null(plate_specs$special_wells)){
@@ -121,7 +128,7 @@ app_server <- function(input, output, session ) {
                 distinct_sample_gps = datafile$distinct_gps,
                 gp_levels = datafile$gp_levels,
                 plate_opts = plate_specs,
-                project_name = input$project_title
+                project_name = project_title()
             )
         }else if(launch_wpm$flag == 0){
             shinyWidgets::sendSweetAlert(

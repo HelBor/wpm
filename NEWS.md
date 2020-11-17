@@ -101,3 +101,10 @@ random port used by the `runApp` function to avoid port conflicts with other app
 
 # changes in version 1.1.3
 * fix typo in Parameters panel of shiny app.
+
+# changes in version 1.1.4
+* The project title is now a mandatory parameter.
+* The `mod_project_title` module was created in order to more easily manage the 
+"project title" block.
+* Data export: Now the project title and the date are also used to generate the 
+file names of the dataset and graphics created by WPM.

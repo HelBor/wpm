@@ -46,21 +46,7 @@ app_ui <- function(request) {
                         tabName = "parameters",
                         shiny::h1("Parameters"),
                         mod_data_import_ui("data_import"),
-                        shiny::fluidRow(
-                            shiny::column(width = 6,
-                                shinydashboard::box(
-                                    status = "warning",
-                                    width = 12,
-                                    collapsible = TRUE,
-                                    solidHeader = TRUE,
-                                    title = shiny::h3("Please choose a Project name"),
-                                    shiny::textInput(inputId = "project_title",
-                                                     label = NULL,
-                                                     value = "",
-                                                     placeholder = "my project title")
-                                )
-                            )
-                        ),
+                        mod_project_title_ui("project_title"),
                         mod_plate_dimensions_ui("p_dim"),
                         mod_special_wells_ui("special1"), # forbidden wells
                         mod_plate_specifications_ui("plate"),

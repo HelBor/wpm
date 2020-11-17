@@ -51,11 +51,17 @@ mod_data_export_ui <- function(id){
 ##' @noRd
 mod_data_export_server <- function(input, output, session, df, distinct_sample_gps,
                                    gp_levels, plate_opts, project_name){
+    
+    
+    project <- shiny::reactive({
+        stringr::str_replace_all(string = project_name,
+                                        pattern = " ", replacement = "")
+    })
+    
     output$data_export <- shiny::renderUI({
         shiny::isolate({
             if(!is.null(df)){
-                project <- stringr::str_replace_all(string = project_name,
-                                                    pattern = " ", replacement = "")
+                
                 shiny::column(
                     width = 12,
                     DT::renderDataTable(
@@ -64,7 +70,7 @@ mod_data_export_server <- function(input, output, session, df, distinct_sample_g
                     ),
                     shiny::downloadHandler(
                       filename = function() {
-                          paste("data-", Sys.Date(), "-", project, ".csv", sep = "")
+                          paste("data-", Sys.Date(), "-", project(), ".csv", sep = "")
                       },
                       content = function(file) {
                           utils::write.csv2(df, file, row.names = FALSE,
@@ -108,7 +114,7 @@ mod_data_export_server <- function(input, output, session, df, distinct_sample_g
                         shiny::renderPlot({map_plot()[[i]]}),
                         shiny::downloadHandler(
                             filename = function() {
-                                paste("plot", i, ".png", sep = "")
+                                paste("plot", i, "-", Sys.Date(),"-", project(), ".png", sep = "")
                             },
                             content = function(file) {
                                 ggplot2::ggsave(
