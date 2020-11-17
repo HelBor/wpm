@@ -1,53 +1,78 @@
 <p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/inst/app/www/images/wpm_logo.png"></p>
 <p align="center"><img width=70% src="https://github.com/HelBor/wpm/blob/master/inst/app/www/images/wpm_name.png"></p>
 
+![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](https://img.shields.io/badge/repo status-active-green?style=flat-square)
 ![R](https://img.shields.io/badge/R-v4.0+-blue?style=flat-square)
 [![GitHub issues](https://img.shields.io/github/issues/HelBor/wpm?style=flat-square)](https://github.com/HelBor/wpm/blob/issues)
-![Release](https://img.shields.io/badge/release-alpha-orange?style=flat-square)
 ![GitHub license](https://img.shields.io/badge/license-Artistic--2.0-green?style=flat-square)
+
+**Bioconductor informations**
+
+![platforms](https://bioconductor.org/shields/availability/3.12/wpm.svg)
+[![years in bioc](http://bioconductor.org/shields/years-in-bioc/wpm.svg)](https://bioconductor.org/packages/release/bioc/html/wpm.html)    
+**Release** ![build release](http://bioconductor.org/shields/build/release/bioc/wpm.svg)    
+**Devel** ![build devel](http://bioconductor.org/shields/build/devel/bioc/wpm.svg)
 
 ## Brief introduction
 
-> WPM is a shiny application deployed in the form of an R package. Functions for
-a command-line/script use are also available. Its objective is to allow a user to
-generate a well plate plan in order to perform his experiments by controlling 
-batch effects (in particular preventing plate edge effects). The algorithm for 
-placing the samples is inspired by the backtracking algorithm.
+WPM is a shiny application deployed as an R package. Functions for
+a command-line/script use are also available. WPM aims to allow users to 
+generate well plate plans in order to carry out their experiments while 
+controlling certain batch effects. In particular, it makes it possible to control the "plate 
+effect" thanks to its ability to manage multiple well plates.
+The algorithm for placing the samples is inspired by the backtracking algorithm.
+Thus, the samples will be placed on the plates at random while respecting 
+precise spatial constraints. The use of WPM as well as the definition of 
+configurable spatial constraints are described in the following sections.
 
 ## Getting started
 
 ### Pre-requisites
 `R version >= 4.0.0`
 OS tested : `Windows`, `Fedora`, `Ubuntu`,`MacOS`
-But the app should work also on the others.
+The application should also work on other platforms.
+If problems are encountered on other OS, do not hesitate to report them by 
+creating an [issue](https://github.com/HelBor/wpm/issues).
 
-WPM R package dependencies:
-`utils`, `methods`, `Biobase`, `SummarizedExperiment`, `config`, `golem`, 
-`rlang`, `shiny`, `shinydashboard`, `shinyWidgets`, `shinycustomloader`, `DT`, 
-`RColorBrewer`, `logging`, `dplyr`, `stringr`, `ggplot2`
+**WPM R package dependencies**
+
+from CRAN: `golem`, `rlang`, `shiny`, `shinydashboard`, `shinyWidgets`, `dplyr`,
+`shinycustomloader`, `DT`, `RColorBrewer`, `logging`, `stringr`, `ggplot2`
+
+from Bioconductor: `Biobase`, `SummarizedExperiment`
 
 ### How to install
 
-From GitHub
+From GitHub (consider it a devel version):
 ```R
 devtools::install_github("HelBor/wpm", build_vignettes=TRUE)
 ```
+
+From Bioconductor (release, stable version):
+```R
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("wpm")
+```
+Instructions can also be found on the 
+[Bioconductor page](http://bioconductor.org/packages/release/bioc/html/wpm.html)
 
 
 ## How to use WPM
 
 There are two ways to use WPM:
 
-* on the command line with the appropriate functions, for users wishing to work
-on the command line or integrate wpm into their R scripts.
-* via a shiny application (web interface), for users with no R programming 
-skills.
+* Command line with appropriate R functions: for users who want to work with 
+scripts or want to integrate wpm into a pre-existing pipeline.
+* through a graphical interface: for users who do not necessarily have advanced
+R programming skills.
 
 ### Supported input formats
 
 | Input Format          | Command line | WPM app |
 | --------------------- |:------------:| :------:|
-| CSV                   | yes          | yes     |
+| CSV / txt             | yes          | yes     |
 | ExpressionSet         | yes          | no      |
 | SummarizedExperiment  | yes          | no      |
 | MSnSet                | yes          | no      |
@@ -58,21 +83,21 @@ skills.
 library(wpm)
 ```
 
-To see a complete Tutorial, please see the Vignette of the package. 
+To see a complete Tutorial, please see the Vignette of the package.
 ```R
 browseVignettes("wpm")
 ```
 
 ### Using WPM from the command line
 
-In command line there a some steps to process in the right order:
+In command line, there are few steps to be performed in the correct order:
 
-#### Prepare dataset
+#### Prepare the dataset
 
-You can work with CSV files, or `ExpressionSet`, `MSnSet`, 
+You can work with CSV/txt files, `ExpressionSet`, `MSnSet`, or 
 `SummarizedExperiment` objects.
-The first step is to create a dataframe containing all the data needed by wpm 
-to work properly. To do so, you need to specify which column in the CSV 
+The first step is to create a dataframe containing all the data necessary for wpm 
+to work properly. To do so, you need to specify which column in the file 
 corresponds to the grouping factor if any. 
 ```R
 # if you have a CSV file
@@ -82,15 +107,21 @@ df <- convertESet(myExpressionSet, "grouping_factor") # or convertESet(myMSnSet)
 # if you have a SummarizedExperiment
 df <- convertSE(mySummarizedExperiment, "grouping_factor")
 ```
+For more details about the functions, please use `?wpm::function_name` R command.
  
 #### Run WPM
 
-The next step is to run the wpm wrapper function by giving it all the parameters
-needed: the dataframe, the plate dimensions, the number of plates to fill, the 
-forbidden wells (wells that must not be filled at all for the experiment), buffer
-wells (wells where there will be solution without sample in it), fixed
-wells, the spatial constraint to place the samples and the maximal number of 
-attemps for WPM to find a valid solution.
+The next step is to run the `wrapperWPM` function by giving it all the parameters
+needed:
+
+* the dataframe generated with `convertXXX` functions
+* the plate dimensions
+* the number of plates to fill
+* the forbidden wells (wells that must not be filled at all for the experiment),
+* buffer wells (wells where there will be solution without sample in it)
+* The position of fixed samples.
+* the spatial constraint to place the samples
+* the maximal number of attemps for WPM to find a valid solution.
 
 ```R
 # example where we do not specify buffers
@@ -104,7 +135,8 @@ wpm_res <- wrapperWPM(user_df = df,
 
 #### Plate map visualization
 
-The last step is to plot the plate plan(s) using the `drawMap()` function :
+The final step is to create a visual output of the generated plate plan(s) 
+using the `drawMap()` function :
 
 ```R
 drawned_map <- wpm::drawMap(df = wpm_result,

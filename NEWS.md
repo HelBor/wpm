@@ -108,3 +108,4 @@ random port used by the `runApp` function to avoid port conflicts with other app
 "project title" block.
 * Data export: Now the project title and the date are also used to generate the 
 file names of the dataset and graphics created by WPM.
+* README for GitHub revised.
