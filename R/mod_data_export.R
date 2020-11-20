@@ -58,6 +58,14 @@ mod_data_export_server <- function(input, output, session, df, distinct_sample_g
                                         pattern = " ", replacement = "")
     })
     
+    
+    final_df <- shiny::reactive({
+        df$ID <- stringr::str_c(df$ID, project(), sep = "_")
+        return(df)
+    })
+    
+    
+    
     output$data_export <- shiny::renderUI({
         shiny::isolate({
             if(!is.null(df)){
@@ -65,7 +73,7 @@ mod_data_export_server <- function(input, output, session, df, distinct_sample_g
                 shiny::column(
                     width = 12,
                     DT::renderDataTable(
-                        DT::datatable({df}, rownames = FALSE, options = list(
+                        DT::datatable({final_df()}, rownames = FALSE, options = list(
                             columnDefs = list(list(className = 'dt-center', targets ="_all"))))
                     ),
                     shiny::downloadHandler(
@@ -73,7 +81,7 @@ mod_data_export_server <- function(input, output, session, df, distinct_sample_g
                           paste("data-", Sys.Date(), "-", project(), ".csv", sep = "")
                       },
                       content = function(file) {
-                          utils::write.csv2(df, file, row.names = FALSE,
+                          utils::write.csv2(final_df(), file, row.names = FALSE,
                                             quote = FALSE)
                       }
                     )
