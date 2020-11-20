@@ -11,12 +11,10 @@ app_server <- function(input, output, session ) {
     shiny::callModule(mod_home_server, id = "home")
     ##*************************************************************************
     ## Input file part
-    # datafile <- shiny::callModule(mod_data_import_server,
-    #                             id = "data_import",
-    #                             session = session)
-    datafile <- shiny::callModule(mod_data_import_2_server,
+    datafile <- shiny::callModule(mod_data_import_server,
                                 id = "data_import",
                                 session = session)
+
 
     project_title <- shiny::callModule(mod_project_title_server,
                                        id = "project_title",
