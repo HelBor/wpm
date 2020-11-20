@@ -1,10 +1,11 @@
 <p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/inst/app/www/images/wpm_logo.png"></p>
 <p align="center"><img width=70% src="https://github.com/HelBor/wpm/blob/master/inst/app/www/images/wpm_name.png"></p>
 
-![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](https://img.shields.io/badge/repo status-active-green?style=flat-square)
-![R](https://img.shields.io/badge/R-v4.0+-blue?style=flat-square)
-[![GitHub issues](https://img.shields.io/github/issues/HelBor/wpm?style=flat-square)](https://github.com/HelBor/wpm/blob/issues)
-![GitHub license](https://img.shields.io/badge/license-Artistic--2.0-green?style=flat-square)
+
+![Project Status](https://img.shields.io/badge/repo status-active-success?style=flat-square)
+![R](https://img.shields.io/badge/R-v4.0+-informational?style=flat-square)
+[![GitHub issues](https://img.shields.io/github/issues/HelBor/wpm?style=flat-square)](https://github.com/HelBor/wpm/issues)
+![GitHub license](https://img.shields.io/badge/license-Artistic--2.0-important?style=flat-square)
 
 **Bioconductor informations**
 
@@ -36,10 +37,10 @@ creating an [issue](https://github.com/HelBor/wpm/issues).
 
 **WPM R package dependencies**
 
-from CRAN: `golem`, `rlang`, `shiny`, `shinydashboard`, `shinyWidgets`, `dplyr`,
+CRAN dependencies: `golem`, `rlang`, `shiny`, `shinydashboard`, `shinyWidgets`, `dplyr`,
 `shinycustomloader`, `DT`, `RColorBrewer`, `logging`, `stringr`, `ggplot2`
 
-from Bioconductor: `Biobase`, `SummarizedExperiment`
+Bioconductor dependencies: `Biobase`, `SummarizedExperiment`
 
 ### How to install
 
@@ -77,6 +78,30 @@ R programming skills.
 | SummarizedExperiment  | yes          | no      |
 | MSnSet                | yes          | no      |
 
+
+### Types of samples
+
+WPM identifies four different types of samples with decreasing priority: 
+
+* **Forbidden wells** that should not be filled with any kind of sample, either 
+because the user does not want to (e.g. plate corners in case of non-uniform
+heat distribution), or because of material constraints (e.g. dirty wells, broken
+pipettes). These wells will be colored in red.
+* **Buffers** filled with solution but without biological material (e.g. to 
+avoid/check for cross-contamination). These wells will be colored in grey.
+* **Fixed samples** for quality control samples or standards, the precise 
+location of these samples must be controlled by the researcher. These wells 
+will be colored in black.
+* **Randomized samples** split into groups according to their biological 
+content, and which will be randomized within and between plates. These wells 
+will be colored according to the group to which the sample belongs.
+
+This priority rule allows consistent coloring of the wells. For example, if a 
+well is declared *forbidden*, then this well will no longer be considered for 
+the other types of samples: by definition when a well is prohibited, it means 
+that nothing else should be put in the well concerned and it will always be 
+colored red.
+
 ### Load the library
 
 ```R
@@ -94,8 +119,8 @@ In command line, there are few steps to be performed in the correct order:
 
 #### Prepare the dataset
 
-You can work with CSV/txt files, `ExpressionSet`, `MSnSet`, or 
-`SummarizedExperiment` objects.
+You can work with CSV/txt/TSV files, *ExpressionSet*, *MSnSet*, or 
+*SummarizedExperiment* objects.
 The first step is to create a dataframe containing all the data necessary for wpm 
 to work properly. To do so, you need to specify which column in the file 
 corresponds to the grouping factor if any. 
@@ -103,11 +128,11 @@ corresponds to the grouping factor if any.
 # if you have a CSV file
 df <- convertCSV("path-to-your-CSV", "grouping_factor")
 # if you have an ExpressionSet or an MSnSet
-df <- convertESet(myExpressionSet, "grouping_factor") # or convertESet(myMSnSet)
+df <- convertESet(myExpressionSet, "grouping_factor") # or convertESet(myMSnSet, "grouping_factor")
 # if you have a SummarizedExperiment
 df <- convertSE(mySummarizedExperiment, "grouping_factor")
 ```
-For more details about the functions, please use `?wpm::function_name` R command.
+For more details about the functions, please use `?wpm::<functionName>` R command.
  
 #### Run WPM
 
@@ -123,6 +148,24 @@ needed:
 * the spatial constraint to place the samples
 * the maximal number of attemps for WPM to find a valid solution.
 
+Suppose you have generated this toy dataframe:
+
+```R
+# create a MSnSet toy example
+sample_names <- c("s1","s2","s3","s4", "s5")
+M <- matrix(NA, nrow = 4, ncol = 5)
+colnames(M) <- sample_names
+rownames(M) <- paste0("id", LETTERS[1:4])
+pd <- data.frame(Environment = rep_len(LETTERS[1:3], 5),
+                 Category = rep_len(1:2, 5), row.names = sample_names)
+rownames(pd) <- colnames(M)
+x <- MSnbase::MSnSet(exprs = M,pData =  pd)
+
+# convert it to a valid dataframe for wpm
+df <- convertESet(x, "Environment")
+```
+
+
 ```R
 # example where we do not specify buffers
 wpm_res <- wrapperWPM(user_df = df,
@@ -133,13 +176,16 @@ wpm_res <- wrapperWPM(user_df = df,
             spatial_constraint = "NS")
 ```
 
+For more details, see `?wpm::wrapperWPM`
+
+
 #### Plate map visualization
 
 The final step is to create a visual output of the generated plate plan(s) 
 using the `drawMap()` function :
 
 ```R
-drawned_map <- wpm::drawMap(df = wpm_result,
+drawned_map <- wpm::drawMap(df = wpm_res,
         sample_gps = length(levels(as.factor(pd$Environment))),
         gp_levels = gp_lvl <- levels(as.factor(pd$Environment)),
         plate_lines = 8,
@@ -149,9 +195,12 @@ drawned_map <- wpm::drawMap(df = wpm_result,
 drawned_map
 ```
 
-### Using WPM in web interface
+For more details, see `?wpm::drawMap`
 
-Since WPM provides also a GUI, the idea is to just provide a minimum of 
+
+### Using WPM through a web interface
+
+WPM provides also a graphical interface, the idea is to just provide a minimum of 
 parameters to the application. No programming skills are required.
 Simply run in the console:
 ```R
@@ -167,27 +216,41 @@ WPM has 4 main panels:
 
 #### Provide parameters
 
-- **1)** Provide a CSV file containing the sample names and variable factors if any.
+- **1)** Provide a CSV **file** containing the sample names and variable factors if any.
 
-- **2)** Specify the plate dimensions and their number (the user can choose 
+- **2)** Provide a **Project title**. It will be used for the plot(s) title and the 
+identifiers in the [final dataframe](#final_dataframe).
+
+- **3)** Specify the **plate dimensions** and their **number** (the user can choose 
 between 6, 24, 48, 96, 386, 1534 and custom). WPM checks that all the given 
-settings  arecompatible)
+settings  are compatible)
 
-- **3)** Specify the __Forbidden well__: These wells will not be filled with 
-any kind of sample. We simply do not want to fill them (e.g. the coins of the 
-plate), or in case of dirty wells, broken pipettes, etc.
+- **4)** Specify the **Forbidden well**: simply insert in *LetterNumber* format separted with comma (e.g. *"A1,A2"*)
 
-- **4)** Specify the __Buffers__: correspond to solution without biological 
-sample in it. Provide the neighborhood constraints, which depend on the "Buffer"
-mode chosen. (Shouldn't samples from the same group be found side by side?)
+- **5)** Specify the **Buffers**: You need to specify the pattern (in line 
+shape, in column shape, in checkerboard shape or filled by hand) and give the 
+neighborhood constraint to let know WPM how to place randomized samples 
+according to their group membership:
+    - NS (North South): samples from the same group will not be placed side by 
+    side in North and South positions.
+    <img style="float: right;width=40%;" src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCns.PNG.PNG">
+    - WE (West East): samples from the same group will not be placed side by 
+    side in West and East positions.
+    <img style="float: right;width=40%;" src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCew.PNG">
+    - NSEW (North South East West): samples from the same group wil not be 
+    placed side by side in N, S, W and E positions.
+    <img style="float: right;width=40%;" src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCnsew.PNG">
+    - None: samples from the same group can be placed side by side.
+    <img style="float: right;width=40%;" src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCnone.PNG">
 
-- **5)** Specify the __Fixed samples__: correspond to Quality Control samples or standards.
+- **6)** Specify the **Fixed samples**: in the same way as for forbidden wells,
+insert LetterNumber as is *"A1,B3,C10,A5"*.
 
-- **6)** Choose a maximum number of iterations that WPM can do to find a 
+- **7)** Choose a **maximum number of iterations** that WPM can do to find a 
 solution,then start WPM. If the samples do not have a group, then the samples 
-will be placedcompletely randomly on the plates. If there are groups, wpm will 
-use an algorithminspired by the backtracking algorithm (in order to place the 
-samples in the wellswhile respecting the specified constraints.).
+will be placed completely randomly on the plates. If there are groups, wpm will 
+use an algorithm inspired by the backtracking algorithm (in order to place the 
+samples in the wells while respecting the specified constraints.).
 
 
 #### Check your Results
@@ -196,13 +259,13 @@ This Panel allows you to look after the final dataset containing the wells
 chosen for each sample and a plot of your final well-plate map. Dataframe and 
 plots are downloadable separately.
 
-Example fo final dataset:
-<p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/vignettes/images/final_dataset.PNG"></p>
+Example fo final <a name="final_dataframe"></a> dataset:
+<p align="center"><img width=60% src="https://github.com/HelBor/wpm/blob/master/vignettes/images/final_dataset.PNG"></p>
 
 
 Example of final plot for a 96 well-plate with 80 samples divided into 10 groups: 
 
-<p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/vignettes/images/plot1.png"></p>
+<p align="center"><img width=70% src="https://github.com/HelBor/wpm/blob/master/vignettes/images/plot1.png"></p>
 
 
 
