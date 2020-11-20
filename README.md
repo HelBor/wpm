@@ -233,15 +233,15 @@ neighborhood constraint to let know WPM how to place randomized samples
 according to their group membership:
     - NS (North South): samples from the same group will not be placed side by 
     side in North and South positions. 
-    <p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCns.PNG.PNG"></p>
+    <p align="center"><img src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCns.PNG.PNG"></p>
     - WE (West East): samples from the same group will not be placed side by 
     side in West and East positions.
-    <p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCew.PNG"></p>
+    <p align="center"><img src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCew.PNG"></p>
     - NSEW (North South East West): samples from the same group wil not be 
     placed side by side in N, S, W and E positions. 
-    <p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCnsew.PNG"></p>
+    <p align="center"><img src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCnsew.PNG"></p>
     - None: samples from the same group can be placed side by side.
-    <p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCnone.PNG"></p>
+    <p align="center"><img src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCnone.PNG"></p>
 
 - **6)** Specify the **Fixed samples**: in the same way as for forbidden wells,
 insert LetterNumber as is *"A1,B3,C10,A5"*.
@@ -260,12 +260,12 @@ chosen for each sample and a plot of your final well-plate map. Dataframe and
 plots are downloadable separately.
 
 Example fo final <a name="final_dataframe"></a> dataset:
-<p align="center"><img width=60% src="https://github.com/HelBor/wpm/blob/master/vignettes/images/final_dataset.PNG"></p>
+<p align="center"><img src="https://github.com/HelBor/wpm/blob/master/vignettes/images/final_dataset.PNG"></p>
 
 
 Example of final plot for a 96 well-plate with 80 samples divided into 10 groups: 
 
-<p align="center"><img width=70% src="https://github.com/HelBor/wpm/blob/master/vignettes/images/plot1.png"></p>
+<p align="center"><img src="https://github.com/HelBor/wpm/blob/master/vignettes/images/plot1.png"></p>
 
 
 
