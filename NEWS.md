@@ -110,3 +110,6 @@ random port used by the `runApp` function to avoid port conflicts with other app
 file names of the dataset and graphics created by WPM. Project title is also 
 added to IDs' samples in the final dataframe.
 * README for GitHub revised.
+
+# changes in version 1.1.5
+* Vignette tutorial revised.
