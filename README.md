@@ -233,7 +233,7 @@ neighborhood constraint to let know WPM how to place randomized samples
 according to their group membership:
     - NS (North South): samples from the same group will not be placed side by 
     side in North and South positions. 
-    <p align="center"><img src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCns.PNG.PNG"></p>
+    <p align="center"><img src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCns.PNG"></p>
     - WE (West East): samples from the same group will not be placed side by 
     side in West and East positions.
     <p align="center"><img src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCew.PNG"></p>
