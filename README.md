@@ -2,7 +2,7 @@
 <p align="center"><img width=70% src="https://github.com/HelBor/wpm/blob/master/inst/app/www/images/wpm_name.png"></p>
 
 
-![Project Status](https://img.shields.io/badge/repo status-active-success?style=flat-square)
+![Project Status](https://img.shields.io/badge/status-active-success?style=flat-square)
 ![R](https://img.shields.io/badge/R-v4.0+-informational?style=flat-square)
 [![GitHub issues](https://img.shields.io/github/issues/HelBor/wpm?style=flat-square)](https://github.com/HelBor/wpm/issues)
 ![GitHub license](https://img.shields.io/badge/license-Artistic--2.0-important?style=flat-square)
@@ -232,16 +232,16 @@ shape, in column shape, in checkerboard shape or filled by hand) and give the
 neighborhood constraint to let know WPM how to place randomized samples 
 according to their group membership:
     - NS (North South): samples from the same group will not be placed side by 
-    side in North and South positions.
-    <img style="float: right;width=40%;" src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCns.PNG.PNG">
+    side in North and South positions. 
+    <p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCns.PNG.PNG"></p>
     - WE (West East): samples from the same group will not be placed side by 
     side in West and East positions.
-    <img style="float: right;width=40%;" src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCew.PNG">
+    <p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCew.PNG"></p>
     - NSEW (North South East West): samples from the same group wil not be 
-    placed side by side in N, S, W and E positions.
-    <img style="float: right;width=40%;" src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCnsew.PNG">
+    placed side by side in N, S, W and E positions. 
+    <p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCnsew.PNG"></p>
     - None: samples from the same group can be placed side by side.
-    <img style="float: right;width=40%;" src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCnone.PNG">
+    <p align="center"><img width=40% src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCnone.PNG"></p>
 
 - **6)** Specify the **Fixed samples**: in the same way as for forbidden wells,
 insert LetterNumber as is *"A1,B3,C10,A5"*.
