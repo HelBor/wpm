@@ -107,5 +107,9 @@ random port used by the `runApp` function to avoid port conflicts with other app
 * The `mod_project_title` module was created in order to more easily manage the 
 "project title" block.
 * Data export: Now the project title and the date are also used to generate the 
-file names of the dataset and graphics created by WPM.
+file names of the dataset and graphics created by WPM. Project title is also 
+added to IDs' samples in the final dataframe.
 * README for GitHub revised.
+
+# changes in version 1.1.5
+* Vignette tutorial revised.
