@@ -11,7 +11,7 @@ mod_data_import_ui <- function(id){
                 width = 12,
                 selected = "demo",
                 shiny::tabPanel(
-                    title = "Demo dataset",
+                    title = "Load the demo dataset",
                     value = "demo",
                     icon = shiny::icon("database"),
                     mod_data_import_demo_ui(ns("demo"))

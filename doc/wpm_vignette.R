@@ -1,9 +1,3 @@
-## ----install from BioConductor, eval=FALSE------------------------------------
-#  if (!requireNamespace("BiocManager", quietly = TRUE))
-#      install.packages("BiocManager")
-#  
-#  BiocManager::install("wpm")
-
 ## ----launch wpm, eval = FALSE-------------------------------------------------
 #  library(wpm)
 #  wpm()
