@@ -116,3 +116,17 @@ img {
 #logo, #logo-name {
 		width: 20%;
 }
+
+
+.nav-tabs-custom>.tab-content {
+    	border-bottom-color:#6B6B6B;
+		border-left-color:#6B6B6B;
+		border-right-color:#6B6B6B;
+		border-bottom-width: 1px;
+		border-left-width: 1px;
+		border-right-width: 1px;
+}
+
+.nav-tabs-custom .nav-tabs li.active {
+     border-top-color: #6B6B6B;
+}
