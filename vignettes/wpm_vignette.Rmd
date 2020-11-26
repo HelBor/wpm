@@ -5,10 +5,15 @@ author:
 affiliation: Universite Grenoble Alpes
 email: borges.helene.sophie@gmail.com
 abstract: >
-    WPM is a shiny application deployed in the form of an R package. Its 
-    objective is to allow the user to create one (or more) randomized plate maps in order 
-    to perform his experiments by controlling batch effects without programming skills. However, R 
-    functions are available for users who want to work with their own R scripts.
+    WPM is a shiny application deployed as an R package. Functions for
+    a command-line/script use are also available. WPM aims to allow users to 
+    generate well plate plans in order to carry out their experiments while 
+    controlling certain batch effects. In particular, it makes it possible to control the "plate 
+    effect" thanks to its ability to manage multiple well plates.
+    The algorithm for placing the samples is inspired by the backtracking algorithm.
+    Thus, the samples will be placed on the plates at random while respecting 
+    precise spatial constraints. The use of WPM as well as the definition of 
+    configurable spatial constraints are described in the following sections.
 vignette: >
     %\VignetteIndexEntry{How to use Well Plate Maker}
     %\VignetteEngine{knitr::rmarkdown}
@@ -33,9 +38,10 @@ samples are given a correct location:
 
 This process allows for an experimental design by block randomization.
 
-There are two ways using the `wpm` package:
+There are two ways to use the `wpm` package:
 
-* through a [shiny application](#shiny_app) for users who do not have sufficient  R programming skills.
+* through a [shiny application](#shiny_app) for users who do not necessarily have advanced
+R programming skills.
 * using [R commands](#R_commands) for users who want to work with their own R scripts. 
 
 __Important:__ Even in case of command line use, we strongly recommend to read the section about the 
@@ -82,9 +88,10 @@ library(wpm)
 wpm()
 ```
 If everything is in order, a new window will open in your default browser.
-If not, find the line written in the R console: `Listening on http://127.0.0.1:8000`, and paste the URL in your web browser.
+If not, find the line written in the R console that looks like
+`Listening on http://127.0.0.1:8000`, and paste the URL in your web browser.
 
-WPM has 4 main tabs: __Home__, __Parameters__, __Results__ ans __Help__.
+WPM has 4 main tabs: __Home__, __Parameters__, __Results__ and __Help__.
 
 ## The __Home__ tab
 
@@ -97,18 +104,21 @@ explains how to cite us to support our work and gives the contact information.
 
 Overall the page is organized in two sections.
 
-The one on the left contains all the configuration steps. It is divided into 6 main steps, detailed below. It is of the utmost importance to correctly specify all the constraints for generating the desired plate maps.
+The one on the left contains all the configuration steps. 
+It is divided into 7 main steps, detailed below. It is of the utmost 
+importance to correctly specify all the constraints for generating the desired 
+plate maps.
 
-The one on the right summarizes the input parameters (tuned along the 6 steps of the left panel)
-as well as the chosen (empty) plate layout. The right section is 
+The one on the right summarizes the input parameters (tuned along the 7 steps of
+the left panel) as well as the chosen (empty) plate layout. The right section is 
 automatically updated each time a parameter is changed in the left section.
 
 ![Parameters Panel](images/parametersPanel.PNG)
 
 
-### Upload dataset
+### Step 1: Upload the dataset
 
-First, you must upload a *__Comma-separated values__* (.CSV) or a text (.txt) file. 
+First, you need to upload a *__Comma-separated values__* (.CSV) or a text (.txt) file. 
 This file contains at least one kind of information: the sample names.
 ```{r, echo=FALSE}
 knitr::kable(data.frame("Sample" = c("s1","s2","s3","s4")))
@@ -132,9 +142,14 @@ the second in the file.):
     s2;A;trt1
     s3;B;Ctrl
     s4;C;Ctrl
+    
+But you can also try the **demo dataset**, if you want to first understand how to 
+manage the app.
 
 Second, you have to specify if there are quotes in your file or not. 
-The Default is none, meaning that there is no __*"*__ or __*'*__ characters in your file.
+*If you are using the demo dataset, you can skip this section.*
+
+The default is *none*, meaning that there is no __*"*__ or __*'*__ characters in your file.
 If you select the appropriate quote, then you will be able to:
 
 * check if your file does have a __header__ and __row names__.
@@ -161,12 +176,12 @@ If you see that the total number of samples is wrong, this means that you have
 not chosen the appropriate options among those described above and you need to
 set the correct ones.
 
-### Choose a Project name
-This step is optional. If you provide one, it will be used in the plots titles 
-and in the name of the final dataset.
+### Step 2: Choose a Project name
+This step is mandatory. It will be used in the plots titles and in the output 
+file names and also be concatenated with samples' IDs to limit sample confusions.
 
 
-### Plate(s) dimensions {#plate-dims}
+### Step 3: Plate(s) dimensions {#plate-dims}
 
 Here you have to specify the plate dimensions and their number. Currently, WPM 
 supports plate dimensions of 6,24, 48, 96, 386, 1534 wells and a custom option 
@@ -200,13 +215,13 @@ could be the problem.
 ![Example of error message](images/exErrorMsg.PNG)
 
 
-### Forbidden wells {#forbidden_wells}
+### Step 4: Forbidden wells {#forbidden_wells}
 
 In this step are listed the __Forbidden wells__ if any (optional): 
 
 > A __Forbidden well__ will not be filled with any kind of sample. 
-We simply do not want to fill them (*e.g.* the coins of the plate), or in 
-case of dirty wells, broken pipettes, etc.
+We simply do not want to fill them (*e.g.* the corners of the plate), or in 
+case of dirty wells, broken pipettes, *etc*.
 
 You fill the text input with the coordinates of the wells (a combination of letters and numbers like in the example below):
 
@@ -220,7 +235,7 @@ The wells filled with forbidden wells will have the *"forbidden"* ID in the
 final dataset.
 
 
-### Buffers {#buffers}
+### Step 5: Buffers {#buffers}
 At this stage you can specify the wells which correspond to buffers, if there 
 are any. 
 
@@ -273,7 +288,7 @@ in the wells evaluated.
 The wells filled with buffer wells will have the *"buffer"* ID in the 
 final dataset.
 
-### Fixed wells {#fixed_wells}
+### Step 6: Fixed wells {#fixed_wells}
 
 At this stage you can specify the wells which correspond to fixed 
 wells, if there are any. 
