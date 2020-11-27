@@ -1,5 +1,6 @@
 mod_data_import_ui <- function(id){
     ns <- shiny::NS(id)
+    
     shiny::fluidRow(
         # inputs part
         shiny::column(width = 6,
@@ -32,10 +33,10 @@ mod_data_import_ui <- function(id){
         # output part
         shiny::column(width=6,
             shiny::fluidRow(
-                
                 shiny::column(
                     width = 8,
-                    shinydashboard::box(
+                    style='padding:0px;margin:0px;',
+                    shinydashboard::box(style = "overflow-x: scroll;",
                         title = shiny::h3("Check that your file is correctly read by WPM"),
                         solidHeader = TRUE, collapsible = TRUE,
                         width = 12, status = "warning",
@@ -44,7 +45,8 @@ mod_data_import_ui <- function(id){
                     )),
                 shiny::column(
                     width = 4,
-                    shinydashboard::box(
+                    style='padding:0px;margin:0px;',
+                    shinydashboard::box(style = "overflow-x: scroll;",
                         title = shiny::h3("Preview output template"),
                         solidHeader = TRUE, collapsible = TRUE,
                         width = 12, status = "warning",
