@@ -1,6 +1,6 @@
-
+##' data_import module UI Function
 ##'
-##' @description A shiny Module.for data import
+##' @description A shiny Module. For the demo dataset import
 ##' @param id Internal parameters for {shiny}.
 ##' @noRd
 mod_data_import_demo_ui <- function(id){
@@ -11,10 +11,9 @@ mod_data_import_demo_ui <- function(id){
         shiny::h4("Please select the grouping variable"),
         shinyWidgets::pickerInput(
             inputId = ns("group_picker"),
-            choices = NULL,
+            choices = "none",
             selected = NULL
-        ),
-        shiny::textOutput(ns("text"))
+        )
     )
 }
 
@@ -30,9 +29,12 @@ mod_data_import_demo_server <- function(id){
         id,
         function(input, output, session) {
             ns <- session$ns
+            
             toReturn <- shiny::reactiveValues(
-                df = NULL
+                df = NULL,
+                df_wpm = NULL
             )
+            
             choices <- utils::data(package = "wpm", envir = environment())$results[, "Item"]
             utils::data(list = choices)
             df <- get(choices)
@@ -43,14 +45,36 @@ mod_data_import_demo_server <- function(id){
                                   choices = c("none",colnames(df)))
             })
             
-            output$text <- shiny::renderText({
-                "Here we will see the fields useful for demo dataset"
+            
+            df_wpm_format <- shiny::reactive({
+                logging::loginfo("input$group_picker = %s", input$group_picker)
+
+                if(!is.null(df)){
+
+                    if (input$group_picker == "none") {
+                        out <- data.frame(Sample = df$samples, Group = as.factor(1))
+                    }else{
+                        # check if user enter an existing field
+                        if (input$group_picker %in% colnames(df)) {
+                            out <- data.frame(Sample = df$samples,
+                                              Group = as.factor(df[[input$group_picker]]))
+                        }
+                    }
+                    print(class(df))
+                    out$Sample <- as.character(out$Sample)
+                    out$ID <- seq_len(nrow(out))
+
+                }
+                return(out)
+
             })
+            
+            
             
             shiny::observe({
                 logging::loginfo("class df: %s", class(df))
-                #toReturn$df <- "demo dataframe"
                 toReturn$df <- df
+                toReturn$df_wpm <- df_wpm_format()
             })
             
             return(toReturn)
