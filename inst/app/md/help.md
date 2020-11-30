@@ -344,7 +344,6 @@ button to take into account the new changes.
 __NOTE__ If you want to create a new plate plan for another project, press 
 `ctrl + f5`, this will reset the application.
 
-
 ---
 
 ## 4. <a name="results_panel"></a>Results tab
@@ -368,5 +367,3 @@ Below is an example of 80 samples distributed in 10 groups (of unequal sizes) an
 96 well-plate, with the North-South-East-West neighborhood constraint:
 
 ![Plate map](../www/images/plot1.png)
-
-
