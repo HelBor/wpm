@@ -307,7 +307,7 @@ row-wise.
 ![East-West constraint](images/NCew.PNG)
 
 NSEW (North South East West): samples from the same group will not be placed 
-side by side either row-wise or colmun-wise.
+side by side either row-wise or column-wise.
 ![North-South-East-West constraint](images/NCnsew.PNG)
 
 None: samples from the same group can be placed anywhere, including side by side.
