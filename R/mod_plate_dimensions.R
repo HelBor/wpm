@@ -13,7 +13,7 @@ mod_plate_dimensions_ui <- function(id){
                 status = "warning",
                 width = 12,
                 collapsible = TRUE,
-                solidHeader = TRUE,
+                solidHeader = F,
                 title = shiny::h3("Plate dimensions"),
                 shiny::selectInput(
                     ns("plate_size"),

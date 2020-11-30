@@ -15,7 +15,7 @@ ns <- shiny::NS(id)
                 status = "warning",
                 width = 12,
                 collapsible = TRUE,
-                solidHeader = TRUE,
+                solidHeader = F,
                 title = shiny::h3("Buffer solutions"),
                 shiny::fluidRow(
                     shiny::column(
@@ -196,7 +196,7 @@ ns <- shiny::NS(id)
             shiny::fluidRow(
                 shinydashboard::valueBoxOutput(
                     ns("available_wells"),
-                    width = 6)
+                    width = 12)
             ),
             shiny::fluidRow(
                 shinycustomloader::withLoader(
