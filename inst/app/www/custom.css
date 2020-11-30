@@ -20,6 +20,7 @@ h2{
 
 h3{
 		font-weight: bold ;
+		color:#6B6B6B;
 }
 
 h4{
@@ -32,18 +33,24 @@ h4{
 
 
 .box.box-solid.box-warning>.box-header {
-		color:#fff;
-		background:#6B6B6B
+		color:#6B6B6B;
+		background:#6B6B6B;
 }
 
+
+
+
 .box.box-solid.box-warning{
+        border-top-color: #6B6B6B;
 		border-bottom-color:#6B6B6B;
 		border-left-color:#6B6B6B;
 		border-right-color:#6B6B6B;
 		border-top-color:#6B6B6B;
 }
 
-
+.small-box h3 {
+    color: #fff;
+}
 .btn {
 		font-size: 14px;
 		padding: 6px 12px;
@@ -115,4 +122,16 @@ img {
 
 #logo, #logo-name {
 		width: 20%;
+}
+
+
+.nav-tabs-custom>.tab-content {
+    	border-bottom-color:#6B6B6B;
+		border-left-color:#6B6B6B;
+		border-right-color:#6B6B6B;
+
+}
+
+.nav-tabs-custom .nav-tabs li.active {
+     border-top-color: #6B6B6B;
 }

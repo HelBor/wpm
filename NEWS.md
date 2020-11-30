@@ -113,3 +113,10 @@ added to IDs' samples in the final dataframe.
 
 # changes in version 1.1.5
 * Vignette tutorial revised.
+
+# changes in version 1.1.6
+* A demo dataset is now available to test the WPM shiny app.
+* Update of some images of the vignette.
+* Visual changes in the app (colors, blocks).
+* Update of the Help tab of the application, following the revision of the 
+vignette.

@@ -16,15 +16,15 @@
 
 ## Brief introduction
 
-WPM is a shiny application deployed as an R package. Functions for
-a command-line/script use are also available. WPM aims to allow users to 
-generate well plate plans in order to carry out their experiments while 
-controlling certain batch effects. In particular, it makes it possible to control the "plate 
-effect" thanks to its ability to manage multiple well plates.
-The algorithm for placing the samples is inspired by the backtracking algorithm.
-Thus, the samples will be placed on the plates at random while respecting 
-precise spatial constraints. The use of WPM as well as the definition of 
-configurable spatial constraints are described in the following sections.
+The **W**ell-**P**late **M**aker (WPM) is a shiny application deployed as an R package. Functions for
+a command-line/script use are also available. The WPM allows users to 
+generate well plate maps to carry out their experiments while improving
+the handling of batch effects. In particular, it helps controlling the "plate 
+effect" thanks to its ability to randomize samples over multiple well plates.
+The algorithm for placing the samples is inspired by the backtracking algorithm: 
+the samples are placed at random while respecting specific spatial constraints. 
+The use of WPM as well as the definition of configurable spatial constraints
+are described in the following sections.
 
 ## Getting started
 
@@ -32,7 +32,7 @@ configurable spatial constraints are described in the following sections.
 `R version >= 4.0.0`
 OS tested : `Windows`, `Fedora`, `Ubuntu`,`MacOS`
 The application should also work on other platforms.
-If problems are encountered on other OS, do not hesitate to report them by 
+If problems are encountered on other OS, report them by 
 creating an [issue](https://github.com/HelBor/wpm/issues).
 
 **WPM R package dependencies**
@@ -60,13 +60,13 @@ Instructions can also be found on the
 [Bioconductor page](http://bioconductor.org/packages/release/bioc/html/wpm.html)
 
 
-## How to use WPM
+## How to use the WPM package
 
-There are two ways to use WPM:
+There are two ways to use the WPM:
 
 * Command line with appropriate R functions: for users who want to work with 
-scripts or want to integrate wpm into a pre-existing pipeline.
-* through a graphical interface: for users who do not necessarily have advanced
+scripts or want to integrate the WPM into a pre-existing pipeline.
+* through a graphical interface (GUI): for users who do not necessarily have advanced
 R programming skills.
 
 ### Supported input formats
@@ -86,44 +86,42 @@ WPM identifies four different types of samples with decreasing priority:
 * **Forbidden wells** that should not be filled with any kind of sample, either 
 because the user does not want to (e.g. plate corners in case of non-uniform
 heat distribution), or because of material constraints (e.g. dirty wells, broken
-pipettes). These wells will be colored in red.
-* **Buffers** filled with solution but without biological material (e.g. to 
-avoid/check for cross-contamination). These wells will be colored in grey.
+pipettes). On the resulting map, these wells will be colored in red.
+* **Buffers** filled with solution but do not biological material (e.g. to 
+avoid/check for cross-contamination). On the resulting map, these wells will be colored in grey.
 * **Fixed samples** for quality control samples or standards, the precise 
-location of these samples must be controlled by the researcher. These wells 
+location of these samples must be controlled by the researcher. On the resulting map, these wells 
 will be colored in black.
 * **Randomized samples** split into groups according to their biological 
-content, and which will be randomized within and between plates. These wells 
+content, and which will be randomized within and between plates. On the resulting map, these wells 
 will be colored according to the group to which the sample belongs.
 
-This priority rule allows consistent coloring of the wells. For example, if a 
-well is declared *forbidden*, then this well will no longer be considered for 
-the other types of samples: by definition when a well is prohibited, it means 
-that nothing else should be put in the well concerned and it will always be 
-colored red.
+This priority rule allows consistent distributions of samples into wells.
+For example, if a well is declared *forbidden*, then this well will no longer be considered for 
+the other types of samples.
 
-### Load the library
+### Load the WPM package
 
 ```R
 library(wpm)
 ```
 
-To see a complete Tutorial, please see the Vignette of the package.
+For a complete Tutorial, please see the Vignette of the package.
 ```R
 browseVignettes("wpm")
 ```
 
-### Using WPM from the command line
+### Using the WPM with the command lines
 
-In command line, there are few steps to be performed in the correct order:
+The following steps must be performed in the correct order.
 
 #### Prepare the dataset
 
 You can work with CSV/txt/TSV files, *ExpressionSet*, *MSnSet*, or 
 *SummarizedExperiment* objects.
-The first step is to create a dataframe containing all the data necessary for wpm 
-to work properly. To do so, you need to specify which column in the file 
-corresponds to the grouping factor if any. 
+The first step is to create a dataframe containing all the data necessary for the WPM 
+to work correctly. Notably, it is needed to specify which column in the file 
+corresponds to the grouping factor, if any.
 ```R
 # if you have a CSV file
 df <- convertCSV("path-to-your-CSV", "grouping_factor")
@@ -134,7 +132,7 @@ df <- convertSE(mySummarizedExperiment, "grouping_factor")
 ```
 For more details about the functions, please use `?wpm::<functionName>` R command.
  
-#### Run WPM
+#### Run the WPM
 
 The next step is to run the `wrapperWPM` function by giving it all the parameters
 needed:
@@ -142,13 +140,13 @@ needed:
 * the dataframe generated with `convertXXX` functions
 * the plate dimensions
 * the number of plates to fill
-* the forbidden wells (wells that must not be filled at all for the experiment),
-* buffer wells (wells where there will be solution without sample in it)
-* The position of fixed samples.
+* the forbidden wells (wells that must not be filled at all for the experiment)
+* buffer wells (wells where there will be solution without biological material)
+* The position of fixed samples
 * the spatial constraint to place the samples
-* the maximal number of attemps for WPM to find a valid solution.
+* the maximal number of attemps for the WPM to find a valid solution
 
-Suppose you have generated this toy dataframe:
+Suppose you have generated this (toy) dataframe:
 
 ```R
 # create a MSnSet toy example
@@ -161,13 +159,13 @@ pd <- data.frame(Environment = rep_len(LETTERS[1:3], 5),
 rownames(pd) <- colnames(M)
 x <- MSnbase::MSnSet(exprs = M,pData =  pd)
 
-# convert it to a valid dataframe for wpm
+# convert it into a dataframe that is valid according to the WPM constraints
 df <- convertESet(x, "Environment")
 ```
 
 
 ```R
-# example where we do not specify buffers
+# example without buffer specification
 wpm_res <- wrapperWPM(user_df = df,
             plate_dims = list(8,12),
             nb_plates = 1,
@@ -198,14 +196,17 @@ drawned_map
 For more details, see `?wpm::drawMap`
 
 
-### Using WPM through a web interface
+### Using the WPM through a web interface
 
-WPM provides also a graphical interface, the idea is to just provide a minimum of 
-parameters to the application. No programming skills are required.
+The WPM is accompanied with a GUI providing the necessary parameters for the 
+application to work. No programming skills are required.
 Simply run in the console:
 ```R
 wpm()
 ```
+If everything is in order, a new window will open in your default browser.
+If not, find the line written in the R console that looks like
+`Listening on http://127.0.0.1:8000`, and paste the URL in your web browser.
 
 WPM has 4 main panels:
 
@@ -214,56 +215,54 @@ WPM has 4 main panels:
 * __Results__
 * __Help__
 
-#### Provide parameters
+#### Parameters setting
 
-- **1)** Provide a CSV **file** containing the sample names and variable factors if any.
+- **1)** Provide a CSV **file** containing the sample names and variable factors, if any.
 
 - **2)** Provide a **Project title**. It will be used for the plot(s) title and the 
 identifiers in the [final dataframe](#final_dataframe).
 
 - **3)** Specify the **plate dimensions** and their **number** (the user can choose 
-between 6, 24, 48, 96, 386, 1534 and custom). WPM checks that all the given 
+between 6, 24, 48, 96, 386, 1534 as well as custom dimensions). The WPM checks that all the given 
 settings  are compatible)
 
-- **4)** Specify the **Forbidden well**: simply insert in *LetterNumber* format separted with comma (e.g. *"A1,A2"*)
+- **4)** Specify the **Forbidden well**: simply insert in *LetterNumber* format separated with comma (e.g. *"A1,A2"*)
 
-- **5)** Specify the **Buffers**: You need to specify the pattern (in line 
-shape, in column shape, in checkerboard shape or filled by hand) and give the 
-neighborhood constraint to let know WPM how to place randomized samples 
-according to their group membership:
+- **5)** Specify the **Buffers**: You need to specify the pattern (rows, columns, checkerboard or manually defined) and give the 
+neighborhood constraint between groups for randomization:
     - NS (North South): samples from the same group will not be placed side by 
-    side in North and South positions. 
+    side column-wise. 
     <p align="center"><img src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCns.PNG"></p>
     - WE (West East): samples from the same group will not be placed side by 
-    side in West and East positions.
+    side row-wise.
     <p align="center"><img src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCew.PNG"></p>
-    - NSEW (North South East West): samples from the same group wil not be 
-    placed side by side in N, S, W and E positions. 
+    - NSEW (North South East West): samples from the same group will not be 
+    placed side by side either row-wise or colmun-wise. 
     <p align="center"><img src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCnsew.PNG"></p>
-    - None: samples from the same group can be placed side by side.
+    - None: samples from the same group can be placed anywhere, including side by side.
     <p align="center"><img src="https://github.com/HelBor/wpm/blob/master/vignettes/images/NCnone.PNG"></p>
 
 - **6)** Specify the **Fixed samples**: in the same way as for forbidden wells,
-insert LetterNumber as is *"A1,B3,C10,A5"*.
+insert *LetterNumber* as is *"A1,B3,C10,A5"*.
 
-- **7)** Choose a **maximum number of iterations** that WPM can do to find a 
-solution,then start WPM. If the samples do not have a group, then the samples 
-will be placed completely randomly on the plates. If there are groups, wpm will 
-use an algorithm inspired by the backtracking algorithm (in order to place the 
-samples in the wells while respecting the specified constraints.).
+- **7)** Choose a **maximum number of iterations** to find a 
+solution, then start the WPM. If the samples do not have a group, then the samples 
+will be placed completely randomly on the plates. If there are groups, the WPM will 
+use an algorithm inspired by the backtracking algorithm (to place the 
+samples in the wells while respecting the specified constraints).
 
 
-#### Check your Results
+#### Check the results
 
-This Panel allows you to look after the final dataset containing the wells 
+The Result panel allows you to look at the final dataset containing the wells 
 chosen for each sample and a plot of your final well-plate map. Dataframe and 
 plots are downloadable separately.
 
-Example fo final <a name="final_dataframe"></a> dataset:
+Example of a final <a name="final_dataframe"></a> dataset:
 <p align="center"><img src="https://github.com/HelBor/wpm/blob/master/vignettes/images/final_dataset.PNG"></p>
 
 
-Example of final plot for a 96 well-plate with 80 samples divided into 10 groups: 
+Example of a final plot (96 well-plate with 80 samples divided into 10 groups): 
 
 <p align="center"><img src="https://github.com/HelBor/wpm/blob/master/vignettes/images/plot1.png"></p>
 
@@ -271,7 +270,7 @@ Example of final plot for a 96 well-plate with 80 samples divided into 10 groups
 
 ## Pending Features
 * Manage multiple grouping factors when importing the data
-* For proteomics, add the option to generate serialization of samples.
+* For proteomics, add the option to serialize the samples into the LC-MS pipeline.
 
 ## Citing Our work
 > The published article of the project will be linked here.

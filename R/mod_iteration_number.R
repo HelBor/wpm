@@ -13,7 +13,7 @@ mod_iteration_number_ui <- function(id){
                     status = "warning",
                     width = 12,
                     collapsible = TRUE,
-                    solidHeader = TRUE,
+                    solidHeader = F,
                     title = shiny::h3("Number of iterations"),
                     shiny::h4(
                         "Please specify the maximum number of iterations

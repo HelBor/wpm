@@ -45,7 +45,7 @@ app_ui <- function(request) {
                     shinydashboard::tabItem(
                         tabName = "parameters",
                         shiny::h1("Parameters"),
-                        mod_data_import_ui("data_import"),
+                        mod_data_import_ui(id = "data_import"),
                         mod_project_title_ui("project_title"),
                         mod_plate_dimensions_ui("p_dim"),
                         mod_special_wells_ui("special1"), # forbidden wells
