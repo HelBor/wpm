@@ -29,29 +29,33 @@ output:
 # Introduction
 
 This tutorial explains how to use the **Well Plate Maker** package.
+
+## General principle
+
 To generate plate maps, the WPM uses an algorithm inspired from the backtracking 
 algorithm. More precisely, WPM loops on the following actions until all of the 
 samples are given a correct location:
 
-1. randomly choose a well on the plate
+1. Randomly choose a well on the plate
 2. Randomly selects a sample
 3. Check whether all the specified location constraints are met. If yes, place the sample accordingly
 
 This process allows for an experimental design by block randomization.
 
+
+## Uses and associated input formats
+
 There are two ways to use the `WPM`:
 
 * [Command line](#R_commands) with appropriate R functions: for users who want to work with 
 scripts or want to integrate the WPM into a pre-existing pipeline.
-* through a [graphical interface (GUI)](#shiny_app): for users who do not necessarily have advanced
+* Through a [graphical interface (GUI)](#shiny_app): for users who do not necessarily have advanced
 R programming skills.
 
 __Important:__ Even in case of command line use, we strongly recommend to read the section about the 
-[shiny app section](#shiny_app), as this is where all terms and concepts are 
-explained in detail.
+[shiny app section](#shiny_app), as this is where all terms and concepts are detailed.
 
 
-## Supported input formats
 
 | Input Format          | Command line | WPM app |
 | --------------------- |:------------:| :------:|
@@ -65,7 +69,7 @@ explained in detail.
 
 ## Prerequisites
 
-Make sure you are using a recent R version ($\geq 4.0.0$).
+Make sure you are using a recent version of R ($\geq 4.0.0$).
 For Windows users who do not have the Edge browser, we recommend using the 
 Chrome browser rather than Internet Explorer.
 
@@ -112,8 +116,8 @@ WPM has 4 main tabs: __Home__, __Parameters__, __Results__ and __Help__.
 
 ## The __Home__ tab
 
-Briefly presents the aim of the app, shows the last package version, 
-explains how to cite us to support our work and gives the contact information.
+This tab briefly presents the aim of the app, shows the last package version, 
+explains how to support our work by citing the associated article and gives contact information.
 
 ![The Home page when wpm is started](images/home.PNG)
 
@@ -121,12 +125,12 @@ explains how to cite us to support our work and gives the contact information.
 
 Overall the page is organized in two sections.
 
-The one on the left contains all the configuration steps. 
+The one on the left hand side contains all the configuration steps. 
 It is divided into 7 main steps, detailed below. It is of the utmost 
 importance to correctly specify all the constraints for generating the desired 
 plate maps.
 
-The one on the right summarizes the input parameters (tuned along the 7 steps of
+The one on the right hand side summarizes the input parameters (tuned along the 7 steps of
 the left panel) as well as the chosen (empty) plate layout. The right section is 
 automatically updated each time a parameter is changed in the left section.
 
@@ -136,11 +140,11 @@ automatically updated each time a parameter is changed in the left section.
 ### Step 1: Upload the dataset
 
 First, you need to upload a *__Comma-separated values__* (.CSV) or a text (.txt) file. 
-This file contains at least one kind of information: the sample names.
+This file contains at least one piece of information: the list of the sample names.
 ```{r, echo=FALSE}
 knitr::kable(data.frame("Sample" = c("s1","s2","s3","s4")))
 ```
-It is also possible to provide a file containing several variables describing
+It is also possible to provide a file containing several other variables describing
 the data, as in the example below:
 ```{r, echo=FALSE}
 knitr::kable(
@@ -149,7 +153,7 @@ knitr::kable(
 )
 ```
 
-__IMPORTANT__ Please respect this ORDER of columns for the data in the CSV file:
+__IMPORTANT__ Please make sure the data in the CSV file respect the following SPECIFIC ORDER of columns:
 Sample names in the __first__ column, and other variables in the other columns, 
 like the example below (if there are rownames, then the *Samples* Column must be 
 the second in the file.):
@@ -172,18 +176,18 @@ If you select the appropriate quote, then you will be able to:
 * check if your file does have a __header__ and __row names__.
 * select the appropriate __separator__ field. Default is semicolon (__*";"*__)
 
-Then you can select one of the variables that you want to use as the grouping
+Then, you can select one of the variables that you want to use as the grouping
 factor for WPM.  
 This column will be renamed "Group" in the final dataset.
 
 ![Choose the grouping factor](images/groupVariable.PNG)
 
-The names you give to columns in your CSV do not matter, because the WPM will create
+The names you give to columns in your CSV file do not matter, because the WPM will create
 a new dataset having 3 fields: _"Sample"_ , _"Group"_ and _"ID"_.
 
-You will see your dataset on the right side of the window, and another dataset 
+You will see your dataset on the right hand side of the window, as well as another dataset 
 which will be used by WPM to generate the map(s).   
-Each sample is assigned a unique ID, which will be used to name the samples
+Each sample is assigned a unique ID, which will be used to name it
 onto the plate maps (for more details on the ID see the [Results section](#results_panel) ).
 
 ![Dataset vizualisation](images/toy2rightpanel.PNG)
@@ -191,29 +195,28 @@ onto the plate maps (for more details on the ID see the [Results section](#resul
 __IMPORTANT__ Please ensure that the dataset is correctly displayed in the right
 window and that the number of samples / groups is correct.    
 If you see that the total number of samples is wrong, this means that you have
-not chosen the appropriate options among those described above and you need to
-set the correct ones.
+not chosen the appropriate options among those described above, so that corrections are needed.
 
 ### Step 2: Choose a Project name
-This step is mandatory. It will be used in the plots' titles and in the output 
-file names and also be concatenated with samples' IDs to limit sample confusions.
+This step is mandatory. It will be used in the plot titles as well as in the output 
+file names. Moreover, it be concatenated with sample IDs to limit confusions.
 
 
 ### Step 3: Plate(s) dimensions {#plate-dims}
 
 Here you have to specify the plate dimensions and their number. Currently, WPM 
-supports plate dimensions of 6,24, 48, 96, 386, 1534 wells  as well as custom dimensions 
-(where you specify the number of rows and columns by hand).
+supports plate dimensions of 6, 24, 48, 96, 386, 1534 wells;  as well as custom dimensions 
+(where you manually specify the number of rows and columns).
 
 To the right of step 2 you can see an information box, warning you that WPM 
 will distribute the samples in a balanced manner within the plates (if there 
-are several).
+are several of them).
 
 ![balanced way message](images/balanceInfobox.PNG)
 
 If you select a plate size compatible with the total number of samples, you 
-will see two blue boxes and a plate plan appear on the right summarizing all 
-of your configuration.
+will see two blue boxes and a plate plan appear on the right hand side. They summarize all 
+the elements of your configuration.
 In the example below, we selected the pre-defined dimension of 96 wells and only
 one plate:
 
@@ -227,15 +230,14 @@ This plot updates with each modification of the parameters, thus making it
 possible to see if one has made an error.
 
 __IMPORTANT__: If the WPM detects a problem or incompatibility between parameters, 
-you will see an error message instead of the plate map, explaining you what 
-could be the problem.
+you will see an error message instead of the plate map, providing hints on the possible origin of the problem.
 
 ![Example of error message](images/exErrorMsg.PNG)
 
 
 ### Step 4: Forbidden wells {#forbidden_wells}
 
-In this step are listed the __Forbidden wells__ if any (optional): 
+In this step are listed the __Forbidden wells__, if any (optional): 
 
 > A __Forbidden well__ will not be filled with any kind of sample, either 
 because the user does not want to (*e.g.* plate corners in case of non-uniform
@@ -243,7 +245,7 @@ heat distribution), or because of material constraints (*e.g.* dirty wells, brok
 pipettes).
 
 You fill the text input with the coordinates of the wells (a combination of 
-letters and numbers like in the example below):
+letters and numbers, as in the example below):
 
 ![Example of forbidden wells listed in the text input](images/forbiddenEx1.PNG)
 
@@ -259,8 +261,7 @@ final dataset. On the resulting map, these wells will be colored in red.
 At this stage you can specify the wells which correspond to buffers, if there 
 are any. 
 
-> A __buffer well__ corresponds to wells filled filled with solution but do 
-not biological material (*e.g.* to avoid/check for cross-contamination).
+> A __buffer well__ corresponds to a well filled filled with solution but without biological material (*e.g.* to avoid/check for cross-contamination).
 
 Five patterns are available for placing the buffers:
 
@@ -285,7 +286,7 @@ wells.
 
 #### Specify the neighborhood constraints {#neighborhood}
 
-These are the spatial constraints that the WPM needs to create the plates.
+These are the spatial constraints that the WPM needs to respect when designing the plates.
 Currently, 4 types of them are proposed. Note that the patterns are available only 
 if they are compatible with the chosen buffer pattern.
 The question here is: Should samples from the same group be found side by side?
@@ -313,7 +314,7 @@ None: samples from the same group can be placed anywhere, including side by side
 ![No constraint](images/NCnone.PNG)
 
 
-The wells filled with buffer wells will have the *"buffer"* ID in the 
+The wells filled with buffer solution will have the *"buffer"* ID in the 
 final dataset. On the resulting map, these wells will be colored in grey.
 
 
@@ -323,14 +324,14 @@ final dataset. On the resulting map, these wells will be colored in grey.
 At this stage you can specify the wells which correspond to fixed 
 samples, if there are any. 
 
-> A __fixed sample__ corresponds to quality control samples or standards,
-the precise location of these samples must be controlled by the researcher.
+> A __fixed sample__ corresponds to a quality control sample or standard.
+The precise location of these samples must be controlled by the researcher.
 
 This step works in exactly the same way as the 
 [forbidden well](#forbidden_wells) step. The only difference is that the fixed samples
 will appear in **black** on the plot.
 
-The wells filled with fixed wells will have the *"fixed"* ID in 
+The fixed samples will have the *"fixed"* ID in 
 the final dataset.
 
 ### Number of iterations {#iterations_number}
@@ -343,16 +344,16 @@ use an algorithm inspired by the backtracking algorithm (to place the
 samples in the wells while respecting the specified constraints).
 
 The default value is 20, but if your configuration is somewhat complex, then 
-it is advisable to increase this number.
+it is advised to increase the number.
 
 An *iteration* corresponds to an attempt by the WPM to find a solution. The 
-algorithm used is not "fully" backtracked: the WPM stops as soon as there are no 
-more possibilities to finalize the current solution, and starts from scratch 
-the plate map, until providing a solution that complements all the constraints.
+algorithm used is not fully backtracked: the WPM stops as soon as there are no 
+more possibilities to finalize the current solution; then, it starts back from scratch 
+the plate map, until a solution that fits all the constraints is found.
 With this approach, not all possible combinations are explored, but it does 
 reduce execution time.
 
-When you start the WPM, a progress bar shows which iteration WPM is at.
+When you start the computations, a progress bar appears.
 
 If the WPM finds a solution, you will see this pop in the browser, inviting you to 
 go to the [Result Panel](#results_panel):
@@ -377,40 +378,40 @@ __NOTE__ If you want to create a new plate plan for another project, press
 
 ## The __Results__ tab {#results_panel}
 
-The Result panel allows you to look at the final dataset containing the wells 
-chosen for each sample and a plot of your final well-plate map. Dataframe and 
+The Result panel allows you to look at the final dataset containing the well 
+chosen for each sample, as well as a plot of your final well-plate map. Dataframe and 
 plots are downloadable separately.
 
 ![Final dataframe](images/final_dataset.PNG)
 
-The dataset contains 7 columns giving all the information needed to run the 
+The dataset contains 7 columns giving all the information needed to implement the 
 experiment: The sample name with its corresponding group; its ID for the plot; 
-the well chosen; the row and the column to which the well corresponds and the 
-number of the plate on which the sample must be placed during the experiment.
+the well chosen; the row and the column to which the well corresponds to; and the 
+number of the plate on which the sample must be placed.
 
 This tab also shows the generated plot(s) of the final well-plate map(s).
-One color corresponds to one group level. The numbers are the IDs used in 
-place of the sample names which could be too long and make the plot unreadable.
+One color corresponds to one group label. The numbers are the IDs used in 
+place of the sample names which could be too long to keep the plot readable.
 
-Below is an example of 80 samples distributed in 10 groups and placed on a 
+Below is an example of 80 samples distributed in 10 groups (of unequal sizes) and placed on a 
 96 well-plate, with the North-South-East-West neighborhood constraint:
 
 ![Plate map](images/plot1.png)
 
 
-# Using the WPM with the command lines {#R_commands}
+# Using the WPM in command lines {#R_commands}
 
 As explained before, the WPM can also be used through R command lines by 
 following these steps:
 
-1. Create the dataset for WPM
-2. Run WPM
+1. Cast the dataset into the correct format
+2. Run the WPM
 3. Visualize the final plate plan(s)
 
 ## Prepare the dataset
 The user can work with CSV files, `ExpressionSet`, `MSnSet` or 
 `SummarizedExperiment`objects.
-The first step is to create a dataframe containing all the data necessary for the WPM 
+The first step is to create a dataframe containing all the necessary information for the WPM 
 to work correctly. Notably, it is needed to specify which column in the file 
 corresponds to the grouping factor, if any.
 
@@ -430,7 +431,7 @@ rownames(pd) <- colnames(M)
 my_MSnSet_object <- MSnbase::MSnSet(exprs = M,pData =  pd)
 ```
 
-then run `convertESet` by specifying the object and the variable to use as 
+Then, run `convertESet` by specifying the object and the variable to use as 
 grouping factor for samples:
 ```{r convert ESet/MSnSet object}
 df <- wpm::convertESet(my_MSnSet_object, "Environment")
@@ -458,19 +459,21 @@ For more details about the functions, please use `?wpm::<functionName>` R comman
 The next step is to run the `wrapperWPM` function by giving it all the parameters
 needed:
 
-* the dataframe generated with `convertXXX` functions
-* the [plate dimensions](#plate-dims)
-* the number of plates to fill
-* the [forbidden wells](#forbidden_wells) (wells that must not be filled at all for the experiment)
-* [buffer wells](#buffers) (wells where there will be solution without biological material)
+* The dataframe generated with `convertXXX` functions
+* The [plate dimensions](#plate-dims)
+* The number of plates to fill
+* The [forbidden wells](#forbidden_wells) (wells that must not be filled at all for the experiment)
+* The [buffer wells](#buffers) (wells where there will be solution without biological material)
 * The position of [fixed samples](#fixed_wells)
-* the [spatial constraint](#neighborhood) to place the samples
-* the [maximal number of attemps](#iterations_number) for the WPM to find a valid solution
+* The [spatial constraint](#neighborhood) to be respected when randomizing the samples
+* The [maximal number of attempts](#iterations_number) for the WPM to find a valid solution
 
 
-In this toy example, we do not specify any buffer well.
 
-### After importing a CSV file
+
+### When using a CSV file
+
+In the running toy example (see code shunks around), we do not specify any buffer well.
 
 ```{r run wpm with a CSV file, eval=FALSE}
 wpm_result <- wpm::wrapperWPM(user_df = imported_csv$df_wpm,
@@ -481,7 +484,7 @@ wpm_result <- wpm::wrapperWPM(user_df = imported_csv$df_wpm,
             spatial_constraint = "NS")
 ```
 
-### after importing an `ExpressionSet`, `MSnSet` or `SummarizedExperiment`
+### When using an R-structured dataset (`ExpressionSet`, `MSnSet` or `SummarizedExperiment`)
 ```{r run wpm}
 wpm_result <- wpm::wrapperWPM(user_df = df,
             plate_dims = list(8,12),
@@ -524,8 +527,7 @@ ggplot2::ggsave(
 ```
 
 __IMPORTANT__ If multiple plates where specified, then `wpm_result` will be a 
-list containing a dataset **for each generated plate**. Concretely, if 2 plates 
-are generated, each of them can be accessed with `wpm_result[[numberOfThePlate]]`:
+list containing a dataset **for each generated plate**. Then, each of them can be accessed with `wpm_result[[numberOfThePlate]]`:
 ```{r, eval = FALSE}
 numberOfThePlate <- 1
 drawned_map <- wpm::drawMap(df = wpm_result[[numberOfThePlate]],
@@ -545,7 +547,3 @@ drawned_map <- wpm::drawMap(df = wpm_result[[numberOfThePlate]],
 ```{r SessionInfo}
 sessionInfo()
 ```
-
-
-
-
