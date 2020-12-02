@@ -120,3 +120,6 @@ added to IDs' samples in the final dataframe.
 * Visual changes in the app (colors, blocks).
 * Update of the Help tab of the application, following the revision of the 
 vignette.
+
+# changes in version 1.1.7
+* documented the demo dataset "data_test"
