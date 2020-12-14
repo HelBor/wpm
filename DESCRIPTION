@@ -1,14 +1,19 @@
 Package: wpm
 Type: Package
 Title: Well Plate Maker
-Version: 1.1.7
+Version: 1.1.8
 Authors@R: c(person('Helene', 'Borges', role = c('aut', 'cre'), 
                     email = 'borges.helene.sophie@gmail.com'),
             person('Thomas', 'Burger', role = 'aut',
                     email = 'thomas.burger@cea.fr'))
-Description: This is a shiny application for creating well-plate plans. 
-    It uses a backtracking-inspired algorithm to place samples on plates 
-    based on specific neighborhood constraints.
+Description: The Well-Plate Maker (WPM) is a shiny application deployed as an R 
+    package. Functions for a command-line/script use are also available. The WPM 
+    allows users to generate well plate maps to carry out their experiments 
+    while improving the handling of batch effects. In particular, it helps 
+    controlling the "plate effect" thanks to its ability to randomize samples 
+    over multiple well plates. The algorithm for placing the samples is inspired
+    by the backtracking algorithm: the samples are placed at random while 
+    respecting specific spatial constraints.
 License: Artistic-2.0
 biocViews: GUI, Proteomics, MassSpectrometry, BatchEffect, ExperimentalDesign
 Depends: R (>= 4.0.0)
