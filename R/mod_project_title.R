@@ -13,7 +13,7 @@ mod_project_title_ui <- function(id){
                           status = "warning",
                           width = 12,
                           collapsible = TRUE,
-                          solidHeader = F,
+                          solidHeader = FALSE,
                           title = shiny::h3("Please choose a Project name"),
                           shiny::textInput(inputId = ns("project_title"),
                                            label = NULL,

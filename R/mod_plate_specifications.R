@@ -15,7 +15,7 @@ ns <- shiny::NS(id)
                 status = "warning",
                 width = 12,
                 collapsible = TRUE,
-                solidHeader = F,
+                solidHeader = FALSE,
                 title = shiny::h3("Buffer solutions"),
                 shiny::fluidRow(
                     shiny::column(

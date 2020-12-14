@@ -8,7 +8,7 @@ mod_data_import_ui <- function(id){
                 status = "warning",
                 width = 12,
                 collapsible = TRUE,
-                solidHeader = F,
+                solidHeader = FALSE,
                 title = shiny::h3("Upload the dataset"),
 
                 shinydashboard::tabBox(
@@ -45,7 +45,7 @@ mod_data_import_ui <- function(id){
                     style='padding:0px;margin:0px;',
                     shinydashboard::box(style = "overflow-x: scroll;",
                         title = shiny::h3("Check that your file is correctly read by WPM"),
-                        solidHeader = F, collapsible = TRUE,
+                        solidHeader = FALSE, collapsible = TRUE,
                         width = 12, status = "warning",
                         DT::dataTableOutput(ns("default_table")),
                         shiny::textOutput(ns("default_text"))
@@ -55,7 +55,7 @@ mod_data_import_ui <- function(id){
                     style = 'padding:0px;margin:0px;',
                     shinydashboard::box(style = "overflow-x: scroll;",
                         title = shiny::h3("Preview output template"),
-                        solidHeader = F, collapsible = TRUE,
+                        solidHeader = FALSE, collapsible = TRUE,
                         width = 12, status = "warning",
                         DT::dataTableOutput(ns("wpm_table"))
                     ),
