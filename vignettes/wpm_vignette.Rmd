@@ -541,7 +541,7 @@ drawned_map <- wpm::drawMap(df = wpm_result[[numberOfThePlate]],
 
 
 # Citing Our work
-> The published article of the project will be linked here.
+> Borges, H., Hesse, A. M., Kraut, A., Couté, Y., Brun, V., & Burger, T. (2021). Well Plate Maker: A user-friendly randomized block design application to limit batch effects in largescale biomedical studies. Bioinformatics ([link to the publication](https://academic.oup.com/bioinformatics/advance-article-abstract/doi/10.1093/bioinformatics/btab065/6128508)).
 
 # SessionInfo
 ```{r SessionInfo}

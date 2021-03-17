@@ -273,4 +273,5 @@ Example of a final plot (96 well-plate with 80 samples divided into 10 groups):
 * For proteomics, add the option to serialize the samples into the LC-MS pipeline.
 
 ## Citing Our work
-> The published article of the project will be linked here.
+> Borges, H., Hesse, A. M., Kraut, A., Couté, Y., Brun, V., & Burger, T. (2021). Well Plate Maker: A user-friendly randomized block design application to limit batch effects in largescale biomedical studies. Bioinformatics ([link to the publication](https://academic.oup.com/bioinformatics/advance-article-abstract/doi/10.1093/bioinformatics/btab065/6128508)).
+

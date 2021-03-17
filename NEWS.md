@@ -123,3 +123,6 @@ vignette.
 
 # changes in version 1.1.7
 * documented the demo dataset "data_test"
+
+# changes in version 1.1.9
+* add publication reference
