@@ -1,7 +1,7 @@
 Package: wpm
 Type: Package
 Title: Well Plate Maker
-Version: 1.2.0
+Version: 1.3.0
 Authors@R: c(person('Helene', 'Borges', role = c('aut', 'cre'), 
                     email = 'borges.helene.sophie@gmail.com'),
             person('Thomas', 'Burger', role = 'aut',
