@@ -138,17 +138,17 @@ wrapperWPM <- function(user_df, plate_dims, nb_plates, forbidden_wells = NULL,
     special_wells <- joinDataframes(
         forbidden_w = fw, buffer_w = bw, fixed_w = fixedw,
         nb_samples = nrow(user_df), totalNbWells = tNbW, nb_p = nb_plates)
-    if (methods::is(special_wells, "data.frame")) {
+    # if (methods::is(special_wells, "data.frame")) {
         ## Backtracking part
-        print(special_wells)
+        # print(special_wells)
         logging::loginfo("max_iteration: %s", max_iteration)
         output <- backtracking(
             max_iter = max_iteration, user_data = user_df,
             wells = special_wells, rows = plate_dims[[1]],
             columns = plate_dims[[2]], nb_plates = nb_plates,
             constraint = spatial_constraint, prog = NULL)
-    }else{
-        output <- special_wells
-    }
+    # }else{
+    #     output <- special_wells
+    # }
     return(output)
 }
