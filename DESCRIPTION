@@ -1,7 +1,7 @@
 Package: wpm
 Type: Package
 Title: Well Plate Maker
-Version: 1.3.0
+Version: 1.3.1
 Authors@R: c(person('Helene', 'Borges', role = c('aut', 'cre'), 
                     email = 'borges.helene.sophie@gmail.com'),
             person('Thomas', 'Burger', role = 'aut',
@@ -16,7 +16,7 @@ Description: The Well-Plate Maker (WPM) is a shiny application deployed as an R
     respecting specific spatial constraints.
 License: Artistic-2.0
 biocViews: GUI, Proteomics, MassSpectrometry, BatchEffect, ExperimentalDesign
-Depends: R (>= 4.0.0)
+Depends: R (>= 4.1.0)
 Imports:
     utils,
     methods,
